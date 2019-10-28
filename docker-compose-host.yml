@@ -38,6 +38,10 @@ services:
 #      - ${DEVSTACK_WORKSPACE}/gradebook:/edx/app/gradebook:cached
 #      - gradebook_node_modules:/edx/app/gradebook/node_modules
 
+  mcka-apros:
+    volumes:
+      - ${DEVSTACK_WORKSPACE}/mcka_apros:/edx/app/apros/mcka_apros:cached
+
 volumes:
   #credentials_node_modules:
   #discovery_node_modules:

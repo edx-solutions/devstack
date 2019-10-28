@@ -26,7 +26,7 @@ services:
   elasticsearch:
     container_name: edx.devstack.elasticsearch
     hostname: elasticsearch.devstack.edx
-    image: edxops/elasticsearch:devstack
+    image: edxsol/elasticsearch
     # TODO: What to do about these forwarded ports? They'll conflict with ports forwarded by the Vagrant VM.
     # ports:
     #   - "9200:9200"
@@ -153,7 +153,7 @@ services:
       BOK_CHOY_CMS_PORT: 18031
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
-    image: edxops/edxapp:${OPENEDX_RELEASE:-latest}
+    image: edxsol/edxapp:ironwood
     ports:
       - "18000:18000"
       - "19876:19876" # JS test debugging
@@ -201,7 +201,7 @@ services:
       BOK_CHOY_CMS_PORT: 18131
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
-    image: edxops/edxapp:${OPENEDX_RELEASE:-latest}
+    image: edxsol/edxapp:ironwood
     ports:
       - "18010:18010"
       - "19877:19877" # JS test debugging
@@ -219,9 +219,23 @@ services:
       - mongo
       - memcached
       - elasticsearch
-    image: edxops/forum:${OPENEDX_RELEASE:-latest}
+    image: edxsol/forum
     ports:
       - "44567:4567"
+
+  mcka-apros:
+    build:
+      dockerfile: Dockerfile
+      context: ../mcka_apros
+    container_name: edx.devstack.mcka-apros
+    hostname: mcka-apros.devstack.edx
+    command:  bash -c "source /edx/app/apros/venvs/mcka_apros/bin/activate && while true; do python manage.py rundev 3000 ; sleep 2; done"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    volumes:
+      - mcka_apros_assets:/edx/app/apros/mcka_apros/static_cache
 
 #  devpi:
 #    container_name: edx.devstack.devpi
@@ -250,3 +264,4 @@ volumes:
   mongo_data:
   mysql_data:
   #devpi_data:
+  mcka_apros_assets:

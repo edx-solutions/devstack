@@ -39,6 +39,7 @@ docker exec -i edx.devstack.mysql mysql -uroot mysql < provision.sql
 docker exec -i edx.devstack.mongo mongo < mongo-provision.js
 
 ./provision-lms.sh
+./provision-apros.sh
 
 # Nothing special needed for studio
 #docker-compose $DOCKER_COMPOSE_FILES up -d studio
