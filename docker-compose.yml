@@ -224,9 +224,7 @@ services:
       - "44567:4567"
 
   mcka-apros:
-    build:
-      dockerfile: Dockerfile
-      context: ../mcka_apros
+    image: edxsol/mcka-apros:v1.0.0
     container_name: edx.devstack.mcka-apros
     hostname: mcka-apros.devstack.edx
     command:  bash -c "source /edx/app/apros/venvs/mcka_apros/bin/activate && while true; do python manage.py rundev 3000 ; sleep 2; done"
