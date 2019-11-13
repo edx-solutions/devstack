@@ -24,16 +24,8 @@ else
 fi
 
 repos=(
-    #"https://github.com/edx/course-discovery.git"
-    #"https://github.com/edx/credentials.git"
     "https://github.com/edx-solutions/cs_comments_service.git"
-    #"https://github.com/edx/ecommerce.git"
-    #"https://github.com/edx/edx-e2e-tests.git"
-    #"https://github.com/edx/edx-notes-api.git"
     "https://github.com/edx-solutions/edx-platform.git"
-    #"https://github.com/edx/xqueue.git"
-    #"https://github.com/edx/edx-analytics-pipeline.git"
-    #"https://github.com/edx/gradebook.git"
 )
 
 private_repos=(
@@ -85,7 +77,7 @@ _clone ()
         if [ -d "$name" -a -n "$(ls -A "$name" 2>/dev/null)" ]; then
             printf "The [%s] repo is already checked out. Checking for updates.\n" $name
             cd ${DEVSTACK_WORKSPACE}/${name}
-            #_checkout_and_update_branch
+            _checkout_and_update_branch
             cd ..
         else
             if [ "${SHALLOW_CLONE}" == "1" ]; then
