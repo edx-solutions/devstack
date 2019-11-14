@@ -26,7 +26,7 @@ services:
   elasticsearch:
     container_name: edx.devstack.elasticsearch
     hostname: elasticsearch.devstack.edx
-    image: edxsol/elasticsearch
+    image: edxyonkers/elasticsearch
     # TODO: What to do about these forwarded ports? They'll conflict with ports forwarded by the Vagrant VM.
     # ports:
     #   - "9200:9200"
@@ -139,7 +139,7 @@ services:
       - mongo
       - memcached
       - elasticsearch
-    image: edxsol/forum
+    image: edxyonkers/forum:ironwood
     ports:
       - "44567:4567"
 
