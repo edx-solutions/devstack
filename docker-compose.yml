@@ -96,7 +96,7 @@ services:
       BOK_CHOY_CMS_PORT: 18031
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
-    image: edxsol/edxapp:ironwood
+    image: edxyonkers/edxapp:ironwood
     ports:
       - "18000:18000"
       - "19876:19876" # JS test debugging
@@ -122,7 +122,7 @@ services:
       BOK_CHOY_CMS_PORT: 18131
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
-    image: edxsol/edxapp:ironwood
+    image: edxyonkers/edxapp:ironwood
     ports:
       - "18010:18010"
       - "19877:19877" # JS test debugging
@@ -144,7 +144,7 @@ services:
       - "44567:4567"
 
   mcka-apros:
-    image: edxsol/mcka-apros:v1
+    image: edxyonkers/mcka_apros:ironwood
     container_name: edx.devstack.mcka-apros
     hostname: mcka-apros.devstack.edx
     command:  bash -c "source /edx/app/apros/venvs/mcka_apros/bin/activate && while true; do python manage.py rundev 3000 ; sleep 2; done"
