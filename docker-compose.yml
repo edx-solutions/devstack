@@ -143,10 +143,10 @@ services:
     ports:
       - "44567:4567"
 
-  mcka-apros:
+  mcka_apros:
     image: edxyonkers/mcka_apros:ironwood
-    container_name: edx.devstack.mcka-apros
-    hostname: mcka-apros.devstack.edx
+    container_name: edx.devstack.apros
+    hostname: apros.devstack.edx
     command:  bash -c "source /edx/app/apros/venvs/mcka_apros/bin/activate && while true; do python manage.py rundev 3000 ; sleep 2; done"
     ports:
       - "3000:3000"

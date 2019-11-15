@@ -7,6 +7,6 @@ services:
   studio:
       volumes:
       - ${DEVSTACK_WORKSPACE}/edx-themes:/edx/app/edx-themes:cached
-  mcka-apros:
+  mcka_apros:
     volumes:
       - ${DEVSTACK_WORKSPACE}/edx-themes:/edx/app/edx-themes:cached

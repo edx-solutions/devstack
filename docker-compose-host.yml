@@ -14,7 +14,7 @@ services:
   forum:
     volumes:
       - ${DEVSTACK_WORKSPACE}/cs_comments_service:/edx/app/forum/cs_comments_service:cached
-  mcka-apros:
+  mcka_apros:
     volumes:
       - ${DEVSTACK_WORKSPACE}/mcka_apros:/edx/app/apros/mcka_apros:cached
 
