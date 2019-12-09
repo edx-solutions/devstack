@@ -145,7 +145,7 @@ services:
 
   mcka_apros:
     image: edxyonkers/mcka_apros:ironwood
-    container_name: edx.devstack.apros
+    container_name: apros.devstack.lms
     hostname: apros.devstack.edx
     command:  bash -c "source /edx/app/apros/venvs/mcka_apros/bin/activate && while true; do python manage.py rundev 3000 ; sleep 2; done"
     ports:
