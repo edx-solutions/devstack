@@ -152,8 +152,8 @@ services:
       - "3000:3000"
     depends_on:
       - mysql
-    volumes:
-      - mcka_apros_assets:/edx/app/apros/mcka_apros/static_cache
+#    volumes:
+#      - mcka_apros_assets:/edx/app/apros/mcka_apros/static_cache
 
 volumes:
   edxapp_lms_assets:
