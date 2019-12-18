@@ -17,6 +17,9 @@ services:
   mcka_apros:
     volumes:
       - ${DEVSTACK_WORKSPACE}/mcka_apros:/edx/app/apros/mcka_apros:cached
+  apros_nginx:
+    volumes:
+      - ${DEVSTACK_WORKSPACE}/mcka_apros:/edx/app/apros/mcka_apros:cached
 
 volumes:
   edxapp_node_modules:

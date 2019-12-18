@@ -153,7 +153,7 @@ restore:  ## Restore all data volumes from the host. WARNING: THIS WILL OVERWRIT
 # TODO: Print out help for this target. Even better if we can iterate over the
 # services in docker-compose.yml, and print the actual service names.
 %-shell: ## Run a shell on the specified service container
-	docker exec -it edx.devstack.$* /bin/bash
+	@if [ $* == mcka_apros ]; then docker exec -it apros.devstack.lms /bin/bash; else docker exec -it edx.devstack.$* /bin/bash; fi
 
 credentials-shell: ## Run a shell on the credentials container
 	docker exec -it edx.devstack.credentials env TERM=$(TERM) bash -c 'source /edx/app/credentials/credentials_env && cd /edx/app/credentials/credentials && /bin/bash'
@@ -180,6 +180,10 @@ update-db: | studio-update-db lms-update-db discovery-update-db ecommerce-update
 
 lms-shell: ## Run a shell on the LMS container
 	docker exec -it edx.devstack.lms env TERM=$(TERM) /edx/app/edxapp/devstack.sh open
+
+mcka_apros-shell: ## Run a shell on the APROS container
+    # TODO: apros env not activating. update .bashrc in container.
+	docker exec -it apros.devstack.lms /bin/bash #env TERM=$(TERM) /edx/app/edxapp/devstack.sh open
 
 lms-watcher-shell: ## Run a shell on the LMS watcher container
 	docker exec -it edx.devstack.lms_watcher env TERM=$(TERM) /edx/app/edxapp/devstack.sh open

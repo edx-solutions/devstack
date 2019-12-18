@@ -144,16 +144,33 @@ services:
       - "44567:4567"
 
   mcka_apros:
+    build:
+      dockerfile: Dockerfile
+      context: ../mcka_apros
     image: edxyonkers/mcka_apros:ironwood
     container_name: apros.devstack.lms
     hostname: apros.devstack.edx
-    command:  bash -c "source /edx/app/apros/venvs/mcka_apros/bin/activate && while true; do python manage.py rundev 3000 ; sleep 2; done"
+    command: bash -c "source /edx/app/apros/venvs/mcka_apros/bin/activate && while true; do python manage.py rundev 3000 ; sleep 2; done"
     ports:
       - "3000:3000"
     depends_on:
       - mysql
-#    volumes:
-#      - mcka_apros_assets:/edx/app/apros/mcka_apros/static_cache
+    volumes:
+      - mcka_apros_assets:/edx/app/apros/mcka_apros/static_cache
+
+  apros_nginx:
+    build:
+      dockerfile: docker_nginx_file
+      context: ../mcka_apros
+    image: edxyonkers/apros_nginx:ironwood
+    container_name: edx.devstack.apros_nginx
+    hostname: apros_nginx.devstack.edx
+    ports:
+      - "80:80"
+    depends_on:
+      - mcka_apros
+    volumes:
+      - mcka_apros_assets:/edx/app/apros/mcka_apros/static_cache
 
 volumes:
   edxapp_lms_assets:
