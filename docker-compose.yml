@@ -160,7 +160,7 @@ services:
 
   apros_nginx:
     build:
-      dockerfile: docker_nginx_file
+      dockerfile: Dockerfile-nginx
       context: ../mcka_apros
     image: edxyonkers/apros_nginx:ironwood
     container_name: edx.devstack.apros_nginx
