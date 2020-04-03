@@ -27,6 +27,7 @@ repos=(
     "https://github.com/edx-solutions/cs_comments_service.git"
     "https://github.com/mckinseyacademy/mcka_apros.git"
     "https://github.com/edx-solutions/edx-platform.git"
+    "https://github.com/mckinseyacademy/mcka-theme.git"
 )
 
 private_repos=(
