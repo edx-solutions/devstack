@@ -20,20 +20,14 @@ fi
 if [ -n "${OPENEDX_RELEASE}" ]; then
     OPENEDX_GIT_BRANCH=open-release/${OPENEDX_RELEASE}
 else
-    OPENEDX_GIT_BRANCH=master
+    OPENEDX_GIT_BRANCH=rebase-ironwood
 fi
 
 repos=(
-    "https://github.com/edx/course-discovery.git"
-    "https://github.com/edx/credentials.git"
-    "https://github.com/edx/cs_comments_service.git"
-    "https://github.com/edx/ecommerce.git"
-    "https://github.com/edx/edx-e2e-tests.git"
-    "https://github.com/edx/edx-notes-api.git"
-    "https://github.com/edx/edx-platform.git"
-    "https://github.com/edx/xqueue.git"
-    "https://github.com/edx/edx-analytics-pipeline.git"
-    "https://github.com/edx/gradebook.git"
+    "https://github.com/edx-solutions/cs_comments_service.git"
+    "https://github.com/mckinseyacademy/mcka_apros.git"
+    "https://github.com/edx-solutions/edx-platform.git"
+    "https://github.com/mckinseyacademy/mcka-theme.git"
 )
 
 private_repos=(
@@ -108,7 +102,7 @@ _checkout_and_update_branch ()
         git fetch origin ${OPENEDX_GIT_BRANCH}:${OPENEDX_GIT_BRANCH}
         git checkout ${OPENEDX_GIT_BRANCH}
     fi
-    find . -name '*.pyc' -not -path './.git/*' -delete 
+    find . -name '*.pyc' -not -path './.git/*' -delete
 }
 
 clone ()
