@@ -75,7 +75,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     image: mysql:5.6
     # ports:
-    #   - "3306:3306"
+    #   - "3506:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -87,6 +87,9 @@ services:
       - mysql
       - memcached
       - mongo
+      - forum
+      - firefox
+      - chrome
     # Allows attachment to the LMS service using 'docker attach <containerID>'.
     stdin_open: true
     tty: true
@@ -113,6 +116,8 @@ services:
       - mysql
       - memcached
       - mongo
+      - firefox
+      - chrome
     # Allows attachment to the Studio service using 'docker attach <containerID>'.
     stdin_open: true
     tty: true

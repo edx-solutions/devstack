@@ -41,13 +41,11 @@ help: ## Display this help message
 requirements: ## Install requirements
 	pip install -r requirements/base.txt
 
+upgrade: export CUSTOM_COMPILE_COMMAND=make upgrade
 upgrade: ## Upgrade requirements with pip-tools
 	pip install -qr requirements/pip-tools.txt
 	pip-compile --upgrade -o requirements/pip-tools.txt requirements/pip-tools.in
 	pip-compile --upgrade -o requirements/base.txt requirements/base.in
-	bash post-pip-compile.sh \
-		requirements/pip-tools.txt \
-		requirements/base.txt \
 
 dev.checkout: ## Check out "openedx-release/$OPENEDX_RELEASE" in each repo if set, "master" otherwise
 	./repo.sh checkout
@@ -56,7 +54,7 @@ dev.clone: ## Clone service repos to the parent directory
 	./repo.sh clone
 
 dev.provision.run: ## Provision all services with local mounted directories
-	DOCKER_COMPOSE_FILES="-f docker-compose.yml -f docker-compose-host.yml" $(WINPTY) bash ./provision.sh
+	DOCKER_COMPOSE_FILES="-f docker-compose.yml -f docker-compose-host.yml -f docker-compose-themes.yml" $(WINPTY) bash ./provision.sh
 
 dev.provision: | check-memory dev.clone dev.provision.run stop ## Provision dev environment with all services stopped
 
@@ -78,11 +76,16 @@ dev.up: | check-memory ## Bring up all services with host volumes
 	@# Comment out this next line if you want to save some time and don't care about catalog programs
 	$(WINPTY) bash ./programs/provision.sh cache $(DEVNULL)
 
+dev.up.%: | check-memory ## Bring up a specific service and its dependencies with host volumes
+	bash -c 'docker-compose -f docker-compose.yml -f docker-compose-host.yml -f docker-compose-themes.yml up -d $*'
+	@# Comment out this next line if you want to save some time and don't care about catalog programs
+	$(WINPTY) bash ./programs/provision.sh cache $(DEVNULL)
+
 dev.up.watchers: | check-memory ## Bring up asset watcher containers
 	bash -c 'docker-compose -f docker-compose-watchers.yml up -d'
 
 dev.up.xqueue: | check-memory ## Bring up xqueue, assumes you already have lms running
-	bash -c 'docker-compose -f docker-compose.yml -f docker-compose-xqueue.yml -f docker-compose-host.yml up -d'
+	bash -c 'docker-compose -f docker-compose.yml -f docker-compose-xqueue.yml -f docker-compose-host.yml -f docker-compose-themes.yml up -d'
 
 dev.up.all: | dev.up dev.up.watchers ## Bring up all services with host volumes, including watchers
 
@@ -167,6 +170,9 @@ ecommerce-shell: ## Run a shell on the ecommerce container
 e2e-shell: ## Start the end-to-end tests container with a shell
 	docker run -it --network=devstack_default -v ${DEVSTACK_WORKSPACE}/edx-e2e-tests:/edx-e2e-tests -v ${DEVSTACK_WORKSPACE}/edx-platform:/edx-e2e-tests/lib/edx-platform --env-file ${DEVSTACK_WORKSPACE}/edx-e2e-tests/devstack_env edxops/e2e env TERM=$(TERM) bash
 
+registrar-shell: ## Run a shell on the registrar site container
+	docker exec -it edx.devstack.registrar env TERM=$(TERM) bash -c 'source /edx/app/registrar/registrar_env && cd /edx/app/registrar/registrar && /bin/bash'
+
 %-update-db: ## Run migrations for the specified service container
 	docker exec -t edx.devstack.$* bash -c 'source /edx/app/$*/$*_env && cd /edx/app/$*/$*/ && make migrate'
 
@@ -219,10 +225,10 @@ xqueue_consumer-restart: ## Kill the XQueue development server. The watcher proc
 	docker exec -t edx.devstack.$* bash -c 'source /edx/app/$*/$*_env && cd /edx/app/$*/$*/ && make static'
 
 lms-static: ## Rebuild static assets for the LMS container
-	docker exec -t edx.devstack.lms bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform/ && paver update_assets'
+	docker exec -t edx.devstack.lms bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform/ && paver update_assets lms'
 
 studio-static: ## Rebuild static assets for the Studio container
-	docker exec -t edx.devstack.studio bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform/ && paver update_assets'
+	docker exec -t edx.devstack.studio bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform/ && paver update_assets studio'
 
 static: | credentials-static discovery-static ecommerce-static lms-static studio-static ## Rebuild static assets for all service containers
 
@@ -258,13 +264,13 @@ mongo-shell: ## Run a shell on the mongo container
 dev.provision.analytics_pipeline: | check-memory dev.provision.analytics_pipeline.run stop.analytics_pipeline stop ## Provision analyticstack dev environment with all services stopped
 
 dev.provision.analytics_pipeline.run:
-	DOCKER_COMPOSE_FILES="-f docker-compose.yml -f docker-compose-host.yml -f docker-compose-analytics-pipeline.yml" ./provision-analytics-pipeline.sh
+	DOCKER_COMPOSE_FILES="-f docker-compose.yml -f docker-compose-host.yml -f docker-compose-themes.yml -f docker-compose-analytics-pipeline.yml" ./provision-analytics-pipeline.sh
 
 analytics-pipeline-shell: ## Run a shell on the analytics pipeline container
 	docker exec -it edx.devstack.analytics_pipeline env TERM=$(TERM) /edx/app/analytics_pipeline/devstack.sh open
 
 dev.up.analytics_pipeline: | check-memory ## Bring up analytics pipeline services
-	bash -c 'docker-compose -f docker-compose.yml -f docker-compose-analytics-pipeline.yml -f docker-compose-host.yml up -d analyticspipeline'
+	bash -c 'docker-compose -f docker-compose.yml -f docker-compose-analytics-pipeline.yml -f docker-compose-host.yml -f docker-compose-themes.yml up -d analyticspipeline'
 
 pull.analytics_pipeline: ## Update analytics pipeline docker images
 	docker-compose -f docker-compose.yml -f docker-compose-analytics-pipeline.yml pull
@@ -296,3 +302,6 @@ check-memory: ## Check if enough memory has been allocated to Docker
 
 stats: ## Get per-container CPU and memory utilization data
 	docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"
+
+feature-toggle-state: ## Gather the state of feature toggles configured for various IDAs
+	$(WINPTY) bash ./gather-feature-toggle-state.sh

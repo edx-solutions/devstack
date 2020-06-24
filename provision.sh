@@ -40,11 +40,9 @@ docker exec -i edx.devstack.mongo mongo < mongo-provision.js
 
 ./provision-lms.sh
 
-
 # Nothing special needed for studio
 docker-compose $DOCKER_COMPOSE_FILES up -d studio
 ./provision-forum.sh
-
 ./provision-apros.sh
 
 docker image prune -f

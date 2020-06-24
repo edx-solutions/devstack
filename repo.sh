@@ -77,6 +77,10 @@ _clone ()
         # If a directory exists and it is nonempty, assume the repo has been checked out
         # and only make sure it's on the required branch
         if [ -d "$name" -a -n "$(ls -A "$name" 2>/dev/null)" ]; then
+            if [ ! -d "$name/.git" ]; then
+                printf "ERROR: [%s] exists but is not a git repo.\n" $name
+                exit 1
+            fi
             printf "The [%s] repo is already checked out. Checking for updates.\n" $name
             cd ${DEVSTACK_WORKSPACE}/${name}
             _checkout_and_update_branch
