@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.45, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.39, for Linux (x86_64)
 --
 -- Host: localhost    Database: edxapp
 -- ------------------------------------------------------
--- Server version	5.6.45
+-- Server version	5.6.39
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,29 +26,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `edxapp` /*!40100 DEFAULT CHARACTER SET
 USE `edxapp`;
 
 --
--- Table structure for table `announcements_announcement`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `announcements_announcement` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` varchar(1000) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `announcements_announcement`
---
-
-LOCK TABLES `announcements_announcement` WRITE;
-/*!40000 ALTER TABLE `announcements_announcement` DISABLE KEYS */;
-/*!40000 ALTER TABLE `announcements_announcement` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `api_admin_apiaccessconfig`
 --
 
@@ -60,8 +37,8 @@ CREATE TABLE `api_admin_apiaccessconfig` (
   `enabled` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `api_admin_apiaccessconfig_changed_by_id_d2f4cd88_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `api_admin_apiaccessconfig_changed_by_id_d2f4cd88_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `api_admin_apiacce_changed_by_id_771a504ee92a076c_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `api_admin_apiacce_changed_by_id_771a504ee92a076c_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -93,11 +70,11 @@ CREATE TABLE `api_admin_apiaccessrequest` (
   `contacted` tinyint(1) NOT NULL,
   `site_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `api_admin_apiaccessrequest_user_id_eb0cc217_uniq` (`user_id`),
-  KEY `api_admin_apiaccessrequest_status_f8039aea` (`status`),
-  KEY `api_admin_apiaccessrequest_site_id_b78f5161_fk_django_site_id` (`site_id`),
-  CONSTRAINT `api_admin_apiaccessrequest_site_id_b78f5161_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`),
-  CONSTRAINT `api_admin_apiaccessrequest_user_id_eb0cc217_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `api_admin_apiaccessrequest_user_id_6753e50e296cabc7_uniq` (`user_id`),
+  KEY `api_admin_apiaccessrequest_9acb4454` (`status`),
+  KEY `api_admin_apiaccessrequest_9365d6e7` (`site_id`),
+  CONSTRAINT `api_admin_apiaccessre_site_id_7963330a765f8041_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`),
+  CONSTRAINT `api_admin_apiaccessrequ_user_id_6753e50e296cabc7_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -108,6 +85,176 @@ CREATE TABLE `api_admin_apiaccessrequest` (
 LOCK TABLES `api_admin_apiaccessrequest` WRITE;
 /*!40000 ALTER TABLE `api_admin_apiaccessrequest` DISABLE KEYS */;
 /*!40000 ALTER TABLE `api_admin_apiaccessrequest` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `assessment_aiclassifier`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `assessment_aiclassifier` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `classifier_data` varchar(100) NOT NULL,
+  `classifier_set_id` int(11) NOT NULL,
+  `criterion_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `assessment_aiclassifier_962f069f` (`classifier_set_id`),
+  KEY `assessment_aiclassifier_385b00a3` (`criterion_id`),
+  CONSTRAINT `D3bd45d5e3c9cfdc4f3b442119adebe8` FOREIGN KEY (`classifier_set_id`) REFERENCES `assessment_aiclassifierset` (`id`),
+  CONSTRAINT `assessm_criterion_id_275db29f2a0e1711_fk_assessment_criterion_id` FOREIGN KEY (`criterion_id`) REFERENCES `assessment_criterion` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `assessment_aiclassifier`
+--
+
+LOCK TABLES `assessment_aiclassifier` WRITE;
+/*!40000 ALTER TABLE `assessment_aiclassifier` DISABLE KEYS */;
+/*!40000 ALTER TABLE `assessment_aiclassifier` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `assessment_aiclassifierset`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `assessment_aiclassifierset` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) NOT NULL,
+  `algorithm_id` varchar(128) NOT NULL,
+  `course_id` varchar(255) NOT NULL,
+  `item_id` varchar(128) NOT NULL,
+  `rubric_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `assessment_aiclassifierset_fde81f11` (`created_at`),
+  KEY `assessment_aiclassifierset_65143c91` (`algorithm_id`),
+  KEY `assessment_aiclassifierset_ea134da7` (`course_id`),
+  KEY `assessment_aiclassifierset_82bfda79` (`item_id`),
+  KEY `assessment_aiclassifierset_8980b7ae` (`rubric_id`),
+  CONSTRAINT `assessment_ai_rubric_id_45488be94ea0aea5_fk_assessment_rubric_id` FOREIGN KEY (`rubric_id`) REFERENCES `assessment_rubric` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `assessment_aiclassifierset`
+--
+
+LOCK TABLES `assessment_aiclassifierset` WRITE;
+/*!40000 ALTER TABLE `assessment_aiclassifierset` DISABLE KEYS */;
+/*!40000 ALTER TABLE `assessment_aiclassifierset` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `assessment_aigradingworkflow`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `assessment_aigradingworkflow` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(36) NOT NULL,
+  `course_id` varchar(255) NOT NULL,
+  `item_id` varchar(128) NOT NULL,
+  `scheduled_at` datetime(6) NOT NULL,
+  `completed_at` datetime(6) DEFAULT NULL,
+  `algorithm_id` varchar(128) NOT NULL,
+  `submission_uuid` varchar(128) NOT NULL,
+  `essay_text` longtext NOT NULL,
+  `student_id` varchar(40) NOT NULL,
+  `assessment_id` int(11) DEFAULT NULL,
+  `classifier_set_id` int(11) DEFAULT NULL,
+  `rubric_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`),
+  KEY `assessment_aigradingworkflow_ea134da7` (`course_id`),
+  KEY `assessment_aigradingworkflow_82bfda79` (`item_id`),
+  KEY `assessment_aigradingworkflow_96e4551c` (`scheduled_at`),
+  KEY `assessment_aigradingworkflow_4430a679` (`completed_at`),
+  KEY `assessment_aigradingworkflow_65143c91` (`algorithm_id`),
+  KEY `assessment_aigradingworkflow_ab5b2b73` (`submission_uuid`),
+  KEY `assessment_aigradingworkflow_30a811f6` (`student_id`),
+  KEY `assessment_aigradingworkflow_a4079fcf` (`assessment_id`),
+  KEY `assessment_aigradingworkflow_962f069f` (`classifier_set_id`),
+  KEY `assessment_aigradingworkflow_8980b7ae` (`rubric_id`),
+  CONSTRAINT `D4d9bca115376aeb07fd970155499db3` FOREIGN KEY (`classifier_set_id`) REFERENCES `assessment_aiclassifierset` (`id`),
+  CONSTRAINT `asses_assessment_id_68b86880a7f62f1c_fk_assessment_assessment_id` FOREIGN KEY (`assessment_id`) REFERENCES `assessment_assessment` (`id`),
+  CONSTRAINT `assessment_ai_rubric_id_3fc938e9e3ae7b2d_fk_assessment_rubric_id` FOREIGN KEY (`rubric_id`) REFERENCES `assessment_rubric` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `assessment_aigradingworkflow`
+--
+
+LOCK TABLES `assessment_aigradingworkflow` WRITE;
+/*!40000 ALTER TABLE `assessment_aigradingworkflow` DISABLE KEYS */;
+/*!40000 ALTER TABLE `assessment_aigradingworkflow` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `assessment_aitrainingworkflow`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `assessment_aitrainingworkflow` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(36) NOT NULL,
+  `course_id` varchar(255) NOT NULL,
+  `item_id` varchar(128) NOT NULL,
+  `scheduled_at` datetime(6) NOT NULL,
+  `completed_at` datetime(6) DEFAULT NULL,
+  `algorithm_id` varchar(128) NOT NULL,
+  `classifier_set_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`),
+  KEY `fb3b73b224dc39eb386f5d3ec67998b7` (`classifier_set_id`),
+  KEY `assessment_aitrainingworkflow_ea134da7` (`course_id`),
+  KEY `assessment_aitrainingworkflow_82bfda79` (`item_id`),
+  KEY `assessment_aitrainingworkflow_96e4551c` (`scheduled_at`),
+  KEY `assessment_aitrainingworkflow_4430a679` (`completed_at`),
+  KEY `assessment_aitrainingworkflow_65143c91` (`algorithm_id`),
+  CONSTRAINT `fb3b73b224dc39eb386f5d3ec67998b7` FOREIGN KEY (`classifier_set_id`) REFERENCES `assessment_aiclassifierset` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `assessment_aitrainingworkflow`
+--
+
+LOCK TABLES `assessment_aitrainingworkflow` WRITE;
+/*!40000 ALTER TABLE `assessment_aitrainingworkflow` DISABLE KEYS */;
+/*!40000 ALTER TABLE `assessment_aitrainingworkflow` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `assessment_aitrainingworkflow_training_examples`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `assessment_aitrainingworkflow_training_examples` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `aitrainingworkflow_id` int(11) NOT NULL,
+  `trainingexample_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `aitrainingworkflow_id` (`aitrainingworkflow_id`,`trainingexample_id`),
+  KEY `ff4ddecc43bd06c0d85785a61e955133` (`trainingexample_id`),
+  CONSTRAINT `da55be90caee21d95136e40c53e5c754` FOREIGN KEY (`aitrainingworkflow_id`) REFERENCES `assessment_aitrainingworkflow` (`id`),
+  CONSTRAINT `ff4ddecc43bd06c0d85785a61e955133` FOREIGN KEY (`trainingexample_id`) REFERENCES `assessment_trainingexample` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `assessment_aitrainingworkflow_training_examples`
+--
+
+LOCK TABLES `assessment_aitrainingworkflow_training_examples` WRITE;
+/*!40000 ALTER TABLE `assessment_aitrainingworkflow_training_examples` DISABLE KEYS */;
+/*!40000 ALTER TABLE `assessment_aitrainingworkflow_training_examples` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -125,11 +272,11 @@ CREATE TABLE `assessment_assessment` (
   `feedback` longtext NOT NULL,
   `rubric_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `assessment_assessment_submission_uuid_cf5817c5` (`submission_uuid`),
-  KEY `assessment_assessment_scored_at_a1a213d6` (`scored_at`),
-  KEY `assessment_assessment_scorer_id_ad1a38cb` (`scorer_id`),
-  KEY `assessment_assessment_rubric_id_2ed0d5db_fk_assessment_rubric_id` (`rubric_id`),
-  CONSTRAINT `assessment_assessment_rubric_id_2ed0d5db_fk_assessment_rubric_id` FOREIGN KEY (`rubric_id`) REFERENCES `assessment_rubric` (`id`)
+  KEY `assessment_assessment_ab5b2b73` (`submission_uuid`),
+  KEY `assessment_assessment_ef4c53ff` (`scored_at`),
+  KEY `assessment_assessment_7b0042c0` (`scorer_id`),
+  KEY `assessment_assessment_8980b7ae` (`rubric_id`),
+  CONSTRAINT `assessment_as_rubric_id_7997f01dcbd05633_fk_assessment_rubric_id` FOREIGN KEY (`rubric_id`) REFERENCES `assessment_rubric` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -177,10 +324,10 @@ CREATE TABLE `assessment_assessmentfeedback_assessments` (
   `assessmentfeedback_id` int(11) NOT NULL,
   `assessment_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `assessment_assessmentfee_assessmentfeedback_id_as_f8246578_uniq` (`assessmentfeedback_id`,`assessment_id`),
-  KEY `assessment_assessmen_assessment_id_033f1121_fk_assessmen` (`assessment_id`),
-  CONSTRAINT `assessment_assessmen_assessment_id_033f1121_fk_assessmen` FOREIGN KEY (`assessment_id`) REFERENCES `assessment_assessment` (`id`),
-  CONSTRAINT `assessment_assessmen_assessmentfeedback_i_6634a3b4_fk_assessmen` FOREIGN KEY (`assessmentfeedback_id`) REFERENCES `assessment_assessmentfeedback` (`id`)
+  UNIQUE KEY `assessmentfeedback_id` (`assessmentfeedback_id`,`assessment_id`),
+  KEY `asses_assessment_id_392d354eca2e0c87_fk_assessment_assessment_id` (`assessment_id`),
+  CONSTRAINT `D1fc3fa7cd7be79d20561668a95a9fc1` FOREIGN KEY (`assessmentfeedback_id`) REFERENCES `assessment_assessmentfeedback` (`id`),
+  CONSTRAINT `asses_assessment_id_392d354eca2e0c87_fk_assessment_assessment_id` FOREIGN KEY (`assessment_id`) REFERENCES `assessment_assessment` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -204,10 +351,10 @@ CREATE TABLE `assessment_assessmentfeedback_options` (
   `assessmentfeedback_id` int(11) NOT NULL,
   `assessmentfeedbackoption_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `assessment_assessmentfee_assessmentfeedback_id_as_4e554cc7_uniq` (`assessmentfeedback_id`,`assessmentfeedbackoption_id`),
-  KEY `assessment_assessmen_assessmentfeedbackop_a9af45f6_fk_assessmen` (`assessmentfeedbackoption_id`),
-  CONSTRAINT `assessment_assessmen_assessmentfeedback_i_004e1bf0_fk_assessmen` FOREIGN KEY (`assessmentfeedback_id`) REFERENCES `assessment_assessmentfeedback` (`id`),
-  CONSTRAINT `assessment_assessmen_assessmentfeedbackop_a9af45f6_fk_assessmen` FOREIGN KEY (`assessmentfeedbackoption_id`) REFERENCES `assessment_assessmentfeedbackoption` (`id`)
+  UNIQUE KEY `assessmentfeedback_id` (`assessmentfeedback_id`,`assessmentfeedbackoption_id`),
+  KEY `cc7028abc88c431df3172c9b2d6422e4` (`assessmentfeedbackoption_id`),
+  CONSTRAINT `cba12ac98c4a04d67d5edaa2223f4fe5` FOREIGN KEY (`assessmentfeedback_id`) REFERENCES `assessment_assessmentfeedback` (`id`),
+  CONSTRAINT `cc7028abc88c431df3172c9b2d6422e4` FOREIGN KEY (`assessmentfeedbackoption_id`) REFERENCES `assessment_assessmentfeedbackoption` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -256,12 +403,12 @@ CREATE TABLE `assessment_assessmentpart` (
   `criterion_id` int(11) NOT NULL,
   `option_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `assessment_assessmen_assessment_id_de1999cd_fk_assessmen` (`assessment_id`),
-  KEY `assessment_assessmen_criterion_id_5bc40925_fk_assessmen` (`criterion_id`),
-  KEY `assessment_assessmen_option_id_dd35c2c5_fk_assessmen` (`option_id`),
-  CONSTRAINT `assessment_assessmen_assessment_id_de1999cd_fk_assessmen` FOREIGN KEY (`assessment_id`) REFERENCES `assessment_assessment` (`id`),
-  CONSTRAINT `assessment_assessmen_criterion_id_5bc40925_fk_assessmen` FOREIGN KEY (`criterion_id`) REFERENCES `assessment_criterion` (`id`),
-  CONSTRAINT `assessment_assessmen_option_id_dd35c2c5_fk_assessmen` FOREIGN KEY (`option_id`) REFERENCES `assessment_criterionoption` (`id`)
+  KEY `asses_assessment_id_1d752290138ce479_fk_assessment_assessment_id` (`assessment_id`),
+  KEY `assessment_assessmentpart_385b00a3` (`criterion_id`),
+  KEY `assessment_assessmentpart_28df3725` (`option_id`),
+  CONSTRAINT `asse_option_id_2508a14feeabf4ce_fk_assessment_criterionoption_id` FOREIGN KEY (`option_id`) REFERENCES `assessment_criterionoption` (`id`),
+  CONSTRAINT `asses_assessment_id_1d752290138ce479_fk_assessment_assessment_id` FOREIGN KEY (`assessment_id`) REFERENCES `assessment_assessment` (`id`),
+  CONSTRAINT `assessm_criterion_id_2061f2359fd292bf_fk_assessment_criterion_id` FOREIGN KEY (`criterion_id`) REFERENCES `assessment_criterion` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -288,8 +435,8 @@ CREATE TABLE `assessment_criterion` (
   `prompt` longtext NOT NULL,
   `rubric_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `assessment_criterion_rubric_id_fe236962_fk_assessment_rubric_id` (`rubric_id`),
-  CONSTRAINT `assessment_criterion_rubric_id_fe236962_fk_assessment_rubric_id` FOREIGN KEY (`rubric_id`) REFERENCES `assessment_rubric` (`id`)
+  KEY `assessment_criterion_8980b7ae` (`rubric_id`),
+  CONSTRAINT `assessment_cr_rubric_id_30b7422eb7f191cd_fk_assessment_rubric_id` FOREIGN KEY (`rubric_id`) REFERENCES `assessment_rubric` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -318,8 +465,8 @@ CREATE TABLE `assessment_criterionoption` (
   `explanation` longtext NOT NULL,
   `criterion_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `assessment_criterion_criterion_id_53928be7_fk_assessmen` (`criterion_id`),
-  CONSTRAINT `assessment_criterion_criterion_id_53928be7_fk_assessmen` FOREIGN KEY (`criterion_id`) REFERENCES `assessment_criterion` (`id`)
+  KEY `assessm_criterion_id_4d0f74d959b454af_fk_assessment_criterion_id` (`criterion_id`),
+  CONSTRAINT `assessm_criterion_id_4d0f74d959b454af_fk_assessment_criterion_id` FOREIGN KEY (`criterion_id`) REFERENCES `assessment_criterion` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -351,13 +498,13 @@ CREATE TABLE `assessment_peerworkflow` (
   `cancelled_at` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `submission_uuid` (`submission_uuid`),
-  KEY `assessment_peerworkflow_student_id_9382ae54` (`student_id`),
-  KEY `assessment_peerworkflow_item_id_c17d799e` (`item_id`),
-  KEY `assessment_peerworkflow_course_id_875599e3` (`course_id`),
-  KEY `assessment_peerworkflow_created_at_b8aaf4a5` (`created_at`),
-  KEY `assessment_peerworkflow_completed_at_681f19e1` (`completed_at`),
-  KEY `assessment_peerworkflow_grading_completed_at_33e2560c` (`grading_completed_at`),
-  KEY `assessment_peerworkflow_cancelled_at_0e258929` (`cancelled_at`)
+  KEY `assessment_peerworkflow_30a811f6` (`student_id`),
+  KEY `assessment_peerworkflow_82bfda79` (`item_id`),
+  KEY `assessment_peerworkflow_ea134da7` (`course_id`),
+  KEY `assessment_peerworkflow_fde81f11` (`created_at`),
+  KEY `assessment_peerworkflow_4430a679` (`completed_at`),
+  KEY `assessment_peerworkflow_85d183d8` (`grading_completed_at`),
+  KEY `assessment_peerworkflow_740da1db` (`cancelled_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -385,14 +532,14 @@ CREATE TABLE `assessment_peerworkflowitem` (
   `author_id` int(11) NOT NULL,
   `scorer_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `assessment_peerworkf_assessment_id_27f9ef1f_fk_assessmen` (`assessment_id`),
-  KEY `assessment_peerworkf_author_id_0e3ed804_fk_assessmen` (`author_id`),
-  KEY `assessment_peerworkf_scorer_id_27e47cd4_fk_assessmen` (`scorer_id`),
-  KEY `assessment_peerworkflowitem_submission_uuid_edd446aa` (`submission_uuid`),
-  KEY `assessment_peerworkflowitem_started_at_8644e7a0` (`started_at`),
-  CONSTRAINT `assessment_peerworkf_assessment_id_27f9ef1f_fk_assessmen` FOREIGN KEY (`assessment_id`) REFERENCES `assessment_assessment` (`id`),
-  CONSTRAINT `assessment_peerworkf_author_id_0e3ed804_fk_assessmen` FOREIGN KEY (`author_id`) REFERENCES `assessment_peerworkflow` (`id`),
-  CONSTRAINT `assessment_peerworkf_scorer_id_27e47cd4_fk_assessmen` FOREIGN KEY (`scorer_id`) REFERENCES `assessment_peerworkflow` (`id`)
+  KEY `asses_assessment_id_15cadfae90ddcc2a_fk_assessment_assessment_id` (`assessment_id`),
+  KEY `assessm_author_id_1948f89dea6d2b5f_fk_assessment_peerworkflow_id` (`author_id`),
+  KEY `assessm_scorer_id_2d803ee2d52c0e2c_fk_assessment_peerworkflow_id` (`scorer_id`),
+  KEY `assessment_peerworkflowitem_ab5b2b73` (`submission_uuid`),
+  KEY `assessment_peerworkflowitem_ff1ae11b` (`started_at`),
+  CONSTRAINT `asses_assessment_id_15cadfae90ddcc2a_fk_assessment_assessment_id` FOREIGN KEY (`assessment_id`) REFERENCES `assessment_assessment` (`id`),
+  CONSTRAINT `assessm_author_id_1948f89dea6d2b5f_fk_assessment_peerworkflow_id` FOREIGN KEY (`author_id`) REFERENCES `assessment_peerworkflow` (`id`),
+  CONSTRAINT `assessm_scorer_id_2d803ee2d52c0e2c_fk_assessment_peerworkflow_id` FOREIGN KEY (`scorer_id`) REFERENCES `assessment_peerworkflow` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -417,7 +564,7 @@ CREATE TABLE `assessment_rubric` (
   `structure_hash` varchar(40) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_hash` (`content_hash`),
-  KEY `assessment_rubric_structure_hash_fb456373` (`structure_hash`)
+  KEY `assessment_rubric_873e9e2d` (`structure_hash`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -450,14 +597,14 @@ CREATE TABLE `assessment_staffworkflow` (
   `assessment` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `submission_uuid` (`submission_uuid`),
-  KEY `assessment_staffworkflow_scorer_id_ae799ebc` (`scorer_id`),
-  KEY `assessment_staffworkflow_course_id_3f18693d` (`course_id`),
-  KEY `assessment_staffworkflow_item_id_4fa3697b` (`item_id`),
-  KEY `assessment_staffworkflow_created_at_a253bc02` (`created_at`),
-  KEY `assessment_staffworkflow_grading_completed_at_acd0199f` (`grading_completed_at`),
-  KEY `assessment_staffworkflow_grading_started_at_90f99005` (`grading_started_at`),
-  KEY `assessment_staffworkflow_cancelled_at_bc8f93d5` (`cancelled_at`),
-  KEY `assessment_staffworkflow_assessment_7c1dcc5d` (`assessment`)
+  KEY `assessment_staffworkflow_7b0042c0` (`scorer_id`),
+  KEY `assessment_staffworkflow_ea134da7` (`course_id`),
+  KEY `assessment_staffworkflow_82bfda79` (`item_id`),
+  KEY `assessment_staffworkflow_fde81f11` (`created_at`),
+  KEY `assessment_staffworkflow_85d183d8` (`grading_completed_at`),
+  KEY `assessment_staffworkflow_0af9deae` (`grading_started_at`),
+  KEY `assessment_staffworkflow_740da1db` (`cancelled_at`),
+  KEY `assessment_staffworkflow_5096c410` (`assessment`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -484,9 +631,9 @@ CREATE TABLE `assessment_studenttrainingworkflow` (
   `course_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `submission_uuid` (`submission_uuid`),
-  KEY `assessment_studenttrainingworkflow_student_id_ea8fdfa8` (`student_id`),
-  KEY `assessment_studenttrainingworkflow_item_id_f5812a25` (`item_id`),
-  KEY `assessment_studenttrainingworkflow_course_id_a14d6cde` (`course_id`)
+  KEY `assessment_studenttrainingworkflow_30a811f6` (`student_id`),
+  KEY `assessment_studenttrainingworkflow_82bfda79` (`item_id`),
+  KEY `assessment_studenttrainingworkflow_ea134da7` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -513,10 +660,11 @@ CREATE TABLE `assessment_studenttrainingworkflowitem` (
   `training_example_id` int(11) NOT NULL,
   `workflow_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `assessment_studenttraini_workflow_id_order_num_1ab60238_uniq` (`workflow_id`,`order_num`),
-  KEY `assessment_studenttr_training_example_id_881dddbd_fk_assessmen` (`training_example_id`),
-  CONSTRAINT `assessment_studenttr_training_example_id_881dddbd_fk_assessmen` FOREIGN KEY (`training_example_id`) REFERENCES `assessment_trainingexample` (`id`),
-  CONSTRAINT `assessment_studenttr_workflow_id_a75a9a2e_fk_assessmen` FOREIGN KEY (`workflow_id`) REFERENCES `assessment_studenttrainingworkflow` (`id`)
+  UNIQUE KEY `assessment_studenttrainingwork_workflow_id_484e930feb86ad74_uniq` (`workflow_id`,`order_num`),
+  KEY `assessment_studenttrainingworkflowitem_9cc97abc` (`training_example_id`),
+  KEY `assessment_studenttrainingworkflowitem_846c77cf` (`workflow_id`),
+  CONSTRAINT `D74ce3e30635de397fef41ac869640c7` FOREIGN KEY (`training_example_id`) REFERENCES `assessment_trainingexample` (`id`),
+  CONSTRAINT `f9c080ebc7ad16394edda963ed3f280f` FOREIGN KEY (`workflow_id`) REFERENCES `assessment_studenttrainingworkflow` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -542,8 +690,8 @@ CREATE TABLE `assessment_trainingexample` (
   `rubric_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_hash` (`content_hash`),
-  KEY `assessment_traininge_rubric_id_cfb4afc3_fk_assessmen` (`rubric_id`),
-  CONSTRAINT `assessment_traininge_rubric_id_cfb4afc3_fk_assessmen` FOREIGN KEY (`rubric_id`) REFERENCES `assessment_rubric` (`id`)
+  KEY `assessment_tr_rubric_id_33664d383bafcaaa_fk_assessment_rubric_id` (`rubric_id`),
+  CONSTRAINT `assessment_tr_rubric_id_33664d383bafcaaa_fk_assessment_rubric_id` FOREIGN KEY (`rubric_id`) REFERENCES `assessment_rubric` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -567,10 +715,10 @@ CREATE TABLE `assessment_trainingexample_options_selected` (
   `trainingexample_id` int(11) NOT NULL,
   `criterionoption_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `assessment_trainingexamp_trainingexample_id_crite_4b6b8b90_uniq` (`trainingexample_id`,`criterionoption_id`),
-  KEY `assessment_traininge_criterionoption_id_de6716f1_fk_assessmen` (`criterionoption_id`),
-  CONSTRAINT `assessment_traininge_criterionoption_id_de6716f1_fk_assessmen` FOREIGN KEY (`criterionoption_id`) REFERENCES `assessment_criterionoption` (`id`),
-  CONSTRAINT `assessment_traininge_trainingexample_id_7a04b572_fk_assessmen` FOREIGN KEY (`trainingexample_id`) REFERENCES `assessment_trainingexample` (`id`)
+  UNIQUE KEY `trainingexample_id` (`trainingexample_id`,`criterionoption_id`),
+  KEY `D0b4a450eed0c653d223e489254ed8a1` (`criterionoption_id`),
+  CONSTRAINT `D0b4a450eed0c653d223e489254ed8a1` FOREIGN KEY (`criterionoption_id`) REFERENCES `assessment_criterionoption` (`id`),
+  CONSTRAINT `ae406d6687690bb9277287984729cfd8` FOREIGN KEY (`trainingexample_id`) REFERENCES `assessment_trainingexample` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -581,33 +729,6 @@ CREATE TABLE `assessment_trainingexample_options_selected` (
 LOCK TABLES `assessment_trainingexample_options_selected` WRITE;
 /*!40000 ALTER TABLE `assessment_trainingexample_options_selected` DISABLE KEYS */;
 /*!40000 ALTER TABLE `assessment_trainingexample_options_selected` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `auth_accountrecovery`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `auth_accountrecovery` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `secondary_email` varchar(254) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `is_active` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `secondary_email` (`secondary_email`),
-  UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `auth_accountrecovery_user_id_0c61e73c_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `auth_accountrecovery`
---
-
-LOCK TABLES `auth_accountrecovery` WRITE;
-/*!40000 ALTER TABLE `auth_accountrecovery` DISABLE KEYS */;
-/*!40000 ALTER TABLE `auth_accountrecovery` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -645,11 +766,11 @@ CREATE TABLE `auth_group_permissions` (
   `group_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `auth_group_permissions_group_id_permission_id_0cd325b0_uniq` (`group_id`,`permission_id`),
-  KEY `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id`),
-  CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
-  CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  UNIQUE KEY `group_id` (`group_id`,`permission_id`),
+  KEY `auth_group__permission_id_1f49ccbbdc69d2fc_fk_auth_permission_id` (`permission_id`),
+  CONSTRAINT `auth_group__permission_id_1f49ccbbdc69d2fc_fk_auth_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  CONSTRAINT `auth_group_permission_group_id_689710a9a73b7457_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -658,6 +779,7 @@ CREATE TABLE `auth_group_permissions` (
 
 LOCK TABLES `auth_group_permissions` WRITE;
 /*!40000 ALTER TABLE `auth_group_permissions` DISABLE KEYS */;
+INSERT INTO `auth_group_permissions` VALUES (6,1,695),(4,1,696),(5,1,697);
 /*!40000 ALTER TABLE `auth_group_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -673,9 +795,9 @@ CREATE TABLE `auth_permission` (
   `content_type_id` int(11) NOT NULL,
   `codename` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
-  CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1169 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
+  CONSTRAINT `auth__content_type_id_508cf46651277a81_fk_django_content_type_id` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1143 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -684,7 +806,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-INSERT INTO `auth_permission` VALUES (1,'Can add permission',2,'add_permission'),(2,'Can change permission',2,'change_permission'),(3,'Can delete permission',2,'delete_permission'),(4,'Can add user',3,'add_user'),(5,'Can change user',3,'change_user'),(6,'Can delete user',3,'delete_user'),(7,'Can add group',4,'add_group'),(8,'Can change group',4,'change_group'),(9,'Can delete group',4,'delete_group'),(10,'Can add content type',5,'add_contenttype'),(11,'Can change content type',5,'change_contenttype'),(12,'Can delete content type',5,'delete_contenttype'),(13,'Can add redirect',6,'add_redirect'),(14,'Can change redirect',6,'change_redirect'),(15,'Can delete redirect',6,'delete_redirect'),(16,'Can add session',7,'add_session'),(17,'Can change session',7,'change_session'),(18,'Can delete session',7,'delete_session'),(19,'Can add site',8,'add_site'),(20,'Can change site',8,'change_site'),(21,'Can delete site',8,'delete_site'),(22,'Can add saved group result',9,'add_tasksetmeta'),(23,'Can change saved group result',9,'change_tasksetmeta'),(24,'Can delete saved group result',9,'delete_tasksetmeta'),(25,'Can add crontab',10,'add_crontabschedule'),(26,'Can change crontab',10,'change_crontabschedule'),(27,'Can delete crontab',10,'delete_crontabschedule'),(28,'Can add worker',11,'add_workerstate'),(29,'Can change worker',11,'change_workerstate'),(30,'Can delete worker',11,'delete_workerstate'),(31,'Can add task state',12,'add_taskmeta'),(32,'Can change task state',12,'change_taskmeta'),(33,'Can delete task state',12,'delete_taskmeta'),(34,'Can add interval',13,'add_intervalschedule'),(35,'Can change interval',13,'change_intervalschedule'),(36,'Can delete interval',13,'delete_intervalschedule'),(37,'Can add task',14,'add_taskstate'),(38,'Can change task',14,'change_taskstate'),(39,'Can delete task',14,'delete_taskstate'),(40,'Can add periodic task',15,'add_periodictask'),(41,'Can change periodic task',15,'change_periodictask'),(42,'Can delete periodic task',15,'delete_periodictask'),(43,'Can add periodic tasks',16,'add_periodictasks'),(44,'Can change periodic tasks',16,'change_periodictasks'),(45,'Can delete periodic tasks',16,'delete_periodictasks'),(46,'Can add sample',17,'add_sample'),(47,'Can change sample',17,'change_sample'),(48,'Can delete sample',17,'delete_sample'),(49,'Can add flag',18,'add_flag'),(50,'Can change flag',18,'change_flag'),(51,'Can delete flag',18,'delete_flag'),(52,'Can add switch',19,'add_switch'),(53,'Can change switch',19,'change_switch'),(54,'Can delete switch',19,'delete_switch'),(55,'Can add global status message',20,'add_globalstatusmessage'),(56,'Can change global status message',20,'change_globalstatusmessage'),(57,'Can delete global status message',20,'delete_globalstatusmessage'),(58,'Can add course message',21,'add_coursemessage'),(59,'Can change course message',21,'change_coursemessage'),(60,'Can delete course message',21,'delete_coursemessage'),(61,'Can add asset base url config',22,'add_assetbaseurlconfig'),(62,'Can change asset base url config',22,'change_assetbaseurlconfig'),(63,'Can delete asset base url config',22,'delete_assetbaseurlconfig'),(64,'Can add asset excluded extensions config',23,'add_assetexcludedextensionsconfig'),(65,'Can change asset excluded extensions config',23,'change_assetexcludedextensionsconfig'),(66,'Can delete asset excluded extensions config',23,'delete_assetexcludedextensionsconfig'),(67,'Can add cdn user agents config',24,'add_cdnuseragentsconfig'),(68,'Can change cdn user agents config',24,'change_cdnuseragentsconfig'),(69,'Can delete cdn user agents config',24,'delete_cdnuseragentsconfig'),(70,'Can add course asset cache ttl config',25,'add_courseassetcachettlconfig'),(71,'Can change course asset cache ttl config',25,'change_courseassetcachettlconfig'),(72,'Can delete course asset cache ttl config',25,'delete_courseassetcachettlconfig'),(73,'Can add site configuration',26,'add_siteconfiguration'),(74,'Can change site configuration',26,'change_siteconfiguration'),(75,'Can delete site configuration',26,'delete_siteconfiguration'),(76,'Can add site configuration history',27,'add_siteconfigurationhistory'),(77,'Can change site configuration history',27,'change_siteconfigurationhistory'),(78,'Can delete site configuration history',27,'delete_siteconfigurationhistory'),(79,'Can add transcript migration setting',28,'add_transcriptmigrationsetting'),(80,'Can change transcript migration setting',28,'change_transcriptmigrationsetting'),(81,'Can delete transcript migration setting',28,'delete_transcriptmigrationsetting'),(82,'Can add hls playback enabled flag',29,'add_hlsplaybackenabledflag'),(83,'Can change hls playback enabled flag',29,'change_hlsplaybackenabledflag'),(84,'Can delete hls playback enabled flag',29,'delete_hlsplaybackenabledflag'),(85,'Can add course youtube blocked flag',30,'add_courseyoutubeblockedflag'),(86,'Can change course youtube blocked flag',30,'change_courseyoutubeblockedflag'),(87,'Can delete course youtube blocked flag',30,'delete_courseyoutubeblockedflag'),(88,'Can add course hls playback enabled flag',31,'add_coursehlsplaybackenabledflag'),(89,'Can change course hls playback enabled flag',31,'change_coursehlsplaybackenabledflag'),(90,'Can delete course hls playback enabled flag',31,'delete_coursehlsplaybackenabledflag'),(91,'Can add updated course videos',32,'add_updatedcoursevideos'),(92,'Can change updated course videos',32,'change_updatedcoursevideos'),(93,'Can delete updated course videos',32,'delete_updatedcoursevideos'),(94,'Can add course video transcript enabled flag',33,'add_coursevideotranscriptenabledflag'),(95,'Can change course video transcript enabled flag',33,'change_coursevideotranscriptenabledflag'),(96,'Can delete course video transcript enabled flag',33,'delete_coursevideotranscriptenabledflag'),(97,'Can add video thumbnail setting',34,'add_videothumbnailsetting'),(98,'Can change video thumbnail setting',34,'change_videothumbnailsetting'),(99,'Can delete video thumbnail setting',34,'delete_videothumbnailsetting'),(100,'Can add video transcript enabled flag',35,'add_videotranscriptenabledflag'),(101,'Can change video transcript enabled flag',35,'change_videotranscriptenabledflag'),(102,'Can delete video transcript enabled flag',35,'delete_videotranscriptenabledflag'),(103,'Can add migration enqueued course',36,'add_migrationenqueuedcourse'),(104,'Can change migration enqueued course',36,'change_migrationenqueuedcourse'),(105,'Can delete migration enqueued course',36,'delete_migrationenqueuedcourse'),(106,'Can add course video uploads enabled by default',37,'add_coursevideouploadsenabledbydefault'),(107,'Can change course video uploads enabled by default',37,'change_coursevideouploadsenabledbydefault'),(108,'Can delete course video uploads enabled by default',37,'delete_coursevideouploadsenabledbydefault'),(109,'Can add video pipeline integration',38,'add_videopipelineintegration'),(110,'Can change video pipeline integration',38,'change_videopipelineintegration'),(111,'Can delete video pipeline integration',38,'delete_videopipelineintegration'),(112,'Can add video uploads enabled by default',39,'add_videouploadsenabledbydefault'),(113,'Can change video uploads enabled by default',39,'change_videouploadsenabledbydefault'),(114,'Can delete video uploads enabled by default',39,'delete_videouploadsenabledbydefault'),(115,'Can add x module student prefs field',40,'add_xmodulestudentprefsfield'),(116,'Can change x module student prefs field',40,'change_xmodulestudentprefsfield'),(117,'Can delete x module student prefs field',40,'delete_xmodulestudentprefsfield'),(118,'Can add org dynamic upgrade deadline configuration',41,'add_orgdynamicupgradedeadlineconfiguration'),(119,'Can change org dynamic upgrade deadline configuration',41,'change_orgdynamicupgradedeadlineconfiguration'),(120,'Can delete org dynamic upgrade deadline configuration',41,'delete_orgdynamicupgradedeadlineconfiguration'),(121,'Can add course dynamic upgrade deadline configuration',42,'add_coursedynamicupgradedeadlineconfiguration'),(122,'Can change course dynamic upgrade deadline configuration',42,'change_coursedynamicupgradedeadlineconfiguration'),(123,'Can delete course dynamic upgrade deadline configuration',42,'delete_coursedynamicupgradedeadlineconfiguration'),(124,'Can add offline computed grade',43,'add_offlinecomputedgrade'),(125,'Can change offline computed grade',43,'change_offlinecomputedgrade'),(126,'Can delete offline computed grade',43,'delete_offlinecomputedgrade'),(127,'Can add x module student info field',44,'add_xmodulestudentinfofield'),(128,'Can change x module student info field',44,'change_xmodulestudentinfofield'),(129,'Can delete x module student info field',44,'delete_xmodulestudentinfofield'),(130,'Can add offline computed grade log',45,'add_offlinecomputedgradelog'),(131,'Can change offline computed grade log',45,'change_offlinecomputedgradelog'),(132,'Can delete offline computed grade log',45,'delete_offlinecomputedgradelog'),(133,'Can add student module history',46,'add_studentmodulehistory'),(134,'Can change student module history',46,'change_studentmodulehistory'),(135,'Can delete student module history',46,'delete_studentmodulehistory'),(136,'Can add x module user state summary field',47,'add_xmoduleuserstatesummaryfield'),(137,'Can change x module user state summary field',47,'change_xmoduleuserstatesummaryfield'),(138,'Can delete x module user state summary field',47,'delete_xmoduleuserstatesummaryfield'),(139,'Can add student module',48,'add_studentmodule'),(140,'Can change student module',48,'change_studentmodule'),(141,'Can delete student module',48,'delete_studentmodule'),(142,'Can add dynamic upgrade deadline configuration',49,'add_dynamicupgradedeadlineconfiguration'),(143,'Can change dynamic upgrade deadline configuration',49,'change_dynamicupgradedeadlineconfiguration'),(144,'Can delete dynamic upgrade deadline configuration',49,'delete_dynamicupgradedeadlineconfiguration'),(145,'Can add student field override',50,'add_studentfieldoverride'),(146,'Can change student field override',50,'change_studentfieldoverride'),(147,'Can delete student field override',50,'delete_studentfieldoverride'),(148,'Can add student module history extended',51,'add_studentmodulehistoryextended'),(149,'Can change student module history extended',51,'change_studentmodulehistoryextended'),(150,'Can delete student module history extended',51,'delete_studentmodulehistoryextended'),(151,'Can add anonymous user id',52,'add_anonymoususerid'),(152,'Can change anonymous user id',52,'change_anonymoususerid'),(153,'Can delete anonymous user id',52,'delete_anonymoususerid'),(154,'Can add manual enrollment audit',53,'add_manualenrollmentaudit'),(155,'Can change manual enrollment audit',53,'change_manualenrollmentaudit'),(156,'Can delete manual enrollment audit',53,'delete_manualenrollmentaudit'),(157,'Can add course enrollment',54,'add_courseenrollment'),(158,'Can change course enrollment',54,'change_courseenrollment'),(159,'Can delete course enrollment',54,'delete_courseenrollment'),(160,'Can add user standing',55,'add_userstanding'),(161,'Can change user standing',55,'change_userstanding'),(162,'Can delete user standing',55,'delete_userstanding'),(163,'Can add user profile',56,'add_userprofile'),(164,'Can change user profile',56,'change_userprofile'),(165,'Can delete user profile',56,'delete_userprofile'),(166,'Can deactivate, but NOT delete users',56,'can_deactivate_users'),(167,'Can add entrance exam configuration',57,'add_entranceexamconfiguration'),(168,'Can change entrance exam configuration',57,'change_entranceexamconfiguration'),(169,'Can delete entrance exam configuration',57,'delete_entranceexamconfiguration'),(170,'Can add registration',58,'add_registration'),(171,'Can change registration',58,'change_registration'),(172,'Can delete registration',58,'delete_registration'),(173,'Can add pending secondary email change',59,'add_pendingsecondaryemailchange'),(174,'Can change pending secondary email change',59,'change_pendingsecondaryemailchange'),(175,'Can delete pending secondary email change',59,'delete_pendingsecondaryemailchange'),(176,'Can add logout view configuration',60,'add_logoutviewconfiguration'),(177,'Can change logout view configuration',60,'change_logoutviewconfiguration'),(178,'Can delete logout view configuration',60,'delete_logoutviewconfiguration'),(179,'Can add historical course enrollment',61,'add_historicalcourseenrollment'),(180,'Can change historical course enrollment',61,'change_historicalcourseenrollment'),(181,'Can delete historical course enrollment',61,'delete_historicalcourseenrollment'),(182,'Can add user test group',62,'add_usertestgroup'),(183,'Can change user test group',62,'change_usertestgroup'),(184,'Can delete user test group',62,'delete_usertestgroup'),(185,'Can add dashboard configuration',63,'add_dashboardconfiguration'),(186,'Can change dashboard configuration',63,'change_dashboardconfiguration'),(187,'Can delete dashboard configuration',63,'delete_dashboardconfiguration'),(188,'Can add user attribute',64,'add_userattribute'),(189,'Can change user attribute',64,'change_userattribute'),(190,'Can delete user attribute',64,'delete_userattribute'),(191,'Can add course enrollment allowed',65,'add_courseenrollmentallowed'),(192,'Can change course enrollment allowed',65,'change_courseenrollmentallowed'),(193,'Can delete course enrollment allowed',65,'delete_courseenrollmentallowed'),(194,'Can add course enrollment attribute',66,'add_courseenrollmentattribute'),(195,'Can change course enrollment attribute',66,'change_courseenrollmentattribute'),(196,'Can delete course enrollment attribute',66,'delete_courseenrollmentattribute'),(197,'Can add Login Failure',67,'add_loginfailures'),(198,'Can change Login Failure',67,'change_loginfailures'),(199,'Can delete Login Failure',67,'delete_loginfailures'),(200,'Can add account recovery',68,'add_accountrecovery'),(201,'Can change account recovery',68,'change_accountrecovery'),(202,'Can delete account recovery',68,'delete_accountrecovery'),(203,'Can add enrollment refund configuration',69,'add_enrollmentrefundconfiguration'),(204,'Can change enrollment refund configuration',69,'change_enrollmentrefundconfiguration'),(205,'Can delete enrollment refund configuration',69,'delete_enrollmentrefundconfiguration'),(206,'Can add social link',70,'add_sociallink'),(207,'Can change social link',70,'change_sociallink'),(208,'Can delete social link',70,'delete_sociallink'),(209,'Can add pending name change',71,'add_pendingnamechange'),(210,'Can change pending name change',71,'change_pendingnamechange'),(211,'Can delete pending name change',71,'delete_pendingnamechange'),(212,'Can add language proficiency',72,'add_languageproficiency'),(213,'Can change language proficiency',72,'change_languageproficiency'),(214,'Can delete language proficiency',72,'delete_languageproficiency'),(215,'Can add pending email change',73,'add_pendingemailchange'),(216,'Can change pending email change',73,'change_pendingemailchange'),(217,'Can delete pending email change',73,'delete_pendingemailchange'),(218,'Can add linked in add to profile configuration',74,'add_linkedinaddtoprofileconfiguration'),(219,'Can change linked in add to profile configuration',74,'change_linkedinaddtoprofileconfiguration'),(220,'Can delete linked in add to profile configuration',74,'delete_linkedinaddtoprofileconfiguration'),(221,'Can add registration cookie configuration',75,'add_registrationcookieconfiguration'),(222,'Can change registration cookie configuration',75,'change_registrationcookieconfiguration'),(223,'Can delete registration cookie configuration',75,'delete_registrationcookieconfiguration'),(224,'Can add course access role',76,'add_courseaccessrole'),(225,'Can change course access role',76,'change_courseaccessrole'),(226,'Can delete course access role',76,'delete_courseaccessrole'),(227,'Can add user signup source',77,'add_usersignupsource'),(228,'Can change user signup source',77,'change_usersignupsource'),(229,'Can delete user signup source',77,'delete_usersignupsource'),(230,'Can add tracking log',78,'add_trackinglog'),(231,'Can change tracking log',78,'change_trackinglog'),(232,'Can delete tracking log',78,'delete_trackinglog'),(233,'Can add rate limit configuration',79,'add_ratelimitconfiguration'),(234,'Can change rate limit configuration',79,'change_ratelimitconfiguration'),(235,'Can delete rate limit configuration',79,'delete_ratelimitconfiguration'),(236,'Can add certificate invalidation',80,'add_certificateinvalidation'),(237,'Can change certificate invalidation',80,'change_certificateinvalidation'),(238,'Can delete certificate invalidation',80,'delete_certificateinvalidation'),(239,'Can add example certificate',81,'add_examplecertificate'),(240,'Can change example certificate',81,'change_examplecertificate'),(241,'Can delete example certificate',81,'delete_examplecertificate'),(242,'Can add certificate generation history',82,'add_certificategenerationhistory'),(243,'Can change certificate generation history',82,'change_certificategenerationhistory'),(244,'Can delete certificate generation history',82,'delete_certificategenerationhistory'),(245,'Can add example certificate set',83,'add_examplecertificateset'),(246,'Can change example certificate set',83,'change_examplecertificateset'),(247,'Can delete example certificate set',83,'delete_examplecertificateset'),(248,'Can add generated certificate',84,'add_generatedcertificate'),(249,'Can change generated certificate',84,'change_generatedcertificate'),(250,'Can delete generated certificate',84,'delete_generatedcertificate'),(251,'Can add certificate generation configuration',85,'add_certificategenerationconfiguration'),(252,'Can change certificate generation configuration',85,'change_certificategenerationconfiguration'),(253,'Can delete certificate generation configuration',85,'delete_certificategenerationconfiguration'),(254,'Can add certificate generation course setting',86,'add_certificategenerationcoursesetting'),(255,'Can change certificate generation course setting',86,'change_certificategenerationcoursesetting'),(256,'Can delete certificate generation course setting',86,'delete_certificategenerationcoursesetting'),(257,'Can add certificate template asset',87,'add_certificatetemplateasset'),(258,'Can change certificate template asset',87,'change_certificatetemplateasset'),(259,'Can delete certificate template asset',87,'delete_certificatetemplateasset'),(260,'Can add certificate html view configuration',88,'add_certificatehtmlviewconfiguration'),(261,'Can change certificate html view configuration',88,'change_certificatehtmlviewconfiguration'),(262,'Can delete certificate html view configuration',88,'delete_certificatehtmlviewconfiguration'),(263,'Can add certificate whitelist',89,'add_certificatewhitelist'),(264,'Can change certificate whitelist',89,'change_certificatewhitelist'),(265,'Can delete certificate whitelist',89,'delete_certificatewhitelist'),(266,'Can add certificate template',90,'add_certificatetemplate'),(267,'Can change certificate template',90,'change_certificatetemplate'),(268,'Can delete certificate template',90,'delete_certificatetemplate'),(269,'Can add grade report setting',91,'add_gradereportsetting'),(270,'Can change grade report setting',91,'change_gradereportsetting'),(271,'Can delete grade report setting',91,'delete_gradereportsetting'),(272,'Can add instructor task',92,'add_instructortask'),(273,'Can change instructor task',92,'change_instructortask'),(274,'Can delete instructor task',92,'delete_instructortask'),(275,'Can add course user group partition group',93,'add_courseusergrouppartitiongroup'),(276,'Can change course user group partition group',93,'change_courseusergrouppartitiongroup'),(277,'Can delete course user group partition group',93,'delete_courseusergrouppartitiongroup'),(278,'Can add course user group',94,'add_courseusergroup'),(279,'Can change course user group',94,'change_courseusergroup'),(280,'Can delete course user group',94,'delete_courseusergroup'),(281,'Can add unregistered learner cohort assignments',95,'add_unregisteredlearnercohortassignments'),(282,'Can change unregistered learner cohort assignments',95,'change_unregisteredlearnercohortassignments'),(283,'Can delete unregistered learner cohort assignments',95,'delete_unregisteredlearnercohortassignments'),(284,'Can add course cohort',96,'add_coursecohort'),(285,'Can change course cohort',96,'change_coursecohort'),(286,'Can delete course cohort',96,'delete_coursecohort'),(287,'Can add course cohorts settings',97,'add_coursecohortssettings'),(288,'Can change course cohorts settings',97,'change_coursecohortssettings'),(289,'Can delete course cohorts settings',97,'delete_coursecohortssettings'),(290,'Can add cohort membership',98,'add_cohortmembership'),(291,'Can change cohort membership',98,'change_cohortmembership'),(292,'Can delete cohort membership',98,'delete_cohortmembership'),(293,'Can add optout',99,'add_optout'),(294,'Can change optout',99,'change_optout'),(295,'Can delete optout',99,'delete_optout'),(296,'Can add target',100,'add_target'),(297,'Can change target',100,'change_target'),(298,'Can delete target',100,'delete_target'),(299,'Can add course mode target',101,'add_coursemodetarget'),(300,'Can change course mode target',101,'change_coursemodetarget'),(301,'Can delete course mode target',101,'delete_coursemodetarget'),(302,'Can add course email template',102,'add_courseemailtemplate'),(303,'Can change course email template',102,'change_courseemailtemplate'),(304,'Can delete course email template',102,'delete_courseemailtemplate'),(305,'Can add course authorization',103,'add_courseauthorization'),(306,'Can change course authorization',103,'change_courseauthorization'),(307,'Can delete course authorization',103,'delete_courseauthorization'),(308,'Can add bulk email flag',104,'add_bulkemailflag'),(309,'Can change bulk email flag',104,'change_bulkemailflag'),(310,'Can delete bulk email flag',104,'delete_bulkemailflag'),(311,'Can add course email',105,'add_courseemail'),(312,'Can change course email',105,'change_courseemail'),(313,'Can delete course email',105,'delete_courseemail'),(314,'Can add cohort target',106,'add_cohorttarget'),(315,'Can change cohort target',106,'change_cohorttarget'),(316,'Can delete cohort target',106,'delete_cohorttarget'),(317,'Can add branding api config',107,'add_brandingapiconfig'),(318,'Can change branding api config',107,'change_brandingapiconfig'),(319,'Can delete branding api config',107,'delete_brandingapiconfig'),(320,'Can add branding info config',108,'add_brandinginfoconfig'),(321,'Can change branding info config',108,'change_brandinginfoconfig'),(322,'Can delete branding info config',108,'delete_brandinginfoconfig'),(323,'Can add client',109,'add_client'),(324,'Can change client',109,'change_client'),(325,'Can delete client',109,'delete_client'),(326,'Can add grant',110,'add_grant'),(327,'Can change grant',110,'change_grant'),(328,'Can delete grant',110,'delete_grant'),(329,'Can add refresh token',111,'add_refreshtoken'),(330,'Can change refresh token',111,'change_refreshtoken'),(331,'Can delete refresh token',111,'delete_refreshtoken'),(332,'Can add access token',112,'add_accesstoken'),(333,'Can change access token',112,'change_accesstoken'),(334,'Can delete access token',112,'delete_accesstoken'),(335,'Can add trusted client',113,'add_trustedclient'),(336,'Can change trusted client',113,'change_trustedclient'),(337,'Can delete trusted client',113,'delete_trustedclient'),(338,'Can add grant',114,'add_grant'),(339,'Can change grant',114,'change_grant'),(340,'Can delete grant',114,'delete_grant'),(341,'Can add application',115,'add_application'),(342,'Can change application',115,'change_application'),(343,'Can delete application',115,'delete_application'),(344,'Can add refresh token',116,'add_refreshtoken'),(345,'Can change refresh token',116,'change_refreshtoken'),(346,'Can delete refresh token',116,'delete_refreshtoken'),(347,'Can add access token',117,'add_accesstoken'),(348,'Can change access token',117,'change_accesstoken'),(349,'Can delete access token',117,'delete_accesstoken'),(350,'Can add application access',118,'add_applicationaccess'),(351,'Can change application access',118,'change_applicationaccess'),(352,'Can delete application access',118,'delete_applicationaccess'),(353,'Can add application organization',119,'add_applicationorganization'),(354,'Can change application organization',119,'change_applicationorganization'),(355,'Can delete application organization',119,'delete_applicationorganization'),(356,'Can add restricted application',120,'add_restrictedapplication'),(357,'Can change restricted application',120,'change_restrictedapplication'),(358,'Can delete restricted application',120,'delete_restrictedapplication'),(359,'Can add Provider Configuration (OAuth)',121,'add_oauth2providerconfig'),(360,'Can change Provider Configuration (OAuth)',121,'change_oauth2providerconfig'),(361,'Can delete Provider Configuration (OAuth)',121,'delete_oauth2providerconfig'),(362,'Can add SAML Provider Data',122,'add_samlproviderdata'),(363,'Can change SAML Provider Data',122,'change_samlproviderdata'),(364,'Can delete SAML Provider Data',122,'delete_samlproviderdata'),(365,'Can add Provider Configuration (LTI)',123,'add_ltiproviderconfig'),(366,'Can change Provider Configuration (LTI)',123,'change_ltiproviderconfig'),(367,'Can delete Provider Configuration (LTI)',123,'delete_ltiproviderconfig'),(368,'Can add Provider Configuration (SAML IdP)',124,'add_samlproviderconfig'),(369,'Can change Provider Configuration (SAML IdP)',124,'change_samlproviderconfig'),(370,'Can delete Provider Configuration (SAML IdP)',124,'delete_samlproviderconfig'),(371,'Can add SAML Configuration',125,'add_samlconfiguration'),(372,'Can change SAML Configuration',125,'change_samlconfiguration'),(373,'Can delete SAML Configuration',125,'delete_samlconfiguration'),(374,'Can add Provider API Permission',126,'add_providerapipermissions'),(375,'Can change Provider API Permission',126,'change_providerapipermissions'),(376,'Can delete Provider API Permission',126,'delete_providerapipermissions'),(377,'Can add token',127,'add_token'),(378,'Can change token',127,'change_token'),(379,'Can delete token',127,'delete_token'),(380,'Can add nonce',128,'add_nonce'),(381,'Can change nonce',128,'change_nonce'),(382,'Can delete nonce',128,'delete_nonce'),(383,'Can add consumer',129,'add_consumer'),(384,'Can change consumer',129,'change_consumer'),(385,'Can delete consumer',129,'delete_consumer'),(386,'Can add scope',130,'add_scope'),(387,'Can change scope',130,'change_scope'),(388,'Can delete scope',130,'delete_scope'),(389,'Can add resource',130,'add_resource'),(390,'Can change resource',130,'change_resource'),(391,'Can delete resource',130,'delete_resource'),(392,'Can add system wide role',132,'add_systemwiderole'),(393,'Can change system wide role',132,'change_systemwiderole'),(394,'Can delete system wide role',132,'delete_systemwiderole'),(395,'Can add system wide role assignment',133,'add_systemwideroleassignment'),(396,'Can change system wide role assignment',133,'change_systemwideroleassignment'),(397,'Can delete system wide role assignment',133,'delete_systemwideroleassignment'),(398,'Can add article',134,'add_article'),(399,'Can change article',134,'change_article'),(400,'Can delete article',134,'delete_article'),(401,'Can edit all articles and lock/unlock/restore',134,'moderate'),(402,'Can change ownership of any article',134,'assign'),(403,'Can assign permissions to other users',134,'grant'),(404,'Can add URL path',135,'add_urlpath'),(405,'Can change URL path',135,'change_urlpath'),(406,'Can delete URL path',135,'delete_urlpath'),(407,'Can add revision plugin revision',136,'add_revisionpluginrevision'),(408,'Can change revision plugin revision',136,'change_revisionpluginrevision'),(409,'Can delete revision plugin revision',136,'delete_revisionpluginrevision'),(410,'Can add article revision',137,'add_articlerevision'),(411,'Can change article revision',137,'change_articlerevision'),(412,'Can delete article revision',137,'delete_articlerevision'),(413,'Can add article plugin',138,'add_articleplugin'),(414,'Can change article plugin',138,'change_articleplugin'),(415,'Can delete article plugin',138,'delete_articleplugin'),(416,'Can add Article for object',139,'add_articleforobject'),(417,'Can change Article for object',139,'change_articleforobject'),(418,'Can delete Article for object',139,'delete_articleforobject'),(419,'Can add simple plugin',140,'add_simpleplugin'),(420,'Can change simple plugin',140,'change_simpleplugin'),(421,'Can delete simple plugin',140,'delete_simpleplugin'),(422,'Can add revision plugin',141,'add_revisionplugin'),(423,'Can change revision plugin',141,'change_revisionplugin'),(424,'Can delete revision plugin',141,'delete_revisionplugin'),(425,'Can add reusable plugin',142,'add_reusableplugin'),(426,'Can change reusable plugin',142,'change_reusableplugin'),(427,'Can delete reusable plugin',142,'delete_reusableplugin'),(428,'Can add notification',143,'add_notification'),(429,'Can change notification',143,'change_notification'),(430,'Can delete notification',143,'delete_notification'),(431,'Can add subscription',144,'add_subscription'),(432,'Can change subscription',144,'change_subscription'),(433,'Can delete subscription',144,'delete_subscription'),(434,'Can add settings',145,'add_settings'),(435,'Can change settings',145,'change_settings'),(436,'Can delete settings',145,'delete_settings'),(437,'Can add type',146,'add_notificationtype'),(438,'Can change type',146,'change_notificationtype'),(439,'Can delete type',146,'delete_notificationtype'),(440,'Can add log entry',147,'add_logentry'),(441,'Can change log entry',147,'change_logentry'),(442,'Can delete log entry',147,'delete_logentry'),(443,'Can add discussions id mapping',148,'add_discussionsidmapping'),(444,'Can change discussions id mapping',148,'change_discussionsidmapping'),(445,'Can delete discussions id mapping',148,'delete_discussionsidmapping'),(446,'Can add course discussion settings',149,'add_coursediscussionsettings'),(447,'Can change course discussion settings',149,'change_coursediscussionsettings'),(448,'Can delete course discussion settings',149,'delete_coursediscussionsettings'),(449,'Can add forums config',150,'add_forumsconfig'),(450,'Can change forums config',150,'change_forumsconfig'),(451,'Can delete forums config',150,'delete_forumsconfig'),(452,'Can add permission',151,'add_permission'),(453,'Can change permission',151,'change_permission'),(454,'Can delete permission',151,'delete_permission'),(455,'Can add role',152,'add_role'),(456,'Can change role',152,'change_role'),(457,'Can delete role',152,'delete_role'),(458,'Can add note',153,'add_note'),(459,'Can change note',153,'change_note'),(460,'Can delete note',153,'delete_note'),(461,'Can add splash config',154,'add_splashconfig'),(462,'Can change splash config',154,'change_splashconfig'),(463,'Can delete splash config',154,'delete_splashconfig'),(464,'Can add user course tag',155,'add_usercoursetag'),(465,'Can change user course tag',155,'change_usercoursetag'),(466,'Can delete user course tag',155,'delete_usercoursetag'),(467,'Can add user preference',156,'add_userpreference'),(468,'Can change user preference',156,'change_userpreference'),(469,'Can delete user preference',156,'delete_userpreference'),(470,'Can add User Retirement Reporting Status',157,'add_userretirementpartnerreportingstatus'),(471,'Can change User Retirement Reporting Status',157,'change_userretirementpartnerreportingstatus'),(472,'Can delete User Retirement Reporting Status',157,'delete_userretirementpartnerreportingstatus'),(473,'Can add User Retirement Status',158,'add_userretirementstatus'),(474,'Can change User Retirement Status',158,'change_userretirementstatus'),(475,'Can delete User Retirement Status',158,'delete_userretirementstatus'),(476,'Can add retirement state',159,'add_retirementstate'),(477,'Can change retirement state',159,'change_retirementstate'),(478,'Can delete retirement state',159,'delete_retirementstate'),(479,'Can add user org tag',160,'add_userorgtag'),(480,'Can change user org tag',160,'change_userorgtag'),(481,'Can delete user org tag',160,'delete_userorgtag'),(482,'Can add User Retirement Request',161,'add_userretirementrequest'),(483,'Can change User Retirement Request',161,'change_userretirementrequest'),(484,'Can delete User Retirement Request',161,'delete_userretirementrequest'),(485,'Can add order item',162,'add_orderitem'),(486,'Can change order item',162,'change_orderitem'),(487,'Can delete order item',162,'delete_orderitem'),(488,'Can add donation',163,'add_donation'),(489,'Can change donation',163,'change_donation'),(490,'Can delete donation',163,'delete_donation'),(491,'Can add invoice',164,'add_invoice'),(492,'Can change invoice',164,'change_invoice'),(493,'Can delete invoice',164,'delete_invoice'),(494,'Can add donation configuration',165,'add_donationconfiguration'),(495,'Can change donation configuration',165,'change_donationconfiguration'),(496,'Can delete donation configuration',165,'delete_donationconfiguration'),(497,'Can add invoice transaction',166,'add_invoicetransaction'),(498,'Can change invoice transaction',166,'change_invoicetransaction'),(499,'Can delete invoice transaction',166,'delete_invoicetransaction'),(500,'Can add invoice history',167,'add_invoicehistory'),(501,'Can change invoice history',167,'change_invoicehistory'),(502,'Can delete invoice history',167,'delete_invoicehistory'),(503,'Can add coupon redemption',168,'add_couponredemption'),(504,'Can change coupon redemption',168,'change_couponredemption'),(505,'Can delete coupon redemption',168,'delete_couponredemption'),(506,'Can add course reg code item annotation',169,'add_courseregcodeitemannotation'),(507,'Can change course reg code item annotation',169,'change_courseregcodeitemannotation'),(508,'Can delete course reg code item annotation',169,'delete_courseregcodeitemannotation'),(509,'Can add order',170,'add_order'),(510,'Can change order',170,'change_order'),(511,'Can delete order',170,'delete_order'),(512,'Can add certificate item',171,'add_certificateitem'),(513,'Can change certificate item',171,'change_certificateitem'),(514,'Can delete certificate item',171,'delete_certificateitem'),(515,'Can add registration code redemption',172,'add_registrationcoderedemption'),(516,'Can change registration code redemption',172,'change_registrationcoderedemption'),(517,'Can delete registration code redemption',172,'delete_registrationcoderedemption'),(518,'Can add course reg code item',173,'add_courseregcodeitem'),(519,'Can change course reg code item',173,'change_courseregcodeitem'),(520,'Can delete course reg code item',173,'delete_courseregcodeitem'),(521,'Can add paid course registration',174,'add_paidcourseregistration'),(522,'Can change paid course registration',174,'change_paidcourseregistration'),(523,'Can delete paid course registration',174,'delete_paidcourseregistration'),(524,'Can add paid course registration annotation',175,'add_paidcourseregistrationannotation'),(525,'Can change paid course registration annotation',175,'change_paidcourseregistrationannotation'),(526,'Can delete paid course registration annotation',175,'delete_paidcourseregistrationannotation'),(527,'Can add invoice item',176,'add_invoiceitem'),(528,'Can change invoice item',176,'change_invoiceitem'),(529,'Can delete invoice item',176,'delete_invoiceitem'),(530,'Can add course registration code',177,'add_courseregistrationcode'),(531,'Can change course registration code',177,'change_courseregistrationcode'),(532,'Can delete course registration code',177,'delete_courseregistrationcode'),(533,'Can add coupon',178,'add_coupon'),(534,'Can change coupon',178,'change_coupon'),(535,'Can delete coupon',178,'delete_coupon'),(536,'Can add course registration code invoice item',179,'add_courseregistrationcodeinvoiceitem'),(537,'Can change course registration code invoice item',179,'change_courseregistrationcodeinvoiceitem'),(538,'Can delete course registration code invoice item',179,'delete_courseregistrationcodeinvoiceitem'),(539,'Can add course modes archive',180,'add_coursemodesarchive'),(540,'Can change course modes archive',180,'change_coursemodesarchive'),(541,'Can delete course modes archive',180,'delete_coursemodesarchive'),(542,'Can add historical course mode',181,'add_historicalcoursemode'),(543,'Can change historical course mode',181,'change_historicalcoursemode'),(544,'Can delete historical course mode',181,'delete_historicalcoursemode'),(545,'Can add course mode',182,'add_coursemode'),(546,'Can change course mode',182,'change_coursemode'),(547,'Can delete course mode',182,'delete_coursemode'),(548,'Can add course mode expiration config',183,'add_coursemodeexpirationconfig'),(549,'Can change course mode expiration config',183,'change_coursemodeexpirationconfig'),(550,'Can delete course mode expiration config',183,'delete_coursemodeexpirationconfig'),(551,'Can add course entitlement support detail',184,'add_courseentitlementsupportdetail'),(552,'Can change course entitlement support detail',184,'change_courseentitlementsupportdetail'),(553,'Can delete course entitlement support detail',184,'delete_courseentitlementsupportdetail'),(554,'Can add historical course entitlement',185,'add_historicalcourseentitlement'),(555,'Can change historical course entitlement',185,'change_historicalcourseentitlement'),(556,'Can delete historical course entitlement',185,'delete_historicalcourseentitlement'),(557,'Can add course entitlement policy',186,'add_courseentitlementpolicy'),(558,'Can change course entitlement policy',186,'change_courseentitlementpolicy'),(559,'Can delete course entitlement policy',186,'delete_courseentitlementpolicy'),(560,'Can add course entitlement',187,'add_courseentitlement'),(561,'Can change course entitlement',187,'change_courseentitlement'),(562,'Can delete course entitlement',187,'delete_courseentitlement'),(563,'Can add sso verification',188,'add_ssoverification'),(564,'Can change sso verification',188,'change_ssoverification'),(565,'Can delete sso verification',188,'delete_ssoverification'),(566,'Can add verification deadline',189,'add_verificationdeadline'),(567,'Can change verification deadline',189,'change_verificationdeadline'),(568,'Can delete verification deadline',189,'delete_verificationdeadline'),(569,'Can add manual verification',190,'add_manualverification'),(570,'Can change manual verification',190,'change_manualverification'),(571,'Can delete manual verification',190,'delete_manualverification'),(572,'Can add software secure photo verification',191,'add_softwaresecurephotoverification'),(573,'Can change software secure photo verification',191,'change_softwaresecurephotoverification'),(574,'Can delete software secure photo verification',191,'delete_softwaresecurephotoverification'),(575,'Can add dark lang config',192,'add_darklangconfig'),(576,'Can change dark lang config',192,'change_darklangconfig'),(577,'Can delete dark lang config',192,'delete_darklangconfig'),(578,'Can add whitelisted rss url',193,'add_whitelistedrssurl'),(579,'Can change whitelisted rss url',193,'change_whitelistedrssurl'),(580,'Can delete whitelisted rss url',193,'delete_whitelistedrssurl'),(581,'Can add embargoed state',194,'add_embargoedstate'),(582,'Can change embargoed state',194,'change_embargoedstate'),(583,'Can delete embargoed state',194,'delete_embargoedstate'),(584,'Can add country access rule',195,'add_countryaccessrule'),(585,'Can change country access rule',195,'change_countryaccessrule'),(586,'Can delete country access rule',195,'delete_countryaccessrule'),(587,'Can add course access rule history',196,'add_courseaccessrulehistory'),(588,'Can change course access rule history',196,'change_courseaccessrulehistory'),(589,'Can delete course access rule history',196,'delete_courseaccessrulehistory'),(590,'Can add country',197,'add_country'),(591,'Can change country',197,'change_country'),(592,'Can delete country',197,'delete_country'),(593,'Can add embargoed course',198,'add_embargoedcourse'),(594,'Can change embargoed course',198,'change_embargoedcourse'),(595,'Can delete embargoed course',198,'delete_embargoedcourse'),(596,'Can add restricted course',199,'add_restrictedcourse'),(597,'Can change restricted course',199,'change_restrictedcourse'),(598,'Can delete restricted course',199,'delete_restrictedcourse'),(599,'Can add ip filter',200,'add_ipfilter'),(600,'Can change ip filter',200,'change_ipfilter'),(601,'Can delete ip filter',200,'delete_ipfilter'),(602,'Can add course rerun state',201,'add_coursererunstate'),(603,'Can change course rerun state',201,'change_coursererunstate'),(604,'Can delete course rerun state',201,'delete_coursererunstate'),(605,'Can add mobile api config',202,'add_mobileapiconfig'),(606,'Can change mobile api config',202,'change_mobileapiconfig'),(607,'Can delete mobile api config',202,'delete_mobileapiconfig'),(608,'Can add ignore mobile available flag config',203,'add_ignoremobileavailableflagconfig'),(609,'Can change ignore mobile available flag config',203,'change_ignoremobileavailableflagconfig'),(610,'Can delete ignore mobile available flag config',203,'delete_ignoremobileavailableflagconfig'),(611,'Can add app version config',204,'add_appversionconfig'),(612,'Can change app version config',204,'change_appversionconfig'),(613,'Can delete app version config',204,'delete_appversionconfig'),(614,'Can add association',205,'add_association'),(615,'Can change association',205,'change_association'),(616,'Can delete association',205,'delete_association'),(617,'Can add user social auth',206,'add_usersocialauth'),(618,'Can change user social auth',206,'change_usersocialauth'),(619,'Can delete user social auth',206,'delete_usersocialauth'),(620,'Can add partial',207,'add_partial'),(621,'Can change partial',207,'change_partial'),(622,'Can delete partial',207,'delete_partial'),(623,'Can add nonce',208,'add_nonce'),(624,'Can change nonce',208,'change_nonce'),(625,'Can delete nonce',208,'delete_nonce'),(626,'Can add code',209,'add_code'),(627,'Can change code',209,'change_code'),(628,'Can delete code',209,'delete_code'),(629,'Can add survey form',210,'add_surveyform'),(630,'Can change survey form',210,'change_surveyform'),(631,'Can delete survey form',210,'delete_surveyform'),(632,'Can add survey answer',211,'add_surveyanswer'),(633,'Can change survey answer',211,'change_surveyanswer'),(634,'Can delete survey answer',211,'delete_surveyanswer'),(635,'Can add x block asides config',212,'add_xblockasidesconfig'),(636,'Can change x block asides config',212,'change_xblockasidesconfig'),(637,'Can delete x block asides config',212,'delete_xblockasidesconfig'),(638,'Can add answer',213,'add_answer'),(639,'Can change answer',213,'change_answer'),(640,'Can delete answer',213,'delete_answer'),(641,'Can add share',214,'add_share'),(642,'Can change share',214,'change_share'),(643,'Can delete share',214,'delete_share'),(644,'Can add submission',215,'add_submission'),(645,'Can change submission',215,'change_submission'),(646,'Can delete submission',215,'delete_submission'),(647,'Can add student item',216,'add_studentitem'),(648,'Can change student item',216,'change_studentitem'),(649,'Can delete student item',216,'delete_studentitem'),(650,'Can add score summary',217,'add_scoresummary'),(651,'Can change score summary',217,'change_scoresummary'),(652,'Can delete score summary',217,'delete_scoresummary'),(653,'Can add score annotation',218,'add_scoreannotation'),(654,'Can change score annotation',218,'change_scoreannotation'),(655,'Can delete score annotation',218,'delete_scoreannotation'),(656,'Can add score',219,'add_score'),(657,'Can change score',219,'change_score'),(658,'Can delete score',219,'delete_score'),(659,'Can add rubric',220,'add_rubric'),(660,'Can change rubric',220,'change_rubric'),(661,'Can delete rubric',220,'delete_rubric'),(662,'Can add assessment feedback option',221,'add_assessmentfeedbackoption'),(663,'Can change assessment feedback option',221,'change_assessmentfeedbackoption'),(664,'Can delete assessment feedback option',221,'delete_assessmentfeedbackoption'),(665,'Can add training example',222,'add_trainingexample'),(666,'Can change training example',222,'change_trainingexample'),(667,'Can delete training example',222,'delete_trainingexample'),(668,'Can add criterion',223,'add_criterion'),(669,'Can change criterion',223,'change_criterion'),(670,'Can delete criterion',223,'delete_criterion'),(671,'Can add student training workflow item',224,'add_studenttrainingworkflowitem'),(672,'Can change student training workflow item',224,'change_studenttrainingworkflowitem'),(673,'Can delete student training workflow item',224,'delete_studenttrainingworkflowitem'),(674,'Can add assessment feedback',225,'add_assessmentfeedback'),(675,'Can change assessment feedback',225,'change_assessmentfeedback'),(676,'Can delete assessment feedback',225,'delete_assessmentfeedback'),(677,'Can add staff workflow',226,'add_staffworkflow'),(678,'Can change staff workflow',226,'change_staffworkflow'),(679,'Can delete staff workflow',226,'delete_staffworkflow'),(680,'Can add assessment',227,'add_assessment'),(681,'Can change assessment',227,'change_assessment'),(682,'Can delete assessment',227,'delete_assessment'),(683,'Can add peer workflow',228,'add_peerworkflow'),(684,'Can change peer workflow',228,'change_peerworkflow'),(685,'Can delete peer workflow',228,'delete_peerworkflow'),(686,'Can add assessment part',229,'add_assessmentpart'),(687,'Can change assessment part',229,'change_assessmentpart'),(688,'Can delete assessment part',229,'delete_assessmentpart'),(689,'Can add criterion option',230,'add_criterionoption'),(690,'Can change criterion option',230,'change_criterionoption'),(691,'Can delete criterion option',230,'delete_criterionoption'),(692,'Can add student training workflow',231,'add_studenttrainingworkflow'),(693,'Can change student training workflow',231,'change_studenttrainingworkflow'),(694,'Can delete student training workflow',231,'delete_studenttrainingworkflow'),(695,'Can add peer workflow item',232,'add_peerworkflowitem'),(696,'Can change peer workflow item',232,'change_peerworkflowitem'),(697,'Can delete peer workflow item',232,'delete_peerworkflowitem'),(698,'Can add assessment workflow',233,'add_assessmentworkflow'),(699,'Can change assessment workflow',233,'change_assessmentworkflow'),(700,'Can delete assessment workflow',233,'delete_assessmentworkflow'),(701,'Can add assessment workflow step',234,'add_assessmentworkflowstep'),(702,'Can change assessment workflow step',234,'change_assessmentworkflowstep'),(703,'Can delete assessment workflow step',234,'delete_assessmentworkflowstep'),(704,'Can add assessment workflow cancellation',235,'add_assessmentworkflowcancellation'),(705,'Can change assessment workflow cancellation',235,'change_assessmentworkflowcancellation'),(706,'Can delete assessment workflow cancellation',235,'delete_assessmentworkflowcancellation'),(707,'Can add video transcript',236,'add_videotranscript'),(708,'Can change video transcript',236,'change_videotranscript'),(709,'Can delete video transcript',236,'delete_videotranscript'),(710,'Can add video image',237,'add_videoimage'),(711,'Can change video image',237,'change_videoimage'),(712,'Can delete video image',237,'delete_videoimage'),(713,'Can add video',238,'add_video'),(714,'Can change video',238,'change_video'),(715,'Can delete video',238,'delete_video'),(716,'Can add encoded video',239,'add_encodedvideo'),(717,'Can change encoded video',239,'change_encodedvideo'),(718,'Can delete encoded video',239,'delete_encodedvideo'),(719,'Can add transcript preference',240,'add_transcriptpreference'),(720,'Can change transcript preference',240,'change_transcriptpreference'),(721,'Can delete transcript preference',240,'delete_transcriptpreference'),(722,'Can add course video',241,'add_coursevideo'),(723,'Can change course video',241,'change_coursevideo'),(724,'Can delete course video',241,'delete_coursevideo'),(725,'Can add profile',242,'add_profile'),(726,'Can change profile',242,'change_profile'),(727,'Can delete profile',242,'delete_profile'),(728,'Can add third party transcript credentials state',243,'add_thirdpartytranscriptcredentialsstate'),(729,'Can change third party transcript credentials state',243,'change_thirdpartytranscriptcredentialsstate'),(730,'Can delete third party transcript credentials state',243,'delete_thirdpartytranscriptcredentialsstate'),(731,'Can add course overview tab',244,'add_courseoverviewtab'),(732,'Can change course overview tab',244,'change_courseoverviewtab'),(733,'Can delete course overview tab',244,'delete_courseoverviewtab'),(734,'Can add course overview',245,'add_courseoverview'),(735,'Can change course overview',245,'change_courseoverview'),(736,'Can delete course overview',245,'delete_courseoverview'),(737,'Can add course overview image config',246,'add_courseoverviewimageconfig'),(738,'Can change course overview image config',246,'change_courseoverviewimageconfig'),(739,'Can delete course overview image config',246,'delete_courseoverviewimageconfig'),(740,'Can add simulate_publish argument',247,'add_simulatecoursepublishconfig'),(741,'Can change simulate_publish argument',247,'change_simulatecoursepublishconfig'),(742,'Can delete simulate_publish argument',247,'delete_simulatecoursepublishconfig'),(743,'Can add historical course overview',248,'add_historicalcourseoverview'),(744,'Can change historical course overview',248,'change_historicalcourseoverview'),(745,'Can delete historical course overview',248,'delete_historicalcourseoverview'),(746,'Can add course overview image set',249,'add_courseoverviewimageset'),(747,'Can change course overview image set',249,'change_courseoverviewimageset'),(748,'Can delete course overview image set',249,'delete_courseoverviewimageset'),(749,'Can add block structure model',250,'add_blockstructuremodel'),(750,'Can change block structure model',250,'change_blockstructuremodel'),(751,'Can delete block structure model',250,'delete_blockstructuremodel'),(752,'Can add block structure configuration',251,'add_blockstructureconfiguration'),(753,'Can change block structure configuration',251,'change_blockstructureconfiguration'),(754,'Can delete block structure configuration',251,'delete_blockstructureconfiguration'),(755,'Can add x domain proxy configuration',252,'add_xdomainproxyconfiguration'),(756,'Can change x domain proxy configuration',252,'change_xdomainproxyconfiguration'),(757,'Can delete x domain proxy configuration',252,'delete_xdomainproxyconfiguration'),(758,'Can add commerce configuration',253,'add_commerceconfiguration'),(759,'Can change commerce configuration',253,'change_commerceconfiguration'),(760,'Can delete commerce configuration',253,'delete_commerceconfiguration'),(761,'Can add credit config',254,'add_creditconfig'),(762,'Can change credit config',254,'change_creditconfig'),(763,'Can delete credit config',254,'delete_creditconfig'),(764,'Can add credit request',255,'add_creditrequest'),(765,'Can change credit request',255,'change_creditrequest'),(766,'Can delete credit request',255,'delete_creditrequest'),(767,'Can add credit requirement',256,'add_creditrequirement'),(768,'Can change credit requirement',256,'change_creditrequirement'),(769,'Can delete credit requirement',256,'delete_creditrequirement'),(770,'Can add credit requirement status',257,'add_creditrequirementstatus'),(771,'Can change credit requirement status',257,'change_creditrequirementstatus'),(772,'Can delete credit requirement status',257,'delete_creditrequirementstatus'),(773,'Can add credit course',258,'add_creditcourse'),(774,'Can change credit course',258,'change_creditcourse'),(775,'Can delete credit course',258,'delete_creditcourse'),(776,'Can add credit eligibility',259,'add_crediteligibility'),(777,'Can change credit eligibility',259,'change_crediteligibility'),(778,'Can delete credit eligibility',259,'delete_crediteligibility'),(779,'Can add credit provider',260,'add_creditprovider'),(780,'Can change credit provider',260,'change_creditprovider'),(781,'Can delete credit provider',260,'delete_creditprovider'),(782,'Can add course team',261,'add_courseteam'),(783,'Can change course team',261,'change_courseteam'),(784,'Can delete course team',261,'delete_courseteam'),(785,'Can add course team membership',262,'add_courseteammembership'),(786,'Can change course team membership',262,'change_courseteammembership'),(787,'Can delete course team membership',262,'delete_courseteammembership'),(788,'Can add x block studio configuration flag',263,'add_xblockstudioconfigurationflag'),(789,'Can change x block studio configuration flag',263,'change_xblockstudioconfigurationflag'),(790,'Can delete x block studio configuration flag',263,'delete_xblockstudioconfigurationflag'),(791,'Can add x block studio configuration',264,'add_xblockstudioconfiguration'),(792,'Can change x block studio configuration',264,'change_xblockstudioconfiguration'),(793,'Can delete x block studio configuration',264,'delete_xblockstudioconfiguration'),(794,'Can add x block configuration',265,'add_xblockconfiguration'),(795,'Can change x block configuration',265,'change_xblockconfiguration'),(796,'Can delete x block configuration',265,'delete_xblockconfiguration'),(797,'Can add programs api config',266,'add_programsapiconfig'),(798,'Can change programs api config',266,'change_programsapiconfig'),(799,'Can delete programs api config',266,'delete_programsapiconfig'),(800,'Can add catalog integration',267,'add_catalogintegration'),(801,'Can change catalog integration',267,'change_catalogintegration'),(802,'Can delete catalog integration',267,'delete_catalogintegration'),(803,'Can add self paced configuration',268,'add_selfpacedconfiguration'),(804,'Can change self paced configuration',268,'change_selfpacedconfiguration'),(805,'Can delete self paced configuration',268,'delete_selfpacedconfiguration'),(806,'Can add kv store',269,'add_kvstore'),(807,'Can change kv store',269,'change_kvstore'),(808,'Can delete kv store',269,'delete_kvstore'),(809,'Can add user milestone',270,'add_usermilestone'),(810,'Can change user milestone',270,'change_usermilestone'),(811,'Can delete user milestone',270,'delete_usermilestone'),(812,'Can add course content milestone',271,'add_coursecontentmilestone'),(813,'Can change course content milestone',271,'change_coursecontentmilestone'),(814,'Can delete course content milestone',271,'delete_coursecontentmilestone'),(815,'Can add milestone relationship type',272,'add_milestonerelationshiptype'),(816,'Can change milestone relationship type',272,'change_milestonerelationshiptype'),(817,'Can delete milestone relationship type',272,'delete_milestonerelationshiptype'),(818,'Can add milestone',273,'add_milestone'),(819,'Can change milestone',273,'change_milestone'),(820,'Can delete milestone',273,'delete_milestone'),(821,'Can add course milestone',274,'add_coursemilestone'),(822,'Can change course milestone',274,'change_coursemilestone'),(823,'Can delete course milestone',274,'delete_coursemilestone'),(824,'Can add api access request',1,'add_apiaccessrequest'),(825,'Can change api access request',1,'change_apiaccessrequest'),(826,'Can delete api access request',1,'delete_apiaccessrequest'),(827,'Can add catalog',275,'add_catalog'),(828,'Can change catalog',275,'change_catalog'),(829,'Can delete catalog',275,'delete_catalog'),(830,'Can add api access config',276,'add_apiaccessconfig'),(831,'Can change api access config',276,'change_apiaccessconfig'),(832,'Can delete api access config',276,'delete_apiaccessconfig'),(833,'Can add verified track cohorted course',277,'add_verifiedtrackcohortedcourse'),(834,'Can change verified track cohorted course',277,'change_verifiedtrackcohortedcourse'),(835,'Can delete verified track cohorted course',277,'delete_verifiedtrackcohortedcourse'),(836,'Can add migrate verified track cohorts setting',278,'add_migrateverifiedtrackcohortssetting'),(837,'Can change migrate verified track cohorts setting',278,'change_migrateverifiedtrackcohortssetting'),(838,'Can delete migrate verified track cohorts setting',278,'delete_migrateverifiedtrackcohortssetting'),(839,'Can add badge class',279,'add_badgeclass'),(840,'Can change badge class',279,'change_badgeclass'),(841,'Can delete badge class',279,'delete_badgeclass'),(842,'Can add badge assertion',280,'add_badgeassertion'),(843,'Can change badge assertion',280,'change_badgeassertion'),(844,'Can delete badge assertion',280,'delete_badgeassertion'),(845,'Can add course event badges configuration',281,'add_courseeventbadgesconfiguration'),(846,'Can change course event badges configuration',281,'change_courseeventbadgesconfiguration'),(847,'Can delete course event badges configuration',281,'delete_courseeventbadgesconfiguration'),(848,'Can add course complete image configuration',282,'add_coursecompleteimageconfiguration'),(849,'Can change course complete image configuration',282,'change_coursecompleteimageconfiguration'),(850,'Can delete course complete image configuration',282,'delete_coursecompleteimageconfiguration'),(851,'Can add email marketing configuration',283,'add_emailmarketingconfiguration'),(852,'Can change email marketing configuration',283,'change_emailmarketingconfiguration'),(853,'Can delete email marketing configuration',283,'delete_emailmarketingconfiguration'),(854,'Can add failed task',284,'add_failedtask'),(855,'Can change failed task',284,'change_failedtask'),(856,'Can delete failed task',284,'delete_failedtask'),(857,'Can add chord data',285,'add_chorddata'),(858,'Can change chord data',285,'change_chorddata'),(859,'Can delete chord data',285,'delete_chorddata'),(860,'Can add crawlers config',286,'add_crawlersconfig'),(861,'Can change crawlers config',286,'change_crawlersconfig'),(862,'Can delete crawlers config',286,'delete_crawlersconfig'),(863,'Can add Waffle flag course override',287,'add_waffleflagcourseoverridemodel'),(864,'Can change Waffle flag course override',287,'change_waffleflagcourseoverridemodel'),(865,'Can delete Waffle flag course override',287,'delete_waffleflagcourseoverridemodel'),(866,'Can add course goal',288,'add_coursegoal'),(867,'Can change course goal',288,'change_coursegoal'),(868,'Can delete course goal',288,'delete_coursegoal'),(869,'Can add course duration limit config',289,'add_coursedurationlimitconfig'),(870,'Can change course duration limit config',289,'change_coursedurationlimitconfig'),(871,'Can delete course duration limit config',289,'delete_coursedurationlimitconfig'),(872,'Can add content type gating config',290,'add_contenttypegatingconfig'),(873,'Can change content type gating config',290,'change_contenttypegatingconfig'),(874,'Can delete content type gating config',290,'delete_contenttypegatingconfig'),(875,'Can add discount restriction config',291,'add_discountrestrictionconfig'),(876,'Can change discount restriction config',291,'change_discountrestrictionconfig'),(877,'Can delete discount restriction config',291,'delete_discountrestrictionconfig'),(878,'Can add Experiment Data',292,'add_experimentdata'),(879,'Can change Experiment Data',292,'change_experimentdata'),(880,'Can delete Experiment Data',292,'delete_experimentdata'),(881,'Can add Experiment Key-Value Pair',293,'add_experimentkeyvalue'),(882,'Can change Experiment Key-Value Pair',293,'change_experimentkeyvalue'),(883,'Can delete Experiment Key-Value Pair',293,'delete_experimentkeyvalue'),(884,'Can add historical organization',294,'add_historicalorganization'),(885,'Can change historical organization',294,'change_historicalorganization'),(886,'Can delete historical organization',294,'delete_historicalorganization'),(887,'Can add organization',295,'add_organization'),(888,'Can change organization',295,'change_organization'),(889,'Can delete organization',295,'delete_organization'),(890,'Can add Link Course',296,'add_organizationcourse'),(891,'Can change Link Course',296,'change_organizationcourse'),(892,'Can delete Link Course',296,'delete_organizationcourse'),(893,'Can add Enterprise Customer Learner',297,'add_enterprisecustomeruser'),(894,'Can change Enterprise Customer Learner',297,'change_enterprisecustomeruser'),(895,'Can delete Enterprise Customer Learner',297,'delete_enterprisecustomeruser'),(896,'Can add pending enrollment',298,'add_pendingenrollment'),(897,'Can change pending enrollment',298,'change_pendingenrollment'),(898,'Can delete pending enrollment',298,'delete_pendingenrollment'),(899,'Can add historical Enterprise Customer',299,'add_historicalenterprisecustomer'),(900,'Can change historical Enterprise Customer',299,'change_historicalenterprisecustomer'),(901,'Can delete historical Enterprise Customer',299,'delete_historicalenterprisecustomer'),(902,'Can add Enterprise Catalog Query',300,'add_enterprisecatalogquery'),(903,'Can change Enterprise Catalog Query',300,'change_enterprisecatalogquery'),(904,'Can delete Enterprise Catalog Query',300,'delete_enterprisecatalogquery'),(905,'Can add enterprise customer reporting configuration',301,'add_enterprisecustomerreportingconfiguration'),(906,'Can change enterprise customer reporting configuration',301,'change_enterprisecustomerreportingconfiguration'),(907,'Can delete enterprise customer reporting configuration',301,'delete_enterprisecustomerreportingconfiguration'),(908,'Can add Enterprise Customer Catalog',302,'add_enterprisecustomercatalog'),(909,'Can change Enterprise Customer Catalog',302,'change_enterprisecustomercatalog'),(910,'Can delete Enterprise Customer Catalog',302,'delete_enterprisecustomercatalog'),(911,'Can add enterprise course enrollment',303,'add_enterprisecourseenrollment'),(912,'Can change enterprise course enrollment',303,'change_enterprisecourseenrollment'),(913,'Can delete enterprise course enrollment',303,'delete_enterprisecourseenrollment'),(914,'Can add historical Enterprise Customer Catalog',304,'add_historicalenterprisecustomercatalog'),(915,'Can change historical Enterprise Customer Catalog',304,'change_historicalenterprisecustomercatalog'),(916,'Can delete historical Enterprise Customer Catalog',304,'delete_historicalenterprisecustomercatalog'),(917,'Can add Enterprise Customer',305,'add_enterprisecustomer'),(918,'Can change Enterprise Customer',305,'change_enterprisecustomer'),(919,'Can delete Enterprise Customer',305,'delete_enterprisecustomer'),(920,'Can add historical pending enrollment',306,'add_historicalpendingenrollment'),(921,'Can change historical pending enrollment',306,'change_historicalpendingenrollment'),(922,'Can delete historical pending enrollment',306,'delete_historicalpendingenrollment'),(923,'Can add enrollment notification email template',307,'add_enrollmentnotificationemailtemplate'),(924,'Can change enrollment notification email template',307,'change_enrollmentnotificationemailtemplate'),(925,'Can delete enrollment notification email template',307,'delete_enrollmentnotificationemailtemplate'),(926,'Can add Enterprise Customer Entitlement',308,'add_enterprisecustomerentitlement'),(927,'Can change Enterprise Customer Entitlement',308,'change_enterprisecustomerentitlement'),(928,'Can delete Enterprise Customer Entitlement',308,'delete_enterprisecustomerentitlement'),(929,'Can add historical enterprise course enrollment',309,'add_historicalenterprisecourseenrollment'),(930,'Can change historical enterprise course enrollment',309,'change_historicalenterprisecourseenrollment'),(931,'Can delete historical enterprise course enrollment',309,'delete_historicalenterprisecourseenrollment'),(932,'Can add historical Enterprise Customer Entitlement',310,'add_historicalenterprisecustomerentitlement'),(933,'Can change historical Enterprise Customer Entitlement',310,'change_historicalenterprisecustomerentitlement'),(934,'Can delete historical Enterprise Customer Entitlement',310,'delete_historicalenterprisecustomerentitlement'),(935,'Can add enterprise feature user role assignment',311,'add_enterprisefeatureuserroleassignment'),(936,'Can change enterprise feature user role assignment',311,'change_enterprisefeatureuserroleassignment'),(937,'Can delete enterprise feature user role assignment',311,'delete_enterprisefeatureuserroleassignment'),(938,'Can add enterprise feature role',312,'add_enterprisefeaturerole'),(939,'Can change enterprise feature role',312,'change_enterprisefeaturerole'),(940,'Can delete enterprise feature role',312,'delete_enterprisefeaturerole'),(941,'Can add system wide enterprise role',313,'add_systemwideenterpriserole'),(942,'Can change system wide enterprise role',313,'change_systemwideenterpriserole'),(943,'Can delete system wide enterprise role',313,'delete_systemwideenterpriserole'),(944,'Can add pending enterprise customer user',314,'add_pendingenterprisecustomeruser'),(945,'Can change pending enterprise customer user',314,'change_pendingenterprisecustomeruser'),(946,'Can delete pending enterprise customer user',314,'delete_pendingenterprisecustomeruser'),(947,'Can add Enterprise Customer Type',315,'add_enterprisecustomertype'),(948,'Can change Enterprise Customer Type',315,'change_enterprisecustomertype'),(949,'Can delete Enterprise Customer Type',315,'delete_enterprisecustomertype'),(950,'Can add system wide enterprise user role assignment',316,'add_systemwideenterpriseuserroleassignment'),(951,'Can change system wide enterprise user role assignment',316,'change_systemwideenterpriseuserroleassignment'),(952,'Can delete system wide enterprise user role assignment',316,'delete_systemwideenterpriseuserroleassignment'),(953,'Can add Branding Configuration',317,'add_enterprisecustomerbrandingconfiguration'),(954,'Can change Branding Configuration',317,'change_enterprisecustomerbrandingconfiguration'),(955,'Can delete Branding Configuration',317,'delete_enterprisecustomerbrandingconfiguration'),(956,'Can add historical pending enterprise customer user',318,'add_historicalpendingenterprisecustomeruser'),(957,'Can change historical pending enterprise customer user',318,'change_historicalpendingenterprisecustomeruser'),(958,'Can delete historical pending enterprise customer user',318,'delete_historicalpendingenterprisecustomeruser'),(959,'Can add enterprise customer identity provider',319,'add_enterprisecustomeridentityprovider'),(960,'Can change enterprise customer identity provider',319,'change_enterprisecustomeridentityprovider'),(961,'Can delete enterprise customer identity provider',319,'delete_enterprisecustomeridentityprovider'),(962,'Can add historical enrollment notification email template',320,'add_historicalenrollmentnotificationemailtemplate'),(963,'Can change historical enrollment notification email template',320,'change_historicalenrollmentnotificationemailtemplate'),(964,'Can delete historical enrollment notification email template',320,'delete_historicalenrollmentnotificationemailtemplate'),(965,'Can add Data Sharing Consent Record',321,'add_datasharingconsent'),(966,'Can change Data Sharing Consent Record',321,'change_datasharingconsent'),(967,'Can delete Data Sharing Consent Record',321,'delete_datasharingconsent'),(968,'Can add data sharing consent text overrides',322,'add_datasharingconsenttextoverrides'),(969,'Can change data sharing consent text overrides',322,'change_datasharingconsenttextoverrides'),(970,'Can delete data sharing consent text overrides',322,'delete_datasharingconsenttextoverrides'),(971,'Can add historical Data Sharing Consent Record',323,'add_historicaldatasharingconsent'),(972,'Can change historical Data Sharing Consent Record',323,'change_historicaldatasharingconsent'),(973,'Can delete historical Data Sharing Consent Record',323,'delete_historicaldatasharingconsent'),(974,'Can add content metadata item transmission',324,'add_contentmetadataitemtransmission'),(975,'Can change content metadata item transmission',324,'change_contentmetadataitemtransmission'),(976,'Can delete content metadata item transmission',324,'delete_contentmetadataitemtransmission'),(977,'Can add learner data transmission audit',325,'add_learnerdatatransmissionaudit'),(978,'Can change learner data transmission audit',325,'change_learnerdatatransmissionaudit'),(979,'Can delete learner data transmission audit',325,'delete_learnerdatatransmissionaudit'),(980,'Can add degreed global configuration',326,'add_degreedglobalconfiguration'),(981,'Can change degreed global configuration',326,'change_degreedglobalconfiguration'),(982,'Can delete degreed global configuration',326,'delete_degreedglobalconfiguration'),(983,'Can add degreed learner data transmission audit',327,'add_degreedlearnerdatatransmissionaudit'),(984,'Can change degreed learner data transmission audit',327,'change_degreedlearnerdatatransmissionaudit'),(985,'Can delete degreed learner data transmission audit',327,'delete_degreedlearnerdatatransmissionaudit'),(986,'Can add historical degreed enterprise customer configuration',328,'add_historicaldegreedenterprisecustomerconfiguration'),(987,'Can change historical degreed enterprise customer configuration',328,'change_historicaldegreedenterprisecustomerconfiguration'),(988,'Can delete historical degreed enterprise customer configuration',328,'delete_historicaldegreedenterprisecustomerconfiguration'),(989,'Can add degreed enterprise customer configuration',329,'add_degreedenterprisecustomerconfiguration'),(990,'Can change degreed enterprise customer configuration',329,'change_degreedenterprisecustomerconfiguration'),(991,'Can delete degreed enterprise customer configuration',329,'delete_degreedenterprisecustomerconfiguration'),(992,'Can add sap success factors global configuration',330,'add_sapsuccessfactorsglobalconfiguration'),(993,'Can change sap success factors global configuration',330,'change_sapsuccessfactorsglobalconfiguration'),(994,'Can delete sap success factors global configuration',330,'delete_sapsuccessfactorsglobalconfiguration'),(995,'Can add sap success factors learner data transmission audit',331,'add_sapsuccessfactorslearnerdatatransmissionaudit'),(996,'Can change sap success factors learner data transmission audit',331,'change_sapsuccessfactorslearnerdatatransmissionaudit'),(997,'Can delete sap success factors learner data transmission audit',331,'delete_sapsuccessfactorslearnerdatatransmissionaudit'),(998,'Can add sap success factors enterprise customer configuration',332,'add_sapsuccessfactorsenterprisecustomerconfiguration'),(999,'Can change sap success factors enterprise customer configuration',332,'change_sapsuccessfactorsenterprisecustomerconfiguration'),(1000,'Can delete sap success factors enterprise customer configuration',332,'delete_sapsuccessfactorsenterprisecustomerconfiguration'),(1001,'Can add cornerstone global configuration',333,'add_cornerstoneglobalconfiguration'),(1002,'Can change cornerstone global configuration',333,'change_cornerstoneglobalconfiguration'),(1003,'Can delete cornerstone global configuration',333,'delete_cornerstoneglobalconfiguration'),(1004,'Can add historical cornerstone enterprise customer configuration',334,'add_historicalcornerstoneenterprisecustomerconfiguration'),(1005,'Can change historical cornerstone enterprise customer configuration',334,'change_historicalcornerstoneenterprisecustomerconfiguration'),(1006,'Can delete historical cornerstone enterprise customer configuration',334,'delete_historicalcornerstoneenterprisecustomerconfiguration'),(1007,'Can add cornerstone learner data transmission audit',335,'add_cornerstonelearnerdatatransmissionaudit'),(1008,'Can change cornerstone learner data transmission audit',335,'change_cornerstonelearnerdatatransmissionaudit'),(1009,'Can delete cornerstone learner data transmission audit',335,'delete_cornerstonelearnerdatatransmissionaudit'),(1010,'Can add cornerstone enterprise customer configuration',336,'add_cornerstoneenterprisecustomerconfiguration'),(1011,'Can change cornerstone enterprise customer configuration',336,'change_cornerstoneenterprisecustomerconfiguration'),(1012,'Can delete cornerstone enterprise customer configuration',336,'delete_cornerstoneenterprisecustomerconfiguration'),(1013,'Can add xapilrs configuration',337,'add_xapilrsconfiguration'),(1014,'Can change xapilrs configuration',337,'change_xapilrsconfiguration'),(1015,'Can delete xapilrs configuration',337,'delete_xapilrsconfiguration'),(1016,'Can add xapi learner data transmission audit',338,'add_xapilearnerdatatransmissionaudit'),(1017,'Can change xapi learner data transmission audit',338,'change_xapilearnerdatatransmissionaudit'),(1018,'Can delete xapi learner data transmission audit',338,'delete_xapilearnerdatatransmissionaudit'),(1019,'Can add schedule config',339,'add_scheduleconfig'),(1020,'Can change schedule config',339,'change_scheduleconfig'),(1021,'Can delete schedule config',339,'delete_scheduleconfig'),(1022,'Can add schedule experience',340,'add_scheduleexperience'),(1023,'Can change schedule experience',340,'change_scheduleexperience'),(1024,'Can delete schedule experience',340,'delete_scheduleexperience'),(1025,'Can add Schedule',341,'add_schedule'),(1026,'Can change Schedule',341,'change_schedule'),(1027,'Can delete Schedule',341,'delete_schedule'),(1028,'Can add course persistent grades flag',342,'add_coursepersistentgradesflag'),(1029,'Can change course persistent grades flag',342,'change_coursepersistentgradesflag'),(1030,'Can delete course persistent grades flag',342,'delete_coursepersistentgradesflag'),(1031,'Can add visible blocks',343,'add_visibleblocks'),(1032,'Can change visible blocks',343,'change_visibleblocks'),(1033,'Can delete visible blocks',343,'delete_visibleblocks'),(1034,'Can add persistent subsection grade override history',344,'add_persistentsubsectiongradeoverridehistory'),(1035,'Can change persistent subsection grade override history',344,'change_persistentsubsectiongradeoverridehistory'),(1036,'Can delete persistent subsection grade override history',344,'delete_persistentsubsectiongradeoverridehistory'),(1037,'Can add persistent grades enabled flag',345,'add_persistentgradesenabledflag'),(1038,'Can change persistent grades enabled flag',345,'change_persistentgradesenabledflag'),(1039,'Can delete persistent grades enabled flag',345,'delete_persistentgradesenabledflag'),(1040,'Can add persistent subsection grade override',346,'add_persistentsubsectiongradeoverride'),(1041,'Can change persistent subsection grade override',346,'change_persistentsubsectiongradeoverride'),(1042,'Can delete persistent subsection grade override',346,'delete_persistentsubsectiongradeoverride'),(1043,'Can add historical persistent subsection grade override',347,'add_historicalpersistentsubsectiongradeoverride'),(1044,'Can change historical persistent subsection grade override',347,'change_historicalpersistentsubsectiongradeoverride'),(1045,'Can delete historical persistent subsection grade override',347,'delete_historicalpersistentsubsectiongradeoverride'),(1046,'Can add persistent subsection grade',348,'add_persistentsubsectiongrade'),(1047,'Can change persistent subsection grade',348,'change_persistentsubsectiongrade'),(1048,'Can delete persistent subsection grade',348,'delete_persistentsubsectiongrade'),(1049,'Can add compute grades setting',349,'add_computegradessetting'),(1050,'Can change compute grades setting',349,'change_computegradessetting'),(1051,'Can delete compute grades setting',349,'delete_computegradessetting'),(1052,'Can add persistent course grade',350,'add_persistentcoursegrade'),(1053,'Can change persistent course grade',350,'change_persistentcoursegrade'),(1054,'Can delete persistent course grade',350,'delete_persistentcoursegrade'),(1055,'Can add announcement',351,'add_announcement'),(1056,'Can change announcement',351,'change_announcement'),(1057,'Can delete announcement',351,'delete_announcement'),(1058,'Can add program course enrollment',352,'add_programcourseenrollment'),(1059,'Can change program course enrollment',352,'change_programcourseenrollment'),(1060,'Can delete program course enrollment',352,'delete_programcourseenrollment'),(1061,'Can add program enrollment',353,'add_programenrollment'),(1062,'Can change program enrollment',353,'change_programenrollment'),(1063,'Can delete program enrollment',353,'delete_programenrollment'),(1064,'Can add historical program enrollment',354,'add_historicalprogramenrollment'),(1065,'Can change historical program enrollment',354,'change_historicalprogramenrollment'),(1066,'Can delete historical program enrollment',354,'delete_historicalprogramenrollment'),(1067,'Can add historical program course enrollment',355,'add_historicalprogramcourseenrollment'),(1068,'Can change historical program course enrollment',355,'change_historicalprogramcourseenrollment'),(1069,'Can delete historical program course enrollment',355,'delete_historicalprogramcourseenrollment'),(1070,'Can add notify_credentials argument',356,'add_notifycredentialsconfig'),(1071,'Can change notify_credentials argument',356,'change_notifycredentialsconfig'),(1072,'Can delete notify_credentials argument',356,'delete_notifycredentialsconfig'),(1073,'Can add credentials api config',357,'add_credentialsapiconfig'),(1074,'Can change credentials api config',357,'change_credentialsapiconfig'),(1075,'Can delete credentials api config',357,'delete_credentialsapiconfig'),(1076,'Can add x block cache',358,'add_xblockcache'),(1077,'Can change x block cache',358,'change_xblockcache'),(1078,'Can delete x block cache',358,'delete_xblockcache'),(1079,'Can add bookmark',359,'add_bookmark'),(1080,'Can change bookmark',359,'change_bookmark'),(1081,'Can delete bookmark',359,'delete_bookmark'),(1082,'Can add site theme',360,'add_sitetheme'),(1083,'Can change site theme',360,'change_sitetheme'),(1084,'Can delete site theme',360,'delete_sitetheme'),(1085,'Can add content library permission',361,'add_contentlibrarypermission'),(1086,'Can change content library permission',361,'change_contentlibrarypermission'),(1087,'Can delete content library permission',361,'delete_contentlibrarypermission'),(1088,'Can add content library',362,'add_contentlibrary'),(1089,'Can change content library',362,'change_contentlibrary'),(1090,'Can delete content library',362,'delete_contentlibrary'),(1091,'Can add csv operation',363,'add_csvoperation'),(1092,'Can change csv operation',363,'change_csvoperation'),(1093,'Can delete csv operation',363,'delete_csvoperation'),(1094,'Can add content date',364,'add_contentdate'),(1095,'Can change content date',364,'change_contentdate'),(1096,'Can delete content date',364,'delete_contentdate'),(1097,'Can add user date',365,'add_userdate'),(1098,'Can change user date',365,'change_userdate'),(1099,'Can delete user date',365,'delete_userdate'),(1100,'Can add date policy',366,'add_datepolicy'),(1101,'Can change date policy',366,'change_datepolicy'),(1102,'Can delete date policy',366,'delete_datepolicy'),(1103,'Can add proctored allowance history',367,'add_proctoredexamstudentallowancehistory'),(1104,'Can change proctored allowance history',367,'change_proctoredexamstudentallowancehistory'),(1105,'Can delete proctored allowance history',367,'delete_proctoredexamstudentallowancehistory'),(1106,'Can add proctored exam',368,'add_proctoredexam'),(1107,'Can change proctored exam',368,'change_proctoredexam'),(1108,'Can delete proctored exam',368,'delete_proctoredexam'),(1109,'Can add proctored exam software secure comment',369,'add_proctoredexamsoftwaresecurecomment'),(1110,'Can change proctored exam software secure comment',369,'change_proctoredexamsoftwaresecurecomment'),(1111,'Can delete proctored exam software secure comment',369,'delete_proctoredexamsoftwaresecurecomment'),(1112,'Can add Proctored exam review policy',370,'add_proctoredexamreviewpolicy'),(1113,'Can change Proctored exam review policy',370,'change_proctoredexamreviewpolicy'),(1114,'Can delete Proctored exam review policy',370,'delete_proctoredexamreviewpolicy'),(1115,'Can add proctored exam review policy history',371,'add_proctoredexamreviewpolicyhistory'),(1116,'Can change proctored exam review policy history',371,'change_proctoredexamreviewpolicyhistory'),(1117,'Can delete proctored exam review policy history',371,'delete_proctoredexamreviewpolicyhistory'),(1118,'Can add proctored exam attempt',372,'add_proctoredexamstudentattempt'),(1119,'Can change proctored exam attempt',372,'change_proctoredexamstudentattempt'),(1120,'Can delete proctored exam attempt',372,'delete_proctoredexamstudentattempt'),(1121,'Can add proctored exam attempt history',373,'add_proctoredexamstudentattempthistory'),(1122,'Can change proctored exam attempt history',373,'change_proctoredexamstudentattempthistory'),(1123,'Can delete proctored exam attempt history',373,'delete_proctoredexamstudentattempthistory'),(1124,'Can add Proctored exam review archive',374,'add_proctoredexamsoftwaresecurereviewhistory'),(1125,'Can change Proctored exam review archive',374,'change_proctoredexamsoftwaresecurereviewhistory'),(1126,'Can delete Proctored exam review archive',374,'delete_proctoredexamsoftwaresecurereviewhistory'),(1127,'Can add Proctored exam software secure review',375,'add_proctoredexamsoftwaresecurereview'),(1128,'Can change Proctored exam software secure review',375,'change_proctoredexamsoftwaresecurereview'),(1129,'Can delete Proctored exam software secure review',375,'delete_proctoredexamsoftwaresecurereview'),(1130,'Can add proctored allowance',376,'add_proctoredexamstudentallowance'),(1131,'Can change proctored allowance',376,'change_proctoredexamstudentallowance'),(1132,'Can delete proctored allowance',376,'delete_proctoredexamstudentallowance'),(1133,'Can add block completion',377,'add_blockcompletion'),(1134,'Can change block completion',377,'change_blockcompletion'),(1135,'Can delete block completion',377,'delete_blockcompletion'),(1136,'Can add score overrider',378,'add_scoreoverrider'),(1137,'Can change score overrider',378,'change_scoreoverrider'),(1138,'Can delete score overrider',378,'delete_scoreoverrider'),(1139,'Can add launch log',379,'add_launchlog'),(1140,'Can change launch log',379,'change_launchlog'),(1141,'Can delete launch log',379,'delete_launchlog'),(1142,'Can add lti credential',380,'add_lticredential'),(1143,'Can change lti credential',380,'change_lticredential'),(1144,'Can delete lti credential',380,'delete_lticredential'),(1145,'Can add video upload config',381,'add_videouploadconfig'),(1146,'Can change video upload config',381,'change_videouploadconfig'),(1147,'Can delete video upload config',381,'delete_videouploadconfig'),(1148,'Can add course creator',382,'add_coursecreator'),(1149,'Can change course creator',382,'change_coursecreator'),(1150,'Can delete course creator',382,'delete_coursecreator'),(1151,'Can add studio config',383,'add_studioconfig'),(1152,'Can change studio config',383,'change_studioconfig'),(1153,'Can delete studio config',383,'delete_studioconfig'),(1154,'Can add course edit lti fields enabled flag',384,'add_courseeditltifieldsenabledflag'),(1155,'Can change course edit lti fields enabled flag',384,'change_courseeditltifieldsenabledflag'),(1156,'Can delete course edit lti fields enabled flag',384,'delete_courseeditltifieldsenabledflag'),(1157,'Can add available tag value',385,'add_tagavailablevalues'),(1158,'Can change available tag value',385,'change_tagavailablevalues'),(1159,'Can delete available tag value',385,'delete_tagavailablevalues'),(1160,'Can add tag category',386,'add_tagcategories'),(1161,'Can change tag category',386,'change_tagcategories'),(1162,'Can delete tag category',386,'delete_tagcategories'),(1163,'Can add user task status',387,'add_usertaskstatus'),(1164,'Can change user task status',387,'change_usertaskstatus'),(1165,'Can delete user task status',387,'delete_usertaskstatus'),(1166,'Can add user task artifact',388,'add_usertaskartifact'),(1167,'Can change user task artifact',388,'change_usertaskartifact'),(1168,'Can delete user task artifact',388,'delete_usertaskartifact');
+INSERT INTO `auth_permission` VALUES (1,'Can add permission',2,'add_permission'),(2,'Can change permission',2,'change_permission'),(3,'Can delete permission',2,'delete_permission'),(4,'Can add group',3,'add_group'),(5,'Can change group',3,'change_group'),(6,'Can delete group',3,'delete_group'),(7,'Can add user',4,'add_user'),(8,'Can change user',4,'change_user'),(9,'Can delete user',4,'delete_user'),(10,'Can add content type',5,'add_contenttype'),(11,'Can change content type',5,'change_contenttype'),(12,'Can delete content type',5,'delete_contenttype'),(13,'Can add redirect',6,'add_redirect'),(14,'Can change redirect',6,'change_redirect'),(15,'Can delete redirect',6,'delete_redirect'),(16,'Can add session',7,'add_session'),(17,'Can change session',7,'change_session'),(18,'Can delete session',7,'delete_session'),(19,'Can add site',8,'add_site'),(20,'Can change site',8,'change_site'),(21,'Can delete site',8,'delete_site'),(22,'Can add task state',9,'add_taskmeta'),(23,'Can change task state',9,'change_taskmeta'),(24,'Can delete task state',9,'delete_taskmeta'),(25,'Can add saved group result',10,'add_tasksetmeta'),(26,'Can change saved group result',10,'change_tasksetmeta'),(27,'Can delete saved group result',10,'delete_tasksetmeta'),(28,'Can add interval',11,'add_intervalschedule'),(29,'Can change interval',11,'change_intervalschedule'),(30,'Can delete interval',11,'delete_intervalschedule'),(31,'Can add crontab',12,'add_crontabschedule'),(32,'Can change crontab',12,'change_crontabschedule'),(33,'Can delete crontab',12,'delete_crontabschedule'),(34,'Can add periodic tasks',13,'add_periodictasks'),(35,'Can change periodic tasks',13,'change_periodictasks'),(36,'Can delete periodic tasks',13,'delete_periodictasks'),(37,'Can add periodic task',14,'add_periodictask'),(38,'Can change periodic task',14,'change_periodictask'),(39,'Can delete periodic task',14,'delete_periodictask'),(40,'Can add worker',15,'add_workerstate'),(41,'Can change worker',15,'change_workerstate'),(42,'Can delete worker',15,'delete_workerstate'),(43,'Can add task',16,'add_taskstate'),(44,'Can change task',16,'change_taskstate'),(45,'Can delete task',16,'delete_taskstate'),(46,'Can add global status message',17,'add_globalstatusmessage'),(47,'Can change global status message',17,'change_globalstatusmessage'),(48,'Can delete global status message',17,'delete_globalstatusmessage'),(49,'Can add course message',18,'add_coursemessage'),(50,'Can change course message',18,'change_coursemessage'),(51,'Can delete course message',18,'delete_coursemessage'),(52,'Can add asset base url config',19,'add_assetbaseurlconfig'),(53,'Can change asset base url config',19,'change_assetbaseurlconfig'),(54,'Can delete asset base url config',19,'delete_assetbaseurlconfig'),(55,'Can add asset excluded extensions config',20,'add_assetexcludedextensionsconfig'),(56,'Can change asset excluded extensions config',20,'change_assetexcludedextensionsconfig'),(57,'Can delete asset excluded extensions config',20,'delete_assetexcludedextensionsconfig'),(58,'Can add course asset cache ttl config',21,'add_courseassetcachettlconfig'),(59,'Can change course asset cache ttl config',21,'change_courseassetcachettlconfig'),(60,'Can delete course asset cache ttl config',21,'delete_courseassetcachettlconfig'),(61,'Can add cdn user agents config',22,'add_cdnuseragentsconfig'),(62,'Can change cdn user agents config',22,'change_cdnuseragentsconfig'),(63,'Can delete cdn user agents config',22,'delete_cdnuseragentsconfig'),(64,'Can add site theme',23,'add_sitetheme'),(65,'Can change site theme',23,'change_sitetheme'),(66,'Can delete site theme',23,'delete_sitetheme'),(67,'Can add site configuration',24,'add_siteconfiguration'),(68,'Can change site configuration',24,'change_siteconfiguration'),(69,'Can delete site configuration',24,'delete_siteconfiguration'),(70,'Can add site configuration history',25,'add_siteconfigurationhistory'),(71,'Can change site configuration history',25,'change_siteconfigurationhistory'),(72,'Can delete site configuration history',25,'delete_siteconfigurationhistory'),(73,'Can add student module',26,'add_studentmodule'),(74,'Can change student module',26,'change_studentmodule'),(75,'Can delete student module',26,'delete_studentmodule'),(76,'Can add student module history',27,'add_studentmodulehistory'),(77,'Can change student module history',27,'change_studentmodulehistory'),(78,'Can delete student module history',27,'delete_studentmodulehistory'),(79,'Can add x module user state summary field',28,'add_xmoduleuserstatesummaryfield'),(80,'Can change x module user state summary field',28,'change_xmoduleuserstatesummaryfield'),(81,'Can delete x module user state summary field',28,'delete_xmoduleuserstatesummaryfield'),(82,'Can add x module student prefs field',29,'add_xmodulestudentprefsfield'),(83,'Can change x module student prefs field',29,'change_xmodulestudentprefsfield'),(84,'Can delete x module student prefs field',29,'delete_xmodulestudentprefsfield'),(85,'Can add x module student info field',30,'add_xmodulestudentinfofield'),(86,'Can change x module student info field',30,'change_xmodulestudentinfofield'),(87,'Can delete x module student info field',30,'delete_xmodulestudentinfofield'),(88,'Can add offline computed grade',31,'add_offlinecomputedgrade'),(89,'Can change offline computed grade',31,'change_offlinecomputedgrade'),(90,'Can delete offline computed grade',31,'delete_offlinecomputedgrade'),(91,'Can add offline computed grade log',32,'add_offlinecomputedgradelog'),(92,'Can change offline computed grade log',32,'change_offlinecomputedgradelog'),(93,'Can delete offline computed grade log',32,'delete_offlinecomputedgradelog'),(94,'Can add student field override',33,'add_studentfieldoverride'),(95,'Can change student field override',33,'change_studentfieldoverride'),(96,'Can delete student field override',33,'delete_studentfieldoverride'),(97,'Can add anonymous user id',34,'add_anonymoususerid'),(98,'Can change anonymous user id',34,'change_anonymoususerid'),(99,'Can delete anonymous user id',34,'delete_anonymoususerid'),(100,'Can add user standing',35,'add_userstanding'),(101,'Can change user standing',35,'change_userstanding'),(102,'Can delete user standing',35,'delete_userstanding'),(103,'Can add user profile',36,'add_userprofile'),(104,'Can change user profile',36,'change_userprofile'),(105,'Can delete user profile',36,'delete_userprofile'),(106,'Can add user signup source',37,'add_usersignupsource'),(107,'Can change user signup source',37,'change_usersignupsource'),(108,'Can delete user signup source',37,'delete_usersignupsource'),(109,'Can add user test group',38,'add_usertestgroup'),(110,'Can change user test group',38,'change_usertestgroup'),(111,'Can delete user test group',38,'delete_usertestgroup'),(112,'Can add registration',39,'add_registration'),(113,'Can change registration',39,'change_registration'),(114,'Can delete registration',39,'delete_registration'),(115,'Can add pending name change',40,'add_pendingnamechange'),(116,'Can change pending name change',40,'change_pendingnamechange'),(117,'Can delete pending name change',40,'delete_pendingnamechange'),(118,'Can add pending email change',41,'add_pendingemailchange'),(119,'Can change pending email change',41,'change_pendingemailchange'),(120,'Can delete pending email change',41,'delete_pendingemailchange'),(121,'Can add password history',42,'add_passwordhistory'),(122,'Can change password history',42,'change_passwordhistory'),(123,'Can delete password history',42,'delete_passwordhistory'),(124,'Can add login failures',43,'add_loginfailures'),(125,'Can change login failures',43,'change_loginfailures'),(126,'Can delete login failures',43,'delete_loginfailures'),(127,'Can add historical course enrollment',44,'add_historicalcourseenrollment'),(128,'Can change historical course enrollment',44,'change_historicalcourseenrollment'),(129,'Can delete historical course enrollment',44,'delete_historicalcourseenrollment'),(130,'Can add course enrollment',45,'add_courseenrollment'),(131,'Can change course enrollment',45,'change_courseenrollment'),(132,'Can delete course enrollment',45,'delete_courseenrollment'),(133,'Can add manual enrollment audit',46,'add_manualenrollmentaudit'),(134,'Can change manual enrollment audit',46,'change_manualenrollmentaudit'),(135,'Can delete manual enrollment audit',46,'delete_manualenrollmentaudit'),(136,'Can add course enrollment allowed',47,'add_courseenrollmentallowed'),(137,'Can change course enrollment allowed',47,'change_courseenrollmentallowed'),(138,'Can delete course enrollment allowed',47,'delete_courseenrollmentallowed'),(139,'Can add course access role',48,'add_courseaccessrole'),(140,'Can change course access role',48,'change_courseaccessrole'),(141,'Can delete course access role',48,'delete_courseaccessrole'),(142,'Can add dashboard configuration',49,'add_dashboardconfiguration'),(143,'Can change dashboard configuration',49,'change_dashboardconfiguration'),(144,'Can delete dashboard configuration',49,'delete_dashboardconfiguration'),(145,'Can add linked in add to profile configuration',50,'add_linkedinaddtoprofileconfiguration'),(146,'Can change linked in add to profile configuration',50,'change_linkedinaddtoprofileconfiguration'),(147,'Can delete linked in add to profile configuration',50,'delete_linkedinaddtoprofileconfiguration'),(148,'Can add entrance exam configuration',51,'add_entranceexamconfiguration'),(149,'Can change entrance exam configuration',51,'change_entranceexamconfiguration'),(150,'Can delete entrance exam configuration',51,'delete_entranceexamconfiguration'),(151,'Can add language proficiency',52,'add_languageproficiency'),(152,'Can change language proficiency',52,'change_languageproficiency'),(153,'Can delete language proficiency',52,'delete_languageproficiency'),(154,'Can add course enrollment attribute',53,'add_courseenrollmentattribute'),(155,'Can change course enrollment attribute',53,'change_courseenrollmentattribute'),(156,'Can delete course enrollment attribute',53,'delete_courseenrollmentattribute'),(157,'Can add enrollment refund configuration',54,'add_enrollmentrefundconfiguration'),(158,'Can change enrollment refund configuration',54,'change_enrollmentrefundconfiguration'),(159,'Can delete enrollment refund configuration',54,'delete_enrollmentrefundconfiguration'),(160,'Can add registration cookie configuration',55,'add_registrationcookieconfiguration'),(161,'Can change registration cookie configuration',55,'change_registrationcookieconfiguration'),(162,'Can delete registration cookie configuration',55,'delete_registrationcookieconfiguration'),(163,'Can add user attribute',56,'add_userattribute'),(164,'Can change user attribute',56,'change_userattribute'),(165,'Can delete user attribute',56,'delete_userattribute'),(166,'Can add logout view configuration',57,'add_logoutviewconfiguration'),(167,'Can change logout view configuration',57,'change_logoutviewconfiguration'),(168,'Can delete logout view configuration',57,'delete_logoutviewconfiguration'),(169,'Can add tracking log',58,'add_trackinglog'),(170,'Can change tracking log',58,'change_trackinglog'),(171,'Can delete tracking log',58,'delete_trackinglog'),(172,'Can add rate limit configuration',59,'add_ratelimitconfiguration'),(173,'Can change rate limit configuration',59,'change_ratelimitconfiguration'),(174,'Can delete rate limit configuration',59,'delete_ratelimitconfiguration'),(175,'Can add certificate whitelist',60,'add_certificatewhitelist'),(176,'Can change certificate whitelist',60,'change_certificatewhitelist'),(177,'Can delete certificate whitelist',60,'delete_certificatewhitelist'),(178,'Can add generated certificate',61,'add_generatedcertificate'),(179,'Can change generated certificate',61,'change_generatedcertificate'),(180,'Can delete generated certificate',61,'delete_generatedcertificate'),(181,'Can add certificate generation history',62,'add_certificategenerationhistory'),(182,'Can change certificate generation history',62,'change_certificategenerationhistory'),(183,'Can delete certificate generation history',62,'delete_certificategenerationhistory'),(184,'Can add certificate invalidation',63,'add_certificateinvalidation'),(185,'Can change certificate invalidation',63,'change_certificateinvalidation'),(186,'Can delete certificate invalidation',63,'delete_certificateinvalidation'),(187,'Can add example certificate set',64,'add_examplecertificateset'),(188,'Can change example certificate set',64,'change_examplecertificateset'),(189,'Can delete example certificate set',64,'delete_examplecertificateset'),(190,'Can add example certificate',65,'add_examplecertificate'),(191,'Can change example certificate',65,'change_examplecertificate'),(192,'Can delete example certificate',65,'delete_examplecertificate'),(193,'Can add certificate generation course setting',66,'add_certificategenerationcoursesetting'),(194,'Can change certificate generation course setting',66,'change_certificategenerationcoursesetting'),(195,'Can delete certificate generation course setting',66,'delete_certificategenerationcoursesetting'),(196,'Can add certificate generation configuration',67,'add_certificategenerationconfiguration'),(197,'Can change certificate generation configuration',67,'change_certificategenerationconfiguration'),(198,'Can delete certificate generation configuration',67,'delete_certificategenerationconfiguration'),(199,'Can add certificate html view configuration',68,'add_certificatehtmlviewconfiguration'),(200,'Can change certificate html view configuration',68,'change_certificatehtmlviewconfiguration'),(201,'Can delete certificate html view configuration',68,'delete_certificatehtmlviewconfiguration'),(202,'Can add certificate template',69,'add_certificatetemplate'),(203,'Can change certificate template',69,'change_certificatetemplate'),(204,'Can delete certificate template',69,'delete_certificatetemplate'),(205,'Can add certificate template asset',70,'add_certificatetemplateasset'),(206,'Can change certificate template asset',70,'change_certificatetemplateasset'),(207,'Can delete certificate template asset',70,'delete_certificatetemplateasset'),(208,'Can add instructor task',71,'add_instructortask'),(209,'Can change instructor task',71,'change_instructortask'),(210,'Can delete instructor task',71,'delete_instructortask'),(211,'Can add course user group',72,'add_courseusergroup'),(212,'Can change course user group',72,'change_courseusergroup'),(213,'Can delete course user group',72,'delete_courseusergroup'),(214,'Can add cohort membership',73,'add_cohortmembership'),(215,'Can change cohort membership',73,'change_cohortmembership'),(216,'Can delete cohort membership',73,'delete_cohortmembership'),(217,'Can add course user group partition group',74,'add_courseusergrouppartitiongroup'),(218,'Can change course user group partition group',74,'change_courseusergrouppartitiongroup'),(219,'Can delete course user group partition group',74,'delete_courseusergrouppartitiongroup'),(220,'Can add course cohorts settings',75,'add_coursecohortssettings'),(221,'Can change course cohorts settings',75,'change_coursecohortssettings'),(222,'Can delete course cohorts settings',75,'delete_coursecohortssettings'),(223,'Can add course cohort',76,'add_coursecohort'),(224,'Can change course cohort',76,'change_coursecohort'),(225,'Can delete course cohort',76,'delete_coursecohort'),(226,'Can add target',77,'add_target'),(227,'Can change target',77,'change_target'),(228,'Can delete target',77,'delete_target'),(229,'Can add cohort target',78,'add_cohorttarget'),(230,'Can change cohort target',78,'change_cohorttarget'),(231,'Can delete cohort target',78,'delete_cohorttarget'),(232,'Can add course email',79,'add_courseemail'),(233,'Can change course email',79,'change_courseemail'),(234,'Can delete course email',79,'delete_courseemail'),(235,'Can add optout',80,'add_optout'),(236,'Can change optout',80,'change_optout'),(237,'Can delete optout',80,'delete_optout'),(238,'Can add course email template',81,'add_courseemailtemplate'),(239,'Can change course email template',81,'change_courseemailtemplate'),(240,'Can delete course email template',81,'delete_courseemailtemplate'),(241,'Can add course authorization',82,'add_courseauthorization'),(242,'Can change course authorization',82,'change_courseauthorization'),(243,'Can delete course authorization',82,'delete_courseauthorization'),(244,'Can add bulk email flag',83,'add_bulkemailflag'),(245,'Can change bulk email flag',83,'change_bulkemailflag'),(246,'Can delete bulk email flag',83,'delete_bulkemailflag'),(247,'Can add branding info config',84,'add_brandinginfoconfig'),(248,'Can change branding info config',84,'change_brandinginfoconfig'),(249,'Can delete branding info config',84,'delete_brandinginfoconfig'),(250,'Can add branding api config',85,'add_brandingapiconfig'),(251,'Can change branding api config',85,'change_brandingapiconfig'),(252,'Can delete branding api config',85,'delete_brandingapiconfig'),(253,'Can add visible blocks',86,'add_visibleblocks'),(254,'Can change visible blocks',86,'change_visibleblocks'),(255,'Can delete visible blocks',86,'delete_visibleblocks'),(256,'Can add persistent subsection grade',87,'add_persistentsubsectiongrade'),(257,'Can change persistent subsection grade',87,'change_persistentsubsectiongrade'),(258,'Can delete persistent subsection grade',87,'delete_persistentsubsectiongrade'),(259,'Can add persistent course grade',88,'add_persistentcoursegrade'),(260,'Can change persistent course grade',88,'change_persistentcoursegrade'),(261,'Can delete persistent course grade',88,'delete_persistentcoursegrade'),(262,'Can add persistent grades enabled flag',89,'add_persistentgradesenabledflag'),(263,'Can change persistent grades enabled flag',89,'change_persistentgradesenabledflag'),(264,'Can delete persistent grades enabled flag',89,'delete_persistentgradesenabledflag'),(265,'Can add course persistent grades flag',90,'add_coursepersistentgradesflag'),(266,'Can change course persistent grades flag',90,'change_coursepersistentgradesflag'),(267,'Can delete course persistent grades flag',90,'delete_coursepersistentgradesflag'),(268,'Can add external auth map',91,'add_externalauthmap'),(269,'Can change external auth map',91,'change_externalauthmap'),(270,'Can delete external auth map',91,'delete_externalauthmap'),(271,'Can add nonce',92,'add_nonce'),(272,'Can change nonce',92,'change_nonce'),(273,'Can delete nonce',92,'delete_nonce'),(274,'Can add association',93,'add_association'),(275,'Can change association',93,'change_association'),(276,'Can delete association',93,'delete_association'),(277,'Can add user open id',94,'add_useropenid'),(278,'Can change user open id',94,'change_useropenid'),(279,'Can delete user open id',94,'delete_useropenid'),(280,'The OpenID has been verified',94,'account_verified'),(281,'Can add client',95,'add_client'),(282,'Can change client',95,'change_client'),(283,'Can delete client',95,'delete_client'),(284,'Can add grant',96,'add_grant'),(285,'Can change grant',96,'change_grant'),(286,'Can delete grant',96,'delete_grant'),(287,'Can add access token',97,'add_accesstoken'),(288,'Can change access token',97,'change_accesstoken'),(289,'Can delete access token',97,'delete_accesstoken'),(290,'Can add refresh token',98,'add_refreshtoken'),(291,'Can change refresh token',98,'change_refreshtoken'),(292,'Can delete refresh token',98,'delete_refreshtoken'),(293,'Can add trusted client',99,'add_trustedclient'),(294,'Can change trusted client',99,'change_trustedclient'),(295,'Can delete trusted client',99,'delete_trustedclient'),(296,'Can add application',100,'add_application'),(297,'Can change application',100,'change_application'),(298,'Can delete application',100,'delete_application'),(299,'Can add grant',101,'add_grant'),(300,'Can change grant',101,'change_grant'),(301,'Can delete grant',101,'delete_grant'),(302,'Can add access token',102,'add_accesstoken'),(303,'Can change access token',102,'change_accesstoken'),(304,'Can delete access token',102,'delete_accesstoken'),(305,'Can add refresh token',103,'add_refreshtoken'),(306,'Can change refresh token',103,'change_refreshtoken'),(307,'Can delete refresh token',103,'delete_refreshtoken'),(308,'Can add restricted application',104,'add_restrictedapplication'),(309,'Can change restricted application',104,'change_restrictedapplication'),(310,'Can delete restricted application',104,'delete_restrictedapplication'),(311,'Can add Provider Configuration (OAuth)',105,'add_oauth2providerconfig'),(312,'Can change Provider Configuration (OAuth)',105,'change_oauth2providerconfig'),(313,'Can delete Provider Configuration (OAuth)',105,'delete_oauth2providerconfig'),(314,'Can add Provider Configuration (SAML IdP)',106,'add_samlproviderconfig'),(315,'Can change Provider Configuration (SAML IdP)',106,'change_samlproviderconfig'),(316,'Can delete Provider Configuration (SAML IdP)',106,'delete_samlproviderconfig'),(317,'Can add SAML Configuration',107,'add_samlconfiguration'),(318,'Can change SAML Configuration',107,'change_samlconfiguration'),(319,'Can delete SAML Configuration',107,'delete_samlconfiguration'),(320,'Can add SAML Provider Data',108,'add_samlproviderdata'),(321,'Can change SAML Provider Data',108,'change_samlproviderdata'),(322,'Can delete SAML Provider Data',108,'delete_samlproviderdata'),(323,'Can add Provider Configuration (LTI)',109,'add_ltiproviderconfig'),(324,'Can change Provider Configuration (LTI)',109,'change_ltiproviderconfig'),(325,'Can delete Provider Configuration (LTI)',109,'delete_ltiproviderconfig'),(326,'Can add Provider API Permission',110,'add_providerapipermissions'),(327,'Can change Provider API Permission',110,'change_providerapipermissions'),(328,'Can delete Provider API Permission',110,'delete_providerapipermissions'),(329,'Can add nonce',111,'add_nonce'),(330,'Can change nonce',111,'change_nonce'),(331,'Can delete nonce',111,'delete_nonce'),(332,'Can add scope',112,'add_scope'),(333,'Can change scope',112,'change_scope'),(334,'Can delete scope',112,'delete_scope'),(335,'Can add resource',112,'add_resource'),(336,'Can change resource',112,'change_resource'),(337,'Can delete resource',112,'delete_resource'),(338,'Can add consumer',113,'add_consumer'),(339,'Can change consumer',113,'change_consumer'),(340,'Can delete consumer',113,'delete_consumer'),(341,'Can add token',114,'add_token'),(342,'Can change token',114,'change_token'),(343,'Can delete token',114,'delete_token'),(344,'Can add article',116,'add_article'),(345,'Can change article',116,'change_article'),(346,'Can delete article',116,'delete_article'),(347,'Can edit all articles and lock/unlock/restore',116,'moderate'),(348,'Can change ownership of any article',116,'assign'),(349,'Can assign permissions to other users',116,'grant'),(350,'Can add Article for object',117,'add_articleforobject'),(351,'Can change Article for object',117,'change_articleforobject'),(352,'Can delete Article for object',117,'delete_articleforobject'),(353,'Can add article revision',118,'add_articlerevision'),(354,'Can change article revision',118,'change_articlerevision'),(355,'Can delete article revision',118,'delete_articlerevision'),(356,'Can add URL path',119,'add_urlpath'),(357,'Can change URL path',119,'change_urlpath'),(358,'Can delete URL path',119,'delete_urlpath'),(359,'Can add article plugin',120,'add_articleplugin'),(360,'Can change article plugin',120,'change_articleplugin'),(361,'Can delete article plugin',120,'delete_articleplugin'),(362,'Can add reusable plugin',121,'add_reusableplugin'),(363,'Can change reusable plugin',121,'change_reusableplugin'),(364,'Can delete reusable plugin',121,'delete_reusableplugin'),(365,'Can add simple plugin',122,'add_simpleplugin'),(366,'Can change simple plugin',122,'change_simpleplugin'),(367,'Can delete simple plugin',122,'delete_simpleplugin'),(368,'Can add revision plugin',123,'add_revisionplugin'),(369,'Can change revision plugin',123,'change_revisionplugin'),(370,'Can delete revision plugin',123,'delete_revisionplugin'),(371,'Can add revision plugin revision',124,'add_revisionpluginrevision'),(372,'Can change revision plugin revision',124,'change_revisionpluginrevision'),(373,'Can delete revision plugin revision',124,'delete_revisionpluginrevision'),(374,'Can add image',125,'add_image'),(375,'Can change image',125,'change_image'),(376,'Can delete image',125,'delete_image'),(377,'Can add image revision',126,'add_imagerevision'),(378,'Can change image revision',126,'change_imagerevision'),(379,'Can delete image revision',126,'delete_imagerevision'),(380,'Can add attachment',127,'add_attachment'),(381,'Can change attachment',127,'change_attachment'),(382,'Can delete attachment',127,'delete_attachment'),(383,'Can add attachment revision',128,'add_attachmentrevision'),(384,'Can change attachment revision',128,'change_attachmentrevision'),(385,'Can delete attachment revision',128,'delete_attachmentrevision'),(386,'Can add type',129,'add_notificationtype'),(387,'Can change type',129,'change_notificationtype'),(388,'Can delete type',129,'delete_notificationtype'),(389,'Can add settings',130,'add_settings'),(390,'Can change settings',130,'change_settings'),(391,'Can delete settings',130,'delete_settings'),(392,'Can add subscription',131,'add_subscription'),(393,'Can change subscription',131,'change_subscription'),(394,'Can delete subscription',131,'delete_subscription'),(395,'Can add notification',132,'add_notification'),(396,'Can change notification',132,'change_notification'),(397,'Can delete notification',132,'delete_notification'),(398,'Can add log entry',133,'add_logentry'),(399,'Can change log entry',133,'change_logentry'),(400,'Can delete log entry',133,'delete_logentry'),(401,'Can add role',134,'add_role'),(402,'Can change role',134,'change_role'),(403,'Can delete role',134,'delete_role'),(404,'Can add permission',135,'add_permission'),(405,'Can change permission',135,'change_permission'),(406,'Can delete permission',135,'delete_permission'),(407,'Can add forums config',136,'add_forumsconfig'),(408,'Can change forums config',136,'change_forumsconfig'),(409,'Can delete forums config',136,'delete_forumsconfig'),(410,'Can add note',137,'add_note'),(411,'Can change note',137,'change_note'),(412,'Can delete note',137,'delete_note'),(413,'Can add splash config',138,'add_splashconfig'),(414,'Can change splash config',138,'change_splashconfig'),(415,'Can delete splash config',138,'delete_splashconfig'),(416,'Can add user preference',139,'add_userpreference'),(417,'Can change user preference',139,'change_userpreference'),(418,'Can delete user preference',139,'delete_userpreference'),(419,'Can add user course tag',140,'add_usercoursetag'),(420,'Can change user course tag',140,'change_usercoursetag'),(421,'Can delete user course tag',140,'delete_usercoursetag'),(422,'Can add user org tag',141,'add_userorgtag'),(423,'Can change user org tag',141,'change_userorgtag'),(424,'Can delete user org tag',141,'delete_userorgtag'),(425,'Can add order',142,'add_order'),(426,'Can change order',142,'change_order'),(427,'Can delete order',142,'delete_order'),(428,'Can add order item',143,'add_orderitem'),(429,'Can change order item',143,'change_orderitem'),(430,'Can delete order item',143,'delete_orderitem'),(431,'Can add invoice',144,'add_invoice'),(432,'Can change invoice',144,'change_invoice'),(433,'Can delete invoice',144,'delete_invoice'),(434,'Can add invoice transaction',145,'add_invoicetransaction'),(435,'Can change invoice transaction',145,'change_invoicetransaction'),(436,'Can delete invoice transaction',145,'delete_invoicetransaction'),(437,'Can add invoice item',146,'add_invoiceitem'),(438,'Can change invoice item',146,'change_invoiceitem'),(439,'Can delete invoice item',146,'delete_invoiceitem'),(440,'Can add course registration code invoice item',147,'add_courseregistrationcodeinvoiceitem'),(441,'Can change course registration code invoice item',147,'change_courseregistrationcodeinvoiceitem'),(442,'Can delete course registration code invoice item',147,'delete_courseregistrationcodeinvoiceitem'),(443,'Can add invoice history',148,'add_invoicehistory'),(444,'Can change invoice history',148,'change_invoicehistory'),(445,'Can delete invoice history',148,'delete_invoicehistory'),(446,'Can add course registration code',149,'add_courseregistrationcode'),(447,'Can change course registration code',149,'change_courseregistrationcode'),(448,'Can delete course registration code',149,'delete_courseregistrationcode'),(449,'Can add registration code redemption',150,'add_registrationcoderedemption'),(450,'Can change registration code redemption',150,'change_registrationcoderedemption'),(451,'Can delete registration code redemption',150,'delete_registrationcoderedemption'),(452,'Can add coupon',151,'add_coupon'),(453,'Can change coupon',151,'change_coupon'),(454,'Can delete coupon',151,'delete_coupon'),(455,'Can add coupon redemption',152,'add_couponredemption'),(456,'Can change coupon redemption',152,'change_couponredemption'),(457,'Can delete coupon redemption',152,'delete_couponredemption'),(458,'Can add paid course registration',153,'add_paidcourseregistration'),(459,'Can change paid course registration',153,'change_paidcourseregistration'),(460,'Can delete paid course registration',153,'delete_paidcourseregistration'),(461,'Can add course reg code item',154,'add_courseregcodeitem'),(462,'Can change course reg code item',154,'change_courseregcodeitem'),(463,'Can delete course reg code item',154,'delete_courseregcodeitem'),(464,'Can add course reg code item annotation',155,'add_courseregcodeitemannotation'),(465,'Can change course reg code item annotation',155,'change_courseregcodeitemannotation'),(466,'Can delete course reg code item annotation',155,'delete_courseregcodeitemannotation'),(467,'Can add paid course registration annotation',156,'add_paidcourseregistrationannotation'),(468,'Can change paid course registration annotation',156,'change_paidcourseregistrationannotation'),(469,'Can delete paid course registration annotation',156,'delete_paidcourseregistrationannotation'),(470,'Can add certificate item',157,'add_certificateitem'),(471,'Can change certificate item',157,'change_certificateitem'),(472,'Can delete certificate item',157,'delete_certificateitem'),(473,'Can add donation configuration',158,'add_donationconfiguration'),(474,'Can change donation configuration',158,'change_donationconfiguration'),(475,'Can delete donation configuration',158,'delete_donationconfiguration'),(476,'Can add donation',159,'add_donation'),(477,'Can change donation',159,'change_donation'),(478,'Can delete donation',159,'delete_donation'),(479,'Can add course mode',160,'add_coursemode'),(480,'Can change course mode',160,'change_coursemode'),(481,'Can delete course mode',160,'delete_coursemode'),(482,'Can add course modes archive',161,'add_coursemodesarchive'),(483,'Can change course modes archive',161,'change_coursemodesarchive'),(484,'Can delete course modes archive',161,'delete_coursemodesarchive'),(485,'Can add course mode expiration config',162,'add_coursemodeexpirationconfig'),(486,'Can change course mode expiration config',162,'change_coursemodeexpirationconfig'),(487,'Can delete course mode expiration config',162,'delete_coursemodeexpirationconfig'),(488,'Can add software secure photo verification',163,'add_softwaresecurephotoverification'),(489,'Can change software secure photo verification',163,'change_softwaresecurephotoverification'),(490,'Can delete software secure photo verification',163,'delete_softwaresecurephotoverification'),(491,'Can add historical verification deadline',164,'add_historicalverificationdeadline'),(492,'Can change historical verification deadline',164,'change_historicalverificationdeadline'),(493,'Can delete historical verification deadline',164,'delete_historicalverificationdeadline'),(494,'Can add verification deadline',165,'add_verificationdeadline'),(495,'Can change verification deadline',165,'change_verificationdeadline'),(496,'Can delete verification deadline',165,'delete_verificationdeadline'),(497,'Can add verification checkpoint',166,'add_verificationcheckpoint'),(498,'Can change verification checkpoint',166,'change_verificationcheckpoint'),(499,'Can delete verification checkpoint',166,'delete_verificationcheckpoint'),(500,'Can add Verification Status',167,'add_verificationstatus'),(501,'Can change Verification Status',167,'change_verificationstatus'),(502,'Can delete Verification Status',167,'delete_verificationstatus'),(503,'Can add in course reverification configuration',168,'add_incoursereverificationconfiguration'),(504,'Can change in course reverification configuration',168,'change_incoursereverificationconfiguration'),(505,'Can delete in course reverification configuration',168,'delete_incoursereverificationconfiguration'),(506,'Can add icrv status emails configuration',169,'add_icrvstatusemailsconfiguration'),(507,'Can change icrv status emails configuration',169,'change_icrvstatusemailsconfiguration'),(508,'Can delete icrv status emails configuration',169,'delete_icrvstatusemailsconfiguration'),(509,'Can add skipped reverification',170,'add_skippedreverification'),(510,'Can change skipped reverification',170,'change_skippedreverification'),(511,'Can delete skipped reverification',170,'delete_skippedreverification'),(512,'Can add dark lang config',171,'add_darklangconfig'),(513,'Can change dark lang config',171,'change_darklangconfig'),(514,'Can delete dark lang config',171,'delete_darklangconfig'),(515,'Can add microsite',172,'add_microsite'),(516,'Can change microsite',172,'change_microsite'),(517,'Can delete microsite',172,'delete_microsite'),(518,'Can add microsite history',173,'add_micrositehistory'),(519,'Can change microsite history',173,'change_micrositehistory'),(520,'Can delete microsite history',173,'delete_micrositehistory'),(521,'Can add historical microsite organization mapping',174,'add_historicalmicrositeorganizationmapping'),(522,'Can change historical microsite organization mapping',174,'change_historicalmicrositeorganizationmapping'),(523,'Can delete historical microsite organization mapping',174,'delete_historicalmicrositeorganizationmapping'),(524,'Can add microsite organization mapping',175,'add_micrositeorganizationmapping'),(525,'Can change microsite organization mapping',175,'change_micrositeorganizationmapping'),(526,'Can delete microsite organization mapping',175,'delete_micrositeorganizationmapping'),(527,'Can add historical microsite template',176,'add_historicalmicrositetemplate'),(528,'Can change historical microsite template',176,'change_historicalmicrositetemplate'),(529,'Can delete historical microsite template',176,'delete_historicalmicrositetemplate'),(530,'Can add microsite template',177,'add_micrositetemplate'),(531,'Can change microsite template',177,'change_micrositetemplate'),(532,'Can delete microsite template',177,'delete_micrositetemplate'),(533,'Can add whitelisted rss url',178,'add_whitelistedrssurl'),(534,'Can change whitelisted rss url',178,'change_whitelistedrssurl'),(535,'Can delete whitelisted rss url',178,'delete_whitelistedrssurl'),(536,'Can add embargoed course',179,'add_embargoedcourse'),(537,'Can change embargoed course',179,'change_embargoedcourse'),(538,'Can delete embargoed course',179,'delete_embargoedcourse'),(539,'Can add embargoed state',180,'add_embargoedstate'),(540,'Can change embargoed state',180,'change_embargoedstate'),(541,'Can delete embargoed state',180,'delete_embargoedstate'),(542,'Can add restricted course',181,'add_restrictedcourse'),(543,'Can change restricted course',181,'change_restrictedcourse'),(544,'Can delete restricted course',181,'delete_restrictedcourse'),(545,'Can add country',182,'add_country'),(546,'Can change country',182,'change_country'),(547,'Can delete country',182,'delete_country'),(548,'Can add country access rule',183,'add_countryaccessrule'),(549,'Can change country access rule',183,'change_countryaccessrule'),(550,'Can delete country access rule',183,'delete_countryaccessrule'),(551,'Can add course access rule history',184,'add_courseaccessrulehistory'),(552,'Can change course access rule history',184,'change_courseaccessrulehistory'),(553,'Can delete course access rule history',184,'delete_courseaccessrulehistory'),(554,'Can add ip filter',185,'add_ipfilter'),(555,'Can change ip filter',185,'change_ipfilter'),(556,'Can delete ip filter',185,'delete_ipfilter'),(557,'Can add course rerun state',186,'add_coursererunstate'),(558,'Can change course rerun state',186,'change_coursererunstate'),(559,'Can delete course rerun state',186,'delete_coursererunstate'),(560,'Can add mobile api config',187,'add_mobileapiconfig'),(561,'Can change mobile api config',187,'change_mobileapiconfig'),(562,'Can delete mobile api config',187,'delete_mobileapiconfig'),(563,'Can add app version config',188,'add_appversionconfig'),(564,'Can change app version config',188,'change_appversionconfig'),(565,'Can delete app version config',188,'delete_appversionconfig'),(566,'Can add user social auth',189,'add_usersocialauth'),(567,'Can change user social auth',189,'change_usersocialauth'),(568,'Can delete user social auth',189,'delete_usersocialauth'),(569,'Can add nonce',190,'add_nonce'),(570,'Can change nonce',190,'change_nonce'),(571,'Can delete nonce',190,'delete_nonce'),(572,'Can add association',191,'add_association'),(573,'Can change association',191,'change_association'),(574,'Can delete association',191,'delete_association'),(575,'Can add code',192,'add_code'),(576,'Can change code',192,'change_code'),(577,'Can delete code',192,'delete_code'),(578,'Can add survey form',193,'add_surveyform'),(579,'Can change survey form',193,'change_surveyform'),(580,'Can delete survey form',193,'delete_surveyform'),(581,'Can add survey answer',194,'add_surveyanswer'),(582,'Can change survey answer',194,'change_surveyanswer'),(583,'Can delete survey answer',194,'delete_surveyanswer'),(584,'Can add x block asides config',195,'add_xblockasidesconfig'),(585,'Can change x block asides config',195,'change_xblockasidesconfig'),(586,'Can delete x block asides config',195,'delete_xblockasidesconfig'),(587,'Can add course overview',196,'add_courseoverview'),(588,'Can change course overview',196,'change_courseoverview'),(589,'Can delete course overview',196,'delete_courseoverview'),(590,'Can add course overview tab',197,'add_courseoverviewtab'),(591,'Can change course overview tab',197,'change_courseoverviewtab'),(592,'Can delete course overview tab',197,'delete_courseoverviewtab'),(593,'Can add course overview image set',198,'add_courseoverviewimageset'),(594,'Can change course overview image set',198,'change_courseoverviewimageset'),(595,'Can delete course overview image set',198,'delete_courseoverviewimageset'),(596,'Can add course overview image config',199,'add_courseoverviewimageconfig'),(597,'Can change course overview image config',199,'change_courseoverviewimageconfig'),(598,'Can delete course overview image config',199,'delete_courseoverviewimageconfig'),(599,'Can add course structure',200,'add_coursestructure'),(600,'Can change course structure',200,'change_coursestructure'),(601,'Can delete course structure',200,'delete_coursestructure'),(602,'Can add cors model',201,'add_corsmodel'),(603,'Can change cors model',201,'change_corsmodel'),(604,'Can delete cors model',201,'delete_corsmodel'),(605,'Can add x domain proxy configuration',202,'add_xdomainproxyconfiguration'),(606,'Can change x domain proxy configuration',202,'change_xdomainproxyconfiguration'),(607,'Can delete x domain proxy configuration',202,'delete_xdomainproxyconfiguration'),(608,'Can add commerce configuration',203,'add_commerceconfiguration'),(609,'Can change commerce configuration',203,'change_commerceconfiguration'),(610,'Can delete commerce configuration',203,'delete_commerceconfiguration'),(611,'Can add credit provider',204,'add_creditprovider'),(612,'Can change credit provider',204,'change_creditprovider'),(613,'Can delete credit provider',204,'delete_creditprovider'),(614,'Can add credit course',205,'add_creditcourse'),(615,'Can change credit course',205,'change_creditcourse'),(616,'Can delete credit course',205,'delete_creditcourse'),(617,'Can add credit requirement',206,'add_creditrequirement'),(618,'Can change credit requirement',206,'change_creditrequirement'),(619,'Can delete credit requirement',206,'delete_creditrequirement'),(620,'Can add historical credit requirement status',207,'add_historicalcreditrequirementstatus'),(621,'Can change historical credit requirement status',207,'change_historicalcreditrequirementstatus'),(622,'Can delete historical credit requirement status',207,'delete_historicalcreditrequirementstatus'),(623,'Can add credit requirement status',208,'add_creditrequirementstatus'),(624,'Can change credit requirement status',208,'change_creditrequirementstatus'),(625,'Can delete credit requirement status',208,'delete_creditrequirementstatus'),(626,'Can add credit eligibility',209,'add_crediteligibility'),(627,'Can change credit eligibility',209,'change_crediteligibility'),(628,'Can delete credit eligibility',209,'delete_crediteligibility'),(629,'Can add historical credit request',210,'add_historicalcreditrequest'),(630,'Can change historical credit request',210,'change_historicalcreditrequest'),(631,'Can delete historical credit request',210,'delete_historicalcreditrequest'),(632,'Can add credit request',211,'add_creditrequest'),(633,'Can change credit request',211,'change_creditrequest'),(634,'Can delete credit request',211,'delete_creditrequest'),(635,'Can add credit config',212,'add_creditconfig'),(636,'Can change credit config',212,'change_creditconfig'),(637,'Can delete credit config',212,'delete_creditconfig'),(638,'Can add course team',213,'add_courseteam'),(639,'Can change course team',213,'change_courseteam'),(640,'Can delete course team',213,'delete_courseteam'),(641,'Can add course team membership',214,'add_courseteammembership'),(642,'Can change course team membership',214,'change_courseteammembership'),(643,'Can delete course team membership',214,'delete_courseteammembership'),(644,'Can add x block configuration',215,'add_xblockconfiguration'),(645,'Can change x block configuration',215,'change_xblockconfiguration'),(646,'Can delete x block configuration',215,'delete_xblockconfiguration'),(647,'Can add x block studio configuration flag',216,'add_xblockstudioconfigurationflag'),(648,'Can change x block studio configuration flag',216,'change_xblockstudioconfigurationflag'),(649,'Can delete x block studio configuration flag',216,'delete_xblockstudioconfigurationflag'),(650,'Can add x block studio configuration',217,'add_xblockstudioconfiguration'),(651,'Can change x block studio configuration',217,'change_xblockstudioconfiguration'),(652,'Can delete x block studio configuration',217,'delete_xblockstudioconfiguration'),(653,'Can add bookmark',218,'add_bookmark'),(654,'Can change bookmark',218,'change_bookmark'),(655,'Can delete bookmark',218,'delete_bookmark'),(656,'Can add x block cache',219,'add_xblockcache'),(657,'Can change x block cache',219,'change_xblockcache'),(658,'Can delete x block cache',219,'delete_xblockcache'),(659,'Can add programs api config',220,'add_programsapiconfig'),(660,'Can change programs api config',220,'change_programsapiconfig'),(661,'Can delete programs api config',220,'delete_programsapiconfig'),(662,'Can add catalog integration',221,'add_catalogintegration'),(663,'Can change catalog integration',221,'change_catalogintegration'),(664,'Can delete catalog integration',221,'delete_catalogintegration'),(665,'Can add self paced configuration',222,'add_selfpacedconfiguration'),(666,'Can change self paced configuration',222,'change_selfpacedconfiguration'),(667,'Can delete self paced configuration',222,'delete_selfpacedconfiguration'),(668,'Can add kv store',223,'add_kvstore'),(669,'Can change kv store',223,'change_kvstore'),(670,'Can delete kv store',223,'delete_kvstore'),(671,'Can add credentials api config',224,'add_credentialsapiconfig'),(672,'Can change credentials api config',224,'change_credentialsapiconfig'),(673,'Can delete credentials api config',224,'delete_credentialsapiconfig'),(674,'Can add milestone',225,'add_milestone'),(675,'Can change milestone',225,'change_milestone'),(676,'Can delete milestone',225,'delete_milestone'),(677,'Can add milestone relationship type',226,'add_milestonerelationshiptype'),(678,'Can change milestone relationship type',226,'change_milestonerelationshiptype'),(679,'Can delete milestone relationship type',226,'delete_milestonerelationshiptype'),(680,'Can add course milestone',227,'add_coursemilestone'),(681,'Can change course milestone',227,'change_coursemilestone'),(682,'Can delete course milestone',227,'delete_coursemilestone'),(683,'Can add course content milestone',228,'add_coursecontentmilestone'),(684,'Can change course content milestone',228,'change_coursecontentmilestone'),(685,'Can delete course content milestone',228,'delete_coursecontentmilestone'),(686,'Can add user milestone',229,'add_usermilestone'),(687,'Can change user milestone',229,'change_usermilestone'),(688,'Can delete user milestone',229,'delete_usermilestone'),(689,'Can add course talk widget configuration',230,'add_coursetalkwidgetconfiguration'),(690,'Can change course talk widget configuration',230,'change_coursetalkwidgetconfiguration'),(691,'Can delete course talk widget configuration',230,'delete_coursetalkwidgetconfiguration'),(692,'Can add historical api access request',231,'add_historicalapiaccessrequest'),(693,'Can change historical api access request',231,'change_historicalapiaccessrequest'),(694,'Can delete historical api access request',231,'delete_historicalapiaccessrequest'),(695,'Can add api access request',1,'add_apiaccessrequest'),(696,'Can change api access request',1,'change_apiaccessrequest'),(697,'Can delete api access request',1,'delete_apiaccessrequest'),(698,'Can add api access config',232,'add_apiaccessconfig'),(699,'Can change api access config',232,'change_apiaccessconfig'),(700,'Can delete api access config',232,'delete_apiaccessconfig'),(701,'Can add catalog',233,'add_catalog'),(702,'Can change catalog',233,'change_catalog'),(703,'Can delete catalog',233,'delete_catalog'),(704,'Can add verified track cohorted course',234,'add_verifiedtrackcohortedcourse'),(705,'Can change verified track cohorted course',234,'change_verifiedtrackcohortedcourse'),(706,'Can delete verified track cohorted course',234,'delete_verifiedtrackcohortedcourse'),(707,'Can add badge class',235,'add_badgeclass'),(708,'Can change badge class',235,'change_badgeclass'),(709,'Can delete badge class',235,'delete_badgeclass'),(710,'Can add badge assertion',236,'add_badgeassertion'),(711,'Can change badge assertion',236,'change_badgeassertion'),(712,'Can delete badge assertion',236,'delete_badgeassertion'),(713,'Can add course complete image configuration',237,'add_coursecompleteimageconfiguration'),(714,'Can change course complete image configuration',237,'change_coursecompleteimageconfiguration'),(715,'Can delete course complete image configuration',237,'delete_coursecompleteimageconfiguration'),(716,'Can add course event badges configuration',238,'add_courseeventbadgesconfiguration'),(717,'Can change course event badges configuration',238,'change_courseeventbadgesconfiguration'),(718,'Can delete course event badges configuration',238,'delete_courseeventbadgesconfiguration'),(719,'Can add email marketing configuration',239,'add_emailmarketingconfiguration'),(720,'Can change email marketing configuration',239,'change_emailmarketingconfiguration'),(721,'Can delete email marketing configuration',239,'delete_emailmarketingconfiguration'),(722,'Can add answer',240,'add_answer'),(723,'Can change answer',240,'change_answer'),(724,'Can delete answer',240,'delete_answer'),(725,'Can add answer',241,'add_answer'),(726,'Can change answer',241,'change_answer'),(727,'Can delete answer',241,'delete_answer'),(728,'Can add share',242,'add_share'),(729,'Can change share',242,'change_share'),(730,'Can delete share',242,'delete_share'),(731,'Can add student item',243,'add_studentitem'),(732,'Can change student item',243,'change_studentitem'),(733,'Can delete student item',243,'delete_studentitem'),(734,'Can add submission',244,'add_submission'),(735,'Can change submission',244,'change_submission'),(736,'Can delete submission',244,'delete_submission'),(737,'Can add score',245,'add_score'),(738,'Can change score',245,'change_score'),(739,'Can delete score',245,'delete_score'),(740,'Can add score summary',246,'add_scoresummary'),(741,'Can change score summary',246,'change_scoresummary'),(742,'Can delete score summary',246,'delete_scoresummary'),(743,'Can add score annotation',247,'add_scoreannotation'),(744,'Can change score annotation',247,'change_scoreannotation'),(745,'Can delete score annotation',247,'delete_scoreannotation'),(746,'Can add rubric',248,'add_rubric'),(747,'Can change rubric',248,'change_rubric'),(748,'Can delete rubric',248,'delete_rubric'),(749,'Can add criterion',249,'add_criterion'),(750,'Can change criterion',249,'change_criterion'),(751,'Can delete criterion',249,'delete_criterion'),(752,'Can add criterion option',250,'add_criterionoption'),(753,'Can change criterion option',250,'change_criterionoption'),(754,'Can delete criterion option',250,'delete_criterionoption'),(755,'Can add assessment',251,'add_assessment'),(756,'Can change assessment',251,'change_assessment'),(757,'Can delete assessment',251,'delete_assessment'),(758,'Can add assessment part',252,'add_assessmentpart'),(759,'Can change assessment part',252,'change_assessmentpart'),(760,'Can delete assessment part',252,'delete_assessmentpart'),(761,'Can add assessment feedback option',253,'add_assessmentfeedbackoption'),(762,'Can change assessment feedback option',253,'change_assessmentfeedbackoption'),(763,'Can delete assessment feedback option',253,'delete_assessmentfeedbackoption'),(764,'Can add assessment feedback',254,'add_assessmentfeedback'),(765,'Can change assessment feedback',254,'change_assessmentfeedback'),(766,'Can delete assessment feedback',254,'delete_assessmentfeedback'),(767,'Can add peer workflow',255,'add_peerworkflow'),(768,'Can change peer workflow',255,'change_peerworkflow'),(769,'Can delete peer workflow',255,'delete_peerworkflow'),(770,'Can add peer workflow item',256,'add_peerworkflowitem'),(771,'Can change peer workflow item',256,'change_peerworkflowitem'),(772,'Can delete peer workflow item',256,'delete_peerworkflowitem'),(773,'Can add training example',257,'add_trainingexample'),(774,'Can change training example',257,'change_trainingexample'),(775,'Can delete training example',257,'delete_trainingexample'),(776,'Can add student training workflow',258,'add_studenttrainingworkflow'),(777,'Can change student training workflow',258,'change_studenttrainingworkflow'),(778,'Can delete student training workflow',258,'delete_studenttrainingworkflow'),(779,'Can add student training workflow item',259,'add_studenttrainingworkflowitem'),(780,'Can change student training workflow item',259,'change_studenttrainingworkflowitem'),(781,'Can delete student training workflow item',259,'delete_studenttrainingworkflowitem'),(782,'Can add ai classifier set',260,'add_aiclassifierset'),(783,'Can change ai classifier set',260,'change_aiclassifierset'),(784,'Can delete ai classifier set',260,'delete_aiclassifierset'),(785,'Can add ai classifier',261,'add_aiclassifier'),(786,'Can change ai classifier',261,'change_aiclassifier'),(787,'Can delete ai classifier',261,'delete_aiclassifier'),(788,'Can add ai training workflow',262,'add_aitrainingworkflow'),(789,'Can change ai training workflow',262,'change_aitrainingworkflow'),(790,'Can delete ai training workflow',262,'delete_aitrainingworkflow'),(791,'Can add ai grading workflow',263,'add_aigradingworkflow'),(792,'Can change ai grading workflow',263,'change_aigradingworkflow'),(793,'Can delete ai grading workflow',263,'delete_aigradingworkflow'),(794,'Can add staff workflow',264,'add_staffworkflow'),(795,'Can change staff workflow',264,'change_staffworkflow'),(796,'Can delete staff workflow',264,'delete_staffworkflow'),(797,'Can add assessment workflow',265,'add_assessmentworkflow'),(798,'Can change assessment workflow',265,'change_assessmentworkflow'),(799,'Can delete assessment workflow',265,'delete_assessmentworkflow'),(800,'Can add assessment workflow step',266,'add_assessmentworkflowstep'),(801,'Can change assessment workflow step',266,'change_assessmentworkflowstep'),(802,'Can delete assessment workflow step',266,'delete_assessmentworkflowstep'),(803,'Can add assessment workflow cancellation',267,'add_assessmentworkflowcancellation'),(804,'Can change assessment workflow cancellation',267,'change_assessmentworkflowcancellation'),(805,'Can delete assessment workflow cancellation',267,'delete_assessmentworkflowcancellation'),(806,'Can add profile',268,'add_profile'),(807,'Can change profile',268,'change_profile'),(808,'Can delete profile',268,'delete_profile'),(809,'Can add video',269,'add_video'),(810,'Can change video',269,'change_video'),(811,'Can delete video',269,'delete_video'),(812,'Can add course video',270,'add_coursevideo'),(813,'Can change course video',270,'change_coursevideo'),(814,'Can delete course video',270,'delete_coursevideo'),(815,'Can add encoded video',271,'add_encodedvideo'),(816,'Can change encoded video',271,'change_encodedvideo'),(817,'Can delete encoded video',271,'delete_encodedvideo'),(818,'Can add subtitle',272,'add_subtitle'),(819,'Can change subtitle',272,'change_subtitle'),(820,'Can delete subtitle',272,'delete_subtitle'),(821,'Can add proctored exam',273,'add_proctoredexam'),(822,'Can change proctored exam',273,'change_proctoredexam'),(823,'Can delete proctored exam',273,'delete_proctoredexam'),(824,'Can add Proctored exam review policy',274,'add_proctoredexamreviewpolicy'),(825,'Can change Proctored exam review policy',274,'change_proctoredexamreviewpolicy'),(826,'Can delete Proctored exam review policy',274,'delete_proctoredexamreviewpolicy'),(827,'Can add proctored exam review policy history',275,'add_proctoredexamreviewpolicyhistory'),(828,'Can change proctored exam review policy history',275,'change_proctoredexamreviewpolicyhistory'),(829,'Can delete proctored exam review policy history',275,'delete_proctoredexamreviewpolicyhistory'),(830,'Can add proctored exam attempt',276,'add_proctoredexamstudentattempt'),(831,'Can change proctored exam attempt',276,'change_proctoredexamstudentattempt'),(832,'Can delete proctored exam attempt',276,'delete_proctoredexamstudentattempt'),(833,'Can add proctored exam attempt history',277,'add_proctoredexamstudentattempthistory'),(834,'Can change proctored exam attempt history',277,'change_proctoredexamstudentattempthistory'),(835,'Can delete proctored exam attempt history',277,'delete_proctoredexamstudentattempthistory'),(836,'Can add proctored allowance',278,'add_proctoredexamstudentallowance'),(837,'Can change proctored allowance',278,'change_proctoredexamstudentallowance'),(838,'Can delete proctored allowance',278,'delete_proctoredexamstudentallowance'),(839,'Can add proctored allowance history',279,'add_proctoredexamstudentallowancehistory'),(840,'Can change proctored allowance history',279,'change_proctoredexamstudentallowancehistory'),(841,'Can delete proctored allowance history',279,'delete_proctoredexamstudentallowancehistory'),(842,'Can add Proctored exam software secure review',280,'add_proctoredexamsoftwaresecurereview'),(843,'Can change Proctored exam software secure review',280,'change_proctoredexamsoftwaresecurereview'),(844,'Can delete Proctored exam software secure review',280,'delete_proctoredexamsoftwaresecurereview'),(845,'Can add Proctored exam review archive',281,'add_proctoredexamsoftwaresecurereviewhistory'),(846,'Can change Proctored exam review archive',281,'change_proctoredexamsoftwaresecurereviewhistory'),(847,'Can delete Proctored exam review archive',281,'delete_proctoredexamsoftwaresecurereviewhistory'),(848,'Can add proctored exam software secure comment',282,'add_proctoredexamsoftwaresecurecomment'),(849,'Can change proctored exam software secure comment',282,'change_proctoredexamsoftwaresecurecomment'),(850,'Can delete proctored exam software secure comment',282,'delete_proctoredexamsoftwaresecurecomment'),(851,'Can add organization',283,'add_organization'),(852,'Can change organization',283,'change_organization'),(853,'Can delete organization',283,'delete_organization'),(854,'Can add Link Course',284,'add_organizationcourse'),(855,'Can change Link Course',284,'change_organizationcourse'),(856,'Can delete Link Course',284,'delete_organizationcourse'),(857,'Can add historical Enterprise Customer',285,'add_historicalenterprisecustomer'),(858,'Can change historical Enterprise Customer',285,'change_historicalenterprisecustomer'),(859,'Can delete historical Enterprise Customer',285,'delete_historicalenterprisecustomer'),(860,'Can add Enterprise Customer',286,'add_enterprisecustomer'),(861,'Can change Enterprise Customer',286,'change_enterprisecustomer'),(862,'Can delete Enterprise Customer',286,'delete_enterprisecustomer'),(863,'Can add Enterprise Customer User',287,'add_enterprisecustomeruser'),(864,'Can change Enterprise Customer User',287,'change_enterprisecustomeruser'),(865,'Can delete Enterprise Customer User',287,'delete_enterprisecustomeruser'),(866,'Can add pending enterprise customer user',288,'add_pendingenterprisecustomeruser'),(867,'Can change pending enterprise customer user',288,'change_pendingenterprisecustomeruser'),(868,'Can delete pending enterprise customer user',288,'delete_pendingenterprisecustomeruser'),(869,'Can add Branding Configuration',289,'add_enterprisecustomerbrandingconfiguration'),(870,'Can change Branding Configuration',289,'change_enterprisecustomerbrandingconfiguration'),(871,'Can delete Branding Configuration',289,'delete_enterprisecustomerbrandingconfiguration'),(872,'Can add enterprise customer identity provider',290,'add_enterprisecustomeridentityprovider'),(873,'Can change enterprise customer identity provider',290,'change_enterprisecustomeridentityprovider'),(874,'Can delete enterprise customer identity provider',290,'delete_enterprisecustomeridentityprovider'),(875,'Can add historical Data Sharing Consent Audit State',291,'add_historicaluserdatasharingconsentaudit'),(876,'Can change historical Data Sharing Consent Audit State',291,'change_historicaluserdatasharingconsentaudit'),(877,'Can delete historical Data Sharing Consent Audit State',291,'delete_historicaluserdatasharingconsentaudit'),(878,'Can add Data Sharing Consent Audit State',292,'add_userdatasharingconsentaudit'),(879,'Can change Data Sharing Consent Audit State',292,'change_userdatasharingconsentaudit'),(880,'Can delete Data Sharing Consent Audit State',292,'delete_userdatasharingconsentaudit'),(881,'Can add student module history extended',293,'add_studentmodulehistoryextended'),(882,'Can change student module history extended',293,'change_studentmodulehistoryextended'),(883,'Can delete student module history extended',293,'delete_studentmodulehistoryextended'),(884,'Can add video upload config',294,'add_videouploadconfig'),(885,'Can change video upload config',294,'change_videouploadconfig'),(886,'Can delete video upload config',294,'delete_videouploadconfig'),(887,'Can add push notification config',295,'add_pushnotificationconfig'),(888,'Can change push notification config',295,'change_pushnotificationconfig'),(889,'Can delete push notification config',295,'delete_pushnotificationconfig'),(890,'Can add course creator',296,'add_coursecreator'),(891,'Can change course creator',296,'change_coursecreator'),(892,'Can delete course creator',296,'delete_coursecreator'),(893,'Can add studio config',297,'add_studioconfig'),(894,'Can change studio config',297,'change_studioconfig'),(895,'Can delete studio config',297,'delete_studioconfig'),(896,'Can add tag categories',298,'add_tagcategories'),(897,'Can change tag categories',298,'change_tagcategories'),(898,'Can delete tag categories',298,'delete_tagcategories'),(899,'Can add tag available values',299,'add_tagavailablevalues'),(900,'Can change tag available values',299,'change_tagavailablevalues'),(901,'Can delete tag available values',299,'delete_tagavailablevalues'),(902,'Can add user task status',300,'add_usertaskstatus'),(903,'Can change user task status',300,'change_usertaskstatus'),(904,'Can delete user task status',300,'delete_usertaskstatus'),(905,'Can add user task artifact',301,'add_usertaskartifact'),(906,'Can change user task artifact',301,'change_usertaskartifact'),(907,'Can delete user task artifact',301,'delete_usertaskartifact'),(908,'Can add flag',302,'add_flag'),(909,'Can change flag',302,'change_flag'),(910,'Can delete flag',302,'delete_flag'),(911,'Can add switch',303,'add_switch'),(912,'Can change switch',303,'change_switch'),(913,'Can delete switch',303,'delete_switch'),(914,'Can add sample',304,'add_sample'),(915,'Can change sample',304,'change_sample'),(916,'Can delete sample',304,'delete_sample'),(917,'Can deactivate, but NOT delete users',36,'can_deactivate_users'),(918,'Can add course mode target',305,'add_coursemodetarget'),(919,'Can change course mode target',305,'change_coursemodetarget'),(920,'Can delete course mode target',305,'delete_coursemodetarget'),(921,'Can add ignore mobile available flag config',306,'add_ignoremobileavailableflagconfig'),(922,'Can change ignore mobile available flag config',306,'change_ignoremobileavailableflagconfig'),(923,'Can delete ignore mobile available flag config',306,'delete_ignoremobileavailableflagconfig'),(924,'Can add user social auth',307,'add_usersocialauth'),(925,'Can change user social auth',307,'change_usersocialauth'),(926,'Can delete user social auth',307,'delete_usersocialauth'),(927,'Can add nonce',308,'add_nonce'),(928,'Can change nonce',308,'change_nonce'),(929,'Can delete nonce',308,'delete_nonce'),(930,'Can add association',309,'add_association'),(931,'Can change association',309,'change_association'),(932,'Can delete association',309,'delete_association'),(933,'Can add code',310,'add_code'),(934,'Can change code',310,'change_code'),(935,'Can delete code',310,'delete_code'),(936,'Can add failed task',311,'add_failedtask'),(937,'Can change failed task',311,'change_failedtask'),(938,'Can delete failed task',311,'delete_failedtask'),(939,'Can add crawlers config',312,'add_crawlersconfig'),(940,'Can change crawlers config',312,'change_crawlersconfig'),(941,'Can delete crawlers config',312,'delete_crawlersconfig'),(942,'Can add pending enrollment',313,'add_pendingenrollment'),(943,'Can change pending enrollment',313,'change_pendingenrollment'),(944,'Can delete pending enrollment',313,'delete_pendingenrollment'),(945,'Can add historical Enterprise Customer Entitlement',314,'add_historicalenterprisecustomerentitlement'),(946,'Can change historical Enterprise Customer Entitlement',314,'change_historicalenterprisecustomerentitlement'),(947,'Can delete historical Enterprise Customer Entitlement',314,'delete_historicalenterprisecustomerentitlement'),(948,'Can add Enterprise Customer Entitlement',315,'add_enterprisecustomerentitlement'),(949,'Can change Enterprise Customer Entitlement',315,'change_enterprisecustomerentitlement'),(950,'Can delete Enterprise Customer Entitlement',315,'delete_enterprisecustomerentitlement'),(951,'Can add historical enterprise course enrollment',316,'add_historicalenterprisecourseenrollment'),(952,'Can change historical enterprise course enrollment',316,'change_historicalenterprisecourseenrollment'),(953,'Can delete historical enterprise course enrollment',316,'delete_historicalenterprisecourseenrollment'),(954,'Can add enterprise course enrollment',317,'add_enterprisecourseenrollment'),(955,'Can change enterprise course enrollment',317,'change_enterprisecourseenrollment'),(956,'Can delete enterprise course enrollment',317,'delete_enterprisecourseenrollment'),(957,'Can add historical enrollment notification email template',318,'add_historicalenrollmentnotificationemailtemplate'),(958,'Can change historical enrollment notification email template',318,'change_historicalenrollmentnotificationemailtemplate'),(959,'Can delete historical enrollment notification email template',318,'delete_historicalenrollmentnotificationemailtemplate'),(960,'Can add enrollment notification email template',319,'add_enrollmentnotificationemailtemplate'),(961,'Can change enrollment notification email template',319,'change_enrollmentnotificationemailtemplate'),(962,'Can delete enrollment notification email template',319,'delete_enrollmentnotificationemailtemplate'),(963,'Can add grade report setting',320,'add_gradereportsetting'),(964,'Can change grade report setting',320,'change_gradereportsetting'),(965,'Can delete grade report setting',320,'delete_gradereportsetting'),(966,'Can add compute grades setting',321,'add_computegradessetting'),(967,'Can change compute grades setting',321,'change_computegradessetting'),(968,'Can delete compute grades setting',321,'delete_computegradessetting'),(969,'Can add block structure configuration',322,'add_blockstructureconfiguration'),(970,'Can change block structure configuration',322,'change_blockstructureconfiguration'),(971,'Can delete block structure configuration',322,'delete_blockstructureconfiguration'),(972,'Can add block structure model',323,'add_blockstructuremodel'),(973,'Can change block structure model',323,'change_blockstructuremodel'),(974,'Can delete block structure model',323,'delete_blockstructuremodel'),(975,'Can add hls playback enabled flag',324,'add_hlsplaybackenabledflag'),(976,'Can change hls playback enabled flag',324,'change_hlsplaybackenabledflag'),(977,'Can delete hls playback enabled flag',324,'delete_hlsplaybackenabledflag'),(978,'Can add course hls playback enabled flag',325,'add_coursehlsplaybackenabledflag'),(979,'Can change course hls playback enabled flag',325,'change_coursehlsplaybackenabledflag'),(980,'Can delete course hls playback enabled flag',325,'delete_coursehlsplaybackenabledflag'),(981,'Can add Waffle flag course override',326,'add_waffleflagcourseoverridemodel'),(982,'Can change Waffle flag course override',326,'change_waffleflagcourseoverridemodel'),(983,'Can delete Waffle flag course override',326,'delete_waffleflagcourseoverridemodel'),(984,'Can add Enterprise Integrated Channel',327,'add_enterpriseintegratedchannel'),(985,'Can change Enterprise Integrated Channel',327,'change_enterpriseintegratedchannel'),(986,'Can delete Enterprise Integrated Channel',327,'delete_enterpriseintegratedchannel'),(987,'Can add sap success factors global configuration',328,'add_sapsuccessfactorsglobalconfiguration'),(988,'Can change sap success factors global configuration',328,'change_sapsuccessfactorsglobalconfiguration'),(989,'Can delete sap success factors global configuration',328,'delete_sapsuccessfactorsglobalconfiguration'),(990,'Can add historical sap success factors enterprise customer configuration',329,'add_historicalsapsuccessfactorsenterprisecustomerconfiguration'),(991,'Can change historical sap success factors enterprise customer configuration',329,'change_historicalsapsuccessfactorsenterprisecustomerconfiguration'),(992,'Can delete historical sap success factors enterprise customer configuration',329,'delete_historicalsapsuccessfactorsenterprisecustomerconfiguration'),(993,'Can add sap success factors enterprise customer configuration',330,'add_sapsuccessfactorsenterprisecustomerconfiguration'),(994,'Can change sap success factors enterprise customer configuration',330,'change_sapsuccessfactorsenterprisecustomerconfiguration'),(995,'Can delete sap success factors enterprise customer configuration',330,'delete_sapsuccessfactorsenterprisecustomerconfiguration'),(996,'Can add learner data transmission audit',331,'add_learnerdatatransmissionaudit'),(997,'Can change learner data transmission audit',331,'change_learnerdatatransmissionaudit'),(998,'Can delete learner data transmission audit',331,'delete_learnerdatatransmissionaudit'),(999,'Can add catalog transmission audit',332,'add_catalogtransmissionaudit'),(1000,'Can change catalog transmission audit',332,'change_catalogtransmissionaudit'),(1001,'Can delete catalog transmission audit',332,'delete_catalogtransmissionaudit'),(1002,'Can add course edit lti fields enabled flag',333,'add_courseeditltifieldsenabledflag'),(1003,'Can change course edit lti fields enabled flag',333,'change_courseeditltifieldsenabledflag'),(1004,'Can delete course edit lti fields enabled flag',333,'delete_courseeditltifieldsenabledflag'),(1005,'Can add course discussion settings',334,'add_coursediscussionsettings'),(1006,'Can change course discussion settings',334,'change_coursediscussionsettings'),(1007,'Can delete course discussion settings',334,'delete_coursediscussionsettings'),(1008,'Can add Experiment Data',335,'add_experimentdata'),(1009,'Can change Experiment Data',335,'change_experimentdata'),(1010,'Can delete Experiment Data',335,'delete_experimentdata'),(1011,'Can add unregistered learner cohort assignments',336,'add_unregisteredlearnercohortassignments'),(1012,'Can change unregistered learner cohort assignments',336,'change_unregisteredlearnercohortassignments'),(1013,'Can delete unregistered learner cohort assignments',336,'delete_unregisteredlearnercohortassignments'),(1014,'Can add user social auth',337,'add_usersocialauth'),(1015,'Can change user social auth',337,'change_usersocialauth'),(1016,'Can delete user social auth',337,'delete_usersocialauth'),(1017,'Can add nonce',338,'add_nonce'),(1018,'Can change nonce',338,'change_nonce'),(1019,'Can delete nonce',338,'delete_nonce'),(1020,'Can add association',339,'add_association'),(1021,'Can change association',339,'change_association'),(1022,'Can delete association',339,'delete_association'),(1023,'Can add code',340,'add_code'),(1024,'Can change code',340,'change_code'),(1025,'Can delete code',340,'delete_code'),(1026,'Can add partial',341,'add_partial'),(1027,'Can change partial',341,'change_partial'),(1028,'Can delete partial',341,'delete_partial'),(1029,'Can add chord data',342,'add_chorddata'),(1030,'Can change chord data',342,'change_chorddata'),(1031,'Can delete chord data',342,'delete_chorddata'),(1032,'Can add video transcript enabled flag',343,'add_videotranscriptenabledflag'),(1033,'Can change video transcript enabled flag',343,'change_videotranscriptenabledflag'),(1034,'Can delete video transcript enabled flag',343,'delete_videotranscriptenabledflag'),(1035,'Can add course video transcript enabled flag',344,'add_coursevideotranscriptenabledflag'),(1036,'Can change course video transcript enabled flag',344,'change_coursevideotranscriptenabledflag'),(1037,'Can delete course video transcript enabled flag',344,'delete_coursevideotranscriptenabledflag'),(1038,'Can add video pipeline integration',345,'add_videopipelineintegration'),(1039,'Can change video pipeline integration',345,'change_videopipelineintegration'),(1040,'Can delete video pipeline integration',345,'delete_videopipelineintegration'),(1041,'Can add video uploads enabled by default',346,'add_videouploadsenabledbydefault'),(1042,'Can change video uploads enabled by default',346,'change_videouploadsenabledbydefault'),(1043,'Can delete video uploads enabled by default',346,'delete_videouploadsenabledbydefault'),(1044,'Can add course video uploads enabled by default',347,'add_coursevideouploadsenabledbydefault'),(1045,'Can change course video uploads enabled by default',347,'change_coursevideouploadsenabledbydefault'),(1046,'Can delete course video uploads enabled by default',347,'delete_coursevideouploadsenabledbydefault'),(1047,'Can add dynamic upgrade deadline configuration',348,'add_dynamicupgradedeadlineconfiguration'),(1048,'Can change dynamic upgrade deadline configuration',348,'change_dynamicupgradedeadlineconfiguration'),(1049,'Can delete dynamic upgrade deadline configuration',348,'delete_dynamicupgradedeadlineconfiguration'),(1050,'Can add course dynamic upgrade deadline configuration',349,'add_coursedynamicupgradedeadlineconfiguration'),(1051,'Can change course dynamic upgrade deadline configuration',349,'change_coursedynamicupgradedeadlineconfiguration'),(1052,'Can delete course dynamic upgrade deadline configuration',349,'delete_coursedynamicupgradedeadlineconfiguration'),(1053,'Can add org dynamic upgrade deadline configuration',350,'add_orgdynamicupgradedeadlineconfiguration'),(1054,'Can change org dynamic upgrade deadline configuration',350,'change_orgdynamicupgradedeadlineconfiguration'),(1055,'Can delete org dynamic upgrade deadline configuration',350,'delete_orgdynamicupgradedeadlineconfiguration'),(1056,'Can add social link',351,'add_sociallink'),(1057,'Can change social link',351,'change_sociallink'),(1058,'Can delete social link',351,'delete_sociallink'),(1059,'Can add course entitlement policy',352,'add_courseentitlementpolicy'),(1060,'Can change course entitlement policy',352,'change_courseentitlementpolicy'),(1061,'Can delete course entitlement policy',352,'delete_courseentitlementpolicy'),(1062,'Can add course entitlement',353,'add_courseentitlement'),(1063,'Can change course entitlement',353,'change_courseentitlement'),(1064,'Can delete course entitlement',353,'delete_courseentitlement'),(1065,'Can add video image',354,'add_videoimage'),(1066,'Can change video image',354,'change_videoimage'),(1067,'Can delete video image',354,'delete_videoimage'),(1068,'Can add video transcript',355,'add_videotranscript'),(1069,'Can change video transcript',355,'change_videotranscript'),(1070,'Can delete video transcript',355,'delete_videotranscript'),(1071,'Can add transcript preference',356,'add_transcriptpreference'),(1072,'Can change transcript preference',356,'change_transcriptpreference'),(1073,'Can delete transcript preference',356,'delete_transcriptpreference'),(1074,'Can add third party transcript credentials state',357,'add_thirdpartytranscriptcredentialsstate'),(1075,'Can change third party transcript credentials state',357,'change_thirdpartytranscriptcredentialsstate'),(1076,'Can delete third party transcript credentials state',357,'delete_thirdpartytranscriptcredentialsstate'),(1077,'Can add migrate verified track cohorts setting',358,'add_migrateverifiedtrackcohortssetting'),(1078,'Can change migrate verified track cohorts setting',358,'change_migrateverifiedtrackcohortssetting'),(1079,'Can delete migrate verified track cohorts setting',358,'delete_migrateverifiedtrackcohortssetting'),(1080,'Can add course goal',359,'add_coursegoal'),(1081,'Can change course goal',359,'change_coursegoal'),(1082,'Can delete course goal',359,'delete_coursegoal'),(1083,'Can add block completion',360,'add_blockcompletion'),(1084,'Can change block completion',360,'change_blockcompletion'),(1085,'Can delete block completion',360,'delete_blockcompletion'),(1086,'Can add Experiment Key-Value Pair',361,'add_experimentkeyvalue'),(1087,'Can change Experiment Key-Value Pair',361,'change_experimentkeyvalue'),(1088,'Can delete Experiment Key-Value Pair',361,'delete_experimentkeyvalue'),(1089,'Can add historical Enterprise Customer Catalog',362,'add_historicalenterprisecustomercatalog'),(1090,'Can change historical Enterprise Customer Catalog',362,'change_historicalenterprisecustomercatalog'),(1091,'Can delete historical Enterprise Customer Catalog',362,'delete_historicalenterprisecustomercatalog'),(1092,'Can add Enterprise Customer Catalog',363,'add_enterprisecustomercatalog'),(1093,'Can change Enterprise Customer Catalog',363,'change_enterprisecustomercatalog'),(1094,'Can delete Enterprise Customer Catalog',363,'delete_enterprisecustomercatalog'),(1095,'Can add enterprise customer reporting configuration',364,'add_enterprisecustomerreportingconfiguration'),(1096,'Can change enterprise customer reporting configuration',364,'change_enterprisecustomerreportingconfiguration'),(1097,'Can delete enterprise customer reporting configuration',364,'delete_enterprisecustomerreportingconfiguration'),(1098,'Can add historical Data Sharing Consent Record',365,'add_historicaldatasharingconsent'),(1099,'Can change historical Data Sharing Consent Record',365,'change_historicaldatasharingconsent'),(1100,'Can delete historical Data Sharing Consent Record',365,'delete_historicaldatasharingconsent'),(1101,'Can add Data Sharing Consent Record',366,'add_datasharingconsent'),(1102,'Can change Data Sharing Consent Record',366,'change_datasharingconsent'),(1103,'Can delete Data Sharing Consent Record',366,'delete_datasharingconsent'),(1104,'Can add learner data transmission audit',367,'add_learnerdatatransmissionaudit'),(1105,'Can change learner data transmission audit',367,'change_learnerdatatransmissionaudit'),(1106,'Can delete learner data transmission audit',367,'delete_learnerdatatransmissionaudit'),(1107,'Can add catalog transmission audit',368,'add_catalogtransmissionaudit'),(1108,'Can change catalog transmission audit',368,'change_catalogtransmissionaudit'),(1109,'Can delete catalog transmission audit',368,'delete_catalogtransmissionaudit'),(1110,'Can add degreed global configuration',369,'add_degreedglobalconfiguration'),(1111,'Can change degreed global configuration',369,'change_degreedglobalconfiguration'),(1112,'Can delete degreed global configuration',369,'delete_degreedglobalconfiguration'),(1113,'Can add historical degreed enterprise customer configuration',370,'add_historicaldegreedenterprisecustomerconfiguration'),(1114,'Can change historical degreed enterprise customer configuration',370,'change_historicaldegreedenterprisecustomerconfiguration'),(1115,'Can delete historical degreed enterprise customer configuration',370,'delete_historicaldegreedenterprisecustomerconfiguration'),(1116,'Can add degreed enterprise customer configuration',371,'add_degreedenterprisecustomerconfiguration'),(1117,'Can change degreed enterprise customer configuration',371,'change_degreedenterprisecustomerconfiguration'),(1118,'Can delete degreed enterprise customer configuration',371,'delete_degreedenterprisecustomerconfiguration'),(1119,'Can add degreed learner data transmission audit',372,'add_degreedlearnerdatatransmissionaudit'),(1120,'Can change degreed learner data transmission audit',372,'change_degreedlearnerdatatransmissionaudit'),(1121,'Can delete degreed learner data transmission audit',372,'delete_degreedlearnerdatatransmissionaudit'),(1122,'Can add sap success factors learner data transmission audit',373,'add_sapsuccessfactorslearnerdatatransmissionaudit'),(1123,'Can change sap success factors learner data transmission audit',373,'change_sapsuccessfactorslearnerdatatransmissionaudit'),(1124,'Can delete sap success factors learner data transmission audit',373,'delete_sapsuccessfactorslearnerdatatransmissionaudit'),(1125,'Can add persistent subsection grade override',374,'add_persistentsubsectiongradeoverride'),(1126,'Can change persistent subsection grade override',374,'change_persistentsubsectiongradeoverride'),(1127,'Can delete persistent subsection grade override',374,'delete_persistentsubsectiongradeoverride'),(1128,'Can add Schedule',375,'add_schedule'),(1129,'Can change Schedule',375,'change_schedule'),(1130,'Can delete Schedule',375,'delete_schedule'),(1131,'Can add schedule config',376,'add_scheduleconfig'),(1132,'Can change schedule config',376,'change_scheduleconfig'),(1133,'Can delete schedule config',376,'delete_scheduleconfig'),(1134,'Can add schedule experience',377,'add_scheduleexperience'),(1135,'Can change schedule experience',377,'change_scheduleexperience'),(1136,'Can delete schedule experience',377,'delete_scheduleexperience'),(1137,'Can add new assets page flag',378,'add_newassetspageflag'),(1138,'Can change new assets page flag',378,'change_newassetspageflag'),(1139,'Can delete new assets page flag',378,'delete_newassetspageflag'),(1140,'Can add course new assets page flag',379,'add_coursenewassetspageflag'),(1141,'Can change course new assets page flag',379,'change_coursenewassetspageflag'),(1142,'Can delete course new assets page flag',379,'delete_coursenewassetspageflag');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -701,7 +823,7 @@ CREATE TABLE `auth_registration` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `activation_key` (`activation_key`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `auth_registration_user_id_f99bc297_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `auth_registration_user_id_734af68780d0cf34_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -725,7 +847,7 @@ CREATE TABLE `auth_user` (
   `password` varchar(128) NOT NULL,
   `last_login` datetime(6) DEFAULT NULL,
   `is_superuser` tinyint(1) NOT NULL,
-  `username` varchar(150) NOT NULL,
+  `username` varchar(30) NOT NULL,
   `first_name` varchar(30) NOT NULL,
   `last_name` varchar(30) NOT NULL,
   `email` varchar(254) NOT NULL,
@@ -735,7 +857,7 @@ CREATE TABLE `auth_user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -744,7 +866,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'!9hFNXEDuhMcAGVL1s5Peh86mW7e2EdlqAAxtgNwE',NULL,0,'ecommerce_worker','','','ecommerce_worker@fake.email',0,1,'2019-09-25 19:50:03.886635'),(2,'!wPXcxapaBOk2rf8gli0oHSr1VTbopBbaXyGcmDes',NULL,0,'login_service_user','','','login_service_user@fake.email',0,1,'2019-09-25 19:56:38.173935'),(3,'pbkdf2_sha256$36000$mNT1mz4BaWOa$aP2gtqCw64NsisQcaxWorjOJ8jvJDLCyTekEJVw68dI=',NULL,1,'edx','','','edx@example.com',1,1,'2019-09-25 20:03:39.961630'),(4,'pbkdf2_sha256$36000$D1vwMoMqY7el$OwQtcNFBUoP+0jtS/eGUGpyg0lyM7HtZ+418zAyVYTM=',NULL,0,'enterprise_worker','','','enterprise_worker@example.com',0,1,'2019-09-25 20:03:57.631566'),(5,'pbkdf2_sha256$20000$TjE34FJjc3vv$0B7GUmH8RwrOc/BvMoxjb5j8EgnWTt3sxorDANeF7Qw=',NULL,0,'honor','','','honor@example.com',0,1,'2019-09-25 20:05:48.062101'),(6,'pbkdf2_sha256$20000$TjE34FJjc3vv$0B7GUmH8RwrOc/BvMoxjb5j8EgnWTt3sxorDANeF7Qw=',NULL,0,'audit','','','audit@example.com',0,1,'2019-09-25 20:05:57.829341'),(7,'pbkdf2_sha256$20000$TjE34FJjc3vv$0B7GUmH8RwrOc/BvMoxjb5j8EgnWTt3sxorDANeF7Qw=',NULL,0,'verified','','','verified@example.com',0,1,'2019-09-25 20:06:07.592678'),(8,'pbkdf2_sha256$20000$TjE34FJjc3vv$0B7GUmH8RwrOc/BvMoxjb5j8EgnWTt3sxorDANeF7Qw=',NULL,0,'staff','','','staff@example.com',1,1,'2019-09-25 20:06:17.564005'),(9,'pbkdf2_sha256$36000$jfNToseZrs3c$bmFAlIqVkI0ON651PJ/Fx/za0eLtlrN81nCGHOcy+xI=',NULL,1,'retirement_service_worker','','','retirement_service_worker@example.com',1,1,'2019-09-25 20:15:23.100598'),(10,'pbkdf2_sha256$36000$eBrlx50jVzIN$SZxuhSiojmyJhbBQ9wThZHFPA4U18wxrBLcEciha8Rs=',NULL,1,'discovery_worker','','','discovery_worker@example.com',1,1,'2019-09-25 20:23:07.943645'),(11,'pbkdf2_sha256$36000$7ZG3ru4s6Xkn$khRQ7c2V7k7vvZCm7hsO33V45EPYsn2dDcE6BqMWzTo=',NULL,1,'credentials_worker','','','credentials_worker@example.com',1,1,'2019-09-25 20:27:02.233473'),(12,'pbkdf2_sha256$36000$kYwTo1YXMyOs$UWfITBzIn3ho8HPX3Eo6lLuJuzn9AAOAlyd4UqAM2sk=',NULL,1,'edx_notes_api_worker','','','edx_notes_api_worker@example.com',1,1,'2019-09-25 20:28:10.313703'),(13,'pbkdf2_sha256$36000$bVdGAELNlcrN$7orwIB/FpEGVxrWG0gRKrdX4m10yjvuEp3uB+dhOcqQ=',NULL,1,'registrar_worker','','','registrar_worker@example.com',1,1,'2019-09-25 20:29:28.792309');
+INSERT INTO `auth_user` VALUES (1,'!M9I2WXRegdpSxWvfvOY61ceUPEMEhCNrhMM2huV8',NULL,1,'ecommerce_worker','','','ecommerce_worker@example.com',1,1,'2016-12-17 01:36:43.677170'),(2,'pbkdf2_sha256$20000$u8I8y2VuUvqV$735GMkStWaNyOaD6mB81isaTJjgr7AGl1RAZ6Nci4w0=','2016-12-18 05:11:31.932674',1,'edx','','','edx@example.com',1,1,'2016-12-17 01:53:34.104225'),(3,'pbkdf2_sha256$20000$7LkYbekAHaMd$2InidT7nklBXmbU7LBjV/KrV+xZhLENf6CqU6u/FwM4=',NULL,1,'credentials_worker','','','credentials_worker@example.com',1,1,'2016-12-17 01:53:56.965130'),(4,'pbkdf2_sha256$20000$cteCw0RJ3uVK$rkfQUabaBl2XTR4XHI7CSQMVuaznmAV7o/CsJI3utjg=',NULL,1,'discovery_worker','','','discovery_worker@example.com',1,1,'2016-12-17 01:55:18.267378'),(5,'pbkdf2_sha256$20000$gsjW1GgOxZZM$slHH+xxXLN0bl49irkkMIoyvmvBdL/PxOhU7rddgMQY=',NULL,0,'programs_worker','','','programs_worker@example.com',1,1,'2016-12-17 01:59:43.985839'),(6,'pbkdf2_sha256$20000$TjE34FJjc3vv$0B7GUmH8RwrOc/BvMoxjb5j8EgnWTt3sxorDANeF7Qw=',NULL,0,'honor','','','honor@example.com',0,1,'2017-06-07 00:44:10.768269'),(7,'pbkdf2_sha256$20000$TjE34FJjc3vv$0B7GUmH8RwrOc/BvMoxjb5j8EgnWTt3sxorDANeF7Qw=',NULL,0,'audit','','','audit@example.com',0,1,'2017-06-07 00:44:15.095537'),(8,'pbkdf2_sha256$20000$TjE34FJjc3vv$0B7GUmH8RwrOc/BvMoxjb5j8EgnWTt3sxorDANeF7Qw=',NULL,0,'verified','','','verified@example.com',0,1,'2017-06-07 00:44:19.391633'),(9,'pbkdf2_sha256$20000$TjE34FJjc3vv$0B7GUmH8RwrOc/BvMoxjb5j8EgnWTt3sxorDANeF7Qw=',NULL,0,'staff','','','staff@example.com',1,1,'2017-06-07 00:44:23.760465'),(10,'pbkdf2_sha256$20000$ayR9ljKsRuTn$O/xC1JEi+5hoiwVmOLywLz4YWiwfITXhGgFTSyEyxb8=',NULL,0,'enterprise_worker','','','enterprise_worker@example.com',0,1,'2018-01-31 21:13:18.474889');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -759,10 +881,10 @@ CREATE TABLE `auth_user_groups` (
   `user_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `auth_user_groups_user_id_group_id_94350c0c_uniq` (`user_id`,`group_id`),
-  KEY `auth_user_groups_group_id_97559544_fk_auth_group_id` (`group_id`),
-  CONSTRAINT `auth_user_groups_group_id_97559544_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
-  CONSTRAINT `auth_user_groups_user_id_6a12ed8b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `user_id` (`user_id`,`group_id`),
+  KEY `auth_user_groups_group_id_33ac548dcf5f8e37_fk_auth_group_id` (`group_id`),
+  CONSTRAINT `auth_user_groups_group_id_33ac548dcf5f8e37_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
+  CONSTRAINT `auth_user_groups_user_id_4b5ed4ffdb8fd9b0_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -786,10 +908,10 @@ CREATE TABLE `auth_user_user_permissions` (
   `user_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `auth_user_user_permissions_user_id_permission_id_14a6b632_uniq` (`user_id`,`permission_id`),
-  KEY `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` (`permission_id`),
-  CONSTRAINT `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
-  CONSTRAINT `auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `user_id` (`user_id`,`permission_id`),
+  KEY `auth_user_u_permission_id_384b62483d7071f0_fk_auth_permission_id` (`permission_id`),
+  CONSTRAINT `auth_user_u_permission_id_384b62483d7071f0_fk_auth_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  CONSTRAINT `auth_user_user_permissi_user_id_7f0938558328534a_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -826,16 +948,18 @@ CREATE TABLE `auth_userprofile` (
   `bio` varchar(3000) DEFAULT NULL,
   `profile_image_uploaded_at` datetime(6) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
+  `title` varchar(512) DEFAULT NULL,
+  `avatar_url` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
-  KEY `auth_userprofile_name_50909f10` (`name`),
-  KEY `auth_userprofile_language_8948d814` (`language`),
-  KEY `auth_userprofile_location_ca92e4f6` (`location`),
-  KEY `auth_userprofile_year_of_birth_6559b9a5` (`year_of_birth`),
-  KEY `auth_userprofile_gender_44a122fb` (`gender`),
-  KEY `auth_userprofile_level_of_education_93927e04` (`level_of_education`),
-  CONSTRAINT `auth_userprofile_user_id_62634b27_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+  KEY `auth_userprofile_b068931c` (`name`),
+  KEY `auth_userprofile_8512ae7d` (`language`),
+  KEY `auth_userprofile_d5189de0` (`location`),
+  KEY `auth_userprofile_8939d49d` (`year_of_birth`),
+  KEY `auth_userprofile_cc90f191` (`gender`),
+  KEY `auth_userprofile_a895faa8` (`level_of_education`),
+  CONSTRAINT `auth_userprofile_user_id_4c194f9b5650ad70_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -844,7 +968,7 @@ CREATE TABLE `auth_userprofile` (
 
 LOCK TABLES `auth_userprofile` WRITE;
 /*!40000 ALTER TABLE `auth_userprofile` DISABLE KEYS */;
-INSERT INTO `auth_userprofile` VALUES (1,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,3),(2,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,4),(3,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,5),(4,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,6),(5,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,7),(6,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,8),(7,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,9),(8,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,10),(9,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,11),(10,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,12),(11,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,13);
+INSERT INTO `auth_userprofile` VALUES (1,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,2,NULL,NULL),(2,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,3,NULL,NULL),(3,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,4,NULL,NULL),(4,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,5,NULL,NULL),(5,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,6,NULL,NULL),(6,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,7,NULL,NULL),(7,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,8,NULL,NULL),(8,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,9,NULL,NULL),(9,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,1,NULL,NULL),(10,'','','course.xml','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,10,NULL,NULL);
 /*!40000 ALTER TABLE `auth_userprofile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -865,11 +989,11 @@ CREATE TABLE `badges_badgeassertion` (
   `badge_class_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `badges_badgeassertion_created_d098832e` (`created`),
-  KEY `badges_badgeassertio_badge_class_id_902ac30e_fk_badges_ba` (`badge_class_id`),
-  KEY `badges_badgeassertion_user_id_13665630_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `badges_badgeassertio_badge_class_id_902ac30e_fk_badges_ba` FOREIGN KEY (`badge_class_id`) REFERENCES `badges_badgeclass` (`id`),
-  CONSTRAINT `badges_badgeassertion_user_id_13665630_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `badges_badgeassertion_e2fa5388` (`created`),
+  KEY `badges_badgeassertion_c389e456` (`badge_class_id`),
+  KEY `badges_badgeassertion_e8701ad4` (`user_id`),
+  CONSTRAINT `badges_b_badge_class_id_3a4a16cb833201e8_fk_badges_badgeclass_id` FOREIGN KEY (`badge_class_id`) REFERENCES `badges_badgeclass` (`id`),
+  CONSTRAINT `badges_badgeassertion_user_id_14233cdefee1055a_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -899,9 +1023,9 @@ CREATE TABLE `badges_badgeclass` (
   `mode` varchar(100) NOT NULL,
   `image` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `badges_badgeclass_slug_issuing_component_course_id_92cd3912_uniq` (`slug`,`issuing_component`,`course_id`),
-  KEY `badges_badgeclass_slug_5f420f6f` (`slug`),
-  KEY `badges_badgeclass_issuing_component_85b6d93d` (`issuing_component`)
+  UNIQUE KEY `badges_badgeclass_slug_7fe9eac3bca91f16_uniq` (`slug`,`issuing_component`,`course_id`),
+  KEY `badges_badgeclass_2dbcba41` (`slug`),
+  KEY `badges_badgeclass_a57403f2` (`issuing_component`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -936,7 +1060,7 @@ CREATE TABLE `badges_coursecompleteimageconfiguration` (
 
 LOCK TABLES `badges_coursecompleteimageconfiguration` WRITE;
 /*!40000 ALTER TABLE `badges_coursecompleteimageconfiguration` DISABLE KEYS */;
-INSERT INTO `badges_coursecompleteimageconfiguration` VALUES (1,'honor','badges/badges/honor.png',0),(2,'verified','badges/badges/verified.png',0),(3,'professional','badges/badges/professional.png',0);
+INSERT INTO `badges_coursecompleteimageconfiguration` VALUES (1,'honor','badges/honor.png',0),(2,'verified','badges/verified.png',0),(3,'professional','badges/professional.png',0);
 /*!40000 ALTER TABLE `badges_coursecompleteimageconfiguration` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -955,8 +1079,8 @@ CREATE TABLE `badges_courseeventbadgesconfiguration` (
   `course_groups` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `badges_courseeventba_changed_by_id_db04ed01_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `badges_courseeventba_changed_by_id_db04ed01_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `badges_courseeven_changed_by_id_50986a94d73238b9_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `badges_courseeven_changed_by_id_50986a94d73238b9_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1013,8 +1137,8 @@ CREATE TABLE `block_structure_config` (
   `cache_timeout_in_seconds` int(11) DEFAULT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `block_structure_config_changed_by_id_45af0b10_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `block_structure_config_changed_by_id_45af0b10_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `block_structure_c_changed_by_id_1b1edef3e5767b34_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `block_structure_c_changed_by_id_1b1edef3e5767b34_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1043,12 +1167,12 @@ CREATE TABLE `bookmarks_bookmark` (
   `user_id` int(11) NOT NULL,
   `xblock_cache_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `bookmarks_bookmark_user_id_usage_key_61eac24b_uniq` (`user_id`,`usage_key`),
-  KEY `bookmarks_bookmark_course_key_46609583` (`course_key`),
-  KEY `bookmarks_bookmark_usage_key_d07927c9` (`usage_key`),
-  KEY `bookmarks_bookmark_xblock_cache_id_808a7639_fk_bookmarks` (`xblock_cache_id`),
-  CONSTRAINT `bookmarks_bookmark_user_id_a26bf17c_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `bookmarks_bookmark_xblock_cache_id_808a7639_fk_bookmarks` FOREIGN KEY (`xblock_cache_id`) REFERENCES `bookmarks_xblockcache` (`id`)
+  UNIQUE KEY `bookmarks_bookmark_user_id_7059f67cddd52c9a_uniq` (`user_id`,`usage_key`),
+  KEY `bookmarks_bookmark_c8235886` (`course_key`),
+  KEY `bookmarks_bookmark_4a93f0de` (`usage_key`),
+  KEY `bookmarks_bookmark_d452fbf6` (`xblock_cache_id`),
+  CONSTRAINT `boo_xblock_cache_id_22d48842487ba2d2_fk_bookmarks_xblockcache_id` FOREIGN KEY (`xblock_cache_id`) REFERENCES `bookmarks_xblockcache` (`id`),
+  CONSTRAINT `bookmarks_bookmark_user_id_33914fa9accf01cb_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1077,8 +1201,8 @@ CREATE TABLE `bookmarks_xblockcache` (
   `paths` longtext NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `usage_key` (`usage_key`),
-  KEY `bookmarks_xblockcache_course_key_5297fa77` (`course_key`)
-) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8;
+  KEY `bookmarks_xblockcache_c8235886` (`course_key`)
+) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1087,7 +1211,7 @@ CREATE TABLE `bookmarks_xblockcache` (
 
 LOCK TABLES `bookmarks_xblockcache` WRITE;
 /*!40000 ALTER TABLE `bookmarks_xblockcache` DISABLE KEYS */;
-INSERT INTO `bookmarks_xblockcache` VALUES (1,'2019-09-25 20:05:19.284894','2019-09-25 20:05:29.196328','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@course+block@course','Demonstration Course','[]'),(2,'2019-09-25 20:05:29.209374','2019-09-25 20:05:29.211331','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@175e76c4951144a29d46211361266e0e','Homework - Essays','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"]]]'),(3,'2019-09-25 20:05:29.232046','2019-09-25 20:05:29.233382','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@ed5dccf14ae94353961f46fa07217491','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4a1bba2a403f40bca5ec245e945b0d76\",\"Video Demonstrations\"]]]'),(4,'2019-09-25 20:05:29.249133','2019-09-25 20:05:29.250238','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b','Introduction','[]'),(5,'2019-09-25 20:05:29.265641','2019-09-25 20:05:29.266830','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@870371212ba04dcf9536d7c7b8f3109e','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0c92347a5c00\",\"Mathematical Expressions\"]]]'),(6,'2019-09-25 20:05:29.282711','2019-09-25 20:05:29.283989','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@ex_practice_limited_checks','Limited Checks','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_ac391cde8a91\",\"Limited Checks\"]]]'),(7,'2019-09-25 20:05:29.299419','2019-09-25 20:05:29.300445','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow','edX Exams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"]]]'),(8,'2019-09-25 20:05:29.315274','2019-09-25 20:05:29.316388','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@1b0e2c2c84884b95b1c99fb678cc964c','Overall Grade Performance','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(9,'2019-09-25 20:05:29.330753','2019-09-25 20:05:29.331982','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@4aba537a78774bd5a862485a8563c345','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_f04afeac0131\",\"Immediate Feedback\"]]]'),(10,'2019-09-25 20:05:29.351792','2019-09-25 20:05:29.352989','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@148ae8fa73ea460eb6f05505da0ba6e6','Getting Your edX Certificate','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6eaa391d2be41dea20b8b1bfbcb1c45\",\"Getting Your edX Certificate\"]]]'),(11,'2019-09-25 20:05:29.368682','2019-09-25 20:05:29.369880','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@2b94658d2eee4d85ae13f83bc24cfca9','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0fab6aa52165\",\"Molecule Editor\"]]]'),(12,'2019-09-25 20:05:29.389782','2019-09-25 20:05:29.390928','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@4f6c1b4e316a419ab5b6bf30e6c708e9','Working with Videos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(13,'2019-09-25 20:05:29.406451','2019-09-25 20:05:29.407628','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@dbe8fc027bcb4fe9afb744d2e8415855','Homework - Find Your Study Buddy','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"]]]'),(14,'2019-09-25 20:05:29.423027','2019-09-25 20:05:29.424200','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@3dc16db8d14842e38324e95d4030b8a0','Videos on edX','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(15,'2019-09-25 20:05:29.440105','2019-09-25 20:05:29.441252','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@2152d4a4aadc4cb0af5256394a3d1fc7','Pointing on a Picture','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(16,'2019-09-25 20:05:29.457762','2019-09-25 20:05:29.458867','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@d0d804e8863c4a95a659c04d8a2b2bc0','Lesson 2 - Let\'s Get Interactive! ','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(17,'2019-09-25 20:05:29.474156','2019-09-25 20:05:29.475242','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations','Example Week 1: Getting Started','[]'),(18,'2019-09-25 20:05:29.490878','2019-09-25 20:05:29.492081','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@6f7a6670f87147149caeff6afa07a526','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_2dbb0072785e\",\"An Interactive Reference Table\"]]]'),(19,'2019-09-25 20:05:29.507802','2019-09-25 20:05:29.508930','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0270f6de40fc','Introduction: Video and Sequences','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b\",\"Introduction\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@edx_introduction\",\"Demo Course Overview\"]]]'),(20,'2019-09-25 20:05:29.525524','2019-09-25 20:05:29.526653','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@78d7d3642f3a4dbabbd1b017861aa5f2','Lesson 2: Let\'s Get Interactive!','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d0d804e8863c4a95a659c04d8a2b2bc0\",\"Lesson 2 - Let\'s Get Interactive! \"]]]'),(21,'2019-09-25 20:05:29.541868','2019-09-25 20:05:29.543067','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@d1b84dcd39b0423d9e288f27f0f7f242','Few Checks','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_ac391cde8a91\",\"Limited Checks\"]]]'),(22,'2019-09-25 20:05:29.557308','2019-09-25 20:05:29.558425','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@logic_gate_problem','problem','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1\",\"Electric Circuit Simulator\"]]]'),(23,'2019-09-25 20:05:29.573456','2019-09-25 20:05:29.574648','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@edx_introduction','Demo Course Overview','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b\",\"Introduction\"]]]'),(24,'2019-09-25 20:05:29.589972','2019-09-25 20:05:29.591278','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@ex_practice_3','Randomized Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_36e0beb03f0a\",\"Randomized Questions\"]]]'),(25,'2019-09-25 20:05:29.607754','2019-09-25 20:05:29.608973','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@ex_practice_2','Immediate Feedback','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_f04afeac0131\",\"Immediate Feedback\"]]]'),(26,'2019-09-25 20:05:29.625078','2019-09-25 20:05:29.626256','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@82d599b014b246c7a9b5dfc750dc08a9','Getting Started','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@867dddb6f55d410caaa9c1eb9c6743ec\",\"Getting Started\"]]]'),(27,'2019-09-25 20:05:29.642835','2019-09-25 20:05:29.644042','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@2889db1677a549abb15eb4d886f95d1c','Numerical Input','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(28,'2019-09-25 20:05:29.659259','2019-09-25 20:05:29.660462','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@651e0945b77f42e0a4c89b8c3e6f5b3b','Answering More Than Once','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f91d8d31f7cf48ce990f8d8745ae4cfa\",\"Answering More Than Once\"]]]'),(29,'2019-09-25 20:05:29.675882','2019-09-25 20:05:29.677016','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_1fef54c2b23b','Chemical Equations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(30,'2019-09-25 20:05:29.692009','2019-09-25 20:05:29.693122','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@934cc32c177d41b580c8413e561346b3','EdX Exams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(31,'2019-09-25 20:05:29.707659','2019-09-25 20:05:29.708831','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@2574c523e97b477a9d72fbb37bfb995f','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(32,'2019-09-25 20:05:29.723458','2019-09-25 20:05:29.724621','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@5ab88e67d46049b9aa694cb240c39cef','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@47dbd5f836544e61877a483c0b75606c\",\"Drag and Drop\"]]]'),(33,'2019-09-25 20:05:29.739630','2019-09-25 20:05:29.740803','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_aae927868e55','Code Grader','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(34,'2019-09-25 20:05:29.756696','2019-09-25 20:05:29.757900','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@1a810b1a3b2447b998f0917d0e5a802b','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@1b0e2c2c84884b95b1c99fb678cc964c\",\"Overall Grade Performance\"]]]'),(35,'2019-09-25 20:05:29.771362','2019-09-25 20:05:29.772159','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6eaa391d2be41dea20b8b1bfbcb1c45','Getting Your edX Certificate','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(36,'2019-09-25 20:05:29.785117','2019-09-25 20:05:29.785877','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@ddede76df71045ffa16de9d1481d2119','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_36e0beb03f0a\",\"Randomized Questions\"]]]'),(37,'2019-09-25 20:05:29.798495','2019-09-25 20:05:29.799321','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@4f06b358a96f4d1dae57d6d81acd06f2','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1\",\"Electric Circuit Simulator\"]]]'),(38,'2019-09-25 20:05:29.811463','2019-09-25 20:05:29.812227','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_98cf62510471','Zooming Diagrams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(39,'2019-09-25 20:05:29.832559','2019-09-25 20:05:29.833694','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@c2f7008c9ccf4bd09d5d800c98fb0722','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@256f17a44983429fb1a60802203ee4e0\",\"Video Presentation Styles\"]]]'),(40,'2019-09-25 20:05:29.850028','2019-09-25 20:05:29.851457','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@d5a5caaf35e84ebc9a747038465dcfb4','Electronic Circuit Simulator','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1\",\"Electric Circuit Simulator\"]]]'),(41,'2019-09-25 20:05:29.866200','2019-09-25 20:05:29.867326','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@07bc32474380492cb34f76e5f9d9a135','New Subsection','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@9fca584977d04885bc911ea76a9ef29e\",\"holding section\"]]]'),(42,'2019-09-25 20:05:29.881994','2019-09-25 20:05:29.883157','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@26d89b08f75d48829a63520ed8b0037d','Homework - Find Your Study Buddy','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@dbe8fc027bcb4fe9afb744d2e8415855\",\"Homework - Find Your Study Buddy\"]]]'),(43,'2019-09-25 20:05:29.897510','2019-09-25 20:05:29.898545','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5','Lesson 1 - Getting Started','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"]]]'),(44,'2019-09-25 20:05:29.913945','2019-09-25 20:05:29.915237','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@Sample_Algebraic_Problem','Mathematical Expressions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0c92347a5c00\",\"Mathematical Expressions\"]]]'),(45,'2019-09-25 20:05:29.931265','2019-09-25 20:05:29.932427','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_d32bf9b2242c','Electronic Sound Experiment','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(46,'2019-09-25 20:05:29.948679','2019-09-25 20:05:29.949721','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e','Lesson 3 - Be Social','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"]]]'),(47,'2019-09-25 20:05:29.964679','2019-09-25 20:05:29.965818','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@e0d7423118ab432582d03e8e8dad8e36','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_98cf62510471\",\"Zooming Diagrams\"]]]'),(48,'2019-09-25 20:05:29.981336','2019-09-25 20:05:29.982461','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@78e3719e864e45f3bee938461f3c3de6','Protein Builder','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_bc69a47c6fae\",\"Protein Creator\"]]]'),(49,'2019-09-25 20:05:30.006895','2019-09-25 20:05:30.008212','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@45d46192272c4f6db6b63586520bbdf4','Getting Answers','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@b6662b497c094bcc9b870d8270c90c93\",\"Getting Answers\"]]]'),(50,'2019-09-25 20:05:30.022593','2019-09-25 20:05:30.023212','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@932e6f2ce8274072a355a94560216d1a','Perchance to Dream','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(51,'2019-09-25 20:05:30.037429','2019-09-25 20:05:30.038703','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@f91d8d31f7cf48ce990f8d8745ae4cfa','Answering More Than Once','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(52,'2019-09-25 20:05:30.056213','2019-09-25 20:05:30.057670','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@700x_proteinmake','Designing Proteins in Two Dimensions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_bc69a47c6fae\",\"Protein Creator\"]]]'),(53,'2019-09-25 20:05:30.072309','2019-09-25 20:05:30.073148','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@9f9e1373cc8243b985c8750cc8acec7d','Video Demonstrations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4a1bba2a403f40bca5ec245e945b0d76\",\"Video Demonstrations\"]]]'),(54,'2019-09-25 20:05:30.085730','2019-09-25 20:05:30.086547','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@6018785795994726950614ce7d0f38c5','Find Your Study Buddy','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@dbe8fc027bcb4fe9afb744d2e8415855\",\"Homework - Find Your Study Buddy\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@26d89b08f75d48829a63520ed8b0037d\",\"Homework - Find Your Study Buddy\"]]]'),(55,'2019-09-25 20:05:30.110279','2019-09-25 20:05:30.111572','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@python_grader','problem','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_aae927868e55\",\"Code Grader\"]]]'),(56,'2019-09-25 20:05:30.127155','2019-09-25 20:05:30.128154','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7','About Exams and Certificates','[]'),(57,'2019-09-25 20:05:30.141242','2019-09-25 20:05:30.142001','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1','Electric Circuit Simulator','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(58,'2019-09-25 20:05:30.157497','2019-09-25 20:05:30.158829','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@891211e17f9a472290a5f12c7a6626d7','Code Grader','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_aae927868e55\",\"Code Grader\"]]]'),(59,'2019-09-25 20:05:30.175863','2019-09-25 20:05:30.177043','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions','Homework - Question Styles','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"]]]'),(60,'2019-09-25 20:05:30.192640','2019-09-25 20:05:30.193897','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@html_49b4494da2f7','Discussion Forums','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_3888db0bc286\",\"Discussion Forums\"]]]'),(61,'2019-09-25 20:05:30.209761','2019-09-25 20:05:30.211121','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@636541acbae448d98ab484b028c9a7f6','Connecting a Circuit and a Circuit Diagram','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@256f17a44983429fb1a60802203ee4e0\",\"Video Presentation Styles\"]]]'),(62,'2019-09-25 20:05:30.227154','2019-09-25 20:05:30.228477','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@b8cec2a19ebf463f90cd3544c7927b0e','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f91d8d31f7cf48ce990f8d8745ae4cfa\",\"Answering More Than Once\"]]]'),(63,'2019-09-25 20:05:30.242170','2019-09-25 20:05:30.243075','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@12ad4f3ff4c14114a6e629b00e000976','Peer Grading','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@175e76c4951144a29d46211361266e0e\",\"Homework - Essays\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb79dcbad35b466a8c6364f8ffee9050\",\"Peer Assessed Essays\"]]]'),(64,'2019-09-25 20:05:30.254883','2019-09-25 20:05:30.255592','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@e5eac7e1a5a24f5fa7ed77bb6d136591','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@2152d4a4aadc4cb0af5256394a3d1fc7\",\"Pointing on a Picture\"]]]'),(65,'2019-09-25 20:05:30.271770','2019-09-25 20:05:30.272357','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa','More Ways to Connect','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"]]]'),(66,'2019-09-25 20:05:30.288528','2019-09-25 20:05:30.289161','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@free_form_simulation','problem','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1\",\"Electric Circuit Simulator\"]]]'),(67,'2019-09-25 20:05:30.302083','2019-09-25 20:05:30.303229','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@8293139743f34377817d537b69911530','EdX Exams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@934cc32c177d41b580c8413e561346b3\",\"EdX Exams\"]]]'),(68,'2019-09-25 20:05:30.317239','2019-09-25 20:05:30.318161','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions','Example Week 2: Get Interactive','[]'),(69,'2019-09-25 20:05:30.333297','2019-09-25 20:05:30.334434','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@9cee77a606ea4c1aa5440e0ea5d0f618','Interactive Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@e3601c0abee6427d8c17e6d6f8fdddd1\",\"Interactive Questions\"]]]'),(70,'2019-09-25 20:05:30.350125','2019-09-25 20:05:30.351435','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@700x_pathways','Zooming Diagrams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_98cf62510471\",\"Zooming Diagrams\"]]]'),(71,'2019-09-25 20:05:30.367280','2019-09-25 20:05:30.368450','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@4a1bba2a403f40bca5ec245e945b0d76','Video Demonstrations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(72,'2019-09-25 20:05:30.384745','2019-09-25 20:05:30.386040','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@312cb4faed17420e82ab3178fc3e251a','Getting Help','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"]]]'),(73,'2019-09-25 20:05:30.404499','2019-09-25 20:05:30.405846','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@8bb218cccf8d40519a971ff0e4901ccf','Getting Help','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@312cb4faed17420e82ab3178fc3e251a\",\"Getting Help\"]]]'),(74,'2019-09-25 20:05:30.422835','2019-09-25 20:05:30.424217','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@867dddb6f55d410caaa9c1eb9c6743ec','Getting Started','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(75,'2019-09-25 20:05:30.441347','2019-09-25 20:05:30.442701','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@Lab_5B_Mosfet_Amplifier_Experiment','Electronic Sound Experiment','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_d32bf9b2242c\",\"Electronic Sound Experiment\"]]]'),(76,'2019-09-25 20:05:30.456928','2019-09-25 20:05:30.457814','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@7e9b434e6de3435ab99bd3fb25bde807','Science and Cooking Chef Profile: JOSÉ ANDRÉS','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4f6c1b4e316a419ab5b6bf30e6c708e9\",\"Working with Videos\"]]]'),(77,'2019-09-25 20:05:30.471044','2019-09-25 20:05:30.471904','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@256f17a44983429fb1a60802203ee4e0','Video Presentation Styles','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(78,'2019-09-25 20:05:30.486561','2019-09-25 20:05:30.487842','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@0a3b4139f51a4917a3aff9d519b1eeb6','Videos on edX','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3dc16db8d14842e38324e95d4030b8a0\",\"Videos on edX\"]]]'),(79,'2019-09-25 20:05:30.502949','2019-09-25 20:05:30.504168','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0c92347a5c00','Mathematical Expressions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(80,'2019-09-25 20:05:30.521345','2019-09-25 20:05:30.522528','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@discussion_5deb6081620d','Discussion Forums','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_3888db0bc286\",\"Discussion Forums\"]]]'),(81,'2019-09-25 20:05:30.538272','2019-09-25 20:05:30.539476','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@700x_editmolB','Molecule Editor','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0fab6aa52165\",\"Molecule Editor\"]]]'),(82,'2019-09-25 20:05:30.620015','2019-09-25 20:05:30.621358','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@412dc8dbb6674014862237b23c1f643f','Working with Videos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4f6c1b4e316a419ab5b6bf30e6c708e9\",\"Working with Videos\"]]]'),(83,'2019-09-25 20:05:30.638572','2019-09-25 20:05:30.640015','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@23e6eda482c04335af2bb265beacaf59','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@c7e98fd39a6944edb6b286c32e1150ff\",\"Passing a Course\"]]]'),(84,'2019-09-25 20:05:30.656415','2019-09-25 20:05:30.657704','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@722085be27c84ac693cfebc8ac5da700','Videos on edX','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3dc16db8d14842e38324e95d4030b8a0\",\"Videos on edX\"]]]'),(85,'2019-09-25 20:05:30.674640','2019-09-25 20:05:30.676140','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@501aed9d902349eeb2191fa505548de2','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@2889db1677a549abb15eb4d886f95d1c\",\"Numerical Input\"]]]'),(86,'2019-09-25 20:05:30.693248','2019-09-25 20:05:30.694550','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@3169f89efde2452993f2f2d9bc74f5b2','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@e3601c0abee6427d8c17e6d6f8fdddd1\",\"Interactive Questions\"]]]'),(87,'2019-09-25 20:05:30.711524','2019-09-25 20:05:30.712885','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@0b9e39477cf34507a7a48f74be381fdd','Welcome!','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b\",\"Introduction\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@edx_introduction\",\"Demo Course Overview\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0270f6de40fc\",\"Introduction: Video and Sequences\"]]]'),(88,'2019-09-25 20:05:30.730735','2019-09-25 20:05:30.732214','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@0aa7a3bdbe18427795b0c1a1d7c3cb9a','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0fab6aa52165\",\"Molecule Editor\"]]]'),(89,'2019-09-25 20:05:30.757397','2019-09-25 20:05:30.758677','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@cd177caa62444fbca48aa8f843f09eac','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_ac391cde8a91\",\"Limited Checks\"]]]'),(90,'2019-09-25 20:05:30.775124','2019-09-25 20:05:30.776269','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@f9f3a25e7bab46e583fd1fbbd7a2f6a0','Be Social','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3c4b575924bf4b75a2f3542df5c354fc\",\"Be Social\"]]]'),(91,'2019-09-25 20:05:30.788569','2019-09-25 20:05:30.789241','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@f4a39219742149f781a1dda6f43a623c','Overall Grade','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@1b0e2c2c84884b95b1c99fb678cc964c\",\"Overall Grade Performance\"]]]'),(92,'2019-09-25 20:05:30.800688','2019-09-25 20:05:30.801335','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@3f2c11aba9434e459676a7d7acc4d960','Google Hangout','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa\",\"More Ways to Connect\"]]]'),(93,'2019-09-25 20:05:30.813072','2019-09-25 20:05:30.813710','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_2dbb0072785e','An Interactive Reference Table','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(94,'2019-09-25 20:05:30.826239','2019-09-25 20:05:30.826942','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@5c90cffecd9b48b188cbfea176bf7fe9','Video','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3dc16db8d14842e38324e95d4030b8a0\",\"Videos on edX\"]]]'),(95,'2019-09-25 20:05:30.842039','2019-09-25 20:05:30.843486','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@55cbc99f262443d886a25cf84594eafb','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa\",\"More Ways to Connect\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3f2c11aba9434e459676a7d7acc4d960\",\"Google Hangout\"]]]'),(96,'2019-09-25 20:05:30.860776','2019-09-25 20:05:30.862105','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@f480df4ce91347c5ae4301ddf6146238','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@b6662b497c094bcc9b870d8270c90c93\",\"Getting Answers\"]]]'),(97,'2019-09-25 20:05:30.880313','2019-09-25 20:05:30.881690','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations','Lesson 2 - Let\'s Get Interactive!','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"]]]'),(98,'2019-09-25 20:05:30.897520','2019-09-25 20:05:30.898443','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@c6cd4bea43454aaea60ad01beb0cf213','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_aae927868e55\",\"Code Grader\"]]]'),(99,'2019-09-25 20:05:30.912169','2019-09-25 20:05:30.913026','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations','Homework - Labs and Demos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"]]]'),(100,'2019-09-25 20:05:30.929336','2019-09-25 20:05:30.930942','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@03f051f9a8814881a3783d2511613aa6','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_d32bf9b2242c\",\"Electronic Sound Experiment\"]]]'),(101,'2019-09-25 20:05:30.948707','2019-09-25 20:05:30.950063','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_bc69a47c6fae','Protein Creator','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(102,'2019-09-25 20:05:30.967180','2019-09-25 20:05:30.968503','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@67c26b1e826e47aaa29757f62bcd1ad0','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@54bb9b142c6c4c22afc62bcb628f0e68\",\"Multiple Choice Questions\"]]]'),(103,'2019-09-25 20:05:30.985362','2019-09-25 20:05:30.986604','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@e3601c0abee6427d8c17e6d6f8fdddd1','Interactive Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(104,'2019-09-25 20:05:31.003666','2019-09-25 20:05:31.004577','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@030e35c4756a4ddc8d40b95fbbfff4d4','Blank HTML Page','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b\",\"Introduction\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@edx_introduction\",\"Demo Course Overview\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0270f6de40fc\",\"Introduction: Video and Sequences\"]]]'),(105,'2019-09-25 20:05:31.016422','2019-09-25 20:05:31.017055','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_f04afeac0131','Immediate Feedback','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(106,'2019-09-25 20:05:31.029020','2019-09-25 20:05:31.029645','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@ade92343df3d4953a40ab3adc8805390','Google Hangout','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa\",\"More Ways to Connect\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3f2c11aba9434e459676a7d7acc4d960\",\"Google Hangout\"]]]'),(107,'2019-09-25 20:05:31.041618','2019-09-25 20:05:31.042236','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_3888db0bc286','Discussion Forums','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"]]]'),(108,'2019-09-25 20:05:31.058322','2019-09-25 20:05:31.059963','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@c554538a57664fac80783b99d9d6da7c','Pointing on a Picture','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@2152d4a4aadc4cb0af5256394a3d1fc7\",\"Pointing on a Picture\"]]]'),(109,'2019-09-25 20:05:31.078602','2019-09-25 20:05:31.080201','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@6b6bee43c7c641509da71c9299cc9f5a','Blank HTML Page','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6eaa391d2be41dea20b8b1bfbcb1c45\",\"Getting Your edX Certificate\"]]]'),(110,'2019-09-25 20:05:31.098392','2019-09-25 20:05:31.099996','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@4d672c5893cb4f1dad0de67d2008522e','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_1fef54c2b23b\",\"Chemical Equations\"]]]'),(111,'2019-09-25 20:05:31.117803','2019-09-25 20:05:31.119446','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@d2e35c1d294b4ba0b3b1048615605d2a','Drag and Drop','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@47dbd5f836544e61877a483c0b75606c\",\"Drag and Drop\"]]]'),(112,'2019-09-25 20:05:31.133441','2019-09-25 20:05:31.134115','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@Sample_ChemFormula_Problem','Chemical Equations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_1fef54c2b23b\",\"Chemical Equations\"]]]'),(113,'2019-09-25 20:05:31.147176','2019-09-25 20:05:31.148007','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@6244918637ed4ff4b5f94a840a7e4b43','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@e8a5cc2aed424838853defab7be45e42\",\"Text input\"]]]'),(114,'2019-09-25 20:05:31.160120','2019-09-25 20:05:31.160896','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@d45779ad3d024a40a09ad8cc317c0970','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa\",\"More Ways to Connect\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3f2c11aba9434e459676a7d7acc4d960\",\"Google Hangout\"]]]'),(115,'2019-09-25 20:05:31.171453','2019-09-25 20:05:31.172052','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@e0254b911fa246218bd98bbdadffef06','Reading Assignments','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(116,'2019-09-25 20:05:31.183254','2019-09-25 20:05:31.183874','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@5e009378f0b64585baa0a14b155974b9','Passing a Course','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@c7e98fd39a6944edb6b286c32e1150ff\",\"Passing a Course\"]]]'),(117,'2019-09-25 20:05:31.195244','2019-09-25 20:05:31.195801','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@9fca584977d04885bc911ea76a9ef29e','holding section','[]'),(118,'2019-09-25 20:05:31.206793','2019-09-25 20:05:31.207474','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@ffa5817d49e14fec83ad6187cbe16358','Reading Sample','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(119,'2019-09-25 20:05:31.224110','2019-09-25 20:05:31.224722','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@303034da25524878a2e66fb57c91cf85','Attributing Blame','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(120,'2019-09-25 20:05:31.236166','2019-09-25 20:05:31.236767','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@3c4b575924bf4b75a2f3542df5c354fc','Be Social','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"]]]'),(121,'2019-09-25 20:05:31.251560','2019-09-25 20:05:31.252826','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6cee45205a449369d7ef8f159b22bdf','Labs and Demos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(122,'2019-09-25 20:05:31.270087','2019-09-25 20:05:31.271736','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@2bee8c4248e842a19ba1e73ed8d426c2','Labs and Demos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6cee45205a449369d7ef8f159b22bdf\",\"Labs and Demos\"]]]'),(123,'2019-09-25 20:05:31.298107','2019-09-25 20:05:31.299733','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@c7e98fd39a6944edb6b286c32e1150ff','Passing a Course','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(124,'2019-09-25 20:05:31.327884','2019-09-25 20:05:31.329170','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@54bb9b142c6c4c22afc62bcb628f0e68','Multiple Choice Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(125,'2019-09-25 20:05:31.343401','2019-09-25 20:05:31.343999','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_ac391cde8a91','Limited Checks','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(126,'2019-09-25 20:05:31.355540','2019-09-25 20:05:31.355935','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@openassessment+block@b24c33ea35954c7889e1d2944d3fe397','Open Response Assessment','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@175e76c4951144a29d46211361266e0e\",\"Homework - Essays\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb79dcbad35b466a8c6364f8ffee9050\",\"Peer Assessed Essays\"]]]'),(127,'2019-09-25 20:05:31.366018','2019-09-25 20:05:31.366401','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@b6662b497c094bcc9b870d8270c90c93','Getting Answers','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(128,'2019-09-25 20:05:31.381595','2019-09-25 20:05:31.383127','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_36e0beb03f0a','Randomized Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(129,'2019-09-25 20:05:31.400352','2019-09-25 20:05:31.401766','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@47dbd5f836544e61877a483c0b75606c','Drag and Drop','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(130,'2019-09-25 20:05:31.419961','2019-09-25 20:05:31.421600','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@e2cb0e0994f84b0abfa5f4ae42ed9d44','Video Presentation Styles','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@256f17a44983429fb1a60802203ee4e0\",\"Video Presentation Styles\"]]]'),(131,'2019-09-25 20:05:31.436485','2019-09-25 20:05:31.437386','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@6bcccc2d7343416e9e03fd7325b2f232','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4f6c1b4e316a419ab5b6bf30e6c708e9\",\"Working with Videos\"]]]'),(132,'2019-09-25 20:05:31.451152','2019-09-25 20:05:31.452103','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@html_07d547513285','An Interactive Reference Table','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_2dbb0072785e\",\"An Interactive Reference Table\"]]]'),(133,'2019-09-25 20:05:31.469872','2019-09-25 20:05:31.471554','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@75f9562c77bc4858b61f907bb810d974','Numerical Input','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@2889db1677a549abb15eb4d886f95d1c\",\"Numerical Input\"]]]'),(134,'2019-09-25 20:05:31.486436','2019-09-25 20:05:31.487401','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0fab6aa52165','Molecule Editor','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(135,'2019-09-25 20:05:31.503490','2019-09-25 20:05:31.504915','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb79dcbad35b466a8c6364f8ffee9050','Peer Assessed Essays','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@175e76c4951144a29d46211361266e0e\",\"Homework - Essays\"]]]'),(136,'2019-09-25 20:05:31.521744','2019-09-25 20:05:31.523133','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration','Example Week 3: Be Social','[]'),(137,'2019-09-25 20:05:31.540044','2019-09-25 20:05:31.541237','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e','Reading Assignments','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(138,'2019-09-25 20:05:31.553119','2019-09-25 20:05:31.553802','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@ed01bcd164e64038a78964a16eac3edc','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_bc69a47c6fae\",\"Protein Creator\"]]]'),(139,'2019-09-25 20:05:31.564964','2019-09-25 20:05:31.565488','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@e8a5cc2aed424838853defab7be45e42','Text input','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(140,'2019-09-25 20:05:31.581142','2019-09-25 20:05:31.582612','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@0d759dee4f9d459c8956136dbde55f02','Text Input','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@e8a5cc2aed424838853defab7be45e42\",\"Text input\"]]]'),(141,'2019-09-25 20:05:31.596430','2019-09-25 20:05:31.597357','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@a0effb954cca4759994f1ac9e9434bf4','Multiple Choice Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@54bb9b142c6c4c22afc62bcb628f0e68\",\"Multiple Choice Questions\"]]]'),(142,'2019-09-25 20:05:35.786595','2019-09-25 20:05:35.787152','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@af7fe1335eb841cd81ce31c7ee8eb069','Video','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4e592689563243c484af947465eaef0d\",\"New Unit\"]]]'),(143,'2019-09-25 20:05:35.796825','2019-09-25 20:05:35.797175','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@45c7cedb4bfe46f4a68c78787151cfb5','New Unit','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@9fca584977d04885bc911ea76a9ef29e\",\"holding section\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@07bc32474380492cb34f76e5f9d9a135\",\"New Subsection\"]]]'),(144,'2019-09-25 20:05:35.809142','2019-09-25 20:05:35.809912','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@9d5104b502f24ee89c3d2f4ce9d347cf','When Are Your Exams? ','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d91b9e5d8bc64d57a1332d06bf2f2193\",\"When Are Your Exams? \"]]]'),(145,'2019-09-25 20:05:35.822602','2019-09-25 20:05:35.823443','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@ab98b0e385e64445ae97e730ffdf17e7','Biology Demonstration','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f0e6d90842c44cc7a50fd1a18a7dd982\",\"Video Demonstrations\"]]]'),(146,'2019-09-25 20:05:35.835429','2019-09-25 20:05:35.836008','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@4e592689563243c484af947465eaef0d','New Unit','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(147,'2019-09-25 20:05:35.849416','2019-09-25 20:05:35.850529','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@ffcd6351126d4ca984409180e41d1b51','Exciting Labs and Tools','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@a79d59cd72034188a71d388f4954a606\",\"Exciting Labs and Tools\"]]]'),(148,'2019-09-25 20:05:35.865995','2019-09-25 20:05:35.867275','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@87fa6792d79f4862be098e5169e93339','Blank HTML Page','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@7efc7bf4a47b4a6cb6595c32cde7712a\",\"Homework - Find Your Study Buddy\"]]]'),(149,'2019-09-25 20:05:35.881969','2019-09-25 20:05:35.883135','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@a79d59cd72034188a71d388f4954a606','Exciting Labs and Tools','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(150,'2019-09-25 20:05:35.897535','2019-09-25 20:05:35.898650','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@2d3efa8db04346548bd5e5374de77628','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f0e6d90842c44cc7a50fd1a18a7dd982\",\"Video Demonstrations\"]]]'),(151,'2019-09-25 20:05:35.914239','2019-09-25 20:05:35.915482','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@f0e6d90842c44cc7a50fd1a18a7dd982','Video Demonstrations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(152,'2019-09-25 20:05:35.931509','2019-09-25 20:05:35.932707','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@1c8d47c425724346a7968fa1bc745dcd','Labs and Tools','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@a79d59cd72034188a71d388f4954a606\",\"Exciting Labs and Tools\"]]]'),(153,'2019-09-25 20:05:35.948440','2019-09-25 20:05:35.949556','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb6b62dbec4348528629cf2232b86aea','Instructor Programmed Responses','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(154,'2019-09-25 20:05:35.965324','2019-09-25 20:05:35.966460','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@8f89194410954e768bde1764985454a7','Molecule Structures','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(155,'2019-09-25 20:05:35.982142','2019-09-25 20:05:35.983402','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@eb469ec408fa4ab1a9b86c634ca9bfa9','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f0e6d90842c44cc7a50fd1a18a7dd982\",\"Video Demonstrations\"]]]'),(156,'2019-09-25 20:05:36.000670','2019-09-25 20:05:36.002473','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@9b9687073e904ae197799dc415df899f','Molecule Structures','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@8f89194410954e768bde1764985454a7\",\"Molecule Structures\"]]]'),(157,'2019-09-25 20:05:36.025598','2019-09-25 20:05:36.026694','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@7efc7bf4a47b4a6cb6595c32cde7712a','Homework - Find Your Study Buddy','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"]]]'),(158,'2019-09-25 20:05:36.041750','2019-09-25 20:05:36.043041','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@d7daeff25e4f4026bdd269ae69e03e02','Instructor-Programmed Responses','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb6b62dbec4348528629cf2232b86aea\",\"Instructor Programmed Responses\"]]]'),(159,'2019-09-25 20:05:36.058599','2019-09-25 20:05:36.059963','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@d91b9e5d8bc64d57a1332d06bf2f2193','When Are Your Exams? ','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(160,'2019-09-25 20:27:45.107898','2019-09-25 20:27:45.549163','course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@course+block@course','E2E Test Course','[]'),(161,'2019-09-25 20:27:45.559363','2019-09-25 20:27:45.559837','course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@chapter+block@5e637f321727429fb53374cbfb4ff28a','Section :754c5e889ac3489e9947ba62b916bdab','[]'),(162,'2019-09-25 20:27:45.570301','2019-09-25 20:27:45.571088','course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@sequential+block@3322473e23a1436986e38912cd581d09','Subsection :56c1bc20d270414b877e9c178954b6ed','[[[\"block-v1:edX+E2E-101+course+type@chapter+block@5e637f321727429fb53374cbfb4ff28a\",\"Section :754c5e889ac3489e9947ba62b916bdab\"]]]'),(163,'2019-09-25 20:27:45.581829','2019-09-25 20:27:45.582359','course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@vertical+block@431fe271956740178ae95c591e4c07c2','Unit','[[[\"block-v1:edX+E2E-101+course+type@chapter+block@5e637f321727429fb53374cbfb4ff28a\",\"Section :754c5e889ac3489e9947ba62b916bdab\"],[\"block-v1:edX+E2E-101+course+type@sequential+block@3322473e23a1436986e38912cd581d09\",\"Subsection :56c1bc20d270414b877e9c178954b6ed\"]]]'),(164,'2019-09-25 20:27:45.592738','2019-09-25 20:27:45.593241','course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@problem+block@faae20e9f9db410e8fffa41773524dfa','Multiple Choice','[[[\"block-v1:edX+E2E-101+course+type@chapter+block@5e637f321727429fb53374cbfb4ff28a\",\"Section :754c5e889ac3489e9947ba62b916bdab\"],[\"block-v1:edX+E2E-101+course+type@sequential+block@3322473e23a1436986e38912cd581d09\",\"Subsection :56c1bc20d270414b877e9c178954b6ed\"],[\"block-v1:edX+E2E-101+course+type@vertical+block@431fe271956740178ae95c591e4c07c2\",\"Unit\"]]]');
+INSERT INTO `bookmarks_xblockcache` VALUES (1,'2017-06-07 00:43:57.110637','2018-01-31 21:14:08.351648','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@course+block@course','edX Demonstration Course','[]'),(2,'2017-06-07 00:44:03.930577','2018-01-31 21:14:10.348510','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@5ab88e67d46049b9aa694cb240c39cef','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@47dbd5f836544e61877a483c0b75606c\",\"Drag and Drop\"]]]'),(3,'2017-06-07 00:44:03.934127','2018-01-31 21:14:10.350808','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@0aa7a3bdbe18427795b0c1a1d7c3cb9a','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0fab6aa52165\",\"Molecule Editor\"]]]'),(4,'2017-06-07 00:44:03.937842','2018-01-31 21:14:10.352312','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions','Homework - Question Styles','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"]]]'),(5,'2017-06-07 00:44:03.940968','2018-01-31 21:14:10.353876','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@2152d4a4aadc4cb0af5256394a3d1fc7','Pointing on a Picture','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(6,'2017-06-07 00:44:03.943920','2018-01-31 21:14:10.355396','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@discussion_5deb6081620d','Discussion Forums','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_3888db0bc286\",\"Discussion Forums\"]]]'),(7,'2017-06-07 00:44:03.948536','2018-01-31 21:14:10.356758','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6cee45205a449369d7ef8f159b22bdf','Labs and Demos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(8,'2017-06-07 00:44:03.951584','2018-01-31 21:14:10.358172','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@2574c523e97b477a9d72fbb37bfb995f','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(9,'2017-06-07 00:44:03.954880','2017-06-07 00:44:03.955070','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration','Example Week 3: Be Social','[]'),(10,'2017-06-07 00:44:03.958603','2018-01-31 21:14:10.359597','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@ed5dccf14ae94353961f46fa07217491','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4a1bba2a403f40bca5ec245e945b0d76\",\"Video Demonstrations\"]]]'),(11,'2017-06-07 00:44:03.961972','2018-01-31 21:14:10.361042','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@8293139743f34377817d537b69911530','EdX Exams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@934cc32c177d41b580c8413e561346b3\",\"EdX Exams\"]]]'),(12,'2017-06-07 00:44:03.965571','2018-01-31 21:14:10.362422','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@030e35c4756a4ddc8d40b95fbbfff4d4','Blank HTML Page','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b\",\"Introduction\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@edx_introduction\",\"Demo Course Overview\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0270f6de40fc\",\"Introduction: Video and Sequences\"]]]'),(13,'2017-06-07 00:44:03.970048','2018-01-31 21:14:10.363787','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@932e6f2ce8274072a355a94560216d1a','Perchance to Dream','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(14,'2017-06-07 00:44:03.973627','2017-06-07 00:44:03.973816','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions','Example Week 2: Get Interactive','[]'),(15,'2017-06-07 00:44:03.978058','2017-06-07 00:44:03.978246','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7','About Exams and Certificates','[]'),(16,'2017-06-07 00:44:03.981528','2018-01-31 21:14:10.365207','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@Sample_ChemFormula_Problem','Chemical Equations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_1fef54c2b23b\",\"Chemical Equations\"]]]'),(17,'2017-06-07 00:44:03.985386','2018-01-31 21:14:10.366548','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@e0d7423118ab432582d03e8e8dad8e36','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_98cf62510471\",\"Zooming Diagrams\"]]]'),(18,'2017-06-07 00:44:03.989965','2018-01-31 21:14:10.367831','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e','Reading Assignments','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(19,'2017-06-07 00:44:03.993492','2018-01-31 21:14:10.369111','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_3888db0bc286','Discussion Forums','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"]]]'),(20,'2017-06-07 00:44:03.998066','2018-01-31 21:14:10.370576','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@6f7a6670f87147149caeff6afa07a526','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_2dbb0072785e\",\"An Interactive Reference Table\"]]]'),(21,'2017-06-07 00:44:04.001736','2018-01-31 21:14:10.371785','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@4a1bba2a403f40bca5ec245e945b0d76','Video Demonstrations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(22,'2017-06-07 00:44:04.005486','2018-01-31 21:14:10.373008','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1','Electric Circuit Simulator','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(23,'2017-06-07 00:44:04.010134','2018-01-31 21:14:10.374130','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations','Homework - Labs and Demos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"]]]'),(24,'2017-06-07 00:44:04.013789','2018-01-31 21:14:10.375367','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb79dcbad35b466a8c6364f8ffee9050','Peer Assessed Essays','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@175e76c4951144a29d46211361266e0e\",\"Homework - Essays\"]]]'),(25,'2017-06-07 00:44:04.018108','2018-01-31 21:14:10.376822','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@c2f7008c9ccf4bd09d5d800c98fb0722','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@256f17a44983429fb1a60802203ee4e0\",\"Video Presentation Styles\"]]]'),(26,'2017-06-07 00:44:04.021650','2018-01-31 21:14:10.378214','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@700x_editmolB','Molecule Editor','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0fab6aa52165\",\"Molecule Editor\"]]]'),(27,'2017-06-07 00:44:04.025337','2018-01-31 21:14:10.379588','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@e2cb0e0994f84b0abfa5f4ae42ed9d44','Video Presentation Styles','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@256f17a44983429fb1a60802203ee4e0\",\"Video Presentation Styles\"]]]'),(28,'2017-06-07 00:44:04.030039','2018-01-31 21:14:10.380874','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@4f6c1b4e316a419ab5b6bf30e6c708e9','Working with Videos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(29,'2017-06-07 00:44:04.033686','2018-01-31 21:14:10.382192','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@312cb4faed17420e82ab3178fc3e251a','Getting Help','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"]]]'),(30,'2017-06-07 00:44:04.039297','2018-01-31 21:14:10.384159','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@3f2c11aba9434e459676a7d7acc4d960','Google Hangout','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa\",\"More Ways to Connect\"]]]'),(31,'2017-06-07 00:44:04.043094','2018-01-31 21:14:10.385609','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@ed01bcd164e64038a78964a16eac3edc','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_bc69a47c6fae\",\"Protein Creator\"]]]'),(32,'2017-06-07 00:44:04.047499','2018-01-31 21:14:10.386942','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0fab6aa52165','Molecule Editor','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(33,'2017-06-07 00:44:04.051032','2018-01-31 21:14:10.388314','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@891211e17f9a472290a5f12c7a6626d7','Code Grader','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_aae927868e55\",\"Code Grader\"]]]'),(34,'2017-06-07 00:44:04.054658','2018-01-31 21:14:10.389673','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@d1b84dcd39b0423d9e288f27f0f7f242','Few Checks','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_ac391cde8a91\",\"Limited Checks\"]]]'),(35,'2017-06-07 00:44:04.059240','2018-01-31 21:14:10.390883','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@f91d8d31f7cf48ce990f8d8745ae4cfa','Answering More Than Once','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(36,'2017-06-07 00:44:04.063011','2018-01-31 21:14:10.392272','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@45d46192272c4f6db6b63586520bbdf4','Getting Answers','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@b6662b497c094bcc9b870d8270c90c93\",\"Getting Answers\"]]]'),(37,'2017-06-07 00:44:04.067511','2018-01-31 21:14:10.393417','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa','More Ways to Connect','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"]]]'),(38,'2017-06-07 00:44:04.071108','2018-01-31 21:14:10.394611','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e','Lesson 3 - Be Social','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"]]]'),(39,'2017-06-07 00:44:04.074752','2018-01-31 21:14:10.395931','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@d45779ad3d024a40a09ad8cc317c0970','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa\",\"More Ways to Connect\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3f2c11aba9434e459676a7d7acc4d960\",\"Google Hangout\"]]]'),(40,'2017-06-07 00:44:04.080357','2018-01-31 21:14:10.397234','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@9cee77a606ea4c1aa5440e0ea5d0f618','Interactive Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@e3601c0abee6427d8c17e6d6f8fdddd1\",\"Interactive Questions\"]]]'),(41,'2017-06-07 00:44:04.084066','2018-01-31 21:14:10.398483','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_ac391cde8a91','Limited Checks','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(42,'2017-06-07 00:44:04.089937','2018-01-31 21:14:10.399696','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@934cc32c177d41b580c8413e561346b3','EdX Exams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(43,'2017-06-07 00:44:04.095887','2018-01-31 21:14:10.401094','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@e0254b911fa246218bd98bbdadffef06','Reading Assignments','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(44,'2017-06-07 00:44:04.101826','2018-01-31 21:14:10.402481','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@4d672c5893cb4f1dad0de67d2008522e','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_1fef54c2b23b\",\"Chemical Equations\"]]]'),(45,'2017-06-07 00:44:04.105307','2018-01-31 21:14:10.403824','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@f480df4ce91347c5ae4301ddf6146238','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@b6662b497c094bcc9b870d8270c90c93\",\"Getting Answers\"]]]'),(46,'2017-06-07 00:44:04.109545','2018-01-31 21:14:10.405131','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@03f051f9a8814881a3783d2511613aa6','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_d32bf9b2242c\",\"Electronic Sound Experiment\"]]]'),(47,'2017-06-07 00:44:04.113055','2018-01-31 21:14:10.406470','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@6bcccc2d7343416e9e03fd7325b2f232','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4f6c1b4e316a419ab5b6bf30e6c708e9\",\"Working with Videos\"]]]'),(48,'2017-06-07 00:44:04.117777','2018-01-31 21:14:10.407833','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@d5a5caaf35e84ebc9a747038465dcfb4','Electronic Circuit Simulator','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1\",\"Electric Circuit Simulator\"]]]'),(49,'2017-06-07 00:44:04.121328','2018-01-31 21:14:10.409243','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@0b9e39477cf34507a7a48f74be381fdd','Welcome!','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b\",\"Introduction\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@edx_introduction\",\"Demo Course Overview\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0270f6de40fc\",\"Introduction: Video and Sequences\"]]]'),(50,'2017-06-07 00:44:04.124870','2018-01-31 21:14:10.410969','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@78d7d3642f3a4dbabbd1b017861aa5f2','Lesson 2: Let\'s Get Interactive!','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d0d804e8863c4a95a659c04d8a2b2bc0\",\"Lesson 2 - Let\'s Get Interactive! \"]]]'),(51,'2017-06-07 00:44:04.129145','2018-01-31 21:14:10.412513','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@c6cd4bea43454aaea60ad01beb0cf213','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_aae927868e55\",\"Code Grader\"]]]'),(52,'2017-06-07 00:44:04.132749','2018-01-31 21:14:10.413943','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@cd177caa62444fbca48aa8f843f09eac','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_ac391cde8a91\",\"Limited Checks\"]]]'),(53,'2017-06-07 00:44:04.136334','2018-01-31 21:14:10.415727','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@12ad4f3ff4c14114a6e629b00e000976','Peer Grading','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@175e76c4951144a29d46211361266e0e\",\"Homework - Essays\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb79dcbad35b466a8c6364f8ffee9050\",\"Peer Assessed Essays\"]]]'),(54,'2017-06-07 00:44:04.140976','2018-01-31 21:14:10.417125','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@logic_gate_problem','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1\",\"Electric Circuit Simulator\"]]]'),(55,'2017-06-07 00:44:04.145443','2018-01-31 21:14:10.418399','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_2dbb0072785e','An Interactive Reference Table','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(56,'2017-06-07 00:44:04.150952','2017-06-07 00:44:04.151179','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b','Introduction','[]'),(57,'2017-06-07 00:44:04.154519','2018-01-31 21:14:10.419535','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations','Lesson 2 - Let\'s Get Interactive!','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"]]]'),(58,'2017-06-07 00:44:04.160913','2018-01-31 21:14:10.420775','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@e3601c0abee6427d8c17e6d6f8fdddd1','Interactive Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(59,'2017-06-07 00:44:04.164529','2018-01-31 21:14:10.422140','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@700x_proteinmake','Designing Proteins in Two Dimensions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_bc69a47c6fae\",\"Protein Creator\"]]]'),(60,'2017-06-07 00:44:04.170368','2018-01-31 21:14:10.423511','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@0a3b4139f51a4917a3aff9d519b1eeb6','Videos on edX','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3dc16db8d14842e38324e95d4030b8a0\",\"Videos on edX\"]]]'),(61,'2017-06-07 00:44:04.174017','2018-01-31 21:14:10.424840','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@Lab_5B_Mosfet_Amplifier_Experiment','Electronic Sound Experiment','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_d32bf9b2242c\",\"Electronic Sound Experiment\"]]]'),(62,'2017-06-07 00:44:04.178582','2018-01-31 21:14:10.426422','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@722085be27c84ac693cfebc8ac5da700','Videos on edX','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3dc16db8d14842e38324e95d4030b8a0\",\"Videos on edX\"]]]'),(63,'2017-06-07 00:44:04.182203','2018-01-31 21:14:10.428092','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@700x_pathways','Zooming Diagrams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_98cf62510471\",\"Zooming Diagrams\"]]]'),(64,'2017-06-07 00:44:04.185785','2018-01-31 21:14:10.429563','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@5c90cffecd9b48b188cbfea176bf7fe9','Video','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3dc16db8d14842e38324e95d4030b8a0\",\"Videos on edX\"]]]'),(65,'2017-06-07 00:44:04.190232','2018-01-31 21:14:10.430967','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@e5eac7e1a5a24f5fa7ed77bb6d136591','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@2152d4a4aadc4cb0af5256394a3d1fc7\",\"Pointing on a Picture\"]]]'),(66,'2017-06-07 00:44:04.193987','2018-01-31 21:14:10.432292','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@867dddb6f55d410caaa9c1eb9c6743ec','Getting Started','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(67,'2017-06-07 00:44:04.198714','2018-01-31 21:14:10.433720','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@Sample_Algebraic_Problem','Mathematical Expressions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0c92347a5c00\",\"Mathematical Expressions\"]]]'),(68,'2017-06-07 00:44:04.202209','2018-01-31 21:14:10.435075','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@4f06b358a96f4d1dae57d6d81acd06f2','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1\",\"Electric Circuit Simulator\"]]]'),(69,'2017-06-07 00:44:04.210129','2018-01-31 21:14:10.436517','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@55cbc99f262443d886a25cf84594eafb','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa\",\"More Ways to Connect\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3f2c11aba9434e459676a7d7acc4d960\",\"Google Hangout\"]]]'),(70,'2017-06-07 00:44:04.214017','2017-06-07 00:44:04.214270','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations','Example Week 1: Getting Started','[]'),(71,'2017-06-07 00:44:04.218133','2018-01-31 21:14:10.437998','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@8bb218cccf8d40519a971ff0e4901ccf','Getting Help','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@312cb4faed17420e82ab3178fc3e251a\",\"Getting Help\"]]]'),(72,'2017-06-07 00:44:04.221805','2018-01-31 21:14:10.439362','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@1a810b1a3b2447b998f0917d0e5a802b','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@1b0e2c2c84884b95b1c99fb678cc964c\",\"Overall Grade Performance\"]]]'),(73,'2017-06-07 00:44:04.225715','2018-01-31 21:14:10.440711','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@ex_practice_limited_checks','Limited Checks','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_ac391cde8a91\",\"Limited Checks\"]]]'),(74,'2017-06-07 00:44:04.231678','2018-01-31 21:14:10.441857','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow','edX Exams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"]]]'),(75,'2017-06-07 00:44:04.235303','2018-01-31 21:14:10.443092','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@e8a5cc2aed424838853defab7be45e42','Text input','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(76,'2017-06-07 00:44:04.240099','2018-01-31 21:14:10.444833','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@636541acbae448d98ab484b028c9a7f6','Connecting a Circuit and a Circuit Diagram','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@256f17a44983429fb1a60802203ee4e0\",\"Video Presentation Styles\"]]]'),(77,'2017-06-07 00:44:04.243779','2018-01-31 21:14:10.446271','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0c92347a5c00','Mathematical Expressions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(78,'2017-06-07 00:44:04.253803','2018-01-31 21:14:10.447730','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@b8cec2a19ebf463f90cd3544c7927b0e','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f91d8d31f7cf48ce990f8d8745ae4cfa\",\"Answering More Than Once\"]]]'),(79,'2017-06-07 00:44:04.259698','2018-01-31 21:14:10.449148','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@5e009378f0b64585baa0a14b155974b9','Passing a Course','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@c7e98fd39a6944edb6b286c32e1150ff\",\"Passing a Course\"]]]'),(80,'2017-06-07 00:44:04.263474','2018-01-31 21:14:10.450548','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@a0effb954cca4759994f1ac9e9434bf4','Multiple Choice Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@54bb9b142c6c4c22afc62bcb628f0e68\",\"Multiple Choice Questions\"]]]'),(81,'2017-06-07 00:44:04.268107','2018-01-31 21:14:10.451803','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@2889db1677a549abb15eb4d886f95d1c','Numerical Input','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(82,'2017-06-07 00:44:04.271927','2018-01-31 21:14:10.453182','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@openassessment+block@b24c33ea35954c7889e1d2944d3fe397','Open Response Assessment','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@175e76c4951144a29d46211361266e0e\",\"Homework - Essays\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb79dcbad35b466a8c6364f8ffee9050\",\"Peer Assessed Essays\"]]]'),(83,'2017-06-07 00:44:04.275673','2018-01-31 21:14:10.454426','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_f04afeac0131','Immediate Feedback','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(84,'2017-06-07 00:44:04.279976','2018-01-31 21:14:10.455819','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@148ae8fa73ea460eb6f05505da0ba6e6','Getting Your edX Certificate','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6eaa391d2be41dea20b8b1bfbcb1c45\",\"Getting Your edX Certificate\"]]]'),(85,'2017-06-07 00:44:04.283600','2018-01-31 21:14:10.457219','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@python_grader','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_aae927868e55\",\"Code Grader\"]]]'),(86,'2017-06-07 00:44:04.287937','2018-01-31 21:14:10.458652','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@412dc8dbb6674014862237b23c1f643f','Working with Videos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4f6c1b4e316a419ab5b6bf30e6c708e9\",\"Working with Videos\"]]]'),(87,'2017-06-07 00:44:04.291592','2018-01-31 21:14:10.460357','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@html_49b4494da2f7','Discussion Forums','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_3888db0bc286\",\"Discussion Forums\"]]]'),(88,'2017-06-07 00:44:04.295883','2018-01-31 21:14:10.461894','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@2b94658d2eee4d85ae13f83bc24cfca9','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0fab6aa52165\",\"Molecule Editor\"]]]'),(89,'2017-06-07 00:44:04.300496','2018-01-31 21:14:10.463310','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@html_07d547513285','An Interactive Reference Table','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_2dbb0072785e\",\"An Interactive Reference Table\"]]]'),(90,'2017-06-07 00:44:04.304769','2018-01-31 21:14:10.465010','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@3169f89efde2452993f2f2d9bc74f5b2','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@e3601c0abee6427d8c17e6d6f8fdddd1\",\"Interactive Questions\"]]]'),(91,'2017-06-07 00:44:04.309387','2018-01-31 21:14:10.466789','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@4aba537a78774bd5a862485a8563c345','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_f04afeac0131\",\"Immediate Feedback\"]]]'),(92,'2017-06-07 00:44:04.313327','2018-01-31 21:14:10.468464','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@303034da25524878a2e66fb57c91cf85','Attributing Blame','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(93,'2017-06-07 00:44:04.318229','2018-01-31 21:14:10.470162','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@23e6eda482c04335af2bb265beacaf59','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@c7e98fd39a6944edb6b286c32e1150ff\",\"Passing a Course\"]]]'),(94,'2017-06-07 00:44:04.323382','2018-01-31 21:14:10.471536','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@256f17a44983429fb1a60802203ee4e0','Video Presentation Styles','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(95,'2017-06-07 00:44:04.327973','2018-01-31 21:14:10.472918','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@c554538a57664fac80783b99d9d6da7c','Pointing on a Picture','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@2152d4a4aadc4cb0af5256394a3d1fc7\",\"Pointing on a Picture\"]]]'),(96,'2017-06-07 00:44:04.332071','2018-01-31 21:14:10.474192','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@26d89b08f75d48829a63520ed8b0037d','Homework - Find Your Study Buddy','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@dbe8fc027bcb4fe9afb744d2e8415855\",\"Homework - Find Your Study Buddy\"]]]'),(97,'2017-06-07 00:44:04.335751','2018-01-31 21:14:10.475499','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@47dbd5f836544e61877a483c0b75606c','Drag and Drop','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(98,'2017-06-07 00:44:04.340409','2018-01-31 21:14:10.477101','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@ex_practice_3','Randomized Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_36e0beb03f0a\",\"Randomized Questions\"]]]'),(99,'2017-06-07 00:44:04.344650','2018-01-31 21:14:10.478933','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@ex_practice_2','Immediate Feedback','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_f04afeac0131\",\"Immediate Feedback\"]]]'),(100,'2017-06-07 00:44:04.351446','2018-01-31 21:14:10.480411','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@82d599b014b246c7a9b5dfc750dc08a9','Getting Started','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@867dddb6f55d410caaa9c1eb9c6743ec\",\"Getting Started\"]]]'),(101,'2017-06-07 00:44:04.355260','2018-01-31 21:14:10.481834','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@f4a39219742149f781a1dda6f43a623c','Overall Grade','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@1b0e2c2c84884b95b1c99fb678cc964c\",\"Overall Grade Performance\"]]]'),(102,'2017-06-07 00:44:04.359932','2018-01-31 21:14:10.483216','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@651e0945b77f42e0a4c89b8c3e6f5b3b','Answering More Than Once','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f91d8d31f7cf48ce990f8d8745ae4cfa\",\"Answering More Than Once\"]]]'),(103,'2017-06-07 00:44:04.363771','2018-01-31 21:14:10.484624','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@d2e35c1d294b4ba0b3b1048615605d2a','Drag and Drop','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@47dbd5f836544e61877a483c0b75606c\",\"Drag and Drop\"]]]'),(104,'2017-06-07 00:44:04.368012','2018-01-31 21:14:10.485965','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@870371212ba04dcf9536d7c7b8f3109e','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0c92347a5c00\",\"Mathematical Expressions\"]]]'),(105,'2017-06-07 00:44:04.371531','2018-01-31 21:14:10.487363','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@78e3719e864e45f3bee938461f3c3de6','Protein Builder','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_bc69a47c6fae\",\"Protein Creator\"]]]'),(106,'2017-06-07 00:44:04.375152','2018-01-31 21:14:10.488776','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@ffa5817d49e14fec83ad6187cbe16358','Reading Sample','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@134df56c516a4a0dbb24dd5facef746e\",\"Reading Assignments\"]]]'),(107,'2017-06-07 00:44:04.379738','2018-01-31 21:14:10.490008','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@54bb9b142c6c4c22afc62bcb628f0e68','Multiple Choice Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(108,'2017-06-07 00:44:04.383447','2018-01-31 21:14:10.491224','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@b6662b497c094bcc9b870d8270c90c93','Getting Answers','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(109,'2017-06-07 00:44:04.388097','2018-01-31 21:14:10.492464','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_bc69a47c6fae','Protein Creator','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(110,'2017-06-07 00:44:04.392036','2018-01-31 21:14:10.494092','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@f9f3a25e7bab46e583fd1fbbd7a2f6a0','Be Social','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3c4b575924bf4b75a2f3542df5c354fc\",\"Be Social\"]]]'),(111,'2017-06-07 00:44:04.396164','2018-01-31 21:14:10.495641','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@9f9e1373cc8243b985c8750cc8acec7d','Video Demonstrations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4a1bba2a403f40bca5ec245e945b0d76\",\"Video Demonstrations\"]]]'),(112,'2017-06-07 00:44:04.402103','2018-01-31 21:14:10.496818','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5','Lesson 1 - Getting Started','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"]]]'),(113,'2017-06-07 00:44:04.405922','2018-01-31 21:14:10.498271','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@67c26b1e826e47aaa29757f62bcd1ad0','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@54bb9b142c6c4c22afc62bcb628f0e68\",\"Multiple Choice Questions\"]]]'),(114,'2017-06-07 00:44:04.410299','2018-01-31 21:14:10.499707','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@ade92343df3d4953a40ab3adc8805390','Google Hangout','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@6ab9c442501d472c8ed200e367b4edfa\",\"More Ways to Connect\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@3f2c11aba9434e459676a7d7acc4d960\",\"Google Hangout\"]]]'),(115,'2017-06-07 00:44:04.414247','2018-01-31 21:14:10.500957','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_1fef54c2b23b','Chemical Equations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(116,'2017-06-07 00:44:04.418788','2018-01-31 21:14:10.502266','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_aae927868e55','Code Grader','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(117,'2017-06-07 00:44:04.422425','2018-01-31 21:14:10.503512','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@d0d804e8863c4a95a659c04d8a2b2bc0','Lesson 2 - Let\'s Get Interactive! ','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(118,'2017-06-07 00:44:04.426312','2018-01-31 21:14:10.504645','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@dbe8fc027bcb4fe9afb744d2e8415855','Homework - Find Your Study Buddy','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"]]]'),(119,'2017-06-07 00:44:04.431034','2018-01-31 21:14:10.506011','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@6244918637ed4ff4b5f94a840a7e4b43','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@e8a5cc2aed424838853defab7be45e42\",\"Text input\"]]]'),(120,'2017-06-07 00:44:04.438880','2018-01-31 21:14:10.507269','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@c7e98fd39a6944edb6b286c32e1150ff','Passing a Course','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(121,'2017-06-07 00:44:04.442617','2018-01-31 21:14:10.508487','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@175e76c4951144a29d46211361266e0e','Homework - Essays','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"]]]'),(122,'2017-06-07 00:44:04.446689','2018-01-31 21:14:10.509902','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@3c4b575924bf4b75a2f3542df5c354fc','Be Social','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"]]]'),(123,'2017-06-07 00:44:04.451425','2018-01-31 21:14:10.511517','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@2bee8c4248e842a19ba1e73ed8d426c2','Labs and Demos','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6cee45205a449369d7ef8f159b22bdf\",\"Labs and Demos\"]]]'),(124,'2017-06-07 00:44:04.454995','2018-01-31 21:14:10.512869','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_36e0beb03f0a','Randomized Questions','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(125,'2017-06-07 00:44:04.459194','2018-01-31 21:14:10.514253','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@6b6bee43c7c641509da71c9299cc9f5a','Blank HTML Page','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6eaa391d2be41dea20b8b1bfbcb1c45\",\"Getting Your edX Certificate\"]]]'),(126,'2017-06-07 00:44:04.462606','2018-01-31 21:14:10.515612','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@1b0e2c2c84884b95b1c99fb678cc964c','Overall Grade Performance','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(127,'2017-06-07 00:44:04.466210','2018-01-31 21:14:10.516743','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@07bc32474380492cb34f76e5f9d9a135','New Subsection','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@9fca584977d04885bc911ea76a9ef29e\",\"holding section\"]]]'),(128,'2017-06-07 00:44:04.470488','2018-01-31 21:14:10.518157','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@free_form_simulation','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_c037f3757df1\",\"Electric Circuit Simulator\"]]]'),(129,'2017-06-07 00:44:04.474016','2018-01-31 21:14:10.519602','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@0d759dee4f9d459c8956136dbde55f02','Text Input','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@e8a5cc2aed424838853defab7be45e42\",\"Text input\"]]]'),(130,'2017-06-07 00:44:04.478627','2018-01-31 21:14:10.520802','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@edx_introduction','Demo Course Overview','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b\",\"Introduction\"]]]'),(131,'2017-06-07 00:44:04.482078','2018-01-31 21:14:10.522142','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@6018785795994726950614ce7d0f38c5','Find Your Study Buddy','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@dbe8fc027bcb4fe9afb744d2e8415855\",\"Homework - Find Your Study Buddy\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@26d89b08f75d48829a63520ed8b0037d\",\"Homework - Find Your Study Buddy\"]]]'),(132,'2017-06-07 00:44:04.485444','2017-06-07 00:44:04.485631','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@9fca584977d04885bc911ea76a9ef29e','holding section','[]'),(133,'2017-06-07 00:44:04.489825','2018-01-31 21:14:10.523400','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@d6eaa391d2be41dea20b8b1bfbcb1c45','Getting Your edX Certificate','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"]]]'),(134,'2017-06-07 00:44:04.493485','2018-01-31 21:14:10.524636','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@3dc16db8d14842e38324e95d4030b8a0','Videos on edX','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(135,'2017-06-07 00:44:04.497864','2018-01-31 21:14:10.525869','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_98cf62510471','Zooming Diagrams','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(136,'2017-06-07 00:44:04.501379','2018-01-31 21:14:10.527495','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@ddede76df71045ffa16de9d1481d2119','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7\",\"About Exams and Certificates\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow\",\"edX Exams\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_36e0beb03f0a\",\"Randomized Questions\"]]]'),(137,'2017-06-07 00:44:04.505020','2018-01-31 21:14:10.528937','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_0270f6de40fc','Introduction: Video and Sequences','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@d8a6192ade314473a78242dfeedfbf5b\",\"Introduction\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@edx_introduction\",\"Demo Course Overview\"]]]'),(138,'2017-06-07 00:44:04.509479','2018-01-31 21:14:10.530924','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@7e9b434e6de3435ab99bd3fb25bde807','Science and Cooking Chef Profile: JOSÉ ANDRÉS','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4f6c1b4e316a419ab5b6bf30e6c708e9\",\"Working with Videos\"]]]'),(139,'2017-06-07 00:44:04.513006','2018-01-31 21:14:10.532420','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@75f9562c77bc4858b61f907bb810d974','Numerical Input','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@2889db1677a549abb15eb4d886f95d1c\",\"Numerical Input\"]]]'),(140,'2017-06-07 00:44:04.517444','2018-01-31 21:14:10.533807','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@501aed9d902349eeb2191fa505548de2','','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@2889db1677a549abb15eb4d886f95d1c\",\"Numerical Input\"]]]'),(141,'2017-06-07 00:44:04.521205','2018-01-31 21:14:10.535066','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@vertical_d32bf9b2242c','Electronic Sound Experiment','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(142,'2017-06-07 00:44:05.897680','2017-06-07 00:44:05.897979','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@af7fe1335eb841cd81ce31c7ee8eb069','Video','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@4e592689563243c484af947465eaef0d\",\"New Unit\"]]]'),(143,'2017-06-07 00:44:05.902830','2017-06-07 00:44:05.903075','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@45c7cedb4bfe46f4a68c78787151cfb5','New Unit','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@9fca584977d04885bc911ea76a9ef29e\",\"holding section\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@07bc32474380492cb34f76e5f9d9a135\",\"New Subsection\"]]]'),(144,'2017-06-07 00:44:05.906665','2017-06-07 00:44:05.906893','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@9d5104b502f24ee89c3d2f4ce9d347cf','When Are Your Exams? ','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@d91b9e5d8bc64d57a1332d06bf2f2193\",\"When Are Your Exams? \"]]]'),(145,'2017-06-07 00:44:05.911313','2017-06-07 00:44:05.911541','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@video+block@ab98b0e385e64445ae97e730ffdf17e7','Biology Demonstration','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f0e6d90842c44cc7a50fd1a18a7dd982\",\"Video Demonstrations\"]]]'),(146,'2017-06-07 00:44:05.914854','2017-06-07 00:44:05.915070','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@4e592689563243c484af947465eaef0d','New Unit','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations\",\"Lesson 2 - Let\'s Get Interactive!\"]]]'),(147,'2017-06-07 00:44:05.918961','2017-06-07 00:44:05.919185','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@ffcd6351126d4ca984409180e41d1b51','Exciting Labs and Tools','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@a79d59cd72034188a71d388f4954a606\",\"Exciting Labs and Tools\"]]]'),(148,'2017-06-07 00:44:05.922554','2017-06-07 00:44:05.922821','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@87fa6792d79f4862be098e5169e93339','Blank HTML Page','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@7efc7bf4a47b4a6cb6595c32cde7712a\",\"Homework - Find Your Study Buddy\"]]]'),(149,'2017-06-07 00:44:05.926111','2017-06-07 00:44:05.926326','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@a79d59cd72034188a71d388f4954a606','Exciting Labs and Tools','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(150,'2017-06-07 00:44:05.931844','2017-06-07 00:44:05.932099','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@2d3efa8db04346548bd5e5374de77628','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f0e6d90842c44cc7a50fd1a18a7dd982\",\"Video Demonstrations\"]]]'),(151,'2017-06-07 00:44:05.935548','2017-06-07 00:44:05.935764','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@f0e6d90842c44cc7a50fd1a18a7dd982','Video Demonstrations','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(152,'2017-06-07 00:44:05.939841','2017-06-07 00:44:05.940068','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@discussion+block@1c8d47c425724346a7968fa1bc745dcd','Labs and Tools','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@a79d59cd72034188a71d388f4954a606\",\"Exciting Labs and Tools\"]]]'),(153,'2017-06-07 00:44:05.943266','2017-06-07 00:44:05.943481','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb6b62dbec4348528629cf2232b86aea','Instructor Programmed Responses','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"]]]'),(154,'2017-06-07 00:44:05.947431','2017-06-07 00:44:05.947649','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@8f89194410954e768bde1764985454a7','Molecule Structures','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"]]]'),(155,'2017-06-07 00:44:05.952231','2017-06-07 00:44:05.952458','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@eb469ec408fa4ab1a9b86c634ca9bfa9','Text','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@f0e6d90842c44cc7a50fd1a18a7dd982\",\"Video Demonstrations\"]]]'),(156,'2017-06-07 00:44:05.955630','2017-06-07 00:44:05.955853','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@9b9687073e904ae197799dc415df899f','Molecule Structures','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@graded_interactions\",\"Example Week 2: Get Interactive\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations\",\"Homework - Labs and Demos\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@8f89194410954e768bde1764985454a7\",\"Molecule Structures\"]]]'),(157,'2017-06-07 00:44:05.959900','2017-06-07 00:44:05.960124','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@7efc7bf4a47b4a6cb6595c32cde7712a','Homework - Find Your Study Buddy','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@social_integration\",\"Example Week 3: Be Social\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e\",\"Lesson 3 - Be Social\"]]]'),(158,'2017-06-07 00:44:05.963387','2017-06-07 00:44:05.963609','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@d7daeff25e4f4026bdd269ae69e03e02','Instructor-Programmed Responses','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions\",\"Homework - Question Styles\"],[\"block-v1:edX+DemoX+Demo_Course+type@vertical+block@fb6b62dbec4348528629cf2232b86aea\",\"Instructor Programmed Responses\"]]]'),(159,'2017-06-07 00:44:05.968870','2017-06-07 00:44:05.969094','course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@vertical+block@d91b9e5d8bc64d57a1332d06bf2f2193','When Are Your Exams? ','[[[\"block-v1:edX+DemoX+Demo_Course+type@chapter+block@interactive_demonstrations\",\"Example Week 1: Getting Started\"],[\"block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5\",\"Lesson 1 - Getting Started\"]]]'),(160,'2018-01-31 21:27:05.908636','2018-01-31 21:27:06.153949','course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@course+block@course','Manual Smoke Test Course 1 - Auto','[]'),(161,'2018-01-31 21:27:06.158432','2018-01-31 21:27:06.158635','course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@chapter+block@5e637f321727429fb53374cbfb4ff28a','Section :754c5e889ac3489e9947ba62b916bdab','[]'),(162,'2018-01-31 21:27:06.161580','2018-01-31 21:27:06.161777','course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@sequential+block@3322473e23a1436986e38912cd581d09','Subsection :56c1bc20d270414b877e9c178954b6ed','[[[\"block-v1:edX+E2E-101+course+branch@draft-branch+version@5a7234aab65909059994f4a0+type@chapter+block@5e637f321727429fb53374cbfb4ff28a\",\"Section :754c5e889ac3489e9947ba62b916bdab\"]]]');
 /*!40000 ALTER TABLE `bookmarks_xblockcache` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1103,8 +1227,8 @@ CREATE TABLE `branding_brandingapiconfig` (
   `enabled` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `branding_brandingapi_changed_by_id_bab2730f_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `branding_brandingapi_changed_by_id_bab2730f_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `branding_branding_changed_by_id_127fa63777522d05_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `branding_branding_changed_by_id_127fa63777522d05_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1114,6 +1238,7 @@ CREATE TABLE `branding_brandingapiconfig` (
 
 LOCK TABLES `branding_brandingapiconfig` WRITE;
 /*!40000 ALTER TABLE `branding_brandingapiconfig` DISABLE KEYS */;
+INSERT INTO `branding_brandingapiconfig` VALUES (1, '2018-09-12 04:43:16.006423', 1, 2);
 /*!40000 ALTER TABLE `branding_brandingapiconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1130,8 +1255,8 @@ CREATE TABLE `branding_brandinginfoconfig` (
   `configuration` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `branding_brandinginf_changed_by_id_616dd172_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `branding_brandinginf_changed_by_id_616dd172_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `branding_branding_changed_by_id_298e4241fae118cc_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `branding_branding_changed_by_id_298e4241fae118cc_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1157,8 +1282,8 @@ CREATE TABLE `bulk_email_bulkemailflag` (
   `require_course_email_auth` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `bulk_email_bulkemailflag_changed_by_id_c510754b_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `bulk_email_bulkemailflag_changed_by_id_c510754b_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `bulk_email_bulkem_changed_by_id_67960d6511f876aa_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `bulk_email_bulkem_changed_by_id_67960d6511f876aa_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1181,9 +1306,9 @@ CREATE TABLE `bulk_email_cohorttarget` (
   `target_ptr_id` int(11) NOT NULL,
   `cohort_id` int(11) NOT NULL,
   PRIMARY KEY (`target_ptr_id`),
-  KEY `bulk_email_cohorttar_cohort_id_096f39c9_fk_course_gr` (`cohort_id`),
-  CONSTRAINT `bulk_email_cohorttar_cohort_id_096f39c9_fk_course_gr` FOREIGN KEY (`cohort_id`) REFERENCES `course_groups_courseusergroup` (`id`),
-  CONSTRAINT `bulk_email_cohorttar_target_ptr_id_7e1a1a40_fk_bulk_emai` FOREIGN KEY (`target_ptr_id`) REFERENCES `bulk_email_target` (`id`)
+  KEY `b_cohort_id_3d66a5e8e283dba0_fk_course_groups_courseusergroup_id` (`cohort_id`),
+  CONSTRAINT `b_cohort_id_3d66a5e8e283dba0_fk_course_groups_courseusergroup_id` FOREIGN KEY (`cohort_id`) REFERENCES `course_groups_courseusergroup` (`id`),
+  CONSTRAINT `bulk_emai_target_ptr_id_7974c77c83c2899d_fk_bulk_email_target_id` FOREIGN KEY (`target_ptr_id`) REFERENCES `bulk_email_target` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1240,10 +1365,10 @@ CREATE TABLE `bulk_email_courseemail` (
   `from_addr` varchar(255) DEFAULT NULL,
   `sender_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `bulk_email_courseemail_sender_id_865f6979_fk_auth_user_id` (`sender_id`),
-  KEY `bulk_email_courseemail_slug_bd25801f` (`slug`),
-  KEY `bulk_email_courseemail_course_id_b7b8a9a2` (`course_id`),
-  CONSTRAINT `bulk_email_courseemail_sender_id_865f6979_fk_auth_user_id` FOREIGN KEY (`sender_id`) REFERENCES `auth_user` (`id`)
+  KEY `bulk_email_courseemai_sender_id_37be3a6322a26640_fk_auth_user_id` (`sender_id`),
+  KEY `bulk_email_courseemail_2dbcba41` (`slug`),
+  KEY `bulk_email_courseemail_ea134da7` (`course_id`),
+  CONSTRAINT `bulk_email_courseemai_sender_id_37be3a6322a26640_fk_auth_user_id` FOREIGN KEY (`sender_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1267,10 +1392,10 @@ CREATE TABLE `bulk_email_courseemail_targets` (
   `courseemail_id` int(11) NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `bulk_email_courseemail_t_courseemail_id_target_id_e0440acc_uniq` (`courseemail_id`,`target_id`),
-  KEY `bulk_email_courseema_target_id_52b11fa9_fk_bulk_emai` (`target_id`),
-  CONSTRAINT `bulk_email_courseema_courseemail_id_83f5bdcd_fk_bulk_emai` FOREIGN KEY (`courseemail_id`) REFERENCES `bulk_email_courseemail` (`id`),
-  CONSTRAINT `bulk_email_courseema_target_id_52b11fa9_fk_bulk_emai` FOREIGN KEY (`target_id`) REFERENCES `bulk_email_target` (`id`)
+  UNIQUE KEY `courseemail_id` (`courseemail_id`,`target_id`),
+  KEY `bulk_email_co_target_id_6cdcd92a52b1f9d9_fk_bulk_email_target_id` (`target_id`),
+  CONSTRAINT `bul_courseemail_id_47818d2b9b38e0e0_fk_bulk_email_courseemail_id` FOREIGN KEY (`courseemail_id`) REFERENCES `bulk_email_courseemail` (`id`),
+  CONSTRAINT `bulk_email_co_target_id_6cdcd92a52b1f9d9_fk_bulk_email_target_id` FOREIGN KEY (`target_id`) REFERENCES `bulk_email_target` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1319,9 +1444,9 @@ CREATE TABLE `bulk_email_coursemodetarget` (
   `target_ptr_id` int(11) NOT NULL,
   `track_id` int(11) NOT NULL,
   PRIMARY KEY (`target_ptr_id`),
-  KEY `bulk_email_coursemod_track_id_2b68bb43_fk_course_mo` (`track_id`),
-  CONSTRAINT `bulk_email_coursemod_target_ptr_id_f2f054ce_fk_bulk_emai` FOREIGN KEY (`target_ptr_id`) REFERENCES `bulk_email_target` (`id`),
-  CONSTRAINT `bulk_email_coursemod_track_id_2b68bb43_fk_course_mo` FOREIGN KEY (`track_id`) REFERENCES `course_modes_coursemode` (`id`)
+  KEY `bulk_ema_track_id_22015815e2847a7c_fk_course_modes_coursemode_id` (`track_id`),
+  CONSTRAINT `bulk_ema_track_id_22015815e2847a7c_fk_course_modes_coursemode_id` FOREIGN KEY (`track_id`) REFERENCES `course_modes_coursemode` (`id`),
+  CONSTRAINT `bulk_email_target_ptr_id_f860b6472e1dca2_fk_bulk_email_target_id` FOREIGN KEY (`target_ptr_id`) REFERENCES `bulk_email_target` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1345,9 +1470,9 @@ CREATE TABLE `bulk_email_optout` (
   `course_id` varchar(255) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `bulk_email_optout_user_id_course_id_e0e2d6a6_uniq` (`user_id`,`course_id`),
-  KEY `bulk_email_optout_course_id_5c5836a8` (`course_id`),
-  CONSTRAINT `bulk_email_optout_user_id_ff6223d6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `bulk_email_optout_user_id_7710cb544aafa8a_uniq` (`user_id`,`course_id`),
+  KEY `bulk_email_optout_ea134da7` (`course_id`),
+  CONSTRAINT `bulk_email_optout_user_id_5d6e4a037bcf14bd_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1383,35 +1508,6 @@ LOCK TABLES `bulk_email_target` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `bulk_grades_scoreoverrider`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bulk_grades_scoreoverrider` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `modified` datetime(6) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `module_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `bulk_grades_scoreove_module_id_33617068_fk_coursewar` (`module_id`),
-  KEY `bulk_grades_scoreoverrider_user_id_9768d9f6_fk_auth_user_id` (`user_id`),
-  KEY `bulk_grades_scoreoverrider_created_2d9c74a5` (`created`),
-  CONSTRAINT `bulk_grades_scoreoverrider_user_id_9768d9f6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `bulk_grades_scoreoverrider`
---
-
-LOCK TABLES `bulk_grades_scoreoverrider` WRITE;
-/*!40000 ALTER TABLE `bulk_grades_scoreoverrider` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bulk_grades_scoreoverrider` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `catalog_catalogintegration`
 --
 
@@ -1428,9 +1524,9 @@ CREATE TABLE `catalog_catalogintegration` (
   `page_size` int(10) unsigned NOT NULL,
   `long_term_cache_ttl` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `catalog_cataloginteg_changed_by_id_cde406de_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `catalog_cataloginteg_changed_by_id_cde406de_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  KEY `catalog_catalogin_changed_by_id_4c786efa531d484b_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `catalog_catalogin_changed_by_id_4c786efa531d484b_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1439,7 +1535,6 @@ CREATE TABLE `catalog_catalogintegration` (
 
 LOCK TABLES `catalog_catalogintegration` WRITE;
 /*!40000 ALTER TABLE `catalog_catalogintegration` DISABLE KEYS */;
-INSERT INTO `catalog_catalogintegration` VALUES (1,'2019-09-25 20:15:41.958791',1,'https://example.com/api',0,NULL,'discovery_worker',100,86400);
 /*!40000 ALTER TABLE `catalog_catalogintegration` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1460,7 +1555,7 @@ CREATE TABLE `celery_taskmeta` (
   `meta` longtext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `task_id` (`task_id`),
-  KEY `celery_taskmeta_hidden_23fd02dc` (`hidden`)
+  KEY `celery_taskmeta_662f707d` (`hidden`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1487,7 +1582,7 @@ CREATE TABLE `celery_tasksetmeta` (
   `hidden` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `taskset_id` (`taskset_id`),
-  KEY `celery_tasksetmeta_hidden_593cfc24` (`hidden`)
+  KEY `celery_tasksetmeta_662f707d` (`hidden`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1512,7 +1607,7 @@ CREATE TABLE `celery_utils_chorddata` (
   `callback_result_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `callback_result_id` (`callback_result_id`),
-  CONSTRAINT `celery_utils_chordda_callback_result_id_08132c0d_fk_celery_ta` FOREIGN KEY (`callback_result_id`) REFERENCES `celery_taskmeta` (`id`)
+  CONSTRAINT `celery_callback_result_id_230f1d5ec4608165_fk_celery_taskmeta_id` FOREIGN KEY (`callback_result_id`) REFERENCES `celery_taskmeta` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1536,10 +1631,10 @@ CREATE TABLE `celery_utils_chorddata_completed_results` (
   `chorddata_id` int(11) NOT NULL,
   `taskmeta_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `celery_utils_chorddata_c_chorddata_id_taskmeta_id_ad5ac372_uniq` (`chorddata_id`,`taskmeta_id`),
-  KEY `celery_utils_chordda_taskmeta_id_f86c2999_fk_celery_ta` (`taskmeta_id`),
-  CONSTRAINT `celery_utils_chordda_chorddata_id_216509e3_fk_celery_ut` FOREIGN KEY (`chorddata_id`) REFERENCES `celery_utils_chorddata` (`id`),
-  CONSTRAINT `celery_utils_chordda_taskmeta_id_f86c2999_fk_celery_ta` FOREIGN KEY (`taskmeta_id`) REFERENCES `celery_taskmeta` (`id`)
+  UNIQUE KEY `chorddata_id` (`chorddata_id`,`taskmeta_id`),
+  KEY `celery_utils__taskmeta_id_16beefb23621d690_fk_celery_taskmeta_id` (`taskmeta_id`),
+  CONSTRAINT `celery_chorddata_id_2abad2f2a442ac5_fk_celery_utils_chorddata_id` FOREIGN KEY (`chorddata_id`) REFERENCES `celery_utils_chorddata` (`id`),
+  CONSTRAINT `celery_utils__taskmeta_id_16beefb23621d690_fk_celery_taskmeta_id` FOREIGN KEY (`taskmeta_id`) REFERENCES `celery_taskmeta` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1569,9 +1664,9 @@ CREATE TABLE `celery_utils_failedtask` (
   `exc` varchar(255) NOT NULL,
   `datetime_resolved` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `celery_utils_failedtask_task_name_exc_efb8c9be_idx` (`task_name`,`exc`),
-  KEY `celery_utils_failedtask_task_id_37af0933` (`task_id`),
-  KEY `celery_utils_failedtask_datetime_resolved_8160e407` (`datetime_resolved`)
+  KEY `celery_utils_failedtask_task_name_2cb4bd734027fd4f_idx` (`task_name`,`exc`),
+  KEY `celery_utils_failedtask_57746cc8` (`task_id`),
+  KEY `celery_utils_failedtask_499aafb6` (`datetime_resolved`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1596,8 +1691,8 @@ CREATE TABLE `certificates_certificategenerationconfiguration` (
   `enabled` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `certificates_certifi_changed_by_id_a6d06e99_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `certificates_certifi_changed_by_id_a6d06e99_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `certificates_cert_changed_by_id_2a1d896cdbd5fec5_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `certificates_cert_changed_by_id_2a1d896cdbd5fec5_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1625,7 +1720,7 @@ CREATE TABLE `certificates_certificategenerationcoursesetting` (
   `self_generation_enabled` tinyint(1) NOT NULL,
   `include_hours_of_effort` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `certificates_certificategen_course_key_dd10af41` (`course_key`)
+  KEY `certificates_certificategenerationcoursesetting_c8235886` (`course_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1653,10 +1748,10 @@ CREATE TABLE `certificates_certificategenerationhistory` (
   `generated_by_id` int(11) NOT NULL,
   `instructor_task_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `certificates_certifi_generated_by_id_e9d4b7f2_fk_auth_user` (`generated_by_id`),
-  KEY `certificates_certifi_instructor_task_id_8f7176a6_fk_instructo` (`instructor_task_id`),
-  CONSTRAINT `certificates_certifi_generated_by_id_e9d4b7f2_fk_auth_user` FOREIGN KEY (`generated_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `certificates_certifi_instructor_task_id_8f7176a6_fk_instructo` FOREIGN KEY (`instructor_task_id`) REFERENCES `instructor_task_instructortask` (`id`)
+  KEY `certificates_ce_generated_by_id_4679598e2d7d6e10_fk_auth_user_id` (`generated_by_id`),
+  KEY `D794923145b81064c232a4d0bfe79880` (`instructor_task_id`),
+  CONSTRAINT `D794923145b81064c232a4d0bfe79880` FOREIGN KEY (`instructor_task_id`) REFERENCES `instructor_task_instructortask` (`id`),
+  CONSTRAINT `certificates_ce_generated_by_id_4679598e2d7d6e10_fk_auth_user_id` FOREIGN KEY (`generated_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1682,8 +1777,8 @@ CREATE TABLE `certificates_certificatehtmlviewconfiguration` (
   `configuration` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `certificates_certifi_changed_by_id_bcf656f2_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `certificates_certifi_changed_by_id_bcf656f2_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `certificates_cert_changed_by_id_1de6cf549bca749b_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `certificates_cert_changed_by_id_1de6cf549bca749b_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1693,7 +1788,7 @@ CREATE TABLE `certificates_certificatehtmlviewconfiguration` (
 
 LOCK TABLES `certificates_certificatehtmlviewconfiguration` WRITE;
 /*!40000 ALTER TABLE `certificates_certificatehtmlviewconfiguration` DISABLE KEYS */;
-INSERT INTO `certificates_certificatehtmlviewconfiguration` VALUES (1,'2019-09-25 19:49:42.776271',0,'{\"default\": {\"accomplishment_class_append\": \"accomplishment-certificate\", \"platform_name\": \"Your Platform Name Here\", \"logo_src\": \"/static/certificates/images/logo.png\", \"logo_url\": \"http://www.example.com\", \"company_verified_certificate_url\": \"http://www.example.com/verified-certificate\", \"company_privacy_url\": \"http://www.example.com/privacy-policy\", \"company_tos_url\": \"http://www.example.com/terms-service\", \"company_about_url\": \"http://www.example.com/about-us\"}, \"verified\": {\"certificate_type\": \"Verified\", \"certificate_title\": \"Verified Certificate of Achievement\"}, \"honor\": {\"certificate_type\": \"Honor Code\", \"certificate_title\": \"Certificate of Achievement\"}}',NULL);
+INSERT INTO `certificates_certificatehtmlviewconfiguration` VALUES (1,'2016-12-17 01:36:30.747065',0,'{\"default\": {\"accomplishment_class_append\": \"accomplishment-certificate\", \"platform_name\": \"Your Platform Name Here\", \"logo_src\": \"/static/certificates/images/logo.png\", \"logo_url\": \"http://www.example.com\", \"company_verified_certificate_url\": \"http://www.example.com/verified-certificate\", \"company_privacy_url\": \"http://www.example.com/privacy-policy\", \"company_tos_url\": \"http://www.example.com/terms-service\", \"company_about_url\": \"http://www.example.com/about-us\"}, \"verified\": {\"certificate_type\": \"Verified\", \"certificate_title\": \"Verified Certificate of Achievement\"}, \"honor\": {\"certificate_type\": \"Honor Code\", \"certificate_title\": \"Certificate of Achievement\"}}',NULL);
 /*!40000 ALTER TABLE `certificates_certificatehtmlviewconfiguration` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1712,10 +1807,10 @@ CREATE TABLE `certificates_certificateinvalidation` (
   `generated_certificate_id` int(11) NOT NULL,
   `invalidated_by_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `certificates_certifi_generated_certificat_31bed498_fk_certifica` (`generated_certificate_id`),
-  KEY `certificates_certifi_invalidated_by_id_e3c101f1_fk_auth_user` (`invalidated_by_id`),
-  CONSTRAINT `certificates_certifi_generated_certificat_31bed498_fk_certifica` FOREIGN KEY (`generated_certificate_id`) REFERENCES `certificates_generatedcertificate` (`id`),
-  CONSTRAINT `certificates_certifi_invalidated_by_id_e3c101f1_fk_auth_user` FOREIGN KEY (`invalidated_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `fa0dc816ca8028cd93e5f2289d405d87` (`generated_certificate_id`),
+  KEY `certificates__invalidated_by_id_5198db337fb56b7b_fk_auth_user_id` (`invalidated_by_id`),
+  CONSTRAINT `certificates__invalidated_by_id_5198db337fb56b7b_fk_auth_user_id` FOREIGN KEY (`invalidated_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `fa0dc816ca8028cd93e5f2289d405d87` FOREIGN KEY (`generated_certificate_id`) REFERENCES `certificates_generatedcertificate` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1745,11 +1840,11 @@ CREATE TABLE `certificates_certificatetemplate` (
   `course_key` varchar(255) DEFAULT NULL,
   `mode` varchar(125) DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL,
-  `language` varchar(2) DEFAULT NULL,
+  `language` varchar(2),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `certificates_certificate_organization_id_course_k_88e26c0d_uniq` (`organization_id`,`course_key`,`mode`,`language`),
-  KEY `certificates_certificatetemplate_organization_id_030a747d` (`organization_id`),
-  KEY `certificates_certificatetemplate_course_key_9a6a823d` (`course_key`)
+  UNIQUE KEY `certificates_certificatete_organization_id_48edf53bc66f8e0c_uniq` (`organization_id`,`course_key`,`mode`,`language`),
+  KEY `certificates_certificatetemplate_26b2345e` (`organization_id`),
+  KEY `certificates_certificatetemplate_c8235886` (`course_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1803,8 +1898,8 @@ CREATE TABLE `certificates_certificatewhitelist` (
   `notes` longtext,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `certificates_certifi_user_id_c2ab1b7c_fk_auth_user` (`user_id`),
-  CONSTRAINT `certificates_certifi_user_id_c2ab1b7c_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `certificates_certificat_user_id_50b0bc90075a5407_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `certificates_certificat_user_id_50b0bc90075a5407_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1814,7 +1909,7 @@ CREATE TABLE `certificates_certificatewhitelist` (
 
 LOCK TABLES `certificates_certificatewhitelist` WRITE;
 /*!40000 ALTER TABLE `certificates_certificatewhitelist` DISABLE KEYS */;
-INSERT INTO `certificates_certificatewhitelist` VALUES (1,'course-v1:edX+DemoX+Demo_Course',1,'2019-09-25 20:07:08.826629',NULL,5),(2,'course-v1:edX+DemoX+Demo_Course',1,'2019-09-25 20:07:18.828950',NULL,6),(3,'course-v1:edX+DemoX+Demo_Course',1,'2019-09-25 20:07:28.996666',NULL,7);
+INSERT INTO `certificates_certificatewhitelist` VALUES (1,'course-v1:edX+DemoX+Demo_Course',1,'2017-06-07 00:44:46.592519',NULL,6),(2,'course-v1:edX+DemoX+Demo_Course',1,'2017-06-07 00:44:51.035391',NULL,7),(3,'course-v1:edX+DemoX+Demo_Course',1,'2017-06-07 00:44:55.486418',NULL,8);
 /*!40000 ALTER TABLE `certificates_certificatewhitelist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1839,9 +1934,9 @@ CREATE TABLE `certificates_examplecertificate` (
   `example_cert_set_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
-  KEY `certificates_examplecertificate_access_key_8b745a5d` (`access_key`),
-  KEY `certificates_example_example_cert_set_id_7e660917_fk_certifica` (`example_cert_set_id`),
-  CONSTRAINT `certificates_example_example_cert_set_id_7e660917_fk_certifica` FOREIGN KEY (`example_cert_set_id`) REFERENCES `certificates_examplecertificateset` (`id`)
+  KEY `certificates_examplecertificate_91685379` (`access_key`),
+  KEY `certificates_examplecertificate_c9ee6da7` (`example_cert_set_id`),
+  CONSTRAINT `D5ceae87b49ed6ab15ace7b6f1c01c35` FOREIGN KEY (`example_cert_set_id`) REFERENCES `certificates_examplecertificateset` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1866,7 +1961,7 @@ CREATE TABLE `certificates_examplecertificateset` (
   `modified` datetime(6) NOT NULL,
   `course_key` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `certificates_examplecertificateset_course_key_16497ee9` (`course_key`)
+  KEY `certificates_examplecertificateset_c8235886` (`course_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1902,9 +1997,9 @@ CREATE TABLE `certificates_generatedcertificate` (
   `error_reason` varchar(512) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `certificates_generatedce_user_id_course_id_fc1bb3ee_uniq` (`user_id`,`course_id`),
-  KEY `certificates_generatedcertificate_verify_uuid_97405316` (`verify_uuid`),
-  CONSTRAINT `certificates_generat_user_id_54119d22_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `certificates_generatedcertificate_user_id_552a0fa6f7d3f7e8_uniq` (`user_id`,`course_id`),
+  KEY `certificates_generatedcertific_verify_uuid_1b5a14bb83c471ff_uniq` (`verify_uuid`),
+  CONSTRAINT `certificates_generatedc_user_id_77ed5f7a53121815_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1928,15 +2023,15 @@ CREATE TABLE `commerce_commerceconfiguration` (
   `change_date` datetime(6) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   `checkout_on_ecommerce_service` tinyint(1) NOT NULL,
+  `single_course_checkout_page` varchar(255) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   `cache_ttl` int(10) unsigned NOT NULL,
   `receipt_page` varchar(255) NOT NULL,
   `enable_automatic_refund_approval` tinyint(1) NOT NULL,
-  `basket_checkout_page` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `commerce_commercecon_changed_by_id_2c9a6f14_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `commerce_commercecon_changed_by_id_2c9a6f14_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  KEY `commerce_commerce_changed_by_id_7441951d1c97c1d7_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `commerce_commerce_changed_by_id_7441951d1c97c1d7_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1945,7 +2040,7 @@ CREATE TABLE `commerce_commerceconfiguration` (
 
 LOCK TABLES `commerce_commerceconfiguration` WRITE;
 /*!40000 ALTER TABLE `commerce_commerceconfiguration` DISABLE KEYS */;
-INSERT INTO `commerce_commerceconfiguration` VALUES (1,'2019-09-25 20:04:07.592206',1,1,NULL,0,'/checkout/receipt/?order_number=',1,'/basket/add/');
+INSERT INTO `commerce_commerceconfiguration` VALUES (1,'2017-06-07 00:43:16.006423',1,1,'/basket/single-item/',NULL,0,'/checkout/receipt/?order_number=',1),(2,'2017-06-21 16:00:44.804939',1,1,'/basket/single-item/',NULL,0,'/checkout/receipt/?order_number=',1),(3,'2018-01-31 21:13:27.608254',1,1,'/basket/single-item/',NULL,0,'/checkout/receipt/?order_number=',1);
 /*!40000 ALTER TABLE `commerce_commerceconfiguration` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1965,10 +2060,10 @@ CREATE TABLE `completion_blockcompletion` (
   `completion` double NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `completion_blockcompleti_course_key_block_key_use_b15bac54_uniq` (`course_key`,`block_key`,`user_id`),
-  KEY `completion_blockcompletio_course_key_block_type_use_0f0d4d2d_idx` (`course_key`,`block_type`,`user_id`),
-  KEY `completion_blockcompletio_user_id_course_key_modifi_ed54291e_idx` (`user_id`,`course_key`,`modified`),
-  CONSTRAINT `completion_blockcompletion_user_id_20994c23_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `completion_blockcompletion_course_key_54aa5e002d4e74a2_uniq` (`course_key`,`block_key`,`user_id`),
+  KEY `completion_blockcompletion_course_key_4e99db81ed8510f4_idx` (`course_key`,`block_type`,`user_id`),
+  KEY `completion_blockcompletion_user_id_1d63de3a4a8ef1e5_idx` (`user_id`,`course_key`,`modified`),
+  CONSTRAINT `completion_blockcompleti_user_id_515d6897018815d_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1996,8 +2091,8 @@ CREATE TABLE `consent_datasharingconsent` (
   `course_id` varchar(255) NOT NULL,
   `enterprise_customer_id` char(32) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `consent_datasharingconse_enterprise_customer_id_u_8bdd34e4_uniq` (`enterprise_customer_id`,`username`,`course_id`),
-  CONSTRAINT `consent_datasharingc_enterprise_customer__f46c6b77_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  UNIQUE KEY `consent_datasharing_enterprise_customer_id_667a1480f56052a2_uniq` (`enterprise_customer_id`,`username`,`course_id`),
+  CONSTRAINT `D030ccea2714cf8f0a2e65e948ee3d2d` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2008,47 +2103,6 @@ CREATE TABLE `consent_datasharingconsent` (
 LOCK TABLES `consent_datasharingconsent` WRITE;
 /*!40000 ALTER TABLE `consent_datasharingconsent` DISABLE KEYS */;
 /*!40000 ALTER TABLE `consent_datasharingconsent` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `consent_datasharingconsenttextoverrides`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `consent_datasharingconsenttextoverrides` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `page_title` varchar(255) NOT NULL,
-  `left_sidebar_text` longtext,
-  `top_paragraph` longtext,
-  `agreement_text` longtext,
-  `continue_text` varchar(255) NOT NULL,
-  `abort_text` varchar(255) NOT NULL,
-  `policy_dropdown_header` varchar(255) DEFAULT NULL,
-  `policy_paragraph` longtext,
-  `confirmation_modal_header` varchar(255) NOT NULL,
-  `confirmation_modal_text` longtext NOT NULL,
-  `modal_affirm_decline_text` varchar(255) NOT NULL,
-  `modal_abort_decline_text` varchar(255) NOT NULL,
-  `declined_notification_title` longtext NOT NULL,
-  `declined_notification_message` longtext NOT NULL,
-  `published` tinyint(1) NOT NULL,
-  `enterprise_customer_id` char(32) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `enterprise_customer_id` (`enterprise_customer_id`),
-  CONSTRAINT `consent_datasharingc_enterprise_customer__b979dfc1_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `consent_datasharingconsenttextoverrides`
---
-
-LOCK TABLES `consent_datasharingconsenttextoverrides` WRITE;
-/*!40000 ALTER TABLE `consent_datasharingconsenttextoverrides` DISABLE KEYS */;
-/*!40000 ALTER TABLE `consent_datasharingconsenttextoverrides` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2069,12 +2123,11 @@ CREATE TABLE `consent_historicaldatasharingconsent` (
   `history_type` varchar(1) NOT NULL,
   `enterprise_customer_id` char(32) DEFAULT NULL,
   `history_user_id` int(11) DEFAULT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
+  `history_change_reason` varchar(100),
   PRIMARY KEY (`history_id`),
-  KEY `consent_historicalda_history_user_id_08d7bf89_fk_auth_user` (`history_user_id`),
-  KEY `consent_historicaldatasharingconsent_id_69bef37e` (`id`),
-  KEY `consent_historicaldatashari_enterprise_customer_id_35c184bf` (`enterprise_customer_id`),
-  CONSTRAINT `consent_historicalda_history_user_id_08d7bf89_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
+  KEY `consent_histori_history_user_id_305b7992a9839525_fk_auth_user_id` (`history_user_id`),
+  KEY `consent_historicaldatasharingconsent_b80bb774` (`id`),
+  CONSTRAINT `consent_histori_history_user_id_305b7992a9839525_fk_auth_user_id` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2085,103 +2138,6 @@ CREATE TABLE `consent_historicaldatasharingconsent` (
 LOCK TABLES `consent_historicaldatasharingconsent` WRITE;
 /*!40000 ALTER TABLE `consent_historicaldatasharingconsent` DISABLE KEYS */;
 /*!40000 ALTER TABLE `consent_historicaldatasharingconsent` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `content_libraries_contentlibrary`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `content_libraries_contentlibrary` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `slug` varchar(50) NOT NULL,
-  `bundle_uuid` char(32) NOT NULL,
-  `allow_public_learning` tinyint(1) NOT NULL,
-  `allow_public_read` tinyint(1) NOT NULL,
-  `org_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `bundle_uuid` (`bundle_uuid`),
-  UNIQUE KEY `content_libraries_contentlibrary_org_id_slug_2b964108_uniq` (`org_id`,`slug`),
-  KEY `content_libraries_contentlibrary_slug_30d5507f` (`slug`),
-  CONSTRAINT `content_libraries_co_org_id_b945a402_fk_organizat` FOREIGN KEY (`org_id`) REFERENCES `organizations_organization` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `content_libraries_contentlibrary`
---
-
-LOCK TABLES `content_libraries_contentlibrary` WRITE;
-/*!40000 ALTER TABLE `content_libraries_contentlibrary` DISABLE KEYS */;
-/*!40000 ALTER TABLE `content_libraries_contentlibrary` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `content_libraries_contentlibrarypermission`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `content_libraries_contentlibrarypermission` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `access_level` varchar(30) NOT NULL,
-  `library_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `content_libraries_co_library_id_51247096_fk_content_l` (`library_id`),
-  KEY `content_libraries_co_user_id_b071c54d_fk_auth_user` (`user_id`),
-  CONSTRAINT `content_libraries_co_library_id_51247096_fk_content_l` FOREIGN KEY (`library_id`) REFERENCES `content_libraries_contentlibrary` (`id`),
-  CONSTRAINT `content_libraries_co_user_id_b071c54d_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `content_libraries_contentlibrarypermission`
---
-
-LOCK TABLES `content_libraries_contentlibrarypermission` WRITE;
-/*!40000 ALTER TABLE `content_libraries_contentlibrarypermission` DISABLE KEYS */;
-/*!40000 ALTER TABLE `content_libraries_contentlibrarypermission` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `content_type_gating_contenttypegatingconfig`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `content_type_gating_contenttypegatingconfig` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `change_date` datetime(6) NOT NULL,
-  `enabled` tinyint(1) DEFAULT NULL,
-  `org` varchar(255) DEFAULT NULL,
-  `enabled_as_of` datetime(6) DEFAULT NULL,
-  `studio_override_enabled` tinyint(1) DEFAULT NULL,
-  `changed_by_id` int(11) DEFAULT NULL,
-  `course_id` varchar(255) DEFAULT NULL,
-  `site_id` int(11) DEFAULT NULL,
-  `org_course` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `content_type_gating__changed_by_id_e1754c4b_fk_auth_user` (`changed_by_id`),
-  KEY `content_type_gating_contenttypegatingconfig_org_043e72a9` (`org`),
-  KEY `content_typ_site_id_e91576_idx` (`site_id`,`org`,`course_id`),
-  KEY `content_type_gating__course_id_f19cc50d_fk_course_ov` (`course_id`),
-  KEY `content_typ_site_id_650310_idx` (`site_id`,`org`,`org_course`,`course_id`),
-  KEY `content_type_gating_contenttypegatingconfig_org_course_70742f9e` (`org_course`),
-  CONSTRAINT `content_type_gating__changed_by_id_e1754c4b_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `content_type_gating__course_id_f19cc50d_fk_course_ov` FOREIGN KEY (`course_id`) REFERENCES `course_overviews_courseoverview` (`id`),
-  CONSTRAINT `content_type_gating__site_id_c9f3bc6a_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `content_type_gating_contenttypegatingconfig`
---
-
-LOCK TABLES `content_type_gating_contenttypegatingconfig` WRITE;
-/*!40000 ALTER TABLE `content_type_gating_contenttypegatingconfig` DISABLE KEYS */;
-/*!40000 ALTER TABLE `content_type_gating_contenttypegatingconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2197,8 +2153,8 @@ CREATE TABLE `contentserver_cdnuseragentsconfig` (
   `cdn_user_agents` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `contentserver_cdnuse_changed_by_id_19d8cb94_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `contentserver_cdnuse_changed_by_id_19d8cb94_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `contentserver_cdn_changed_by_id_36fe2b67b2c7f0ba_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `contentserver_cdn_changed_by_id_36fe2b67b2c7f0ba_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2224,8 +2180,8 @@ CREATE TABLE `contentserver_courseassetcachettlconfig` (
   `cache_ttl` int(10) unsigned NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `contentserver_course_changed_by_id_a9213047_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `contentserver_course_changed_by_id_a9213047_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `contentserver_cou_changed_by_id_3b5e5ff6c6df495d_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `contentserver_cou_changed_by_id_3b5e5ff6c6df495d_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2236,6 +2192,87 @@ CREATE TABLE `contentserver_courseassetcachettlconfig` (
 LOCK TABLES `contentserver_courseassetcachettlconfig` WRITE;
 /*!40000 ALTER TABLE `contentserver_courseassetcachettlconfig` DISABLE KEYS */;
 /*!40000 ALTER TABLE `contentserver_courseassetcachettlconfig` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contentstore_coursenewassetspageflag`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contentstore_coursenewassetspageflag` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `change_date` datetime(6) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  `course_id` varchar(255) NOT NULL,
+  `changed_by_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contentstore_cours_changed_by_id_649924e37af184c_fk_auth_user_id` (`changed_by_id`),
+  KEY `contentstore_coursenewassetspageflag_ea134da7` (`course_id`),
+  CONSTRAINT `contentstore_cours_changed_by_id_649924e37af184c_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contentstore_coursenewassetspageflag`
+--
+
+LOCK TABLES `contentstore_coursenewassetspageflag` WRITE;
+/*!40000 ALTER TABLE `contentstore_coursenewassetspageflag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contentstore_coursenewassetspageflag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contentstore_newassetspageflag`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contentstore_newassetspageflag` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `change_date` datetime(6) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  `enabled_for_all_courses` tinyint(1) NOT NULL,
+  `changed_by_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contentstore_newa_changed_by_id_30fcd15e7b674dbb_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `contentstore_newa_changed_by_id_30fcd15e7b674dbb_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contentstore_newassetspageflag`
+--
+
+LOCK TABLES `contentstore_newassetspageflag` WRITE;
+/*!40000 ALTER TABLE `contentstore_newassetspageflag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contentstore_newassetspageflag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contentstore_pushnotificationconfig`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contentstore_pushnotificationconfig` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `change_date` datetime(6) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  `changed_by_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contentstore_push_changed_by_id_72c47af098f7f8b1_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `contentstore_push_changed_by_id_72c47af098f7f8b1_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contentstore_pushnotificationconfig`
+--
+
+LOCK TABLES `contentstore_pushnotificationconfig` WRITE;
+/*!40000 ALTER TABLE `contentstore_pushnotificationconfig` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contentstore_pushnotificationconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2251,8 +2288,8 @@ CREATE TABLE `contentstore_videouploadconfig` (
   `profile_whitelist` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `contentstore_videoup_changed_by_id_e7352cb2_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `contentstore_videoup_changed_by_id_e7352cb2_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `contentstore_vide_changed_by_id_17a489d0a46d9a4b_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `contentstore_vide_changed_by_id_17a489d0a46d9a4b_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2263,143 +2300,6 @@ CREATE TABLE `contentstore_videouploadconfig` (
 LOCK TABLES `contentstore_videouploadconfig` WRITE;
 /*!40000 ALTER TABLE `contentstore_videouploadconfig` DISABLE KEYS */;
 /*!40000 ALTER TABLE `contentstore_videouploadconfig` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cornerstone_cornerstoneenterprisecustomerconfiguration`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cornerstone_cornerstoneenterprisecustomerconfiguration` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `transmission_chunk_size` int(11) NOT NULL,
-  `cornerstone_base_url` varchar(255) NOT NULL,
-  `enterprise_customer_id` char(32) NOT NULL,
-  `channel_worker_username` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `enterprise_customer_id` (`enterprise_customer_id`),
-  CONSTRAINT `cornerstone_cornerst_enterprise_customer__5b56887b_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cornerstone_cornerstoneenterprisecustomerconfiguration`
---
-
-LOCK TABLES `cornerstone_cornerstoneenterprisecustomerconfiguration` WRITE;
-/*!40000 ALTER TABLE `cornerstone_cornerstoneenterprisecustomerconfiguration` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cornerstone_cornerstoneenterprisecustomerconfiguration` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cornerstone_cornerstoneglobalconfiguration`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cornerstone_cornerstoneglobalconfiguration` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `change_date` datetime(6) NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
-  `completion_status_api_path` varchar(255) NOT NULL,
-  `oauth_api_path` varchar(255) NOT NULL,
-  `changed_by_id` int(11) DEFAULT NULL,
-  `subject_mapping` longtext NOT NULL,
-  `key` varchar(255) NOT NULL,
-  `secret` varchar(255) NOT NULL,
-  `languages` longtext NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `cornerstone_cornerst_changed_by_id_117db502_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `cornerstone_cornerst_changed_by_id_117db502_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cornerstone_cornerstoneglobalconfiguration`
---
-
-LOCK TABLES `cornerstone_cornerstoneglobalconfiguration` WRITE;
-/*!40000 ALTER TABLE `cornerstone_cornerstoneglobalconfiguration` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cornerstone_cornerstoneglobalconfiguration` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cornerstone_cornerstonelearnerdatatransmissionaudit`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cornerstone_cornerstonelearnerdatatransmissionaudit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `user_guid` varchar(255) NOT NULL,
-  `enterprise_course_enrollment_id` int(10) unsigned DEFAULT NULL,
-  `course_id` varchar(255) NOT NULL,
-  `session_token` varchar(255) NOT NULL,
-  `callback_url` varchar(255) NOT NULL,
-  `subdomain` varchar(255) NOT NULL,
-  `course_completed` tinyint(1) NOT NULL,
-  `completed_timestamp` datetime(6) DEFAULT NULL,
-  `status` varchar(100) DEFAULT NULL,
-  `error_message` longtext,
-  `user_id` int(11) NOT NULL,
-  `grade` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cornerstone_cornerstonel_user_id_course_id_c975cc5f_uniq` (`user_id`,`course_id`),
-  KEY `cornerstone_cornerstonelear_enterprise_course_enrollmen_e3b05dac` (`enterprise_course_enrollment_id`),
-  CONSTRAINT `cornerstone_cornerst_user_id_43bd15bf_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cornerstone_cornerstonelearnerdatatransmissionaudit`
---
-
-LOCK TABLES `cornerstone_cornerstonelearnerdatatransmissionaudit` WRITE;
-/*!40000 ALTER TABLE `cornerstone_cornerstonelearnerdatatransmissionaudit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cornerstone_cornerstonelearnerdatatransmissionaudit` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cornerstone_historicalcornerstoneenterprisecustomerconfiguration`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cornerstone_historicalcornerstoneenterprisecustomerconfiguration` (
-  `id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `transmission_chunk_size` int(11) NOT NULL,
-  `cornerstone_base_url` varchar(255) NOT NULL,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `enterprise_customer_id` char(32) DEFAULT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  `channel_worker_username` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `cornerstone_historic_history_user_id_1ded83c5_fk_auth_user` (`history_user_id`),
-  KEY `cornerstone_historicalcorne_id_513efd93` (`id`),
-  KEY `cornerstone_historicalcorne_enterprise_customer_id_7f1c53b1` (`enterprise_customer_id`),
-  CONSTRAINT `cornerstone_historic_history_user_id_1ded83c5_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cornerstone_historicalcornerstoneenterprisecustomerconfiguration`
---
-
-LOCK TABLES `cornerstone_historicalcornerstoneenterprisecustomerconfiguration` WRITE;
-/*!40000 ALTER TABLE `cornerstone_historicalcornerstoneenterprisecustomerconfiguration` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cornerstone_historicalcornerstoneenterprisecustomerconfiguration` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2415,8 +2315,8 @@ CREATE TABLE `cors_csrf_xdomainproxyconfiguration` (
   `whitelist` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `cors_csrf_xdomainpro_changed_by_id_b8e97ec3_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `cors_csrf_xdomainpro_changed_by_id_b8e97ec3_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `cors_csrf_xdomain_changed_by_id_31e52cd1bcef52c4_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `cors_csrf_xdomain_changed_by_id_31e52cd1bcef52c4_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2427,6 +2327,28 @@ CREATE TABLE `cors_csrf_xdomainproxyconfiguration` (
 LOCK TABLES `cors_csrf_xdomainproxyconfiguration` WRITE;
 /*!40000 ALTER TABLE `cors_csrf_xdomainproxyconfiguration` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cors_csrf_xdomainproxyconfiguration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `corsheaders_corsmodel`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `corsheaders_corsmodel` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cors` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `corsheaders_corsmodel`
+--
+
+LOCK TABLES `corsheaders_corsmodel` WRITE;
+/*!40000 ALTER TABLE `corsheaders_corsmodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `corsheaders_corsmodel` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2449,14 +2371,14 @@ CREATE TABLE `course_action_state_coursererunstate` (
   `created_user_id` int(11) DEFAULT NULL,
   `updated_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `course_action_state_cour_course_key_action_2a8434fb_uniq` (`course_key`,`action`),
-  KEY `course_action_state__created_user_id_5373c218_fk_auth_user` (`created_user_id`),
-  KEY `course_action_state__updated_user_id_3689fe4b_fk_auth_user` (`updated_user_id`),
-  KEY `course_action_state_coursererunstate_course_key_f87bef79` (`course_key`),
-  KEY `course_action_state_coursererunstate_action_149773f1` (`action`),
-  KEY `course_action_state_coursererunstate_source_course_key_b5037317` (`source_course_key`),
-  CONSTRAINT `course_action_state__created_user_id_5373c218_fk_auth_user` FOREIGN KEY (`created_user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `course_action_state__updated_user_id_3689fe4b_fk_auth_user` FOREIGN KEY (`updated_user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `course_action_state_coursereruns_course_key_cf5da77ed3032d6_uniq` (`course_key`,`action`),
+  KEY `course_action_s_created_user_id_7f53088ef8dccd0b_fk_auth_user_id` (`created_user_id`),
+  KEY `course_action_s_updated_user_id_4fab18012332c9a4_fk_auth_user_id` (`updated_user_id`),
+  KEY `course_action_state_coursererunstate_c8235886` (`course_key`),
+  KEY `course_action_state_coursererunstate_418c5509` (`action`),
+  KEY `course_action_state_coursererunstate_a9bd7343` (`source_course_key`),
+  CONSTRAINT `course_action_s_created_user_id_7f53088ef8dccd0b_fk_auth_user_id` FOREIGN KEY (`created_user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `course_action_s_updated_user_id_4fab18012332c9a4_fk_auth_user_id` FOREIGN KEY (`updated_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2483,7 +2405,7 @@ CREATE TABLE `course_creators_coursecreator` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `course_creators_coursecreator_user_id_e4da548d_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `course_creators_coursec_user_id_46ea06ad28f0be3b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2494,44 +2416,6 @@ CREATE TABLE `course_creators_coursecreator` (
 LOCK TABLES `course_creators_coursecreator` WRITE;
 /*!40000 ALTER TABLE `course_creators_coursecreator` DISABLE KEYS */;
 /*!40000 ALTER TABLE `course_creators_coursecreator` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `course_duration_limits_coursedurationlimitconfig`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `course_duration_limits_coursedurationlimitconfig` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `change_date` datetime(6) NOT NULL,
-  `enabled` tinyint(1) DEFAULT NULL,
-  `org` varchar(255) DEFAULT NULL,
-  `enabled_as_of` datetime(6) DEFAULT NULL,
-  `changed_by_id` int(11) DEFAULT NULL,
-  `course_id` varchar(255) DEFAULT NULL,
-  `site_id` int(11) DEFAULT NULL,
-  `org_course` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `course_duration_limi_changed_by_id_f320fd76_fk_auth_user` (`changed_by_id`),
-  KEY `course_duration_limits_coursedurationlimitconfig_org_c2cc0091` (`org`),
-  KEY `course_dura_site_id_424016_idx` (`site_id`,`org`,`course_id`),
-  KEY `course_duration_limi_course_id_97b7a8e9_fk_course_ov` (`course_id`),
-  KEY `course_dura_site_id_b5bbcd_idx` (`site_id`,`org`,`org_course`,`course_id`),
-  KEY `course_duration_limits_cour_org_course_bcd05764` (`org_course`),
-  CONSTRAINT `course_duration_limi_changed_by_id_f320fd76_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `course_duration_limi_course_id_97b7a8e9_fk_course_ov` FOREIGN KEY (`course_id`) REFERENCES `course_overviews_courseoverview` (`id`),
-  CONSTRAINT `course_duration_limi_site_id_cb492296_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `course_duration_limits_coursedurationlimitconfig`
---
-
-LOCK TABLES `course_duration_limits_coursedurationlimitconfig` WRITE;
-/*!40000 ALTER TABLE `course_duration_limits_coursedurationlimitconfig` DISABLE KEYS */;
-/*!40000 ALTER TABLE `course_duration_limits_coursedurationlimitconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2546,9 +2430,9 @@ CREATE TABLE `course_goals_coursegoal` (
   `goal_key` varchar(100) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `course_goals_coursegoal_user_id_course_key_052bc0d3_uniq` (`user_id`,`course_key`),
-  KEY `course_goals_coursegoal_course_key_5585ca51` (`course_key`),
-  CONSTRAINT `course_goals_coursegoal_user_id_0a07e3db_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `course_goals_coursegoal_user_id_7b4ac74987215807_uniq` (`user_id`,`course_key`),
+  KEY `course_goals_coursegoal_c8235886` (`course_key`),
+  CONSTRAINT `course_goals_coursegoal_user_id_49a6194cb5f88933_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2573,10 +2457,11 @@ CREATE TABLE `course_groups_cohortmembership` (
   `course_user_group_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `course_groups_cohortmembership_user_id_course_id_c247eb7f_uniq` (`user_id`,`course_id`),
-  KEY `course_groups_cohort_course_user_group_id_6ea50b45_fk_course_gr` (`course_user_group_id`),
-  CONSTRAINT `course_groups_cohort_course_user_group_id_6ea50b45_fk_course_gr` FOREIGN KEY (`course_user_group_id`) REFERENCES `course_groups_courseusergroup` (`id`),
-  CONSTRAINT `course_groups_cohortmembership_user_id_aae5b8e7_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `course_groups_cohortmembership_user_id_395bddd0389ed7da_uniq` (`user_id`,`course_id`),
+  KEY `course_groups_cohortmembership_6e438ee3` (`course_user_group_id`),
+  KEY `course_groups_cohortmembership_e8701ad4` (`user_id`),
+  CONSTRAINT `D004e77c965054d46217a8bd48bcaec8` FOREIGN KEY (`course_user_group_id`) REFERENCES `course_groups_courseusergroup` (`id`),
+  CONSTRAINT `course_groups_cohortmem_user_id_15d408bf736398bf_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2601,7 +2486,7 @@ CREATE TABLE `course_groups_coursecohort` (
   `course_user_group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `course_user_group_id` (`course_user_group_id`),
-  CONSTRAINT `course_groups_course_course_user_group_id_ec5703ee_fk_course_gr` FOREIGN KEY (`course_user_group_id`) REFERENCES `course_groups_courseusergroup` (`id`)
+  CONSTRAINT `D339c347a8fab561c2e92ea09f250df8` FOREIGN KEY (`course_user_group_id`) REFERENCES `course_groups_courseusergroup` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2652,8 +2537,8 @@ CREATE TABLE `course_groups_courseusergroup` (
   `course_id` varchar(255) NOT NULL,
   `group_type` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `course_groups_courseusergroup_name_course_id_b767231d_uniq` (`name`,`course_id`),
-  KEY `course_groups_courseusergroup_course_id_902aea4c` (`course_id`)
+  UNIQUE KEY `course_groups_courseusergroup_name_63f7511804c52f38_uniq` (`name`,`course_id`),
+  KEY `course_groups_courseusergroup_ea134da7` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2677,10 +2562,10 @@ CREATE TABLE `course_groups_courseusergroup_users` (
   `courseusergroup_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `course_groups_courseuser_courseusergroup_id_user__694e8c30_uniq` (`courseusergroup_id`,`user_id`),
-  KEY `course_groups_course_user_id_28aff981_fk_auth_user` (`user_id`),
-  CONSTRAINT `course_groups_course_courseusergroup_id_26a7966f_fk_course_gr` FOREIGN KEY (`courseusergroup_id`) REFERENCES `course_groups_courseusergroup` (`id`),
-  CONSTRAINT `course_groups_course_user_id_28aff981_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `courseusergroup_id` (`courseusergroup_id`,`user_id`),
+  KEY `course_groups_courseuse_user_id_7b26cdeaeb621a93_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `course_groups_courseuse_user_id_7b26cdeaeb621a93_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `db746f642b1b8232920506afe242fe6b` FOREIGN KEY (`courseusergroup_id`) REFERENCES `course_groups_courseusergroup` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2708,7 +2593,7 @@ CREATE TABLE `course_groups_courseusergrouppartitiongroup` (
   `course_user_group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `course_user_group_id` (`course_user_group_id`),
-  CONSTRAINT `course_groups_course_course_user_group_id_6032d512_fk_course_gr` FOREIGN KEY (`course_user_group_id`) REFERENCES `course_groups_courseusergroup` (`id`)
+  CONSTRAINT `D1516b3811dd6dd500bfae054d6fdc92` FOREIGN KEY (`course_user_group_id`) REFERENCES `course_groups_courseusergroup` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2733,10 +2618,10 @@ CREATE TABLE `course_groups_unregisteredlearnercohortassignments` (
   `course_id` varchar(255) NOT NULL,
   `course_user_group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `course_groups_unregister_course_id_email_81a9d1db_uniq` (`course_id`,`email`),
-  KEY `course_groups_unregi_course_user_group_id_c1c8a247_fk_course_gr` (`course_user_group_id`),
-  KEY `course_groups_unregisteredl_email_05d0e40e` (`email`),
-  CONSTRAINT `course_groups_unregi_course_user_group_id_c1c8a247_fk_course_gr` FOREIGN KEY (`course_user_group_id`) REFERENCES `course_groups_courseusergroup` (`id`)
+  UNIQUE KEY `course_groups_unregisteredlearne_course_id_4daf84ead2de12db_uniq` (`course_id`,`email`),
+  KEY `D300117695bf1837ce09d8f95c6dc2da` (`course_user_group_id`),
+  KEY `course_groups_unregisteredlearnercohortassignments_0c83f57c` (`email`),
+  CONSTRAINT `D300117695bf1837ce09d8f95c6dc2da` FOREIGN KEY (`course_user_group_id`) REFERENCES `course_groups_courseusergroup` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2770,9 +2655,9 @@ CREATE TABLE `course_modes_coursemode` (
   `expiration_datetime_is_explicit` tinyint(1) NOT NULL,
   `bulk_sku` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `course_modes_coursemode_course_id_mode_slug_curr_56f8e675_uniq` (`course_id`,`mode_slug`,`currency`),
-  KEY `course_modes_coursemode_course_id_3daf3b9d` (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  UNIQUE KEY `course_modes_coursemode_course_id_6fbb1796ace558b4_uniq` (`course_id`,`mode_slug`,`currency`),
+  KEY `course_modes_coursemode_ea134da7` (`course_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2781,6 +2666,7 @@ CREATE TABLE `course_modes_coursemode` (
 
 LOCK TABLES `course_modes_coursemode` WRITE;
 /*!40000 ALTER TABLE `course_modes_coursemode` DISABLE KEYS */;
+INSERT INTO `course_modes_coursemode` VALUES (1,'course-v1:edX+DemoX+Demo_Course','verified','Verified Certificate',149,'usd','2019-01-31 21:22:40.820392',NULL,'',NULL,'8CF08E5',1,NULL),(2,'course-v1:edX+DemoX+Demo_Course','audit','Audit',0,'usd',NULL,NULL,'',NULL,'68EFFFF',0,NULL);
 /*!40000 ALTER TABLE `course_modes_coursemode` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2797,8 +2683,8 @@ CREATE TABLE `course_modes_coursemodeexpirationconfig` (
   `verification_window` bigint(20) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `course_modes_coursem_changed_by_id_208463ee_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `course_modes_coursem_changed_by_id_208463ee_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `course_modes_cour_changed_by_id_4d31fab2bbe98b89_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `course_modes_cour_changed_by_id_4d31fab2bbe98b89_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2828,7 +2714,7 @@ CREATE TABLE `course_modes_coursemodesarchive` (
   `expiration_date` date DEFAULT NULL,
   `expiration_datetime` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `course_modes_coursemodesarchive_course_id_f67bbd35` (`course_id`)
+  KEY `course_modes_coursemodesarchive_ea134da7` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2839,48 +2725,6 @@ CREATE TABLE `course_modes_coursemodesarchive` (
 LOCK TABLES `course_modes_coursemodesarchive` WRITE;
 /*!40000 ALTER TABLE `course_modes_coursemodesarchive` DISABLE KEYS */;
 /*!40000 ALTER TABLE `course_modes_coursemodesarchive` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `course_modes_historicalcoursemode`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `course_modes_historicalcoursemode` (
-  `id` int(11) NOT NULL,
-  `mode_slug` varchar(100) NOT NULL,
-  `mode_display_name` varchar(255) NOT NULL,
-  `min_price` int(11) NOT NULL,
-  `currency` varchar(8) NOT NULL,
-  `expiration_datetime` datetime(6) DEFAULT NULL,
-  `expiration_datetime_is_explicit` tinyint(1) NOT NULL,
-  `expiration_date` date DEFAULT NULL,
-  `suggested_prices` varchar(255) NOT NULL,
-  `description` longtext,
-  `sku` varchar(255) DEFAULT NULL,
-  `bulk_sku` varchar(255) DEFAULT NULL,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `course_id` varchar(255) DEFAULT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `course_modes_histori_history_user_id_d92d6b6e_fk_auth_user` (`history_user_id`),
-  KEY `course_modes_historicalcoursemode_id_14918a77` (`id`),
-  KEY `course_modes_historicalcoursemode_course_id_e8de13cd` (`course_id`),
-  CONSTRAINT `course_modes_histori_history_user_id_d92d6b6e_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `course_modes_historicalcoursemode`
---
-
-LOCK TABLES `course_modes_historicalcoursemode` WRITE;
-/*!40000 ALTER TABLE `course_modes_historicalcoursemode` DISABLE KEYS */;
-/*!40000 ALTER TABLE `course_modes_historicalcoursemode` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2941,7 +2785,7 @@ CREATE TABLE `course_overviews_courseoverview` (
 
 LOCK TABLES `course_overviews_courseoverview` WRITE;
 /*!40000 ALTER TABLE `course_overviews_courseoverview` DISABLE KEYS */;
-INSERT INTO `course_overviews_courseoverview` VALUES ('2019-09-25 20:05:19.166505','2019-09-25 20:05:33.426089',6,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@course+block@course','Demonstration Course','DemoX','edX','2013-02-05 05:00:00.000000',NULL,NULL,'/asset-v1:edX+DemoX+Demo_Course+type@asset+block@images_course_image.jpg',NULL,NULL,'end',0,1,0,'','',0.60,NULL,0,0,'[]',NULL,NULL,NULL,0,NULL,NULL,'both',NULL,NULL,NULL,'edX',0,NULL,1,NULL,NULL),('2019-09-25 20:27:44.967465','2019-09-25 20:27:45.354203',6,'course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@course+block@course','E2E Test Course','E2E-101','edX','2016-01-01 00:00:00.000000','2018-12-31 00:00:00.000000',NULL,'/static/studio/images/pencils.jpg',NULL,NULL,'end',0,1,0,'','',0.50,NULL,0,0,'[]',NULL,NULL,NULL,0,NULL,NULL,'both',NULL,NULL,'','edX',0,NULL,1,NULL,'2019-01-02 00:00:00.000000');
+INSERT INTO `course_overviews_courseoverview` VALUES ('2017-06-07 00:43:57.033186','2018-01-31 21:14:10.555509',6,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@course+block@course','edX Demonstration Course','DemoX','edX','2013-02-05 05:00:00.000000',NULL,NULL,'/asset-v1:edX+DemoX+Demo_Course+type@asset+block@images_course_image.jpg',NULL,NULL,'end',0,1,0,'','',0.60,NULL,0,0,'[]',NULL,NULL,NULL,0,NULL,NULL,'both',NULL,NULL,NULL,'edX',0,NULL,1,NULL,NULL),('2018-01-31 21:27:05.925175','2018-01-31 21:27:06.172514',6,'course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@course+block@course','Manual Smoke Test Course 1 - Auto','E2E-101','edX','2016-01-01 00:00:00.000000','2018-12-31 00:00:00.000000',NULL,'/static/studio/images/pencils.jpg',NULL,NULL,'end',0,1,0,'','',0.50,NULL,0,0,'[]',NULL,NULL,NULL,0,NULL,NULL,'both',NULL,NULL,'','edX',0,NULL,1,NULL,'2019-01-02 00:00:00.000000');
 /*!40000 ALTER TABLE `course_overviews_courseoverview` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2961,8 +2805,8 @@ CREATE TABLE `course_overviews_courseoverviewimageconfig` (
   `large_height` int(11) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `course_overviews_cou_changed_by_id_b60ae39a_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `course_overviews_cou_changed_by_id_b60ae39a_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `course_overviews__changed_by_id_54b19ba1c134af6a_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `course_overviews__changed_by_id_54b19ba1c134af6a_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2990,7 +2834,7 @@ CREATE TABLE `course_overviews_courseoverviewimageset` (
   `course_overview_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `course_overview_id` (`course_overview_id`),
-  CONSTRAINT `course_overviews_cou_course_overview_id_ef7aa548_fk_course_ov` FOREIGN KEY (`course_overview_id`) REFERENCES `course_overviews_courseoverview` (`id`)
+  CONSTRAINT `D47baf904f8952eb0e1fafefd558a718` FOREIGN KEY (`course_overview_id`) REFERENCES `course_overviews_courseoverview` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3014,9 +2858,9 @@ CREATE TABLE `course_overviews_courseoverviewtab` (
   `tab_id` varchar(50) NOT NULL,
   `course_overview_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `course_overviews_cou_course_overview_id_71fa6321_fk_course_ov` (`course_overview_id`),
-  CONSTRAINT `course_overviews_cou_course_overview_id_71fa6321_fk_course_ov` FOREIGN KEY (`course_overview_id`) REFERENCES `course_overviews_courseoverview` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+  KEY `D298658de1d4c8777e046eed658fc94e` (`course_overview_id`),
+  CONSTRAINT `D298658de1d4c8777e046eed658fc94e` FOREIGN KEY (`course_overview_id`) REFERENCES `course_overviews_courseoverview` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3025,105 +2869,63 @@ CREATE TABLE `course_overviews_courseoverviewtab` (
 
 LOCK TABLES `course_overviews_courseoverviewtab` WRITE;
 /*!40000 ALTER TABLE `course_overviews_courseoverviewtab` DISABLE KEYS */;
-INSERT INTO `course_overviews_courseoverviewtab` VALUES (13,'info','course-v1:edX+DemoX+Demo_Course'),(14,'courseware','course-v1:edX+DemoX+Demo_Course'),(15,'discussion','course-v1:edX+DemoX+Demo_Course'),(16,'wiki','course-v1:edX+DemoX+Demo_Course'),(17,'textbooks','course-v1:edX+DemoX+Demo_Course'),(18,'progress','course-v1:edX+DemoX+Demo_Course'),(25,'info','course-v1:edX+E2E-101+course'),(26,'courseware','course-v1:edX+E2E-101+course'),(27,'discussion','course-v1:edX+E2E-101+course'),(28,'wiki','course-v1:edX+E2E-101+course'),(29,'progress','course-v1:edX+E2E-101+course'),(30,'textbooks','course-v1:edX+E2E-101+course'),(31,'pdf_textbooks','course-v1:edX+E2E-101+course');
+INSERT INTO `course_overviews_courseoverviewtab` VALUES (37,'info','course-v1:edX+DemoX+Demo_Course'),(38,'courseware','course-v1:edX+DemoX+Demo_Course'),(39,'discussion','course-v1:edX+DemoX+Demo_Course'),(40,'wiki','course-v1:edX+DemoX+Demo_Course'),(41,'textbooks','course-v1:edX+DemoX+Demo_Course'),(42,'progress','course-v1:edX+DemoX+Demo_Course'),(49,'info','course-v1:edX+E2E-101+course'),(50,'courseware','course-v1:edX+E2E-101+course'),(51,'discussion','course-v1:edX+E2E-101+course'),(52,'wiki','course-v1:edX+E2E-101+course'),(53,'progress','course-v1:edX+E2E-101+course'),(54,'textbooks','course-v1:edX+E2E-101+course'),(55,'pdf_textbooks','course-v1:edX+E2E-101+course');
 /*!40000 ALTER TABLE `course_overviews_courseoverviewtab` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `course_overviews_historicalcourseoverview`
+-- Table structure for table `course_structures_coursestructure`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `course_overviews_historicalcourseoverview` (
+CREATE TABLE `course_structures_coursestructure` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` datetime(6) NOT NULL,
   `modified` datetime(6) NOT NULL,
-  `version` int(11) NOT NULL,
-  `id` varchar(255) NOT NULL,
-  `_location` varchar(255) NOT NULL,
-  `org` longtext NOT NULL,
-  `display_name` longtext,
-  `display_number_with_default` longtext NOT NULL,
-  `display_org_with_default` longtext NOT NULL,
-  `start` datetime(6) DEFAULT NULL,
-  `end` datetime(6) DEFAULT NULL,
-  `advertised_start` longtext,
-  `announcement` datetime(6) DEFAULT NULL,
-  `course_image_url` longtext NOT NULL,
-  `social_sharing_url` longtext,
-  `end_of_course_survey_url` longtext,
-  `certificates_display_behavior` longtext,
-  `certificates_show_before_end` tinyint(1) NOT NULL,
-  `cert_html_view_enabled` tinyint(1) NOT NULL,
-  `has_any_active_web_certificate` tinyint(1) NOT NULL,
-  `cert_name_short` longtext NOT NULL,
-  `cert_name_long` longtext NOT NULL,
-  `certificate_available_date` datetime(6) DEFAULT NULL,
-  `lowest_passing_grade` decimal(5,2) DEFAULT NULL,
-  `days_early_for_beta` double DEFAULT NULL,
-  `mobile_available` tinyint(1) NOT NULL,
-  `visible_to_staff_only` tinyint(1) NOT NULL,
-  `_pre_requisite_courses_json` longtext NOT NULL,
-  `enrollment_start` datetime(6) DEFAULT NULL,
-  `enrollment_end` datetime(6) DEFAULT NULL,
-  `enrollment_domain` longtext,
-  `invitation_only` tinyint(1) NOT NULL,
-  `max_student_enrollments_allowed` int(11) DEFAULT NULL,
-  `catalog_visibility` longtext,
-  `short_description` longtext,
-  `course_video_url` longtext,
-  `effort` longtext,
-  `self_paced` tinyint(1) NOT NULL,
-  `marketing_url` longtext,
-  `eligible_for_financial_aid` tinyint(1) NOT NULL,
-  `language` longtext,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `course_overviews_his_history_user_id_e21063d9_fk_auth_user` (`history_user_id`),
-  KEY `course_overviews_historicalcourseoverview_id_647043f0` (`id`),
-  CONSTRAINT `course_overviews_his_history_user_id_e21063d9_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  `course_id` varchar(255) NOT NULL,
+  `structure_json` longtext,
+  `discussion_id_map_json` longtext,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `course_id` (`course_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `course_overviews_historicalcourseoverview`
+-- Dumping data for table `course_structures_coursestructure`
 --
 
-LOCK TABLES `course_overviews_historicalcourseoverview` WRITE;
-/*!40000 ALTER TABLE `course_overviews_historicalcourseoverview` DISABLE KEYS */;
-INSERT INTO `course_overviews_historicalcourseoverview` VALUES ('2019-09-25 20:05:19.166505','2019-09-25 20:05:19.182322',6,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@course+block@course','edX','Empty','DemoX','edX','2030-01-01 00:00:00.000000',NULL,NULL,NULL,'/asset-v1:edX+DemoX+Demo_Course+type@asset+block@images_course_image.jpg',NULL,NULL,'end',0,1,0,'','',NULL,0.50,NULL,0,0,'[]',NULL,NULL,NULL,0,NULL,'both',NULL,NULL,NULL,0,NULL,1,NULL,1,'2019-09-25 20:05:19.181388',NULL,'+',NULL),('2019-09-25 20:05:19.166505','2019-09-25 20:05:26.768258',6,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@course+block@course','edX','Demonstration Course','DemoX','edX','2013-02-05 05:00:00.000000',NULL,NULL,NULL,'/asset-v1:edX+DemoX+Demo_Course+type@asset+block@images_course_image.jpg',NULL,NULL,'end',0,1,0,'','',NULL,0.60,NULL,0,0,'[]',NULL,NULL,NULL,0,NULL,'both',NULL,NULL,NULL,0,NULL,1,NULL,2,'2019-09-25 20:05:26.767625',NULL,'~',NULL),('2019-09-25 20:05:19.166505','2019-09-25 20:05:33.428772',6,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@course+block@course','edX','Demonstration Course','DemoX','edX','2013-02-05 05:00:00.000000',NULL,NULL,NULL,'/asset-v1:edX+DemoX+Demo_Course+type@asset+block@images_course_image.jpg',NULL,NULL,'end',0,1,0,'','',NULL,0.60,NULL,0,0,'[]',NULL,NULL,NULL,0,NULL,'both',NULL,NULL,NULL,0,NULL,1,NULL,3,'2019-09-25 20:05:33.428127',NULL,'~',NULL),('2019-09-25 20:27:44.967465','2019-09-25 20:27:44.983794',6,'course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@course+block@course','edX','Empty','E2E-101','edX','2030-01-01 00:00:00.000000',NULL,NULL,NULL,'/asset-v1:edX+E2E-101+course+type@asset+block@images_course_image.jpg',NULL,NULL,'end',0,1,0,'','',NULL,0.50,NULL,0,0,'[]',NULL,NULL,NULL,0,NULL,'both',NULL,NULL,NULL,0,NULL,1,NULL,4,'2019-09-25 20:27:44.982617',NULL,'+',NULL),('2019-09-25 20:27:44.967465','2019-09-25 20:27:45.357000',6,'course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@course+block@course','edX','E2E Test Course','E2E-101','edX','2016-01-01 00:00:00.000000','2018-12-31 00:00:00.000000',NULL,NULL,'/static/studio/images/pencils.jpg',NULL,NULL,'end',0,1,0,'','','2019-01-02 00:00:00.000000',0.50,NULL,0,0,'[]',NULL,NULL,NULL,0,NULL,'both','',NULL,NULL,0,NULL,1,NULL,5,'2019-09-25 20:27:45.356212',NULL,'~',NULL);
-/*!40000 ALTER TABLE `course_overviews_historicalcourseoverview` ENABLE KEYS */;
+LOCK TABLES `course_structures_coursestructure` WRITE;
+/*!40000 ALTER TABLE `course_structures_coursestructure` DISABLE KEYS */;
+INSERT INTO `course_structures_coursestructure` VALUES (1,'2017-06-07 00:43:57.067140','2018-01-31 21:14:10.600977','course-v1:edX+DemoX+Demo_Course','H4sIAKIxcloC/81dWXNct3L+KxO95CG5VVgam15uZFm+dsqLYjlx1mJhaUhTGnJ0Z4aWlVv572nM\nUBSXQwMHZ4aHJZVF0hycPo1G99cr/vYsrNbx/fbZ88XfDl/+6Tf+HNO//8PXeL4+/Pfs5fpys8V/\n2H36gP8UD1/vf/Xqmy+fPSu/Qt8+u/of/7h49nbjEyb6WfarLdIP8npz7nf0g4vL1Yq+v9z6t3j2\nHj+Vz/VSQOvEd8tV2uAFLfNfbeu88x92uLlaKFmvuRNErOQARnpjBYiUEVMOWYXyiPGrLi/oax93\ny9/wLNGvXmx3G79b0r996x24eXa9bPdC23Vc+tV+obcHivrW4cAh56Q4yABBMZuNdEFp6QNoG0zf\nqi5Hryw4YxIDa1WIjnP0RnuHWTh89j+0bFpuP6z8p7MLf76XOVp98fVNHi8OD3j2f400/LZMuL6i\nwGeTkUupMFjgMVkeSTCiQbQYmHYDMr//+GlEfhRld87CEKv+bU9qK1+2+NdLvNiRvHzedKPQ6AhO\ncTorXrgEWnAuNRdaIxtSCF/WOA2HxtPYozJ+w81uGa+fkYNxKQafpCJp195GLTVkm0lrOKbYoJh+\nuz7Hj+vN+8WfFq+2W/9p27wP73bnn5+MSaUYMwePDqSSTvMMOntmBDfg+MAOlE+fhvdj6GoQzvbz\nens3QEUTMZEaykjPBK9tNJb+cMVjDmroyF6tcKJTO5K+Bt78iB8X/3qx3DXziBaIl9stacMrKqxh\n0nDBRfAMUsxOSZ1MNMFmyZkbOrtf1rjFp93m8ihsGk/iMYXow2YdVnj+WX5/P/uwN6wRz1bL8+WO\njG18h7cA0jVfrj56EqY0k9XAi+8Pn1i8PHyiW+0XrZVX64/t6v0uN569+t3v+TVdv18TcwQ97iTE\nKEXkhDeAB2VZJNMqUWkuQQfZCmLuLPv527PMwGf0kXHJO9cKWmsRCBFF5iDE6AKdkmSFYdHR314S\ns+PJJsmziRlsROdYtskaUB4hZj/1zX2UjjAKWu963/x6LUlmOxDEkZn10sUDQxEF7a61EJwKPDqX\ngzaWOKohdi5L4MvZnKTz2gGQitdBWE0ShZwrlnPnskmj98S/JAICT+gFCzbwkEMkwkE9iILLKWs/\n52N51GhGj6UJO7ZwtD64gWDILksnuDMgOLhsLPc8JU/2WnotZLOI3LNq3FvOAvcyCPIvgyOJYY6T\ng4PKWybC4G7+RG/vV6vFXwpXF69xs2fnRWx3au7RAT54JQ35t8ZASPRwLcDSP+S0RQlDMOmxAUCV\nxGMCgBt778iPZcWLFVkA+VMuyiQykFpMEkhDzoWqq3Q18OPXd3ixeLHBxX/QMw4a4s+LHiZxsB5t\n9kaiB80w6MyUYip5FrxG3cKkY0nOGLIaePQX3O2WF28PLCqK9GXRPZm0z679wN2gSQQHWtkkEBES\nCTD57dnKEAXZ1uiHggiPwaoqWad00rKOPABKrj1w54MiY5klQx0NszgYV3lUJ61G30Tzogm7xSiS\nkSCBa3RIeIa+EyrQ4ZaiGSrciAgR+gi0GuqEtKryZFtCkjnQmoS8WHMM7r4e5iJFmwKBTwOMTpgW\nQppAVpBnDTIPmqxfCZiXQ/RxuXu32AeaRkCRm3Gu4CzZemkVaoACSJ1BIwlOpczpqxkjcDXKGs7P\nV8v1av320+2AZb9rlgLpvsiEIWgIGZ3PwQDQCSc/Rlk1ZNQfPSJXpfEInpzQybpQotAqEUAUhMil\nEgwTbRiTJtUict8sL9JB/b/ZXaZPi68uU/rUq+tkilynYBOdHBAkL5KstyPCmCQg79ncuq5K30Rd\nxwjrkhvtsuIeCOp66XMuWMYFjmSge3SdKu5uzhgT6TxyhqyNgVxrbkhLm3zQz126zgjBrAooDLkW\nPmonY8YQrY8EIQwbjuUe1NtifVHQQq+YCK5EAg/epwgxMJ+VIKDryBFJPMdBRfeIDleVvB4puR3e\nikqBktYrozVkH8lmERxxLrmkifn9Phcq9OScc6+8gKwIHWIyhuxZ4lIrxwc39fV6ebGHgbStfvF6\nGXeXm3b4NzKrOJA6PSxwotzp6Jzn6K29p/cx/V7yjJt1utxnLAeZ/t3NX+g8SIklywCtJS8RvFOe\ntjgyQrheBBHi7Pq2St9EfWtsMklqEFl6SMGHkHhg3FjNvVdZDDL+e9xuSdAFGb/vcff32wU5QYvv\nvqSt/67dSWxOfc8q9H+ckp8u7uQ0SGYIB+asgL4itZZcyYcl8izom1Zldm/h4LfLeEY/3B6oHdrN\n4td/WOHiV8T3C/588dmjfbPzmx1xtTtqpLPx5AWwbA0H+uuipxfUvqT2vBJDXv8DUaOjbet4Gk/o\n115HqQnfskyeGLDcHCo9lcIZJmoqqiNnWKoIRpGHnIp/CCw4lUPIOUOCHlRHCyAhCmNilqBot4wH\nwvAQCJTynIZh+02T8fzgaS48wfc3+4MTsTsCDqic0NYRyhFAqprwYCbiQBOawMzS3Ntapa/LkRpT\nYnKU1PQYyzVT4LVKV0v29crAPn/AvvbwK+eYyLHlnPxdiN5ZAOa4ZSVNxIOarfyjSlcDv179Hpd7\nm/W9D9v9gf5lvV61H+bbrgU91kKKSbrAQMjkUFibhcmMZJzA7gCnHi+tXyWugV3f0LEbmdi/TcRq\n/ZZgxVu/w7PPbz4nTwbIOabZrnsnTyBSdo+mI0TGhrHAEC/LSlelk4uSf/xtiR+PUE4jZxWr25Q0\nSNTPpHnW58v/xbT4l2vIPZ0L8yqc25Q0cOG783NMSzqMi28QyQDG9/0uRM5eWW4SOOSQMVrpk+bW\nxICcjIZ9Ci5ElcYWyUGf9j7X3hXrjgpa61Lg2pDrAo6QByc0BslanZ1KfO4yjCp506OCRtFSWkRj\nAmFcZYPm2TETguUsOdPsaNzbZMW4x+SSY0LSRmMQ3HHaeKYU2ITDcZIfL89xUxhA4O3DZTvKvf1O\nWnFkDlQwJoNA5iFaF2yUqLMKcige+HjaoUpcg/C/uNh+JD6R+P+w3uDil3f+YvHTmHqVh8wWz5gV\nRBHEIJceU/aHaZou8AeFcUZo7vwbIvly5c9ef9n8LlGHpI2IyjpZcm48+cQSapMEY1YJMdxIUQjY\nS/qrv176cYZvbGHlvBvZUvc5JVRihZNckqqSWYI0plgWJU3QznGu5HBO6dXoAr6bpR3KQFRCojMB\nSDe7ZEQOgZ6Zg3NqtgqmKl0NquUX/H1C3bvywdoi+qAZuOB8qdWMQQCL0kUc4sxjl71VSXyM+GVk\n0mRplEl5KIwwi569RdPEM5mUV9H7LBVawBCdN2CYtKBVijk0o4rbqjtvEM/K+59tl0Vxj2moa/F/\n+5R/ZqTElPVOZ0ik/JE4qJPlPiamH8gHvVph3BHQWbxcbuLlcrd4c3ih9ab/7FVLX+c/e1UST3j2\nqnXe8x7DKnkTT2RL5ebIJXXQARFkNFEDV8wlb3h0wrkYXVZ+UPKPUv15T7AS7Q0anbLhDBT5l1wn\ndKXkhhjK+VDB42PLfpXEY8r+eC01P4OqJD6GYXY2Zi1KIbhpNswnTyzeImqiHjCM/X72we/efSxN\nsb3ihCwZEJJz6wNIoaxITKJFS76PRakHj/5/rtfn5eh/vfTEuz7oHUWmN7CRVEyGkEjnqGQZi2RJ\nAjNithxWla5jCu8YoDVP8XsL/qumqPYYaX0xCSXdi/ozE8gZBfIWLcF/EYOEbDSq7JLzXD6JGt4q\njUfIVFT7pB/KPr+5DFucVEFWLR+eWe9W6ZuogjXjxGhlnHIOjNBOMc0hIuHgLG0cZv3RyqfHl1I9\ngRPRUu419URYbVJKhIsVbTtnpL68ixyDi5pOIva2rbb0unQs21JW3kOt5yF44WmZDCxErzAKUFgC\n1mTz26vJ73RA0+smx4jSCBCj8YrlxD1tHfHc2faGnDsnVenMjQdwVoJwmVxLzciRFARGELCXCQRg\nGI/Mk3ejQZhkI0meTjrbTBKSenusvSFU4GIyRB5wS+/Ok7Q2g1Okflkvb7mElJWOqgiYZymQc52S\nyj5iNqCxty/a8eCQUEwg7y4pQ4ZHEsoj2RVZcCf/qM6Vk5bqLYocjNa/WL3FsPHLeB2rnzOF8yBR\nDajmB4LeSMQcQv+/f9jgHld3B/+vnYQkRcguCEFnbG4LOkzURLP5vQ9n6quzH9bbjLuzF7QFy7zE\nzRkxETfLc7IX3e5MmXageHbeWlKn5HFKY2Uij4trLr0fdmdu4NM360syyTcI6UDy5EIRHgiMA51f\nsg3eBZVyNIqlyGxbG+spPJsqXQ1C36sL7uEAsBiDI/1mCLUGrb2QjEujBakl7+STmIlVpfEIWEVG\nCMooekogd9MoL8jVKk0lKtK/uRerfJkCYq1Ngey/sL1mSXJRsqEeEzdA6NkKHyQ3NkeJdLJ6h4sQ\nBIyGXtqDCWQ1Y9DKqZJeTGgMF8NBxyuzJMksfYV0WstUvv5YWjX48QRKbKo0nigeYWhxwx1aDQgq\nS4JQrrj9PMso02xzC6pkNbCDjPwOlxfkbtHvYXsI4jZ2AILopR1MGILCWZcpNqXkSZODGULKQwGb\nxwM2VeJG6PpDjUpvNZ+TAnUWkdSGAWaEl0p5ckI0E+T2kPZoY9PRDthI6lrECTfxXRkys9itF19v\n0J/3QsDqeKl5M1st068m1vS01FR1qVFag/xfT5qDTI6W2bGYyMBCNE6YwIYreyZXZ92p0NtH7A/K\n59y/H8I4j6ch7hHTIOlf43b59qLw40qFbhekRn/5SGJf0PI49+feFrnskOCVjNEKkMFZFS2B01ia\nyjEORhMf3RpXaWzg4qH1qjzrRi9lj59hstckvsm4XGaNBDo5FhXXjkyilPP5GTW6Gnj01cpfvF98\n+8sP3y9eEyU97KkGZ2diT5WuBvZMCxzfVgQfPu3erS/O9u+8mVUl3abkmLh25BDuWRuuW0aET2+7\nvp4HOmj3wvpyd6iq3HeU3ajsmB7e8h7J5FpNKmHuUp1hmiZGt6zjgnPkJjtybYVwzKtMLnRpthY6\nNY+XqpyNLvMVdUwQ0IMEBfTSXjOfGC9jQmMWfDgU/HKd8DBRsd1VGsOPeRzJlm2q6Z8ezlTnFPRP\nC/6cWXx2lOjXXbqOEOxqmY3TsSyYFJLKVmoC9Fj6j0o/vIwsGHLkdG8MTUEILnAQdGogCuFzJDAT\ngxa2ZMHs1NAci05IMF5F1pvferC1omdzGlqUOpZFSy9InhcmELQp1iqZMPtgAoJC6E0Y5hLREClg\nJF1mlSCc6UiFCSmC1aTYaqn3z02KBKA+rUZYtRsapHx5Bi4AOEhe5CZNdgpEeZ+QFl/u2jYsvllv\nLvsHIFeToTOnsFqStZMmIDc08XcZa15mhZgIQhnyNUHTi2ibPQ/RgEpxeMrH1HEAN+da6KJQuY/B\nI4BNrkSgLQQmbCkDy4M7+zgjJauUNRnvi4tS/kS88td1aYVhX767qm/sD2lUo07zF+tWSTymH3Zf\nxoVPkGXOEMnv4VAK2IULjCFjzJknkYGp0tgUI8bNHimSuE3IV9Xm880vTlUSjylO9zCr9sFFII3J\nOKlOES2W1k2U2gTANBhAf/SscpXGIwBtmUXk3AfvyqBjUE4bMh/J+BghOT3cSbmPcf/qP21LHuNK\nO3bGlAb7u+YMLT3UcHaKzGm1jXUmh7dGVgM7xjfb1u/jmzXY9sAFgdPja1/ErLk3494aV8QdY6nq\n9W7V6Yji+d1RXL0J4YhIPiYhb/RkUT15m0CmFL1KLJPz3qgnTpUQrlHXcEpu8KhjGM7NNvAkyVUu\n9TsF/yuwISmkMwulREaLIVY9Tnt6ja4GJo1qT3+w7WmuQXd3e69qb9vdMTW2qnvuWYsNVedTnO2W\nCxO7cGs1sXv0TO7YKru5p983VAFOSpuEILiNtLllQqrizjvDc2YIjnH66R/2IH+Lqw9dUK320LlS\n6DW6GlROF2/GdtLMLJQtnT7TJtJUSqaPWSM9rkJ+Jslsq90f0RHaXXE/6kqf2SKVLZcN1bj1Ji7L\ngOZDKn693l8X9PId5lKFlZcrfL7455/e/PdlaVJevPjx658PX77p7uqs9WLN3dXZ0Cs25dC3dICf\nImDdF28jq0z+iXOQy3o+ZK8yoSMQZWQfwB/gltcb3NKB8xPTYNVra2bSVC3X6TSV6k29sKbaMjnz\neWpp6ZyE2QNohxGYzR48nVYXrI5almRZaaTpOU8td4od26k9tQcwXBjwRCqk7hYrHGd242DjZZce\nrF6CfpIWzvuzga5/cKYSKRlmuRaDVyA8ehrrIdIa1GB/rcBAzTmm5e58vfpq1nzAbUoaWPDDmiDr\n5QoXr+hDU4a7VS+JfAKiUqWxgWFT7rW8R5CQqDF5sCKSdiYYnQV5yFoF9NFn9RSmglVJPGa26d7T\nq9fxPQGpqtJ4MkA2fqT1/PJUJfGk8iS5dtk6zPQkUMI5WYZFJFdqj7IKIxh0Onmq0nhMDo26fmm2\naEOVshbFjau4Ph9x0c6DrecaWaksl5nN3bk4TNN0GHvvmow+ZFYbKDm0TZMu3Lg/N8OTqMiQAnLy\nA41xKrBIPiBBaBmDG9q/x1aIVRJPqhBj4nSqvNeC3M0cIp0r7222hIbIu/BDkfDHZlCVxGMy6GYB\nrMvSC4UmlA4lVFbmxHMIyXiR9eC9zY9zu1aNrgZ+jB8ycZMA8NKR2TYgOLhsbJHW5HUGSZskh2Tm\nMQqBqmQ18KVcdORXq0PzS3fxPDNJgVFcCjtbO+Z9Qhpe/8XFzUKYxc+YcbMP0f/iw4g7bMaXfD8B\n2FWlsYF/vcXpD1h1Qa4qY0YYq4ZKqueZmHWLqIkh1EEh7dq96qWvJxT3URfTz4ahq5S1uqnd+YJa\na9PMU0Bq5E2H1cmkIpVkuyEDEzqkJLTzqB0yiWz4JobvSgT+Mu7Wm5IXLVVW54SNf8btB0LGfakt\npWKIzmVRIJUsrXCEJyIhKuUAfR66iOFRbFaVrgYRnXY9TAbLUoaIjksyBmUAjGSEIrLmQBhixOV0\nJ4PDVRKPCYf/sP73CTQd3KkhntpfkFiyDJAET0bwTnmtXGSQrBdBhDi5nfWu7Zyy1t2Z+1PWujsF\ns2Ot6m3UfzD2Tiz+NPVW5PEjAeY/yVUST3qSB6rwn0qL/nCDwOTDrSMiKMFUqbGR2iWD2WauiuCH\nlCf3vWcftCewyXUzjm0d3DFlrbvXZk1ZK0RdxkpEnX2vArPZOu4AOHMK0GgbEhIIBWdVOQam1uF+\n7WOVB00JDdZG6j4Bn7RK41FTAS17/kTi3XflcNKFMw2jN8dj/aE5dF0ygMUkxMSJOg1MWm+s0+C5\nRh8lpuHLuz+PAn25wWl3tmkTyU/haIVGMN574UiT5DIwJHGyVk/AjFZJPOEhqSqzec9LlbzpPq0L\nTlvDjETHwCN3xjiXInCV6OFuuL/huurkzd61vdz0z9+qXoUwc9ys5aqGqVvQ0NvXdbKqmeiTdgky\nyVCqCEZpD6kU7gALTuUQcs6Qmm6OOkkBbo2ulvxL5xzIh+xhprOXySAwLp/Mda23aJou5Tdz0s21\n6vdLwHzwShoyosZASMpbLcDSP+S3RvLDhkW6hNyWfoeLbxBT8PF9v0El5peKU5myTOCU9EC6QXoS\nI8uUdE+ioqlKY4OE/2W9fksK/lt/8XZ9OaL7pWXe/1NJhdy9hGByKuTusKuu3XuoIPaUFbBREaAg\nbKqM1pB9tIwclUBAwCWdvBlKCT9eUWyVuAZxfr1eXuy734hTfvF6uQctPVat2jUwk1Vr6WY4Ve97\n9Z7eeQoKqmSd0NDfN1xJGxGVdbK0K/NEjk0ql8QLxqwS4imM3KqSeExH7E5mTRRIxpNwECB4FmTg\nDKzmSjOVROttDKfRP1XiGvjy9ca/PUS9Nuv2tufB5pSX7/CclH2JrT6ly8qGyGpgTPnYoc/lr5cj\n+5TuRxIEWV9utTSYgLB8UNmBt4R+DNLWPYWcQZXEY56xm/flgiLH3ieZmICCBxl9Y2OU3ETmzGzF\ncFW6Tmi2kAkFwXGevShjh2xIzoZAei9nzIMTQh/HlNfoauDJz7if6bd4sS1XY5QG9r5KA2TMSWMz\nCxqUVcF75jkErpQj/6sJ7ZzAslfJakGEnlhzGLK5f0jn6DCXo1cWnDGJbAKREmnj0BvtHWbhhuz6\nI84Rq1LX4/WMv056iP/v1qu9hI6963lk+HJOy1glrkFMp4Rab1MjGf0pvqlSAqyxXqDWOShDMhHz\nYKXrIw44q1LXwKsXu91mGS73fh4B9/PuuFz19sO5hx413M44aXZ0rUT9ODXpYxP88wZGW+oPpjBd\nkLNqY5lGjxbK5OPgOZLuSDaB0HE4Wt+ZTR/z2HlMfJWsBn3QyZw7+x4NOpuTdF47ACx3FgqryeAh\n54rlucWySt5EsWzBWl2uULUz+aiobewlGvNuassdHxPzMZ5hzsEpiNED2ZIyqof76MoAw2JW+kv5\na/n8QZhzudoty1DXl+/Wy9iTeXywFCtKQhAJrR8cRD7PvU43aZq+lTdTa6vl+XKH6Sy+w/i+eTDv\nnYAXDxZSJJ0SGAiZHAprszCZZZNF+90o41sBB7X44Y3KaLHyRq3ysP6AF6QscLst3u8VAUFAlBK9\nVEXwjbUO93E9SDKjdEP1HrfXOQ2866O1wQL+RAtf9xqUYMDn1+g8VUFrOsfkT0bmIMToAvk3yQrD\nSneKG4qwPeYBq5I3/ay13GDcdTaqfQF/NNNx7F3IY+88n9nfqdI3EeNUrwat1LROu/dy7LVh856x\nllvNpvZZNSRcus6Y8sHaktICzcAF5wtmjqRoGRnkiMPFbn2pm/ETEZ9A4UiVxgaTc9QhjpqUeIx0\nLiWBUq6xNNpl+k6oILKQTc7pSS7LrdF1zDTO2EtU5g5O1eibqKxbUkZjfdyGxsWuA1WtxDpi6dWd\n+nWVndIiGhMiWGWD5tkxE4LlLJHjPmtgvEpcw/H58fIcN/vM8XcXH45QoXar/eeJ+Il3W5KmhRcd\naGXJtiJCsoQvuSQrHiK5GTm2jzutDCzsOibVGTrHHH14r2/cuBQD6RMVQGtvo5aa7F/OiI6p2dVp\nlb4eueh2OLu2t3pT3WCkr1xNd/BYyfl/td2WK036crTbfVpif5vS281Dl349YlZ2gJ6j5GHBIp0W\nAclkBPKFvSAPUhotdKkAlM09TPcWpoNpc2SC1HWAjI5MoiGxEGiBK9ve4jj+0rkhybh1/5N8vhif\neBo51mHW4rMacQ2m8ssIij9NGkFxRzNxCSkrHclP9uBZCqRAErmGnjwpA3r2kTdV+iZa1JY6nbFG\nWhmISkh0dADIsXbJiByCNCEH51Rzj/OdOgQpUBMqRysMMCNIwytC5+RNE7BIvNmfHp+x74uEkddZ\nbgEEsj+kbaIlwFziDJHgQYm1Dc8dnFDwNL5nc/5CwiqJJ/RAk+PBoUo2RA1JGc+lFImRlSHnl7dH\ngU918Kv0TTz45bYGBkExWg4QrYsyiX3oNpXQ7XAY6dd3eLF4scFDnHB/W+WfF91dk7Xb6+d1YKrk\nTY8RsmSUS+TKZJfITY9lcgmXOoWESmXWn6OqVug+VIK6WI7yQ0e+zpwYpIXXLUW6Iz31kfnqOTnU\nkkyvVvo9nAIvHNus17tmd+Pw9YG2eFUo8f/upOD2JOgAAA==\n','H4sIAKIxcloC/6VX3Y4dNQx+lWpvC1Ls2HHcq0rwENxVTuxIFZRFlCIQ4t35ZirB/bBn9/zMHsWJ\n/f3NXy8eSUNnmzaPeNI63HbR2to7/lMv7968rJ9e94/f/k7vKn94+319ev36/OG71y+/fq63v/35\nS73Pj5/3l8+fP77+/Pb++vtqacKdaMaSzjo5W69ZMyNn9fHyzZuXPM2bVsnEQ2z4EDm9N3xg7WWP\nix+ZLY/scupiW6OkN8o8g2Rwn1fxZdZIWhCzCZ2KoRTa+uCsshqPi0sO463T+15yCOdtWcOSW5vK\nXFdx7GdoRPLuLj5zsuzjU1Y/vtrsz9ueDcPD5KSGtD7DJroamGTsXrnvttsao0RJZUkcmug5U+/d\nxlS07HHxcSzGsHamkeDXd9Q5I040C+V75phs645jnoHjnsKJKZWkSNU5nxc/J3SSpXiRnNqzRw6a\ntlfR6HrPvNN1uQ522aXwtu/Z1qSjgB+358Ujy7lLz9OxAe0BYC1sYM/ZtHu7imvfMsdqXZdIt+3k\n6Iqg7VTttOczHyziNEe3SjlHlh6XmNiCFSbcr+JROxYGrWo46uQ4Gi5gwNTTWtPHxRXLzgveMpr4\n8ojhshdLA7R3nRtwon72UnNeeLujYQaYEtXofe/9uHhmZdnIY9REgQAaGESSTEom8vvkCqy3cUAJ\nk5FzrXNsqGiNdIz+cXHuNSpDJu+GKWocXouHLlAN7b2LFy7I9um+DBvckzZksekCRMCV520vRRUr\nKFawHD0YdZqtNZKgLOAwilOS9gymS1CNPCjGvqYSzYf15233A451rLChW3351D1NGz7Grm15y+si\nMN55Wm2RNYIPgCGWAGROeX7yFuhcXwlaT2Ez19U2BaVtCK7HVXyUQu0npI3ANeACo6beelzbyf58\n5sQBinWQbAO+JDFqMBS7FUjkdivcPKdxCjdZC8/qufCd6u6wl+DnxgLxSrgZFNTQdhlhPiYwvzaw\nlftuO/C3gxOGPknSBjTQmqsFr9Hsf6C9eC+c0l0OdBvqBrk9AmPlSk+Rq7jbIeg6Ny6FC4ZXgPgQ\nOevGGs/lFYZmtiEtUDo5a4N0ERMb6UgQIMJdHC4KO1G/tIACXquYVjGv7nPQc3k1Ziy2im1PiT3g\n66hzYV0zrN3anqCEtcC4B8IEcLigbAdsP4sYwvg8TBDDRBLrYWHklTmYuy3um87A8W+RyT8+5LVS\nfVp1SeKH/5Z5Lq3/XvigWQDPJAz2xlixAt8QWgPweNRcw85RwsB9gOaPa64J+eAgr3VkICO0nR3W\nvGEcBvTduoLAtrku1y4EvDMLCRITEjjPyfF8zBST2iJIC0Bmy30CW8gTrTRm43Wzq3sdZeg+Qiu4\nt4ZPcJwsbMXZz0++x06BcYDWKhEIoy2uJFfQtoNs9nXMHR6WxF2HgFLegYjL6MkYGW89Lj6tIYMw\n8YomiRyqfUBN7coLBH5dxbf4QaTGpQ17d0DS8bO3K2FK+vzk2iguBfGG/OQFwyQnaEtTlZnFX9t+\npfgFPysTGIwLshTuIaj6rEXzcXE01M/ETFFIlB25lA+nX4p6dN3FNwK84x6hnyvjMCQFRtuWZU2d\nfT13UTltLATT8HEw1oxSSwQUip3IK1+Lr+iAOdwrm4wBe9vaHJxDyFw2nsv5sM1jUc1rLYsIdlOD\ndl83D4DeTTUYHLIdttgYd0hQABl77bMR8Tq2+NzCIdtKx+MyKfxFt9mTlQg6DZW/isOskBywu4EQ\n64vDT2/JuE3YAlbm87bHCu1g7DSTlSA3XGXiRUffoN/L3/8Aj/DDlBYPAAA=\n'),(2,'2018-01-31 21:27:05.942570','2018-01-31 21:27:06.185813','course-v1:edX+E2E-101+course','H4sIAKo0cloC/81TTWsbMRD9K2Kva8PqayX55FJy7Ck9FEoxI2mUGK93XUkbMMH/vbLXIZC6BIek\n5KY3YmbemzfzWNlucJtULcjj9Jw/0AX6H/UNu5nThtZuGGPC2kbo3f3SRwh5PoH6AWNaD/1SgmJc\nANhWmsY00hgjgoCmzvsdLt097DLG+lR9KbHlKnBGFVOCmWAl50o4G6wIgWl4JrI6ZhdYnQtUM1Ld\nRfDoSzBAl7AEwhC3kEugH7uu4DHBHa42uD8mfgo9s6OAdecj9oXTzw8ilfD3iH1eQ3fmxTljQnFk\nHKjgrdEtcm0oc15q6htT/SrE/DrtOtivetieJn2LLpdeZKGkcBK1NuC40AZLL2WhZdbQ1nqw1WH2\nUeO9XsnfG/Nc47MszfWqXuzNRbtGm54ck62j1rHGM9UIKqxWCo2jShspbFvkv+bYtNtnnSeKE7h0\nkNPHu472n+3/z/1cedSX3PgG/Qgdud0OGyTfMWXy9cSKUDInX8Y8VIejB3EY8puHcfgDSIktU7AF\nAAA=\n','H4sIAKo0cloC/6uuBQBDv6ajAgAAAA==\n');
+/*!40000 ALTER TABLE `course_structures_coursestructure` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `course_overviews_simulatecoursepublishconfig`
+-- Table structure for table `coursetalk_coursetalkwidgetconfiguration`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `course_overviews_simulatecoursepublishconfig` (
+CREATE TABLE `coursetalk_coursetalkwidgetconfiguration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `change_date` datetime(6) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
-  `arguments` longtext NOT NULL,
+  `platform_key` varchar(50) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `course_overviews_sim_changed_by_id_3413c118_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `course_overviews_sim_changed_by_id_3413c118_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `coursetalk_course_changed_by_id_18bd24020c1b37d5_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `coursetalk_course_changed_by_id_18bd24020c1b37d5_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `course_overviews_simulatecoursepublishconfig`
+-- Dumping data for table `coursetalk_coursetalkwidgetconfiguration`
 --
 
-LOCK TABLES `course_overviews_simulatecoursepublishconfig` WRITE;
-/*!40000 ALTER TABLE `course_overviews_simulatecoursepublishconfig` DISABLE KEYS */;
-/*!40000 ALTER TABLE `course_overviews_simulatecoursepublishconfig` ENABLE KEYS */;
+LOCK TABLES `coursetalk_coursetalkwidgetconfiguration` WRITE;
+/*!40000 ALTER TABLE `coursetalk_coursetalkwidgetconfiguration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `coursetalk_coursetalkwidgetconfiguration` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -3141,9 +2943,9 @@ CREATE TABLE `courseware_coursedynamicupgradedeadlineconfiguration` (
   `opt_out` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `courseware_coursedyn_changed_by_id_2c4efc3a_fk_auth_user` (`changed_by_id`),
-  KEY `courseware_coursedynamicupg_course_id_60b88041` (`course_id`),
-  CONSTRAINT `courseware_coursedyn_changed_by_id_2c4efc3a_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `courseware_course_changed_by_id_71dd51ee4b44e9e1_fk_auth_user_id` (`changed_by_id`),
+  KEY `courseware_coursedynamicupgradedeadlineconfiguration_ea134da7` (`course_id`),
+  CONSTRAINT `courseware_course_changed_by_id_71dd51ee4b44e9e1_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3169,8 +2971,8 @@ CREATE TABLE `courseware_dynamicupgradedeadlineconfiguration` (
   `deadline_days` smallint(5) unsigned NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `courseware_dynamicup_changed_by_id_6a450e2c_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `courseware_dynamicup_changed_by_id_6a450e2c_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `courseware_dynami_changed_by_id_77da0c73df07c112_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `courseware_dynami_changed_by_id_77da0c73df07c112_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3197,11 +2999,11 @@ CREATE TABLE `courseware_offlinecomputedgrade` (
   `gradeset` longtext,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `courseware_offlinecomputedgrade_user_id_course_id_18dfd343_uniq` (`user_id`,`course_id`),
-  KEY `courseware_offlinecomputedgrade_course_id_03e21ba7` (`course_id`),
-  KEY `courseware_offlinecomputedgrade_created_b5bca47f` (`created`),
-  KEY `courseware_offlinecomputedgrade_updated_6f3faff6` (`updated`),
-  CONSTRAINT `courseware_offlinecomputedgrade_user_id_14864cea_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `courseware_offlinecomputedgrade_user_id_46133bbd0926078f_uniq` (`user_id`,`course_id`),
+  KEY `courseware_offlinecomputedgrade_ea134da7` (`course_id`),
+  KEY `courseware_offlinecomputedgrade_e2fa5388` (`created`),
+  KEY `courseware_offlinecomputedgrade_0f81d52e` (`updated`),
+  CONSTRAINT `courseware_offlinecompu_user_id_66bbccbf945dfd56_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3227,8 +3029,8 @@ CREATE TABLE `courseware_offlinecomputedgradelog` (
   `seconds` int(11) NOT NULL,
   `nstudents` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `courseware_offlinecomputedgradelog_course_id_1014e127` (`course_id`),
-  KEY `courseware_offlinecomputedgradelog_created_33076a1a` (`created`)
+  KEY `courseware_offlinecomputedgradelog_ea134da7` (`course_id`),
+  KEY `courseware_offlinecomputedgradelog_e2fa5388` (`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3256,9 +3058,9 @@ CREATE TABLE `courseware_orgdynamicupgradedeadlineconfiguration` (
   `opt_out` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `courseware_orgdynami_changed_by_id_b557a1ea_fk_auth_user` (`changed_by_id`),
-  KEY `courseware_orgdynamicupgrad_org_id_85d3cbe4` (`org_id`),
-  CONSTRAINT `courseware_orgdynami_changed_by_id_b557a1ea_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `courseware_orgdyn_changed_by_id_700576c3bbcdc12f_fk_auth_user_id` (`changed_by_id`),
+  KEY `courseware_orgdynamicupgradedeadlineconfiguration_9cf869aa` (`org_id`),
+  CONSTRAINT `courseware_orgdyn_changed_by_id_700576c3bbcdc12f_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3287,11 +3089,11 @@ CREATE TABLE `courseware_studentfieldoverride` (
   `value` longtext NOT NULL,
   `student_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `courseware_studentfieldo_course_id_field_location_a1f7da25_uniq` (`course_id`,`field`,`location`,`student_id`),
-  KEY `courseware_studentfi_student_id_7a972765_fk_auth_user` (`student_id`),
-  KEY `courseware_studentfieldoverride_course_id_7ca0051c` (`course_id`),
-  KEY `courseware_studentfieldoverride_location_95ad5047` (`location`),
-  CONSTRAINT `courseware_studentfi_student_id_7a972765_fk_auth_user` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `courseware_studentfieldoverride_course_id_39dd7eaeac5623d2_uniq` (`course_id`,`field`,`location`,`student_id`),
+  KEY `courseware_studentfi_student_id_70e7c0f5a4f91b65_fk_auth_user_id` (`student_id`),
+  KEY `courseware_studentfieldoverride_ea134da7` (`course_id`),
+  KEY `courseware_studentfieldoverride_d5189de0` (`location`),
+  CONSTRAINT `courseware_studentfi_student_id_70e7c0f5a4f91b65_fk_auth_user_id` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3311,7 +3113,7 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `courseware_studentmodule` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `module_type` varchar(32) NOT NULL,
   `module_id` varchar(255) NOT NULL,
   `course_id` varchar(255) NOT NULL,
@@ -3323,12 +3125,15 @@ CREATE TABLE `courseware_studentmodule` (
   `modified` datetime(6) NOT NULL,
   `student_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `courseware_studentmodule_student_id_module_id_cou_48e8deef_uniq` (`student_id`,`module_id`,`course_id`),
-  KEY `courseware_studentmodule_module_type_f4f8863f` (`module_type`),
-  KEY `courseware_studentmodule_course_id_0637cb49` (`course_id`),
-  KEY `courseware_studentmodule_grade_adac1ba7` (`grade`),
-  KEY `courseware_studentmodule_created_9976b4ad` (`created`),
-  KEY `courseware_studentmodule_modified_f6a0b0cc` (`modified`)
+  UNIQUE KEY `courseware_studentmodule_student_id_635d77aea1256de5_uniq` (`student_id`,`module_id`,`course_id`),
+  KEY `courseware_studentmodule_82bd5515` (`module_type`),
+  KEY `courseware_studentmodule_c9799665` (`module_id`),
+  KEY `courseware_studentmodule_ea134da7` (`course_id`),
+  KEY `courseware_studentmodule_de6a20aa` (`grade`),
+  KEY `courseware_studentmodule_6b2ded51` (`done`),
+  KEY `courseware_studentmodule_e2fa5388` (`created`),
+  KEY `courseware_studentmodule_9ae73c65` (`modified`),
+  CONSTRAINT `courseware_studentmo_student_id_57005a9a97046500_fk_auth_user_id` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3356,9 +3161,10 @@ CREATE TABLE `courseware_studentmodulehistory` (
   `max_grade` double DEFAULT NULL,
   `student_module_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `courseware_studentmo_student_module_id_6efc64cf_fk_coursewar` (`student_module_id`),
-  KEY `courseware_studentmodulehistory_version_d3823ad1` (`version`),
-  KEY `courseware_studentmodulehistory_created_19cb94d2` (`created`)
+  KEY `D45b867f7277556beb93bff02eba5f03` (`student_module_id`),
+  KEY `courseware_studentmodulehistory_2af72f10` (`version`),
+  KEY `courseware_studentmodulehistory_e2fa5388` (`created`),
+  CONSTRAINT `D45b867f7277556beb93bff02eba5f03` FOREIGN KEY (`student_module_id`) REFERENCES `courseware_studentmodule` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3385,11 +3191,11 @@ CREATE TABLE `courseware_xmodulestudentinfofield` (
   `modified` datetime(6) NOT NULL,
   `student_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `courseware_xmodulestuden_student_id_field_name_2f3a4ee8_uniq` (`student_id`,`field_name`),
-  KEY `courseware_xmodulestudentinfofield_field_name_191b762e` (`field_name`),
-  KEY `courseware_xmodulestudentinfofield_created_beada63d` (`created`),
-  KEY `courseware_xmodulestudentinfofield_modified_b53f9c88` (`modified`),
-  CONSTRAINT `courseware_xmodulest_student_id_b78d39b4_fk_auth_user` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `courseware_xmodulestudentinfofi_student_id_33f2f772c49db067_uniq` (`student_id`,`field_name`),
+  KEY `courseware_xmodulestudentinfofield_73f329f1` (`field_name`),
+  KEY `courseware_xmodulestudentinfofield_e2fa5388` (`created`),
+  KEY `courseware_xmodulestudentinfofield_9ae73c65` (`modified`),
+  CONSTRAINT `courseware_xmodulestu_student_id_fb4c5883b541e28_fk_auth_user_id` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3417,12 +3223,12 @@ CREATE TABLE `courseware_xmodulestudentprefsfield` (
   `module_type` varchar(64) NOT NULL,
   `student_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `courseware_xmodulestuden_student_id_module_type_f_1c218850_uniq` (`student_id`,`module_type`,`field_name`),
-  KEY `courseware_xmodulestudentprefsfield_field_name_68d5e66e` (`field_name`),
-  KEY `courseware_xmodulestudentprefsfield_created_16090241` (`created`),
-  KEY `courseware_xmodulestudentprefsfield_modified_5b4e5525` (`modified`),
-  KEY `courseware_xmodulestudentprefsfield_module_type_45b994b9` (`module_type`),
-  CONSTRAINT `courseware_xmodulest_student_id_3c60ec8a_fk_auth_user` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `courseware_xmodulestudentprefsf_student_id_2a5d275498b7a407_uniq` (`student_id`,`module_type`,`field_name`),
+  KEY `courseware_xmodulestudentprefsfield_73f329f1` (`field_name`),
+  KEY `courseware_xmodulestudentprefsfield_e2fa5388` (`created`),
+  KEY `courseware_xmodulestudentprefsfield_9ae73c65` (`modified`),
+  KEY `courseware_xmodulestudentprefsfield_82bd5515` (`module_type`),
+  CONSTRAINT `courseware_xmodulest_student_id_48b35c14cbc17185_fk_auth_user_id` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3449,11 +3255,11 @@ CREATE TABLE `courseware_xmoduleuserstatesummaryfield` (
   `modified` datetime(6) NOT NULL,
   `usage_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `courseware_xmoduleuserst_usage_id_field_name_e4e34c44_uniq` (`usage_id`,`field_name`),
-  KEY `courseware_xmoduleuserstatesummaryfield_field_name_395cd2a6` (`field_name`),
-  KEY `courseware_xmoduleuserstatesummaryfield_created_57d773a1` (`created`),
-  KEY `courseware_xmoduleuserstatesummaryfield_modified_b4277a5d` (`modified`),
-  KEY `courseware_xmoduleuserstatesummaryfield_usage_id_9f239d1f` (`usage_id`)
+  UNIQUE KEY `courseware_xmoduleuserstatesummar_usage_id_5cc7ed48d6e2e021_uniq` (`usage_id`,`field_name`),
+  KEY `courseware_xmoduleuserstatesummaryfield_73f329f1` (`field_name`),
+  KEY `courseware_xmoduleuserstatesummaryfield_e2fa5388` (`created`),
+  KEY `courseware_xmoduleuserstatesummaryfield_9ae73c65` (`modified`),
+  KEY `courseware_xmoduleuserstatesummaryfield_0528eb2a` (`usage_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3479,8 +3285,8 @@ CREATE TABLE `crawlers_crawlersconfig` (
   `known_user_agents` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `crawlers_crawlersconfig_changed_by_id_544af924_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `crawlers_crawlersconfig_changed_by_id_544af924_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `crawlers_crawlers_changed_by_id_7014349920284aa4_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `crawlers_crawlers_changed_by_id_7014349920284aa4_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3510,8 +3316,8 @@ CREATE TABLE `credentials_credentialsapiconfig` (
   `cache_ttl` int(10) unsigned NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `credentials_credenti_changed_by_id_9e145a81_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `credentials_credenti_changed_by_id_9e145a81_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `credentials_crede_changed_by_id_273a2e6b0649c861_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `credentials_crede_changed_by_id_273a2e6b0649c861_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3522,33 +3328,6 @@ CREATE TABLE `credentials_credentialsapiconfig` (
 LOCK TABLES `credentials_credentialsapiconfig` WRITE;
 /*!40000 ALTER TABLE `credentials_credentialsapiconfig` DISABLE KEYS */;
 /*!40000 ALTER TABLE `credentials_credentialsapiconfig` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `credentials_notifycredentialsconfig`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `credentials_notifycredentialsconfig` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `change_date` datetime(6) NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
-  `arguments` longtext NOT NULL,
-  `changed_by_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `credentials_notifycr_changed_by_id_e31cde0e_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `credentials_notifycr_changed_by_id_e31cde0e_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `credentials_notifycredentialsconfig`
---
-
-LOCK TABLES `credentials_notifycredentialsconfig` WRITE;
-/*!40000 ALTER TABLE `credentials_notifycredentialsconfig` DISABLE KEYS */;
-/*!40000 ALTER TABLE `credentials_notifycredentialsconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -3564,8 +3343,8 @@ CREATE TABLE `credit_creditconfig` (
   `cache_ttl` int(10) unsigned NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `credit_creditconfig_changed_by_id_72e1eca9_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `credit_creditconfig_changed_by_id_72e1eca9_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `credit_creditconf_changed_by_id_6270a800475f6694_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `credit_creditconf_changed_by_id_6270a800475f6694_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3616,10 +3395,10 @@ CREATE TABLE `credit_crediteligibility` (
   `deadline` datetime(6) NOT NULL,
   `course_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `credit_crediteligibility_username_course_id_7906b4c1_uniq` (`username`,`course_id`),
-  KEY `credit_crediteligibi_course_id_d86f481f_fk_credit_cr` (`course_id`),
-  KEY `credit_crediteligibility_username_4c275fb5` (`username`),
-  CONSTRAINT `credit_crediteligibi_course_id_d86f481f_fk_credit_cr` FOREIGN KEY (`course_id`) REFERENCES `credit_creditcourse` (`id`)
+  UNIQUE KEY `credit_crediteligibility_username_936cb16677e83e_uniq` (`username`,`course_id`),
+  KEY `credit_cred_course_id_4218adeba258bf8b_fk_credit_creditcourse_id` (`course_id`),
+  KEY `credit_crediteligibility_14c4b06b` (`username`),
+  CONSTRAINT `credit_cred_course_id_4218adeba258bf8b_fk_credit_creditcourse_id` FOREIGN KEY (`course_id`) REFERENCES `credit_creditcourse` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3685,12 +3464,12 @@ CREATE TABLE `credit_creditrequest` (
   `provider_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
-  UNIQUE KEY `credit_creditrequest_username_course_id_provi_3b019afe_uniq` (`username`,`course_id`,`provider_id`),
-  KEY `credit_creditrequest_course_id_5478ceaf_fk_credit_cr` (`course_id`),
-  KEY `credit_creditrequest_provider_id_5465ab8b_fk_credit_cr` (`provider_id`),
-  KEY `credit_creditrequest_username_bd5623e4` (`username`),
-  CONSTRAINT `credit_creditrequest_course_id_5478ceaf_fk_credit_cr` FOREIGN KEY (`course_id`) REFERENCES `credit_creditcourse` (`id`),
-  CONSTRAINT `credit_creditrequest_provider_id_5465ab8b_fk_credit_cr` FOREIGN KEY (`provider_id`) REFERENCES `credit_creditprovider` (`id`)
+  UNIQUE KEY `credit_creditrequest_username_4f61c10bb0d67c01_uniq` (`username`,`course_id`,`provider_id`),
+  KEY `credit_cred_course_id_578c5f1124002bab_fk_credit_creditcourse_id` (`course_id`),
+  KEY `credit_c_provider_id_f2973cc3e38a483_fk_credit_creditprovider_id` (`provider_id`),
+  KEY `credit_creditrequest_14c4b06b` (`username`),
+  CONSTRAINT `credit_c_provider_id_f2973cc3e38a483_fk_credit_creditprovider_id` FOREIGN KEY (`provider_id`) REFERENCES `credit_creditprovider` (`id`),
+  CONSTRAINT `credit_cred_course_id_578c5f1124002bab_fk_credit_creditcourse_id` FOREIGN KEY (`course_id`) REFERENCES `credit_creditcourse` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3721,9 +3500,9 @@ CREATE TABLE `credit_creditrequirement` (
   `active` tinyint(1) NOT NULL,
   `course_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `credit_creditrequirement_namespace_name_course_id_87c301e6_uniq` (`namespace`,`name`,`course_id`),
-  KEY `credit_creditrequire_course_id_b6aa812a_fk_credit_cr` (`course_id`),
-  CONSTRAINT `credit_creditrequire_course_id_b6aa812a_fk_credit_cr` FOREIGN KEY (`course_id`) REFERENCES `credit_creditcourse` (`id`)
+  UNIQUE KEY `credit_creditrequirement_namespace_33039c83b3e69b8_uniq` (`namespace`,`name`,`course_id`),
+  KEY `credit_cred_course_id_1c8fb9ebd295ae19_fk_credit_creditcourse_id` (`course_id`),
+  CONSTRAINT `credit_cred_course_id_1c8fb9ebd295ae19_fk_credit_creditcourse_id` FOREIGN KEY (`course_id`) REFERENCES `credit_creditcourse` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3751,10 +3530,10 @@ CREATE TABLE `credit_creditrequirementstatus` (
   `reason` longtext NOT NULL,
   `requirement_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `credit_creditrequirement_username_requirement_id_f761eba5_uniq` (`username`,`requirement_id`),
-  KEY `credit_creditrequire_requirement_id_cde25c76_fk_credit_cr` (`requirement_id`),
-  KEY `credit_creditrequirementstatus_username_4c2511ed` (`username`),
-  CONSTRAINT `credit_creditrequire_requirement_id_cde25c76_fk_credit_cr` FOREIGN KEY (`requirement_id`) REFERENCES `credit_creditrequirement` (`id`)
+  UNIQUE KEY `credit_creditrequirementstatus_username_67dcb69ebf779e3b_uniq` (`username`,`requirement_id`),
+  KEY `c_requirement_id_3896aa6db214f84a_fk_credit_creditrequirement_id` (`requirement_id`),
+  KEY `credit_creditrequirementstatus_14c4b06b` (`username`),
+  CONSTRAINT `c_requirement_id_3896aa6db214f84a_fk_credit_creditrequirement_id` FOREIGN KEY (`requirement_id`) REFERENCES `credit_creditrequirement` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3779,11 +3558,9 @@ CREATE TABLE `dark_lang_darklangconfig` (
   `enabled` tinyint(1) NOT NULL,
   `released_languages` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
-  `beta_languages` longtext NOT NULL,
-  `enable_beta_languages` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `dark_lang_darklangconfig_changed_by_id_9a7df899_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `dark_lang_darklangconfig_changed_by_id_9a7df899_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `dark_lang_darklan_changed_by_id_7e1defb1121d58b8_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `dark_lang_darklan_changed_by_id_7e1defb1121d58b8_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3793,7 +3570,7 @@ CREATE TABLE `dark_lang_darklangconfig` (
 
 LOCK TABLES `dark_lang_darklangconfig` WRITE;
 /*!40000 ALTER TABLE `dark_lang_darklangconfig` DISABLE KEYS */;
-INSERT INTO `dark_lang_darklangconfig` VALUES (1,'2019-09-25 19:51:25.795766',1,'',NULL,'',0);
+INSERT INTO `dark_lang_darklangconfig` VALUES (1,'2016-12-17 01:37:07.676065',1,'',NULL);
 /*!40000 ALTER TABLE `dark_lang_darklangconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3812,15 +3589,9 @@ CREATE TABLE `degreed_degreedenterprisecustomerconfiguration` (
   `secret` varchar(255) NOT NULL,
   `degreed_company_id` varchar(255) NOT NULL,
   `enterprise_customer_id` char(32) NOT NULL,
-  `transmission_chunk_size` int(11) NOT NULL,
-  `degreed_base_url` varchar(255) NOT NULL,
-  `degreed_user_id` varchar(255) NOT NULL,
-  `degreed_user_password` varchar(255) NOT NULL,
-  `provider_id` varchar(100) NOT NULL,
-  `channel_worker_username` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `enterprise_customer_id` (`enterprise_customer_id`),
-  CONSTRAINT `degreed_degreedenter_enterprise_customer__86f16a0d_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  CONSTRAINT `D8dff51a65b4ed0c3cf73b425e343929` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3843,13 +3614,17 @@ CREATE TABLE `degreed_degreedglobalconfiguration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `change_date` datetime(6) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
+  `degreed_base_url` varchar(255) NOT NULL,
   `completion_status_api_path` varchar(255) NOT NULL,
   `course_api_path` varchar(255) NOT NULL,
   `oauth_api_path` varchar(255) NOT NULL,
+  `degreed_user_id` varchar(255) NOT NULL,
+  `degreed_user_password` varchar(255) NOT NULL,
+  `provider_id` varchar(100) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `degreed_degreedgloba_changed_by_id_00a8a7be_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `degreed_degreedgloba_changed_by_id_00a8a7be_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `degreed_degreedgl_changed_by_id_3af82cf8c774e820_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `degreed_degreedgl_changed_by_id_3af82cf8c774e820_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3878,8 +3653,7 @@ CREATE TABLE `degreed_degreedlearnerdatatransmissionaudit` (
   `status` varchar(100) NOT NULL,
   `error_message` longtext NOT NULL,
   `created` datetime(6) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `degreed_degreedlearnerdatat_enterprise_course_enrollmen_2b4fe278` (`enterprise_course_enrollment_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3912,17 +3686,10 @@ CREATE TABLE `degreed_historicaldegreedenterprisecustomerconfiguration` (
   `history_type` varchar(1) NOT NULL,
   `enterprise_customer_id` char(32) DEFAULT NULL,
   `history_user_id` int(11) DEFAULT NULL,
-  `transmission_chunk_size` int(11) NOT NULL,
-  `degreed_base_url` varchar(255) NOT NULL,
-  `degreed_user_id` varchar(255) NOT NULL,
-  `degreed_user_password` varchar(255) NOT NULL,
-  `provider_id` varchar(100) NOT NULL,
-  `channel_worker_username` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`history_id`),
-  KEY `degreed_historicalde_history_user_id_5b4776d8_fk_auth_user` (`history_user_id`),
-  KEY `degreed_historicaldegreeden_id_756f1445` (`id`),
-  KEY `degreed_historicaldegreeden_enterprise_customer_id_12129e6f` (`enterprise_customer_id`),
-  CONSTRAINT `degreed_historicalde_history_user_id_5b4776d8_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
+  KEY `degreed_histori_history_user_id_20efd88dd0a8765a_fk_auth_user_id` (`history_user_id`),
+  KEY `degreed_historicaldegreedenterprisecustomerconfiguration_b803fed` (`id`),
+  CONSTRAINT `degreed_histori_history_user_id_20efd88dd0a8765a_fk_auth_user_id` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3933,44 +3700,6 @@ CREATE TABLE `degreed_historicaldegreedenterprisecustomerconfiguration` (
 LOCK TABLES `degreed_historicaldegreedenterprisecustomerconfiguration` WRITE;
 /*!40000 ALTER TABLE `degreed_historicaldegreedenterprisecustomerconfiguration` DISABLE KEYS */;
 /*!40000 ALTER TABLE `degreed_historicaldegreedenterprisecustomerconfiguration` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `discounts_discountrestrictionconfig`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `discounts_discountrestrictionconfig` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `change_date` datetime(6) NOT NULL,
-  `enabled` tinyint(1) DEFAULT NULL,
-  `org` varchar(255) DEFAULT NULL,
-  `org_course` varchar(255) DEFAULT NULL,
-  `disabled` tinyint(1) DEFAULT NULL,
-  `changed_by_id` int(11) DEFAULT NULL,
-  `course_id` varchar(255) DEFAULT NULL,
-  `site_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `discounts_d_site_id_d67da3_idx` (`site_id`,`org`,`course_id`),
-  KEY `discounts_d_site_id_f83727_idx` (`site_id`,`org`,`org_course`,`course_id`),
-  KEY `discounts_discountre_changed_by_id_f18a5c1b_fk_auth_user` (`changed_by_id`),
-  KEY `discounts_discountre_course_id_d7f6674b_fk_course_ov` (`course_id`),
-  KEY `discounts_discountrestrictionconfig_org_010f786f` (`org`),
-  KEY `discounts_discountrestrictionconfig_org_course_bb36b3cd` (`org_course`),
-  CONSTRAINT `discounts_discountre_changed_by_id_f18a5c1b_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `discounts_discountre_course_id_d7f6674b_fk_course_ov` FOREIGN KEY (`course_id`) REFERENCES `course_overviews_courseoverview` (`id`),
-  CONSTRAINT `discounts_discountre_site_id_3f4c1be6_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `discounts_discountrestrictionconfig`
---
-
-LOCK TABLES `discounts_discountrestrictionconfig` WRITE;
-/*!40000 ALTER TABLE `discounts_discountrestrictionconfig` DISABLE KEYS */;
-/*!40000 ALTER TABLE `discounts_discountrestrictionconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -3989,10 +3718,10 @@ CREATE TABLE `django_admin_log` (
   `content_type_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `django_admin_log_content_type_id_c4bce8eb_fk_django_co` (`content_type_id`),
-  KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
-  CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `djang_content_type_id_697914295151027a_fk_django_content_type_id` (`content_type_id`),
+  KEY `django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `djang_content_type_id_697914295151027a_fk_django_content_type_id` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  CONSTRAINT `django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4038,10 +3767,10 @@ CREATE TABLE `django_comment_client_permission_roles` (
   `permission_id` varchar(30) NOT NULL,
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `django_comment_client_pe_permission_id_role_id_d3680ec3_uniq` (`permission_id`,`role_id`),
-  KEY `django_comment_clien_role_id_d2cb08a2_fk_django_co` (`role_id`),
-  CONSTRAINT `django_comment_clien_permission_id_f9f47fd2_fk_django_co` FOREIGN KEY (`permission_id`) REFERENCES `django_comment_client_permission` (`name`),
-  CONSTRAINT `django_comment_clien_role_id_d2cb08a2_fk_django_co` FOREIGN KEY (`role_id`) REFERENCES `django_comment_client_role` (`id`)
+  UNIQUE KEY `permission_id` (`permission_id`,`role_id`),
+  KEY `django_role_id_558412c96ef7ba87_fk_django_comment_client_role_id` (`role_id`),
+  CONSTRAINT `D4e9a4067c1db9041491363f5e032121` FOREIGN KEY (`permission_id`) REFERENCES `django_comment_client_permission` (`name`),
+  CONSTRAINT `django_role_id_558412c96ef7ba87_fk_django_comment_client_role_id` FOREIGN KEY (`role_id`) REFERENCES `django_comment_client_role` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4051,7 +3780,7 @@ CREATE TABLE `django_comment_client_permission_roles` (
 
 LOCK TABLES `django_comment_client_permission_roles` WRITE;
 /*!40000 ALTER TABLE `django_comment_client_permission_roles` DISABLE KEYS */;
-INSERT INTO `django_comment_client_permission_roles` VALUES (79,'create_comment',1),(34,'create_comment',2),(45,'create_comment',3),(62,'create_comment',4),(11,'create_comment',5),(158,'create_comment',6),(113,'create_comment',7),(124,'create_comment',8),(141,'create_comment',9),(90,'create_comment',10),(74,'create_sub_comment',1),(29,'create_sub_comment',2),(40,'create_sub_comment',3),(57,'create_sub_comment',4),(6,'create_sub_comment',5),(153,'create_sub_comment',6),(108,'create_sub_comment',7),(119,'create_sub_comment',8),(136,'create_sub_comment',9),(85,'create_sub_comment',10),(76,'create_thread',1),(31,'create_thread',2),(42,'create_thread',3),(59,'create_thread',4),(8,'create_thread',5),(155,'create_thread',6),(110,'create_thread',7),(121,'create_thread',8),(138,'create_thread',9),(87,'create_thread',10),(67,'delete_comment',1),(16,'delete_comment',2),(50,'delete_comment',4),(146,'delete_comment',6),(95,'delete_comment',7),(129,'delete_comment',9),(64,'delete_thread',1),(13,'delete_thread',2),(47,'delete_thread',4),(143,'delete_thread',6),(92,'delete_thread',7),(126,'delete_thread',9),(63,'edit_content',1),(12,'edit_content',2),(46,'edit_content',4),(142,'edit_content',6),(91,'edit_content',7),(125,'edit_content',9),(66,'endorse_comment',1),(15,'endorse_comment',2),(49,'endorse_comment',4),(145,'endorse_comment',6),(94,'endorse_comment',7),(128,'endorse_comment',9),(77,'follow_commentable',1),(32,'follow_commentable',2),(43,'follow_commentable',3),(60,'follow_commentable',4),(9,'follow_commentable',5),(156,'follow_commentable',6),(111,'follow_commentable',7),(122,'follow_commentable',8),(139,'follow_commentable',9),(88,'follow_commentable',10),(71,'follow_thread',1),(26,'follow_thread',2),(37,'follow_thread',3),(54,'follow_thread',4),(3,'follow_thread',5),(150,'follow_thread',6),(105,'follow_thread',7),(116,'follow_thread',8),(133,'follow_thread',9),(82,'follow_thread',10),(22,'group_delete_comment',3),(101,'group_delete_comment',8),(19,'group_delete_thread',3),(98,'group_delete_thread',8),(18,'group_edit_content',3),(97,'group_edit_content',8),(21,'group_endorse_comment',3),(100,'group_endorse_comment',8),(20,'group_openclose_thread',3),(99,'group_openclose_thread',8),(23,'manage_moderator',1),(102,'manage_moderator',6),(65,'openclose_thread',1),(14,'openclose_thread',2),(48,'openclose_thread',4),(144,'openclose_thread',6),(93,'openclose_thread',7),(127,'openclose_thread',9),(68,'see_all_cohorts',1),(17,'see_all_cohorts',2),(51,'see_all_cohorts',4),(147,'see_all_cohorts',6),(96,'see_all_cohorts',7),(130,'see_all_cohorts',9),(78,'unfollow_commentable',1),(33,'unfollow_commentable',2),(44,'unfollow_commentable',3),(61,'unfollow_commentable',4),(10,'unfollow_commentable',5),(157,'unfollow_commentable',6),(112,'unfollow_commentable',7),(123,'unfollow_commentable',8),(140,'unfollow_commentable',9),(89,'unfollow_commentable',10),(72,'unfollow_thread',1),(27,'unfollow_thread',2),(38,'unfollow_thread',3),(55,'unfollow_thread',4),(4,'unfollow_thread',5),(151,'unfollow_thread',6),(106,'unfollow_thread',7),(117,'unfollow_thread',8),(134,'unfollow_thread',9),(83,'unfollow_thread',10),(75,'unvote',1),(30,'unvote',2),(41,'unvote',3),(58,'unvote',4),(7,'unvote',5),(154,'unvote',6),(109,'unvote',7),(120,'unvote',8),(137,'unvote',9),(86,'unvote',10),(73,'update_comment',1),(28,'update_comment',2),(39,'update_comment',3),(56,'update_comment',4),(5,'update_comment',5),(152,'update_comment',6),(107,'update_comment',7),(118,'update_comment',8),(135,'update_comment',9),(84,'update_comment',10),(70,'update_thread',1),(25,'update_thread',2),(36,'update_thread',3),(53,'update_thread',4),(2,'update_thread',5),(149,'update_thread',6),(104,'update_thread',7),(115,'update_thread',8),(132,'update_thread',9),(81,'update_thread',10),(69,'vote',1),(24,'vote',2),(35,'vote',3),(52,'vote',4),(1,'vote',5),(148,'vote',6),(103,'vote',7),(114,'vote',8),(131,'vote',9),(80,'vote',10);
+INSERT INTO `django_comment_client_permission_roles` VALUES (47,'create_comment',1),(29,'create_comment',2),(30,'create_comment',3),(11,'create_comment',4),(79,'create_comment',5),(158,'create_comment',6),(113,'create_comment',7),(124,'create_comment',8),(141,'create_comment',9),(90,'create_comment',10),(48,'create_sub_comment',1),(24,'create_sub_comment',2),(31,'create_sub_comment',3),(6,'create_sub_comment',4),(74,'create_sub_comment',5),(153,'create_sub_comment',6),(108,'create_sub_comment',7),(119,'create_sub_comment',8),(136,'create_sub_comment',9),(85,'create_sub_comment',10),(49,'create_thread',1),(26,'create_thread',2),(32,'create_thread',3),(8,'create_thread',4),(76,'create_thread',5),(155,'create_thread',6),(110,'create_thread',7),(121,'create_thread',8),(138,'create_thread',9),(87,'create_thread',10),(50,'delete_comment',1),(16,'delete_comment',2),(33,'delete_comment',3),(146,'delete_comment',6),(95,'delete_comment',7),(129,'delete_comment',9),(51,'delete_thread',1),(13,'delete_thread',2),(34,'delete_thread',3),(143,'delete_thread',6),(92,'delete_thread',7),(126,'delete_thread',9),(52,'edit_content',1),(12,'edit_content',2),(35,'edit_content',3),(142,'edit_content',6),(91,'edit_content',7),(125,'edit_content',9),(53,'endorse_comment',1),(15,'endorse_comment',2),(36,'endorse_comment',3),(145,'endorse_comment',6),(94,'endorse_comment',7),(128,'endorse_comment',9),(54,'follow_commentable',1),(27,'follow_commentable',2),(37,'follow_commentable',3),(9,'follow_commentable',4),(77,'follow_commentable',5),(156,'follow_commentable',6),(111,'follow_commentable',7),(122,'follow_commentable',8),(139,'follow_commentable',9),(88,'follow_commentable',10),(55,'follow_thread',1),(21,'follow_thread',2),(38,'follow_thread',3),(3,'follow_thread',4),(71,'follow_thread',5),(150,'follow_thread',6),(105,'follow_thread',7),(116,'follow_thread',8),(133,'follow_thread',9),(82,'follow_thread',10),(68,'group_delete_comment',5),(101,'group_delete_comment',8),(65,'group_delete_thread',5),(98,'group_delete_thread',8),(64,'group_edit_content',5),(97,'group_edit_content',8),(67,'group_endorse_comment',5),(100,'group_endorse_comment',8),(66,'group_openclose_thread',5),(99,'group_openclose_thread',8),(18,'manage_moderator',1),(102,'manage_moderator',6),(56,'openclose_thread',1),(14,'openclose_thread',2),(39,'openclose_thread',3),(144,'openclose_thread',6),(93,'openclose_thread',7),(127,'openclose_thread',9),(57,'see_all_cohorts',1),(17,'see_all_cohorts',2),(40,'see_all_cohorts',3),(147,'see_all_cohorts',6),(96,'see_all_cohorts',7),(130,'see_all_cohorts',9),(58,'unfollow_commentable',1),(28,'unfollow_commentable',2),(41,'unfollow_commentable',3),(10,'unfollow_commentable',4),(78,'unfollow_commentable',5),(157,'unfollow_commentable',6),(112,'unfollow_commentable',7),(123,'unfollow_commentable',8),(140,'unfollow_commentable',9),(89,'unfollow_commentable',10),(59,'unfollow_thread',1),(22,'unfollow_thread',2),(42,'unfollow_thread',3),(4,'unfollow_thread',4),(72,'unfollow_thread',5),(151,'unfollow_thread',6),(106,'unfollow_thread',7),(117,'unfollow_thread',8),(134,'unfollow_thread',9),(83,'unfollow_thread',10),(60,'unvote',1),(25,'unvote',2),(43,'unvote',3),(7,'unvote',4),(75,'unvote',5),(154,'unvote',6),(109,'unvote',7),(120,'unvote',8),(137,'unvote',9),(86,'unvote',10),(61,'update_comment',1),(23,'update_comment',2),(44,'update_comment',3),(5,'update_comment',4),(73,'update_comment',5),(152,'update_comment',6),(107,'update_comment',7),(118,'update_comment',8),(135,'update_comment',9),(84,'update_comment',10),(62,'update_thread',1),(20,'update_thread',2),(45,'update_thread',3),(2,'update_thread',4),(70,'update_thread',5),(149,'update_thread',6),(104,'update_thread',7),(115,'update_thread',8),(132,'update_thread',9),(81,'update_thread',10),(63,'vote',1),(19,'vote',2),(46,'vote',3),(1,'vote',4),(69,'vote',5),(148,'vote',6),(103,'vote',7),(114,'vote',8),(131,'vote',9),(80,'vote',10);
 /*!40000 ALTER TABLE `django_comment_client_permission_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4066,7 +3795,7 @@ CREATE TABLE `django_comment_client_role` (
   `name` varchar(30) NOT NULL,
   `course_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `django_comment_client_role_course_id_08a9c1d1` (`course_id`)
+  KEY `django_comment_client_role_ea134da7` (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4076,7 +3805,7 @@ CREATE TABLE `django_comment_client_role` (
 
 LOCK TABLES `django_comment_client_role` WRITE;
 /*!40000 ALTER TABLE `django_comment_client_role` DISABLE KEYS */;
-INSERT INTO `django_comment_client_role` VALUES (1,'Administrator','course-v1:edX+DemoX+Demo_Course'),(2,'Moderator','course-v1:edX+DemoX+Demo_Course'),(3,'Group Moderator','course-v1:edX+DemoX+Demo_Course'),(4,'Community TA','course-v1:edX+DemoX+Demo_Course'),(5,'Student','course-v1:edX+DemoX+Demo_Course'),(6,'Administrator','course-v1:edX+E2E-101+course'),(7,'Moderator','course-v1:edX+E2E-101+course'),(8,'Group Moderator','course-v1:edX+E2E-101+course'),(9,'Community TA','course-v1:edX+E2E-101+course'),(10,'Student','course-v1:edX+E2E-101+course');
+INSERT INTO `django_comment_client_role` VALUES (1,'Administrator','course-v1:edX+DemoX+Demo_Course'),(2,'Moderator','course-v1:edX+DemoX+Demo_Course'),(3,'Community TA','course-v1:edX+DemoX+Demo_Course'),(4,'Student','course-v1:edX+DemoX+Demo_Course'),(5,'Group Moderator','course-v1:edX+DemoX+Demo_Course'),(6,'Administrator','course-v1:edX+E2E-101+course'),(7,'Moderator','course-v1:edX+E2E-101+course'),(8,'Group Moderator','course-v1:edX+E2E-101+course'),(9,'Community TA','course-v1:edX+E2E-101+course'),(10,'Student','course-v1:edX+E2E-101+course');
 /*!40000 ALTER TABLE `django_comment_client_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4091,10 +3820,10 @@ CREATE TABLE `django_comment_client_role_users` (
   `role_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `django_comment_client_role_users_role_id_user_id_93ab4289_uniq` (`role_id`,`user_id`),
-  KEY `dcc_role_users_user_role_idx` (`user_id`,`role_id`),
-  CONSTRAINT `django_comment_clien_role_id_baec77f6_fk_django_co` FOREIGN KEY (`role_id`) REFERENCES `django_comment_client_role` (`id`),
-  CONSTRAINT `django_comment_clien_user_id_5d7991df_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `role_id` (`role_id`,`user_id`),
+  KEY `django_comment_client_r_user_id_139843e7dcf77368_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `django_comment_client_r_user_id_139843e7dcf77368_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `django_role_id_75cf4005dc1fb11d_fk_django_comment_client_role_id` FOREIGN KEY (`role_id`) REFERENCES `django_comment_client_role` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4104,7 +3833,7 @@ CREATE TABLE `django_comment_client_role_users` (
 
 LOCK TABLES `django_comment_client_role_users` WRITE;
 /*!40000 ALTER TABLE `django_comment_client_role_users` DISABLE KEYS */;
-INSERT INTO `django_comment_client_role_users` VALUES (1,5,5),(2,5,6),(3,5,7),(4,5,8);
+INSERT INTO `django_comment_client_role_users` VALUES (1,4,6),(2,4,7),(3,4,8),(4,4,9);
 /*!40000 ALTER TABLE `django_comment_client_role_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4120,7 +3849,6 @@ CREATE TABLE `django_comment_common_coursediscussionsettings` (
   `always_divide_inline_discussions` tinyint(1) NOT NULL,
   `divided_discussions` longtext,
   `division_scheme` varchar(20) NOT NULL,
-  `discussions_id_map` longtext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `course_id` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -4136,29 +3864,6 @@ LOCK TABLES `django_comment_common_coursediscussionsettings` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `django_comment_common_discussionsidmapping`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `django_comment_common_discussionsidmapping` (
-  `course_id` varchar(255) NOT NULL,
-  `mapping` longtext NOT NULL,
-  PRIMARY KEY (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `django_comment_common_discussionsidmapping`
---
-
-LOCK TABLES `django_comment_common_discussionsidmapping` WRITE;
-/*!40000 ALTER TABLE `django_comment_common_discussionsidmapping` DISABLE KEYS */;
-INSERT INTO `django_comment_common_discussionsidmapping` VALUES ('course-v1:edX+DemoX+Demo_Course','{\"9ad16580878f49d1bf20ce1bc533d16e\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@e0d7423118ab432582d03e8e8dad8e36\",\"df0905ee484844769644f330844253e7\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@f480df4ce91347c5ae4301ddf6146238\",\"b770140a122741fea651a50362dee7e6\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@4d672c5893cb4f1dad0de67d2008522e\",\"e4365aad2c39498d824cf984b3f9b083\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@ed01bcd164e64038a78964a16eac3edc\",\"d7b66e45154b4af18f33213337685e91\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@6f7a6670f87147149caeff6afa07a526\",\"4250393f9f684bfeb3f1d514e15592d1\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@ffa5817d49e14fec83ad6187cbe16358\",\"53c486b035b4437c9197a543371e0f03\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@6244918637ed4ff4b5f94a840a7e4b43\",\"aecab8f355744782af5a9470185f0005\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@5ab88e67d46049b9aa694cb240c39cef\",\"ba12c2e0b81e4cef8e05e22049aafd63\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@1a810b1a3b2447b998f0917d0e5a802b\",\"d459fcb5792b459ca0aefe141e633ccc\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@ddede76df71045ffa16de9d1481d2119\",\"a56e406f164746d8bbff76545e6d981f\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@23e6eda482c04335af2bb265beacaf59\",\"eb264c9899b745fc81cd7405b53a7a65\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@e5eac7e1a5a24f5fa7ed77bb6d136591\",\"1d153da210844719a1a6cc39ca09673c\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@9f9e1373cc8243b985c8750cc8acec7d\",\"c49f0dfb8fc94c9c8d9999cc95190c56\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@501aed9d902349eeb2191fa505548de2\",\"6e51dd8f181b44ffa6d91303a287ed3f\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@12ad4f3ff4c14114a6e629b00e000976\",\"8ff02d4204bb42059db629e399a50a26\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@1c8d47c425724346a7968fa1bc745dcd\",\"97f19f6202e54d6a9ea59f7a573725a1\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@cd177caa62444fbca48aa8f843f09eac\",\"98d8feb5971041a085512ae22b398613\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@722085be27c84ac693cfebc8ac5da700\",\"d9f970a42067413cbb633f81cfb12604\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@412dc8dbb6674014862237b23c1f643f\",\"edx_demo_embedded_discussion\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@discussion_5deb6081620d\",\"e252d4de97c7426e8b67ff516a9962f6\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@b8cec2a19ebf463f90cd3544c7927b0e\",\"265ca2d808814d76ad670957a2b6071f\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@e2cb0e0994f84b0abfa5f4ae42ed9d44\",\"bb15269287ec44b6a2f69447db43d845\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@0aa7a3bdbe18427795b0c1a1d7c3cb9a\",\"ed3164d1235645739374094a8172964b\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@870371212ba04dcf9536d7c7b8f3109e\",\"31c83aefa6634e83a3c80b81f5447201\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@ade92343df3d4953a40ab3adc8805390\",\"23347cb1d1e74ec79453ce361e38eb18\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@3169f89efde2452993f2f2d9bc74f5b2\",\"cdad92273f7d4622aed770b7de8583bc\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@4f06b358a96f4d1dae57d6d81acd06f2\",\"cba3e4cd91d0466b9ac50926e495b76f\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@67c26b1e826e47aaa29757f62bcd1ad0\",\"b11488e3580241f08146cbcfca693d06\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@03f051f9a8814881a3783d2511613aa6\",\"239ef52e6eee468fb698b4217a7bafc6\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@c6cd4bea43454aaea60ad01beb0cf213\",\"0717ec26e67e49b2a9f30d2e15c417dd\":\"block-v1:edX+DemoX+Demo_Course+type@discussion+block@4aba537a78774bd5a862485a8563c345\"}'),('course-v1:edX+E2E-101+course','{}');
-/*!40000 ALTER TABLE `django_comment_common_discussionsidmapping` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `django_comment_common_forumsconfig`
 --
 
@@ -4171,8 +3876,8 @@ CREATE TABLE `django_comment_common_forumsconfig` (
   `connection_timeout` double NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `django_comment_commo_changed_by_id_9292e296_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `django_comment_commo_changed_by_id_9292e296_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `django_comment_co_changed_by_id_18a7f46ff6309996_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `django_comment_co_changed_by_id_18a7f46ff6309996_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4182,7 +3887,7 @@ CREATE TABLE `django_comment_common_forumsconfig` (
 
 LOCK TABLES `django_comment_common_forumsconfig` WRITE;
 /*!40000 ALTER TABLE `django_comment_common_forumsconfig` DISABLE KEYS */;
-INSERT INTO `django_comment_common_forumsconfig` VALUES (1,'2019-09-25 19:51:38.238556',1,5,NULL);
+INSERT INTO `django_comment_common_forumsconfig` VALUES (1,'2016-12-17 01:37:09.941982',1,5,NULL);
 /*!40000 ALTER TABLE `django_comment_common_forumsconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4197,8 +3902,8 @@ CREATE TABLE `django_content_type` (
   `app_label` varchar(100) NOT NULL,
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=389 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `django_content_type_app_label_45f3b1d93ec8c61c_uniq` (`app_label`,`model`)
+) ENGINE=InnoDB AUTO_INCREMENT=380 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4207,7 +3912,7 @@ CREATE TABLE `django_content_type` (
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-INSERT INTO `django_content_type` VALUES (147,'admin','logentry'),(351,'announcements','announcement'),(276,'api_admin','apiaccessconfig'),(1,'api_admin','apiaccessrequest'),(275,'api_admin','catalog'),(227,'assessment','assessment'),(225,'assessment','assessmentfeedback'),(221,'assessment','assessmentfeedbackoption'),(229,'assessment','assessmentpart'),(223,'assessment','criterion'),(230,'assessment','criterionoption'),(228,'assessment','peerworkflow'),(232,'assessment','peerworkflowitem'),(220,'assessment','rubric'),(226,'assessment','staffworkflow'),(231,'assessment','studenttrainingworkflow'),(224,'assessment','studenttrainingworkflowitem'),(222,'assessment','trainingexample'),(4,'auth','group'),(2,'auth','permission'),(3,'auth','user'),(280,'badges','badgeassertion'),(279,'badges','badgeclass'),(282,'badges','coursecompleteimageconfiguration'),(281,'badges','courseeventbadgesconfiguration'),(251,'block_structure','blockstructureconfiguration'),(250,'block_structure','blockstructuremodel'),(359,'bookmarks','bookmark'),(358,'bookmarks','xblockcache'),(107,'branding','brandingapiconfig'),(108,'branding','brandinginfoconfig'),(104,'bulk_email','bulkemailflag'),(106,'bulk_email','cohorttarget'),(103,'bulk_email','courseauthorization'),(105,'bulk_email','courseemail'),(102,'bulk_email','courseemailtemplate'),(101,'bulk_email','coursemodetarget'),(99,'bulk_email','optout'),(100,'bulk_email','target'),(378,'bulk_grades','scoreoverrider'),(267,'catalog','catalogintegration'),(285,'celery_utils','chorddata'),(284,'celery_utils','failedtask'),(85,'certificates','certificategenerationconfiguration'),(86,'certificates','certificategenerationcoursesetting'),(82,'certificates','certificategenerationhistory'),(88,'certificates','certificatehtmlviewconfiguration'),(80,'certificates','certificateinvalidation'),(90,'certificates','certificatetemplate'),(87,'certificates','certificatetemplateasset'),(89,'certificates','certificatewhitelist'),(81,'certificates','examplecertificate'),(83,'certificates','examplecertificateset'),(84,'certificates','generatedcertificate'),(253,'commerce','commerceconfiguration'),(377,'completion','blockcompletion'),(321,'consent','datasharingconsent'),(322,'consent','datasharingconsenttextoverrides'),(323,'consent','historicaldatasharingconsent'),(24,'contentserver','cdnuseragentsconfig'),(25,'contentserver','courseassetcachettlconfig'),(381,'contentstore','videouploadconfig'),(5,'contenttypes','contenttype'),(362,'content_libraries','contentlibrary'),(361,'content_libraries','contentlibrarypermission'),(290,'content_type_gating','contenttypegatingconfig'),(336,'cornerstone','cornerstoneenterprisecustomerconfiguration'),(333,'cornerstone','cornerstoneglobalconfiguration'),(335,'cornerstone','cornerstonelearnerdatatransmissionaudit'),(334,'cornerstone','historicalcornerstoneenterprisecustomerconfiguration'),(252,'cors_csrf','xdomainproxyconfiguration'),(42,'courseware','coursedynamicupgradedeadlineconfiguration'),(49,'courseware','dynamicupgradedeadlineconfiguration'),(43,'courseware','offlinecomputedgrade'),(45,'courseware','offlinecomputedgradelog'),(41,'courseware','orgdynamicupgradedeadlineconfiguration'),(50,'courseware','studentfieldoverride'),(48,'courseware','studentmodule'),(46,'courseware','studentmodulehistory'),(44,'courseware','xmodulestudentinfofield'),(40,'courseware','xmodulestudentprefsfield'),(47,'courseware','xmoduleuserstatesummaryfield'),(51,'coursewarehistoryextended','studentmodulehistoryextended'),(201,'course_action_state','coursererunstate'),(382,'course_creators','coursecreator'),(289,'course_duration_limits','coursedurationlimitconfig'),(288,'course_goals','coursegoal'),(98,'course_groups','cohortmembership'),(96,'course_groups','coursecohort'),(97,'course_groups','coursecohortssettings'),(94,'course_groups','courseusergroup'),(93,'course_groups','courseusergrouppartitiongroup'),(95,'course_groups','unregisteredlearnercohortassignments'),(182,'course_modes','coursemode'),(183,'course_modes','coursemodeexpirationconfig'),(180,'course_modes','coursemodesarchive'),(181,'course_modes','historicalcoursemode'),(245,'course_overviews','courseoverview'),(246,'course_overviews','courseoverviewimageconfig'),(249,'course_overviews','courseoverviewimageset'),(244,'course_overviews','courseoverviewtab'),(248,'course_overviews','historicalcourseoverview'),(247,'course_overviews','simulatecoursepublishconfig'),(286,'crawlers','crawlersconfig'),(357,'credentials','credentialsapiconfig'),(356,'credentials','notifycredentialsconfig'),(254,'credit','creditconfig'),(258,'credit','creditcourse'),(259,'credit','crediteligibility'),(260,'credit','creditprovider'),(255,'credit','creditrequest'),(256,'credit','creditrequirement'),(257,'credit','creditrequirementstatus'),(192,'dark_lang','darklangconfig'),(329,'degreed','degreedenterprisecustomerconfiguration'),(326,'degreed','degreedglobalconfiguration'),(327,'degreed','degreedlearnerdatatransmissionaudit'),(328,'degreed','historicaldegreedenterprisecustomerconfiguration'),(291,'discounts','discountrestrictionconfig'),(149,'django_comment_common','coursediscussionsettings'),(148,'django_comment_common','discussionsidmapping'),(150,'django_comment_common','forumsconfig'),(151,'django_comment_common','permission'),(152,'django_comment_common','role'),(143,'django_notify','notification'),(146,'django_notify','notificationtype'),(145,'django_notify','settings'),(144,'django_notify','subscription'),(10,'djcelery','crontabschedule'),(13,'djcelery','intervalschedule'),(15,'djcelery','periodictask'),(16,'djcelery','periodictasks'),(12,'djcelery','taskmeta'),(9,'djcelery','tasksetmeta'),(14,'djcelery','taskstate'),(11,'djcelery','workerstate'),(241,'edxval','coursevideo'),(239,'edxval','encodedvideo'),(242,'edxval','profile'),(243,'edxval','thirdpartytranscriptcredentialsstate'),(240,'edxval','transcriptpreference'),(238,'edxval','video'),(237,'edxval','videoimage'),(236,'edxval','videotranscript'),(113,'edx_oauth2_provider','trustedclient'),(368,'edx_proctoring','proctoredexam'),(370,'edx_proctoring','proctoredexamreviewpolicy'),(371,'edx_proctoring','proctoredexamreviewpolicyhistory'),(369,'edx_proctoring','proctoredexamsoftwaresecurecomment'),(375,'edx_proctoring','proctoredexamsoftwaresecurereview'),(374,'edx_proctoring','proctoredexamsoftwaresecurereviewhistory'),(376,'edx_proctoring','proctoredexamstudentallowance'),(367,'edx_proctoring','proctoredexamstudentallowancehistory'),(372,'edx_proctoring','proctoredexamstudentattempt'),(373,'edx_proctoring','proctoredexamstudentattempthistory'),(364,'edx_when','contentdate'),(366,'edx_when','datepolicy'),(365,'edx_when','userdate'),(379,'edx_zoom','launchlog'),(380,'edx_zoom','lticredential'),(283,'email_marketing','emailmarketingconfiguration'),(197,'embargo','country'),(195,'embargo','countryaccessrule'),(196,'embargo','courseaccessrulehistory'),(198,'embargo','embargoedcourse'),(194,'embargo','embargoedstate'),(200,'embargo','ipfilter'),(199,'embargo','restrictedcourse'),(307,'enterprise','enrollmentnotificationemailtemplate'),(300,'enterprise','enterprisecatalogquery'),(303,'enterprise','enterprisecourseenrollment'),(305,'enterprise','enterprisecustomer'),(317,'enterprise','enterprisecustomerbrandingconfiguration'),(302,'enterprise','enterprisecustomercatalog'),(308,'enterprise','enterprisecustomerentitlement'),(319,'enterprise','enterprisecustomeridentityprovider'),(301,'enterprise','enterprisecustomerreportingconfiguration'),(315,'enterprise','enterprisecustomertype'),(297,'enterprise','enterprisecustomeruser'),(312,'enterprise','enterprisefeaturerole'),(311,'enterprise','enterprisefeatureuserroleassignment'),(320,'enterprise','historicalenrollmentnotificationemailtemplate'),(309,'enterprise','historicalenterprisecourseenrollment'),(299,'enterprise','historicalenterprisecustomer'),(304,'enterprise','historicalenterprisecustomercatalog'),(310,'enterprise','historicalenterprisecustomerentitlement'),(306,'enterprise','historicalpendingenrollment'),(318,'enterprise','historicalpendingenterprisecustomeruser'),(298,'enterprise','pendingenrollment'),(314,'enterprise','pendingenterprisecustomeruser'),(313,'enterprise','systemwideenterpriserole'),(316,'enterprise','systemwideenterpriseuserroleassignment'),(187,'entitlements','courseentitlement'),(186,'entitlements','courseentitlementpolicy'),(184,'entitlements','courseentitlementsupportdetail'),(185,'entitlements','historicalcourseentitlement'),(292,'experiments','experimentdata'),(293,'experiments','experimentkeyvalue'),(349,'grades','computegradessetting'),(342,'grades','coursepersistentgradesflag'),(347,'grades','historicalpersistentsubsectiongradeoverride'),(350,'grades','persistentcoursegrade'),(345,'grades','persistentgradesenabledflag'),(348,'grades','persistentsubsectiongrade'),(346,'grades','persistentsubsectiongradeoverride'),(344,'grades','persistentsubsectiongradeoverridehistory'),(343,'grades','visibleblocks'),(91,'instructor_task','gradereportsetting'),(92,'instructor_task','instructortask'),(324,'integrated_channel','contentmetadataitemtransmission'),(325,'integrated_channel','learnerdatatransmissionaudit'),(212,'lms_xblock','xblockasidesconfig'),(271,'milestones','coursecontentmilestone'),(274,'milestones','coursemilestone'),(273,'milestones','milestone'),(272,'milestones','milestonerelationshiptype'),(270,'milestones','usermilestone'),(204,'mobile_api','appversionconfig'),(203,'mobile_api','ignoremobileavailableflagconfig'),(202,'mobile_api','mobileapiconfig'),(153,'notes','note'),(112,'oauth2','accesstoken'),(109,'oauth2','client'),(110,'oauth2','grant'),(111,'oauth2','refreshtoken'),(117,'oauth2_provider','accesstoken'),(115,'oauth2_provider','application'),(114,'oauth2_provider','grant'),(116,'oauth2_provider','refreshtoken'),(118,'oauth_dispatch','applicationaccess'),(119,'oauth_dispatch','applicationorganization'),(120,'oauth_dispatch','restrictedapplication'),(129,'oauth_provider','consumer'),(128,'oauth_provider','nonce'),(131,'oauth_provider','resource'),(130,'oauth_provider','scope'),(127,'oauth_provider','token'),(294,'organizations','historicalorganization'),(295,'organizations','organization'),(296,'organizations','organizationcourse'),(213,'problem_builder','answer'),(214,'problem_builder','share'),(266,'programs','programsapiconfig'),(355,'program_enrollments','historicalprogramcourseenrollment'),(354,'program_enrollments','historicalprogramenrollment'),(352,'program_enrollments','programcourseenrollment'),(353,'program_enrollments','programenrollment'),(6,'redirects','redirect'),(193,'rss_proxy','whitelistedrssurl'),(332,'sap_success_factors','sapsuccessfactorsenterprisecustomerconfiguration'),(330,'sap_success_factors','sapsuccessfactorsglobalconfiguration'),(331,'sap_success_factors','sapsuccessfactorslearnerdatatransmissionaudit'),(341,'schedules','schedule'),(339,'schedules','scheduleconfig'),(340,'schedules','scheduleexperience'),(268,'self_paced','selfpacedconfiguration'),(7,'sessions','session'),(171,'shoppingcart','certificateitem'),(178,'shoppingcart','coupon'),(168,'shoppingcart','couponredemption'),(173,'shoppingcart','courseregcodeitem'),(169,'shoppingcart','courseregcodeitemannotation'),(177,'shoppingcart','courseregistrationcode'),(179,'shoppingcart','courseregistrationcodeinvoiceitem'),(163,'shoppingcart','donation'),(165,'shoppingcart','donationconfiguration'),(164,'shoppingcart','invoice'),(167,'shoppingcart','invoicehistory'),(176,'shoppingcart','invoiceitem'),(166,'shoppingcart','invoicetransaction'),(170,'shoppingcart','order'),(162,'shoppingcart','orderitem'),(174,'shoppingcart','paidcourseregistration'),(175,'shoppingcart','paidcourseregistrationannotation'),(172,'shoppingcart','registrationcoderedemption'),(8,'sites','site'),(26,'site_configuration','siteconfiguration'),(27,'site_configuration','siteconfigurationhistory'),(205,'social_django','association'),(209,'social_django','code'),(208,'social_django','nonce'),(207,'social_django','partial'),(206,'social_django','usersocialauth'),(154,'splash','splashconfig'),(22,'static_replace','assetbaseurlconfig'),(23,'static_replace','assetexcludedextensionsconfig'),(21,'status','coursemessage'),(20,'status','globalstatusmessage'),(68,'student','accountrecovery'),(52,'student','anonymoususerid'),(76,'student','courseaccessrole'),(54,'student','courseenrollment'),(65,'student','courseenrollmentallowed'),(66,'student','courseenrollmentattribute'),(63,'student','dashboardconfiguration'),(69,'student','enrollmentrefundconfiguration'),(57,'student','entranceexamconfiguration'),(61,'student','historicalcourseenrollment'),(72,'student','languageproficiency'),(74,'student','linkedinaddtoprofileconfiguration'),(67,'student','loginfailures'),(60,'student','logoutviewconfiguration'),(53,'student','manualenrollmentaudit'),(73,'student','pendingemailchange'),(71,'student','pendingnamechange'),(59,'student','pendingsecondaryemailchange'),(58,'student','registration'),(75,'student','registrationcookieconfiguration'),(70,'student','sociallink'),(64,'student','userattribute'),(56,'student','userprofile'),(77,'student','usersignupsource'),(55,'student','userstanding'),(62,'student','usertestgroup'),(219,'submissions','score'),(218,'submissions','scoreannotation'),(217,'submissions','scoresummary'),(216,'submissions','studentitem'),(215,'submissions','submission'),(363,'super_csv','csvoperation'),(211,'survey','surveyanswer'),(210,'survey','surveyform'),(132,'system_wide_roles','systemwiderole'),(133,'system_wide_roles','systemwideroleassignment'),(385,'tagging','tagavailablevalues'),(386,'tagging','tagcategories'),(261,'teams','courseteam'),(262,'teams','courseteammembership'),(360,'theming','sitetheme'),(123,'third_party_auth','ltiproviderconfig'),(121,'third_party_auth','oauth2providerconfig'),(126,'third_party_auth','providerapipermissions'),(125,'third_party_auth','samlconfiguration'),(124,'third_party_auth','samlproviderconfig'),(122,'third_party_auth','samlproviderdata'),(269,'thumbnail','kvstore'),(78,'track','trackinglog'),(159,'user_api','retirementstate'),(155,'user_api','usercoursetag'),(160,'user_api','userorgtag'),(156,'user_api','userpreference'),(157,'user_api','userretirementpartnerreportingstatus'),(161,'user_api','userretirementrequest'),(158,'user_api','userretirementstatus'),(388,'user_tasks','usertaskartifact'),(387,'user_tasks','usertaskstatus'),(79,'util','ratelimitconfiguration'),(278,'verified_track_content','migrateverifiedtrackcohortssetting'),(277,'verified_track_content','verifiedtrackcohortedcourse'),(190,'verify_student','manualverification'),(191,'verify_student','softwaresecurephotoverification'),(188,'verify_student','ssoverification'),(189,'verify_student','verificationdeadline'),(31,'video_config','coursehlsplaybackenabledflag'),(33,'video_config','coursevideotranscriptenabledflag'),(30,'video_config','courseyoutubeblockedflag'),(29,'video_config','hlsplaybackenabledflag'),(36,'video_config','migrationenqueuedcourse'),(28,'video_config','transcriptmigrationsetting'),(32,'video_config','updatedcoursevideos'),(34,'video_config','videothumbnailsetting'),(35,'video_config','videotranscriptenabledflag'),(37,'video_pipeline','coursevideouploadsenabledbydefault'),(38,'video_pipeline','videopipelineintegration'),(39,'video_pipeline','videouploadsenabledbydefault'),(18,'waffle','flag'),(17,'waffle','sample'),(19,'waffle','switch'),(287,'waffle_utils','waffleflagcourseoverridemodel'),(134,'wiki','article'),(139,'wiki','articleforobject'),(138,'wiki','articleplugin'),(137,'wiki','articlerevision'),(142,'wiki','reusableplugin'),(141,'wiki','revisionplugin'),(136,'wiki','revisionpluginrevision'),(140,'wiki','simpleplugin'),(135,'wiki','urlpath'),(233,'workflow','assessmentworkflow'),(235,'workflow','assessmentworkflowcancellation'),(234,'workflow','assessmentworkflowstep'),(338,'xapi','xapilearnerdatatransmissionaudit'),(337,'xapi','xapilrsconfiguration'),(384,'xblock_config','courseeditltifieldsenabledflag'),(383,'xblock_config','studioconfig'),(265,'xblock_django','xblockconfiguration'),(264,'xblock_django','xblockstudioconfiguration'),(263,'xblock_django','xblockstudioconfigurationflag');
+INSERT INTO `django_content_type` VALUES (133,'admin','logentry'),(232,'api_admin','apiaccessconfig'),(1,'api_admin','apiaccessrequest'),(233,'api_admin','catalog'),(231,'api_admin','historicalapiaccessrequest'),(261,'assessment','aiclassifier'),(260,'assessment','aiclassifierset'),(263,'assessment','aigradingworkflow'),(262,'assessment','aitrainingworkflow'),(251,'assessment','assessment'),(254,'assessment','assessmentfeedback'),(253,'assessment','assessmentfeedbackoption'),(252,'assessment','assessmentpart'),(249,'assessment','criterion'),(250,'assessment','criterionoption'),(255,'assessment','peerworkflow'),(256,'assessment','peerworkflowitem'),(248,'assessment','rubric'),(264,'assessment','staffworkflow'),(258,'assessment','studenttrainingworkflow'),(259,'assessment','studenttrainingworkflowitem'),(257,'assessment','trainingexample'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(236,'badges','badgeassertion'),(235,'badges','badgeclass'),(237,'badges','coursecompleteimageconfiguration'),(238,'badges','courseeventbadgesconfiguration'),(322,'block_structure','blockstructureconfiguration'),(323,'block_structure','blockstructuremodel'),(218,'bookmarks','bookmark'),(219,'bookmarks','xblockcache'),(85,'branding','brandingapiconfig'),(84,'branding','brandinginfoconfig'),(83,'bulk_email','bulkemailflag'),(78,'bulk_email','cohorttarget'),(82,'bulk_email','courseauthorization'),(79,'bulk_email','courseemail'),(81,'bulk_email','courseemailtemplate'),(305,'bulk_email','coursemodetarget'),(80,'bulk_email','optout'),(77,'bulk_email','target'),(221,'catalog','catalogintegration'),(342,'celery_utils','chorddata'),(311,'celery_utils','failedtask'),(67,'certificates','certificategenerationconfiguration'),(66,'certificates','certificategenerationcoursesetting'),(62,'certificates','certificategenerationhistory'),(68,'certificates','certificatehtmlviewconfiguration'),(63,'certificates','certificateinvalidation'),(69,'certificates','certificatetemplate'),(70,'certificates','certificatetemplateasset'),(60,'certificates','certificatewhitelist'),(65,'certificates','examplecertificate'),(64,'certificates','examplecertificateset'),(61,'certificates','generatedcertificate'),(203,'commerce','commerceconfiguration'),(360,'completion','blockcompletion'),(366,'consent','datasharingconsent'),(365,'consent','historicaldatasharingconsent'),(22,'contentserver','cdnuseragentsconfig'),(21,'contentserver','courseassetcachettlconfig'),(379,'contentstore','coursenewassetspageflag'),(378,'contentstore','newassetspageflag'),(295,'contentstore','pushnotificationconfig'),(294,'contentstore','videouploadconfig'),(5,'contenttypes','contenttype'),(201,'corsheaders','corsmodel'),(202,'cors_csrf','xdomainproxyconfiguration'),(230,'coursetalk','coursetalkwidgetconfiguration'),(349,'courseware','coursedynamicupgradedeadlineconfiguration'),(348,'courseware','dynamicupgradedeadlineconfiguration'),(31,'courseware','offlinecomputedgrade'),(32,'courseware','offlinecomputedgradelog'),(350,'courseware','orgdynamicupgradedeadlineconfiguration'),(33,'courseware','studentfieldoverride'),(26,'courseware','studentmodule'),(27,'courseware','studentmodulehistory'),(30,'courseware','xmodulestudentinfofield'),(29,'courseware','xmodulestudentprefsfield'),(28,'courseware','xmoduleuserstatesummaryfield'),(293,'coursewarehistoryextended','studentmodulehistoryextended'),(186,'course_action_state','coursererunstate'),(296,'course_creators','coursecreator'),(359,'course_goals','coursegoal'),(73,'course_groups','cohortmembership'),(76,'course_groups','coursecohort'),(75,'course_groups','coursecohortssettings'),(72,'course_groups','courseusergroup'),(74,'course_groups','courseusergrouppartitiongroup'),(336,'course_groups','unregisteredlearnercohortassignments'),(160,'course_modes','coursemode'),(162,'course_modes','coursemodeexpirationconfig'),(161,'course_modes','coursemodesarchive'),(196,'course_overviews','courseoverview'),(199,'course_overviews','courseoverviewimageconfig'),(198,'course_overviews','courseoverviewimageset'),(197,'course_overviews','courseoverviewtab'),(200,'course_structures','coursestructure'),(312,'crawlers','crawlersconfig'),(224,'credentials','credentialsapiconfig'),(212,'credit','creditconfig'),(205,'credit','creditcourse'),(209,'credit','crediteligibility'),(204,'credit','creditprovider'),(211,'credit','creditrequest'),(206,'credit','creditrequirement'),(208,'credit','creditrequirementstatus'),(210,'credit','historicalcreditrequest'),(207,'credit','historicalcreditrequirementstatus'),(171,'dark_lang','darklangconfig'),(309,'default','association'),(310,'default','code'),(308,'default','nonce'),(307,'default','usersocialauth'),(371,'degreed','degreedenterprisecustomerconfiguration'),(369,'degreed','degreedglobalconfiguration'),(372,'degreed','degreedlearnerdatatransmissionaudit'),(370,'degreed','historicaldegreedenterprisecustomerconfiguration'),(334,'django_comment_common','coursediscussionsettings'),(136,'django_comment_common','forumsconfig'),(135,'django_comment_common','permission'),(134,'django_comment_common','role'),(132,'django_notify','notification'),(129,'django_notify','notificationtype'),(130,'django_notify','settings'),(131,'django_notify','subscription'),(93,'django_openid_auth','association'),(92,'django_openid_auth','nonce'),(94,'django_openid_auth','useropenid'),(12,'djcelery','crontabschedule'),(11,'djcelery','intervalschedule'),(14,'djcelery','periodictask'),(13,'djcelery','periodictasks'),(9,'djcelery','taskmeta'),(10,'djcelery','tasksetmeta'),(16,'djcelery','taskstate'),(15,'djcelery','workerstate'),(270,'edxval','coursevideo'),(271,'edxval','encodedvideo'),(268,'edxval','profile'),(272,'edxval','subtitle'),(357,'edxval','thirdpartytranscriptcredentialsstate'),(356,'edxval','transcriptpreference'),(269,'edxval','video'),(354,'edxval','videoimage'),(355,'edxval','videotranscript'),(99,'edx_oauth2_provider','trustedclient'),(273,'edx_proctoring','proctoredexam'),(274,'edx_proctoring','proctoredexamreviewpolicy'),(275,'edx_proctoring','proctoredexamreviewpolicyhistory'),(282,'edx_proctoring','proctoredexamsoftwaresecurecomment'),(280,'edx_proctoring','proctoredexamsoftwaresecurereview'),(281,'edx_proctoring','proctoredexamsoftwaresecurereviewhistory'),(278,'edx_proctoring','proctoredexamstudentallowance'),(279,'edx_proctoring','proctoredexamstudentallowancehistory'),(276,'edx_proctoring','proctoredexamstudentattempt'),(277,'edx_proctoring','proctoredexamstudentattempthistory'),(239,'email_marketing','emailmarketingconfiguration'),(182,'embargo','country'),(183,'embargo','countryaccessrule'),(184,'embargo','courseaccessrulehistory'),(179,'embargo','embargoedcourse'),(180,'embargo','embargoedstate'),(185,'embargo','ipfilter'),(181,'embargo','restrictedcourse'),(319,'enterprise','enrollmentnotificationemailtemplate'),(317,'enterprise','enterprisecourseenrollment'),(286,'enterprise','enterprisecustomer'),(289,'enterprise','enterprisecustomerbrandingconfiguration'),(363,'enterprise','enterprisecustomercatalog'),(315,'enterprise','enterprisecustomerentitlement'),(290,'enterprise','enterprisecustomeridentityprovider'),(364,'enterprise','enterprisecustomerreportingconfiguration'),(287,'enterprise','enterprisecustomeruser'),(318,'enterprise','historicalenrollmentnotificationemailtemplate'),(316,'enterprise','historicalenterprisecourseenrollment'),(285,'enterprise','historicalenterprisecustomer'),(362,'enterprise','historicalenterprisecustomercatalog'),(314,'enterprise','historicalenterprisecustomerentitlement'),(291,'enterprise','historicaluserdatasharingconsentaudit'),(313,'enterprise','pendingenrollment'),(288,'enterprise','pendingenterprisecustomeruser'),(292,'enterprise','userdatasharingconsentaudit'),(353,'entitlements','courseentitlement'),(352,'entitlements','courseentitlementpolicy'),(335,'experiments','experimentdata'),(361,'experiments','experimentkeyvalue'),(91,'external_auth','externalauthmap'),(321,'grades','computegradessetting'),(90,'grades','coursepersistentgradesflag'),(88,'grades','persistentcoursegrade'),(89,'grades','persistentgradesenabledflag'),(87,'grades','persistentsubsectiongrade'),(374,'grades','persistentsubsectiongradeoverride'),(86,'grades','visibleblocks'),(320,'instructor_task','gradereportsetting'),(71,'instructor_task','instructortask'),(368,'integrated_channel','catalogtransmissionaudit'),(327,'integrated_channel','enterpriseintegratedchannel'),(367,'integrated_channel','learnerdatatransmissionaudit'),(195,'lms_xblock','xblockasidesconfig'),(240,'mentoring','answer'),(174,'microsite_configuration','historicalmicrositeorganizationmapping'),(176,'microsite_configuration','historicalmicrositetemplate'),(172,'microsite_configuration','microsite'),(173,'microsite_configuration','micrositehistory'),(175,'microsite_configuration','micrositeorganizationmapping'),(177,'microsite_configuration','micrositetemplate'),(228,'milestones','coursecontentmilestone'),(227,'milestones','coursemilestone'),(225,'milestones','milestone'),(226,'milestones','milestonerelationshiptype'),(229,'milestones','usermilestone'),(188,'mobile_api','appversionconfig'),(306,'mobile_api','ignoremobileavailableflagconfig'),(187,'mobile_api','mobileapiconfig'),(137,'notes','note'),(97,'oauth2','accesstoken'),(95,'oauth2','client'),(96,'oauth2','grant'),(98,'oauth2','refreshtoken'),(102,'oauth2_provider','accesstoken'),(100,'oauth2_provider','application'),(101,'oauth2_provider','grant'),(103,'oauth2_provider','refreshtoken'),(104,'oauth_dispatch','restrictedapplication'),(113,'oauth_provider','consumer'),(111,'oauth_provider','nonce'),(115,'oauth_provider','resource'),(112,'oauth_provider','scope'),(114,'oauth_provider','token'),(283,'organizations','organization'),(284,'organizations','organizationcourse'),(241,'problem_builder','answer'),(242,'problem_builder','share'),(220,'programs','programsapiconfig'),(6,'redirects','redirect'),(178,'rss_proxy','whitelistedrssurl'),(332,'sap_success_factors','catalogtransmissionaudit'),(329,'sap_success_factors','historicalsapsuccessfactorsenterprisecustomerconfiguration'),(331,'sap_success_factors','learnerdatatransmissionaudit'),(330,'sap_success_factors','sapsuccessfactorsenterprisecustomerconfiguration'),(328,'sap_success_factors','sapsuccessfactorsglobalconfiguration'),(373,'sap_success_factors','sapsuccessfactorslearnerdatatransmissionaudit'),(375,'schedules','schedule'),(376,'schedules','scheduleconfig'),(377,'schedules','scheduleexperience'),(222,'self_paced','selfpacedconfiguration'),(7,'sessions','session'),(157,'shoppingcart','certificateitem'),(151,'shoppingcart','coupon'),(152,'shoppingcart','couponredemption'),(154,'shoppingcart','courseregcodeitem'),(155,'shoppingcart','courseregcodeitemannotation'),(149,'shoppingcart','courseregistrationcode'),(147,'shoppingcart','courseregistrationcodeinvoiceitem'),(159,'shoppingcart','donation'),(158,'shoppingcart','donationconfiguration'),(144,'shoppingcart','invoice'),(148,'shoppingcart','invoicehistory'),(146,'shoppingcart','invoiceitem'),(145,'shoppingcart','invoicetransaction'),(142,'shoppingcart','order'),(143,'shoppingcart','orderitem'),(153,'shoppingcart','paidcourseregistration'),(156,'shoppingcart','paidcourseregistrationannotation'),(150,'shoppingcart','registrationcoderedemption'),(8,'sites','site'),(24,'site_configuration','siteconfiguration'),(25,'site_configuration','siteconfigurationhistory'),(191,'social_auth','association'),(192,'social_auth','code'),(190,'social_auth','nonce'),(189,'social_auth','usersocialauth'),(339,'social_django','association'),(340,'social_django','code'),(338,'social_django','nonce'),(341,'social_django','partial'),(337,'social_django','usersocialauth'),(138,'splash','splashconfig'),(19,'static_replace','assetbaseurlconfig'),(20,'static_replace','assetexcludedextensionsconfig'),(18,'status','coursemessage'),(17,'status','globalstatusmessage'),(34,'student','anonymoususerid'),(48,'student','courseaccessrole'),(45,'student','courseenrollment'),(47,'student','courseenrollmentallowed'),(53,'student','courseenrollmentattribute'),(49,'student','dashboardconfiguration'),(54,'student','enrollmentrefundconfiguration'),(51,'student','entranceexamconfiguration'),(44,'student','historicalcourseenrollment'),(52,'student','languageproficiency'),(50,'student','linkedinaddtoprofileconfiguration'),(43,'student','loginfailures'),(57,'student','logoutviewconfiguration'),(46,'student','manualenrollmentaudit'),(42,'student','passwordhistory'),(41,'student','pendingemailchange'),(40,'student','pendingnamechange'),(39,'student','registration'),(55,'student','registrationcookieconfiguration'),(351,'student','sociallink'),(56,'student','userattribute'),(36,'student','userprofile'),(37,'student','usersignupsource'),(35,'student','userstanding'),(38,'student','usertestgroup'),(245,'submissions','score'),(247,'submissions','scoreannotation'),(246,'submissions','scoresummary'),(243,'submissions','studentitem'),(244,'submissions','submission'),(194,'survey','surveyanswer'),(193,'survey','surveyform'),(299,'tagging','tagavailablevalues'),(298,'tagging','tagcategories'),(213,'teams','courseteam'),(214,'teams','courseteammembership'),(23,'theming','sitetheme'),(109,'third_party_auth','ltiproviderconfig'),(105,'third_party_auth','oauth2providerconfig'),(110,'third_party_auth','providerapipermissions'),(107,'third_party_auth','samlconfiguration'),(106,'third_party_auth','samlproviderconfig'),(108,'third_party_auth','samlproviderdata'),(223,'thumbnail','kvstore'),(58,'track','trackinglog'),(140,'user_api','usercoursetag'),(141,'user_api','userorgtag'),(139,'user_api','userpreference'),(301,'user_tasks','usertaskartifact'),(300,'user_tasks','usertaskstatus'),(59,'util','ratelimitconfiguration'),(358,'verified_track_content','migrateverifiedtrackcohortssetting'),(234,'verified_track_content','verifiedtrackcohortedcourse'),(164,'verify_student','historicalverificationdeadline'),(169,'verify_student','icrvstatusemailsconfiguration'),(168,'verify_student','incoursereverificationconfiguration'),(170,'verify_student','skippedreverification'),(163,'verify_student','softwaresecurephotoverification'),(166,'verify_student','verificationcheckpoint'),(165,'verify_student','verificationdeadline'),(167,'verify_student','verificationstatus'),(325,'video_config','coursehlsplaybackenabledflag'),(344,'video_config','coursevideotranscriptenabledflag'),(324,'video_config','hlsplaybackenabledflag'),(343,'video_config','videotranscriptenabledflag'),(347,'video_pipeline','coursevideouploadsenabledbydefault'),(345,'video_pipeline','videopipelineintegration'),(346,'video_pipeline','videouploadsenabledbydefault'),(302,'waffle','flag'),(304,'waffle','sample'),(303,'waffle','switch'),(326,'waffle_utils','waffleflagcourseoverridemodel'),(116,'wiki','article'),(117,'wiki','articleforobject'),(120,'wiki','articleplugin'),(118,'wiki','articlerevision'),(127,'wiki','attachment'),(128,'wiki','attachmentrevision'),(125,'wiki','image'),(126,'wiki','imagerevision'),(121,'wiki','reusableplugin'),(123,'wiki','revisionplugin'),(124,'wiki','revisionpluginrevision'),(122,'wiki','simpleplugin'),(119,'wiki','urlpath'),(265,'workflow','assessmentworkflow'),(267,'workflow','assessmentworkflowcancellation'),(266,'workflow','assessmentworkflowstep'),(333,'xblock_config','courseeditltifieldsenabledflag'),(297,'xblock_config','studioconfig'),(215,'xblock_django','xblockconfiguration'),(217,'xblock_django','xblockstudioconfiguration'),(216,'xblock_django','xblockstudioconfigurationflag');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4223,7 +3928,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=580 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=395 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4232,8 +3937,85 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2019-09-25 19:49:26.006036'),(2,'auth','0001_initial','2019-09-25 19:49:28.032824'),(3,'admin','0001_initial','2019-09-25 19:49:28.402864'),(4,'admin','0002_logentry_remove_auto_add','2019-09-25 19:49:28.492720'),(5,'announcements','0001_initial','2019-09-25 19:49:28.586091'),(6,'sites','0001_initial','2019-09-25 19:49:28.673514'),(7,'contenttypes','0002_remove_content_type_name','2019-09-25 19:49:29.029188'),(8,'api_admin','0001_initial','2019-09-25 19:49:29.694416'),(9,'api_admin','0002_auto_20160325_1604','2019-09-25 19:49:29.793396'),(10,'api_admin','0003_auto_20160404_1618','2019-09-25 19:49:31.045328'),(11,'api_admin','0004_auto_20160412_1506','2019-09-25 19:49:32.028643'),(12,'api_admin','0005_auto_20160414_1232','2019-09-25 19:49:32.225843'),(13,'api_admin','0006_catalog','2019-09-25 19:49:32.256089'),(14,'api_admin','0007_delete_historical_api_records','2019-09-25 19:49:32.847211'),(15,'assessment','0001_initial','2019-09-25 19:49:38.044814'),(16,'assessment','0002_staffworkflow','2019-09-25 19:49:38.523485'),(17,'assessment','0003_expand_course_id','2019-09-25 19:49:39.114953'),(18,'auth','0002_alter_permission_name_max_length','2019-09-25 19:49:39.280381'),(19,'auth','0003_alter_user_email_max_length','2019-09-25 19:49:39.461963'),(20,'auth','0004_alter_user_username_opts','2019-09-25 19:49:39.502214'),(21,'auth','0005_alter_user_last_login_null','2019-09-25 19:49:39.645931'),(22,'auth','0006_require_contenttypes_0002','2019-09-25 19:49:39.655655'),(23,'auth','0007_alter_validators_add_error_messages','2019-09-25 19:49:39.709459'),(24,'auth','0008_alter_user_username_max_length','2019-09-25 19:49:39.893070'),(25,'instructor_task','0001_initial','2019-09-25 19:49:40.342011'),(26,'certificates','0001_initial','2019-09-25 19:49:42.664889'),(27,'certificates','0002_data__certificatehtmlviewconfiguration_data','2019-09-25 19:49:42.786500'),(28,'certificates','0003_data__default_modes','2019-09-25 19:49:42.911921'),(29,'certificates','0004_certificategenerationhistory','2019-09-25 19:49:43.263551'),(30,'certificates','0005_auto_20151208_0801','2019-09-25 19:49:43.637568'),(31,'certificates','0006_certificatetemplateasset_asset_slug','2019-09-25 19:49:43.757770'),(32,'certificates','0007_certificateinvalidation','2019-09-25 19:49:44.134886'),(33,'badges','0001_initial','2019-09-25 19:49:45.059769'),(34,'badges','0002_data__migrate_assertions','2019-09-25 19:49:45.189477'),(35,'badges','0003_schema__add_event_configuration','2019-09-25 19:49:45.460867'),(36,'block_structure','0001_config','2019-09-25 19:49:45.711575'),(37,'block_structure','0002_blockstructuremodel','2019-09-25 19:49:45.808461'),(38,'block_structure','0003_blockstructuremodel_storage','2019-09-25 19:49:45.844050'),(39,'block_structure','0004_blockstructuremodel_usagekeywithrun','2019-09-25 19:49:45.882658'),(40,'bookmarks','0001_initial','2019-09-25 19:49:46.808036'),(41,'branding','0001_initial','2019-09-25 19:49:47.390131'),(42,'course_modes','0001_initial','2019-09-25 19:49:47.696070'),(43,'course_modes','0002_coursemode_expiration_datetime_is_explicit','2019-09-25 19:49:47.833782'),(44,'course_modes','0003_auto_20151113_1443','2019-09-25 19:49:47.884513'),(45,'course_modes','0004_auto_20151113_1457','2019-09-25 19:49:48.165998'),(46,'course_modes','0005_auto_20151217_0958','2019-09-25 19:49:48.205775'),(47,'course_modes','0006_auto_20160208_1407','2019-09-25 19:49:48.278739'),(48,'course_modes','0007_coursemode_bulk_sku','2019-09-25 19:49:48.414560'),(49,'course_groups','0001_initial','2019-09-25 19:49:50.574669'),(50,'bulk_email','0001_initial','2019-09-25 19:49:51.522710'),(51,'bulk_email','0002_data__load_course_email_template','2019-09-25 19:49:51.734890'),(52,'bulk_email','0003_config_model_feature_flag','2019-09-25 19:49:52.275401'),(53,'bulk_email','0004_add_email_targets','2019-09-25 19:49:53.276420'),(54,'bulk_email','0005_move_target_data','2019-09-25 19:49:53.450244'),(55,'bulk_email','0006_course_mode_targets','2019-09-25 19:49:53.874862'),(56,'courseware','0001_initial','2019-09-25 19:49:57.480579'),(57,'bulk_grades','0001_initial','2019-09-25 19:49:57.951013'),(58,'bulk_grades','0002_auto_20190703_1526','2019-09-25 19:49:58.108925'),(59,'catalog','0001_initial','2019-09-25 19:49:58.705577'),(60,'catalog','0002_catalogintegration_username','2019-09-25 19:49:58.910756'),(61,'catalog','0003_catalogintegration_page_size','2019-09-25 19:49:59.114352'),(62,'catalog','0004_auto_20170616_0618','2019-09-25 19:49:59.227140'),(63,'catalog','0005_catalogintegration_long_term_cache_ttl','2019-09-25 19:49:59.442545'),(64,'djcelery','0001_initial','2019-09-25 19:50:01.040183'),(65,'celery_utils','0001_initial','2019-09-25 19:50:01.283980'),(66,'celery_utils','0002_chordable_django_backend','2019-09-25 19:50:01.888599'),(67,'certificates','0008_schema__remove_badges','2019-09-25 19:50:02.307630'),(68,'certificates','0009_certificategenerationcoursesetting_language_self_generation','2019-09-25 19:50:02.768123'),(69,'certificates','0010_certificatetemplate_language','2019-09-25 19:50:02.901122'),(70,'certificates','0011_certificatetemplate_alter_unique','2019-09-25 19:50:03.185379'),(71,'certificates','0012_certificategenerationcoursesetting_include_hours_of_effort','2019-09-25 19:50:03.315628'),(72,'certificates','0013_remove_certificategenerationcoursesetting_enabled','2019-09-25 19:50:03.445127'),(73,'certificates','0014_change_eligible_certs_manager','2019-09-25 19:50:03.549042'),(74,'certificates','0015_add_masters_choice','2019-09-25 19:50:03.681985'),(75,'commerce','0001_data__add_ecommerce_service_user','2019-09-25 19:50:03.907832'),(76,'commerce','0002_commerceconfiguration','2019-09-25 19:50:04.208749'),(77,'commerce','0003_auto_20160329_0709','2019-09-25 19:50:04.320560'),(78,'commerce','0004_auto_20160531_0950','2019-09-25 19:50:05.015174'),(79,'commerce','0005_commerceconfiguration_enable_automatic_refund_approval','2019-09-25 19:50:05.215142'),(80,'commerce','0006_auto_20170424_1734','2019-09-25 19:50:05.342936'),(81,'commerce','0007_auto_20180313_0609','2019-09-25 19:50:05.728605'),(82,'completion','0001_initial','2019-09-25 19:50:06.344773'),(83,'completion','0002_auto_20180125_1510','2019-09-25 19:50:06.452146'),(84,'enterprise','0001_initial','2019-09-25 19:50:07.156064'),(85,'enterprise','0002_enterprisecustomerbrandingconfiguration','2019-09-25 19:50:07.390118'),(86,'enterprise','0003_auto_20161104_0937','2019-09-25 19:50:08.288695'),(87,'enterprise','0004_auto_20161114_0434','2019-09-25 19:50:08.730212'),(88,'enterprise','0005_pendingenterprisecustomeruser','2019-09-25 19:50:09.044235'),(89,'enterprise','0006_auto_20161121_0241','2019-09-25 19:50:09.134822'),(90,'enterprise','0007_auto_20161109_1511','2019-09-25 19:50:09.789866'),(91,'enterprise','0008_auto_20161124_2355','2019-09-25 19:50:10.592273'),(92,'enterprise','0009_auto_20161130_1651','2019-09-25 19:50:11.968795'),(93,'enterprise','0010_auto_20161222_1212','2019-09-25 19:50:12.269599'),(94,'enterprise','0011_enterprisecustomerentitlement_historicalenterprisecustomerentitlement','2019-09-25 19:50:12.977534'),(95,'enterprise','0012_auto_20170125_1033','2019-09-25 19:50:13.143828'),(96,'enterprise','0013_auto_20170125_1157','2019-09-25 19:50:13.945778'),(97,'enterprise','0014_enrollmentnotificationemailtemplate_historicalenrollmentnotificationemailtemplate','2019-09-25 19:50:14.679250'),(98,'enterprise','0015_auto_20170130_0003','2019-09-25 19:50:15.554015'),(99,'enterprise','0016_auto_20170405_0647','2019-09-25 19:50:16.715934'),(100,'enterprise','0017_auto_20170508_1341','2019-09-25 19:50:17.053868'),(101,'enterprise','0018_auto_20170511_1357','2019-09-25 19:50:17.440187'),(102,'enterprise','0019_auto_20170606_1853','2019-09-25 19:50:17.856297'),(103,'enterprise','0020_auto_20170624_2316','2019-09-25 19:50:19.339228'),(104,'enterprise','0021_auto_20170711_0712','2019-09-25 19:50:20.452485'),(105,'enterprise','0022_auto_20170720_1543','2019-09-25 19:50:20.696982'),(106,'enterprise','0023_audit_data_reporting_flag','2019-09-25 19:50:21.126696'),(107,'enterprise','0024_enterprisecustomercatalog_historicalenterprisecustomercatalog','2019-09-25 19:50:22.016714'),(108,'enterprise','0025_auto_20170828_1412','2019-09-25 19:50:23.481021'),(109,'enterprise','0026_make_require_account_level_consent_nullable','2019-09-25 19:50:23.854099'),(110,'enterprise','0027_remove_account_level_consent','2019-09-25 19:50:25.454355'),(111,'enterprise','0028_link_enterprise_to_enrollment_template','2019-09-25 19:50:26.480782'),(112,'enterprise','0029_auto_20170925_1909','2019-09-25 19:50:26.781823'),(113,'enterprise','0030_auto_20171005_1600','2019-09-25 19:50:27.289397'),(114,'enterprise','0031_auto_20171012_1249','2019-09-25 19:50:27.701594'),(115,'enterprise','0032_reporting_model','2019-09-25 19:50:28.060161'),(116,'enterprise','0033_add_history_change_reason_field','2019-09-25 19:50:29.635957'),(117,'enterprise','0034_auto_20171023_0727','2019-09-25 19:50:29.815783'),(118,'enterprise','0035_auto_20171212_1129','2019-09-25 19:50:30.196630'),(119,'enterprise','0036_sftp_reporting_support','2019-09-25 19:50:30.962056'),(120,'enterprise','0037_auto_20180110_0450','2019-09-25 19:50:31.148098'),(121,'enterprise','0038_auto_20180122_1427','2019-09-25 19:50:31.443953'),(122,'enterprise','0039_auto_20180129_1034','2019-09-25 19:50:31.721290'),(123,'enterprise','0040_auto_20180129_1428','2019-09-25 19:50:32.133809'),(124,'enterprise','0041_auto_20180212_1507','2019-09-25 19:50:32.328776'),(125,'consent','0001_initial','2019-09-25 19:50:33.198111'),(126,'consent','0002_migrate_to_new_data_sharing_consent','2019-09-25 19:50:33.482682'),(127,'consent','0003_historicaldatasharingconsent_history_change_reason','2019-09-25 19:50:33.761408'),(128,'consent','0004_datasharingconsenttextoverrides','2019-09-25 19:50:34.186953'),(129,'organizations','0001_initial','2019-09-25 19:50:34.742098'),(130,'organizations','0002_auto_20170117_1434','2019-09-25 19:50:35.295738'),(131,'organizations','0003_auto_20170221_1138','2019-09-25 19:50:35.477549'),(132,'organizations','0004_auto_20170413_2315','2019-09-25 19:50:35.565332'),(133,'organizations','0005_auto_20171116_0640','2019-09-25 19:50:35.616448'),(134,'organizations','0006_auto_20171207_0259','2019-09-25 19:50:35.663573'),(135,'organizations','0007_historicalorganization','2019-09-25 19:50:36.102180'),(136,'content_libraries','0001_initial','2019-09-25 19:50:37.385231'),(137,'sites','0002_alter_domain_unique','2019-09-25 19:50:37.480405'),(138,'course_overviews','0001_initial','2019-09-25 19:50:37.791686'),(139,'course_overviews','0002_add_course_catalog_fields','2019-09-25 19:50:38.378847'),(140,'course_overviews','0003_courseoverviewgeneratedhistory','2019-09-25 19:50:38.488182'),(141,'course_overviews','0004_courseoverview_org','2019-09-25 19:50:38.622254'),(142,'course_overviews','0005_delete_courseoverviewgeneratedhistory','2019-09-25 19:50:38.684206'),(143,'course_overviews','0006_courseoverviewimageset','2019-09-25 19:50:38.925563'),(144,'course_overviews','0007_courseoverviewimageconfig','2019-09-25 19:50:39.289290'),(145,'course_overviews','0008_remove_courseoverview_facebook_url','2019-09-25 19:50:39.301050'),(146,'course_overviews','0009_readd_facebook_url','2019-09-25 19:50:39.312228'),(147,'course_overviews','0010_auto_20160329_2317','2019-09-25 19:50:39.630940'),(148,'course_overviews','0011_courseoverview_marketing_url','2019-09-25 19:50:39.775757'),(149,'course_overviews','0012_courseoverview_eligible_for_financial_aid','2019-09-25 19:50:39.924339'),(150,'course_overviews','0013_courseoverview_language','2019-09-25 19:50:40.064562'),(151,'course_overviews','0014_courseoverview_certificate_available_date','2019-09-25 19:50:40.208514'),(152,'content_type_gating','0001_initial','2019-09-25 19:50:40.859243'),(153,'content_type_gating','0002_auto_20181119_0959','2019-09-25 19:50:41.138535'),(154,'content_type_gating','0003_auto_20181128_1407','2019-09-25 19:50:41.426749'),(155,'content_type_gating','0004_auto_20181128_1521','2019-09-25 19:50:41.584632'),(156,'content_type_gating','0005_auto_20190306_1547','2019-09-25 19:50:41.745313'),(157,'content_type_gating','0006_auto_20190308_1447','2019-09-25 19:50:41.960939'),(158,'content_type_gating','0007_auto_20190311_1919','2019-09-25 19:50:43.698014'),(159,'content_type_gating','0008_auto_20190313_1634','2019-09-25 19:50:43.852375'),(160,'contentserver','0001_initial','2019-09-25 19:50:44.201887'),(161,'contentserver','0002_cdnuseragentsconfig','2019-09-25 19:50:44.572437'),(162,'waffle','0001_initial','2019-09-25 19:50:45.967228'),(163,'enterprise','0042_replace_sensitive_sso_username','2019-09-25 19:50:46.465584'),(164,'enterprise','0043_auto_20180507_0138','2019-09-25 19:50:46.944978'),(165,'enterprise','0044_reporting_config_multiple_types','2019-09-25 19:50:47.661248'),(166,'enterprise','0045_report_type_json','2019-09-25 19:50:47.729726'),(167,'enterprise','0046_remove_unique_constraints','2019-09-25 19:50:47.839926'),(168,'enterprise','0047_auto_20180517_0457','2019-09-25 19:50:48.328994'),(169,'enterprise','0048_enterprisecustomeruser_active','2019-09-25 19:50:48.502071'),(170,'enterprise','0049_auto_20180531_0321','2019-09-25 19:50:49.452678'),(171,'enterprise','0050_progress_v2','2019-09-25 19:50:49.522897'),(172,'enterprise','0051_add_enterprise_slug','2019-09-25 19:50:50.332083'),(173,'enterprise','0052_create_unique_slugs','2019-09-25 19:50:50.609345'),(174,'enterprise','0053_pendingenrollment_cohort_name','2019-09-25 19:50:50.759034'),(175,'enterprise','0053_auto_20180911_0811','2019-09-25 19:50:51.233438'),(176,'enterprise','0054_merge_20180914_1511','2019-09-25 19:50:51.245083'),(177,'enterprise','0055_auto_20181015_1112','2019-09-25 19:50:51.795391'),(178,'enterprise','0056_enterprisecustomerreportingconfiguration_pgp_encryption_key','2019-09-25 19:50:52.016716'),(179,'enterprise','0057_enterprisecustomerreportingconfiguration_enterprise_customer_catalogs','2019-09-25 19:50:52.705774'),(180,'enterprise','0058_auto_20181212_0145','2019-09-25 19:50:53.659616'),(181,'enterprise','0059_add_code_management_portal_config','2019-09-25 19:50:54.596527'),(182,'enterprise','0060_upgrade_django_simple_history','2019-09-25 19:50:55.123363'),(183,'enterprise','0061_systemwideenterpriserole_systemwideenterpriseuserroleassignment','2019-09-25 19:50:55.806222'),(184,'enterprise','0062_add_system_wide_enterprise_roles','2019-09-25 19:50:56.145092'),(185,'enterprise','0063_systemwideenterpriserole_description','2019-09-25 19:50:56.316625'),(186,'enterprise','0064_enterprisefeaturerole_enterprisefeatureuserroleassignment','2019-09-25 19:50:56.999907'),(187,'enterprise','0065_add_enterprise_feature_roles','2019-09-25 19:50:57.346617'),(188,'enterprise','0066_add_system_wide_enterprise_operator_role','2019-09-25 19:50:57.695510'),(189,'enterprise','0067_add_role_based_access_control_switch','2019-09-25 19:50:58.404164'),(190,'cornerstone','0001_initial','2019-09-25 19:51:00.503712'),(191,'cornerstone','0002_cornerstoneglobalconfiguration_subject_mapping','2019-09-25 19:51:00.792996'),(192,'cornerstone','0003_auto_20190621_1000','2019-09-25 19:51:01.865322'),(193,'cornerstone','0004_cornerstoneglobalconfiguration_languages','2019-09-25 19:51:02.148599'),(194,'cornerstone','0005_auto_20190925_0730','2019-09-25 19:51:02.655450'),(195,'cors_csrf','0001_initial','2019-09-25 19:51:03.457719'),(196,'course_action_state','0001_initial','2019-09-25 19:51:04.526310'),(197,'course_duration_limits','0001_initial','2019-09-25 19:51:05.326069'),(198,'course_duration_limits','0002_auto_20181119_0959','2019-09-25 19:51:05.551987'),(199,'course_duration_limits','0003_auto_20181128_1407','2019-09-25 19:51:05.919958'),(200,'course_duration_limits','0004_auto_20181128_1521','2019-09-25 19:51:06.148968'),(201,'course_duration_limits','0005_auto_20190306_1546','2019-09-25 19:51:06.375770'),(202,'course_duration_limits','0006_auto_20190308_1447','2019-09-25 19:51:06.659580'),(203,'course_duration_limits','0007_auto_20190311_1919','2019-09-25 19:51:08.779062'),(204,'course_duration_limits','0008_auto_20190313_1634','2019-09-25 19:51:09.020873'),(205,'course_goals','0001_initial','2019-09-25 19:51:09.736168'),(206,'course_goals','0002_auto_20171010_1129','2019-09-25 19:51:09.939238'),(207,'course_groups','0002_change_inline_default_cohort_value','2019-09-25 19:51:10.035067'),(208,'course_groups','0003_auto_20170609_1455','2019-09-25 19:51:10.620531'),(209,'course_modes','0008_course_key_field_to_foreign_key','2019-09-25 19:51:11.013303'),(210,'course_modes','0009_suggested_prices_to_charfield','2019-09-25 19:51:11.089730'),(211,'course_modes','0010_archived_suggested_prices_to_charfield','2019-09-25 19:51:11.146389'),(212,'course_modes','0011_change_regex_for_comma_separated_ints','2019-09-25 19:51:11.251976'),(213,'course_modes','0012_historicalcoursemode','2019-09-25 19:51:11.829299'),(214,'course_overviews','0015_historicalcourseoverview','2019-09-25 19:51:12.341723'),(215,'course_overviews','0016_simulatecoursepublishconfig','2019-09-25 19:51:13.187442'),(216,'coursewarehistoryextended','0001_initial','2019-09-25 19:51:13.799109'),(217,'coursewarehistoryextended','0002_force_studentmodule_index','2019-09-25 19:51:13.867718'),(218,'courseware','0002_coursedynamicupgradedeadlineconfiguration_dynamicupgradedeadlineconfiguration','2019-09-25 19:51:14.492080'),(219,'courseware','0003_auto_20170825_0935','2019-09-25 19:51:14.573393'),(220,'courseware','0004_auto_20171010_1639','2019-09-25 19:51:14.649833'),(221,'courseware','0005_orgdynamicupgradedeadlineconfiguration','2019-09-25 19:51:15.045248'),(222,'courseware','0006_remove_module_id_index','2019-09-25 19:51:15.161753'),(223,'courseware','0007_remove_done_index','2019-09-25 19:51:15.293493'),(224,'courseware','0008_move_idde_to_edx_when','2019-09-25 19:51:15.655819'),(225,'courseware','0009_auto_20190703_1955','2019-09-25 19:51:15.819163'),(226,'courseware','0010_auto_20190709_1559','2019-09-25 19:51:16.070604'),(227,'courseware','0011_csm_id_bigint','2019-09-25 19:51:16.479675'),(228,'courseware','0012_adjust_fields','2019-09-25 19:51:16.818661'),(229,'crawlers','0001_initial','2019-09-25 19:51:17.628184'),(230,'crawlers','0002_auto_20170419_0018','2019-09-25 19:51:17.828723'),(231,'credentials','0001_initial','2019-09-25 19:51:18.246666'),(232,'credentials','0002_auto_20160325_0631','2019-09-25 19:51:18.422633'),(233,'credentials','0003_auto_20170525_1109','2019-09-25 19:51:18.763753'),(234,'credentials','0004_notifycredentialsconfig','2019-09-25 19:51:19.177524'),(235,'credit','0001_initial','2019-09-25 19:51:22.344612'),(236,'credit','0002_creditconfig','2019-09-25 19:51:22.779569'),(237,'credit','0003_auto_20160511_2227','2019-09-25 19:51:22.845744'),(238,'credit','0004_delete_historical_credit_records','2019-09-25 19:51:24.964906'),(239,'dark_lang','0001_initial','2019-09-25 19:51:25.405426'),(240,'dark_lang','0002_data__enable_on_install','2019-09-25 19:51:25.810712'),(241,'dark_lang','0003_auto_20180425_0359','2019-09-25 19:51:26.401142'),(242,'database_fixups','0001_initial','2019-09-25 19:51:26.843373'),(243,'degreed','0001_initial','2019-09-25 19:51:28.269438'),(244,'degreed','0002_auto_20180104_0103','2019-09-25 19:51:29.363481'),(245,'degreed','0003_auto_20180109_0712','2019-09-25 19:51:29.665844'),(246,'degreed','0004_auto_20180306_1251','2019-09-25 19:51:30.176486'),(247,'degreed','0005_auto_20180807_1302','2019-09-25 19:51:33.727551'),(248,'degreed','0006_upgrade_django_simple_history','2019-09-25 19:51:33.967591'),(249,'degreed','0007_auto_20190925_0730','2019-09-25 19:51:34.604058'),(250,'discounts','0001_initial','2019-09-25 19:51:35.943873'),(251,'django_comment_common','0001_initial','2019-09-25 19:51:37.341587'),(252,'django_comment_common','0002_forumsconfig','2019-09-25 19:51:37.826201'),(253,'django_comment_common','0003_enable_forums','2019-09-25 19:51:38.254003'),(254,'django_comment_common','0004_auto_20161117_1209','2019-09-25 19:51:38.457149'),(255,'django_comment_common','0005_coursediscussionsettings','2019-09-25 19:51:38.573040'),(256,'django_comment_common','0006_coursediscussionsettings_discussions_id_map','2019-09-25 19:51:38.834526'),(257,'django_comment_common','0007_discussionsidmapping','2019-09-25 19:51:38.958386'),(258,'django_comment_common','0008_role_user_index','2019-09-25 19:51:39.060824'),(259,'django_notify','0001_initial','2019-09-25 19:51:41.453718'),(260,'oauth2','0001_initial','2019-09-25 19:51:44.376207'),(261,'edx_oauth2_provider','0001_initial','2019-09-25 19:51:44.821274'),(262,'edx_proctoring','0001_initial','2019-09-25 19:51:52.040048'),(263,'edx_proctoring','0002_proctoredexamstudentattempt_is_status_acknowledged','2019-09-25 19:51:52.409179'),(264,'edx_proctoring','0003_auto_20160101_0525','2019-09-25 19:51:53.321968'),(265,'edx_proctoring','0004_auto_20160201_0523','2019-09-25 19:51:53.632748'),(266,'edx_proctoring','0005_proctoredexam_hide_after_due','2019-09-25 19:51:53.851004'),(267,'edx_proctoring','0006_allowed_time_limit_mins','2019-09-25 19:51:54.510814'),(268,'edx_proctoring','0007_proctoredexam_backend','2019-09-25 19:51:54.697230'),(269,'edx_proctoring','0008_auto_20181116_1551','2019-09-25 19:51:55.564247'),(270,'edx_proctoring','0009_proctoredexamreviewpolicy_remove_rules','2019-09-25 19:51:56.230586'),(271,'edx_proctoring','0010_update_backend','2019-09-25 19:51:56.708234'),(272,'edx_when','0001_initial','2019-09-25 19:51:58.775233'),(273,'edx_when','0002_auto_20190318_1736','2019-09-25 19:52:00.418736'),(274,'edx_when','0003_auto_20190402_1501','2019-09-25 19:52:01.665790'),(275,'edx_zoom','0001_initial','2019-09-25 19:52:01.791180'),(276,'edx_zoom','0002_lticredential_launch_url','2019-09-25 19:52:01.961279'),(277,'edx_zoom','0003_add_launchlog','2019-09-25 19:52:03.393980'),(278,'edxval','0001_initial','2019-09-25 19:52:05.218366'),(279,'edxval','0002_data__default_profiles','2019-09-25 19:52:05.682179'),(280,'edxval','0003_coursevideo_is_hidden','2019-09-25 19:52:05.869164'),(281,'edxval','0004_data__add_hls_profile','2019-09-25 19:52:06.385252'),(282,'edxval','0005_videoimage','2019-09-25 19:52:06.737417'),(283,'edxval','0006_auto_20171009_0725','2019-09-25 19:52:07.154237'),(284,'edxval','0007_transcript_credentials_state','2019-09-25 19:52:07.364957'),(285,'edxval','0008_remove_subtitles','2019-09-25 19:52:07.618173'),(286,'edxval','0009_auto_20171127_0406','2019-09-25 19:52:07.689543'),(287,'edxval','0010_add_video_as_foreign_key','2019-09-25 19:52:08.498488'),(288,'edxval','0011_data__add_audio_mp3_profile','2019-09-25 19:52:09.595300'),(289,'email_marketing','0001_initial','2019-09-25 19:52:10.280136'),(290,'email_marketing','0002_auto_20160623_1656','2019-09-25 19:52:14.091964'),(291,'email_marketing','0003_auto_20160715_1145','2019-09-25 19:52:16.004996'),(292,'email_marketing','0004_emailmarketingconfiguration_welcome_email_send_delay','2019-09-25 19:52:16.485936'),(293,'email_marketing','0005_emailmarketingconfiguration_user_registration_cookie_timeout_delay','2019-09-25 19:52:16.886860'),(294,'email_marketing','0006_auto_20170711_0615','2019-09-25 19:52:17.227841'),(295,'email_marketing','0007_auto_20170809_0653','2019-09-25 19:52:18.204356'),(296,'email_marketing','0008_auto_20170809_0539','2019-09-25 19:52:19.054198'),(297,'email_marketing','0009_remove_emailmarketingconfiguration_sailthru_activation_template','2019-09-25 19:52:19.532328'),(298,'email_marketing','0010_auto_20180425_0800','2019-09-25 19:52:21.043124'),(299,'embargo','0001_initial','2019-09-25 19:52:23.830951'),(300,'embargo','0002_data__add_countries','2019-09-25 19:52:25.034563'),(301,'enterprise','0068_remove_role_based_access_control_switch','2019-09-25 19:52:25.645413'),(302,'enterprise','0069_auto_20190613_0607','2019-09-25 19:52:26.350038'),(303,'enterprise','0070_enterprise_catalog_query','2019-09-25 19:52:28.257479'),(304,'enterprise','0071_historicalpendingenrollment_historicalpendingenterprisecustomeruser','2019-09-25 19:52:29.598658'),(305,'enterprise','0072_add_enterprise_report_config_feature_role','2019-09-25 19:52:30.193853'),(306,'enterprise','0073_enterprisecustomerreportingconfiguration_uuid','2019-09-25 19:52:31.333899'),(307,'enterprise','0074_auto_20190904_1143','2019-09-25 19:52:32.137726'),(308,'enterprise','0075_auto_20190916_1030','2019-09-25 19:52:34.413321'),(309,'enterprise','0076_auto_20190918_2037','2019-09-25 19:52:36.073130'),(310,'student','0001_initial','2019-09-25 19:52:53.602321'),(311,'student','0002_auto_20151208_1034','2019-09-25 19:52:53.858619'),(312,'student','0003_auto_20160516_0938','2019-09-25 19:52:54.323644'),(313,'student','0004_auto_20160531_1422','2019-09-25 19:52:54.439874'),(314,'student','0005_auto_20160531_1653','2019-09-25 19:52:54.613795'),(315,'student','0006_logoutviewconfiguration','2019-09-25 19:52:54.923126'),(316,'student','0007_registrationcookieconfiguration','2019-09-25 19:52:55.242492'),(317,'student','0008_auto_20161117_1209','2019-09-25 19:52:55.374292'),(318,'student','0009_auto_20170111_0422','2019-09-25 19:52:55.500271'),(319,'student','0010_auto_20170207_0458','2019-09-25 19:52:55.517466'),(320,'student','0011_course_key_field_to_foreign_key','2019-09-25 19:52:58.170438'),(321,'student','0012_sociallink','2019-09-25 19:52:58.860888'),(322,'student','0013_delete_historical_enrollment_records','2019-09-25 19:53:00.529279'),(323,'student','0014_courseenrollmentallowed_user','2019-09-25 19:53:01.307999'),(324,'student','0015_manualenrollmentaudit_add_role','2019-09-25 19:53:01.816844'),(325,'student','0016_coursenrollment_course_on_delete_do_nothing','2019-09-25 19:53:02.271924'),(326,'student','0017_accountrecovery','2019-09-25 19:53:03.457446'),(327,'student','0018_remove_password_history','2019-09-25 19:53:04.070784'),(328,'student','0019_auto_20181221_0540','2019-09-25 19:53:05.129660'),(329,'student','0020_auto_20190227_2019','2019-09-25 19:53:05.494264'),(330,'student','0021_historicalcourseenrollment','2019-09-25 19:53:06.403404'),(331,'entitlements','0001_initial','2019-09-25 19:53:07.265354'),(332,'entitlements','0002_auto_20171102_0719','2019-09-25 19:53:09.872068'),(333,'entitlements','0003_auto_20171205_1431','2019-09-25 19:53:12.247743'),(334,'entitlements','0004_auto_20171206_1729','2019-09-25 19:53:12.739189'),(335,'entitlements','0005_courseentitlementsupportdetail','2019-09-25 19:53:13.612148'),(336,'entitlements','0006_courseentitlementsupportdetail_action','2019-09-25 19:53:14.192470'),(337,'entitlements','0007_change_expiration_period_default','2019-09-25 19:53:14.395972'),(338,'entitlements','0008_auto_20180328_1107','2019-09-25 19:53:16.035191'),(339,'entitlements','0009_courseentitlement_refund_locked','2019-09-25 19:53:16.711714'),(340,'entitlements','0010_backfill_refund_lock','2019-09-25 19:53:17.420592'),(341,'entitlements','0011_historicalcourseentitlement','2019-09-25 19:53:18.356369'),(342,'experiments','0001_initial','2019-09-25 19:53:20.110703'),(343,'experiments','0002_auto_20170627_1402','2019-09-25 19:53:20.385850'),(344,'experiments','0003_auto_20170713_1148','2019-09-25 19:53:20.471026'),(345,'grades','0001_initial','2019-09-25 19:53:21.099881'),(346,'grades','0002_rename_last_edited_field','2019-09-25 19:53:21.194483'),(347,'grades','0003_coursepersistentgradesflag_persistentgradesenabledflag','2019-09-25 19:53:23.158791'),(348,'grades','0004_visibleblocks_course_id','2019-09-25 19:53:23.379619'),(349,'grades','0005_multiple_course_flags','2019-09-25 19:53:23.872967'),(350,'grades','0006_persistent_course_grades','2019-09-25 19:53:24.154336'),(351,'grades','0007_add_passed_timestamp_column','2019-09-25 19:53:24.456622'),(352,'grades','0008_persistentsubsectiongrade_first_attempted','2019-09-25 19:53:24.641743'),(353,'grades','0009_auto_20170111_1507','2019-09-25 19:53:24.863995'),(354,'grades','0010_auto_20170112_1156','2019-09-25 19:53:24.996348'),(355,'grades','0011_null_edited_time','2019-09-25 19:53:25.441182'),(356,'grades','0012_computegradessetting','2019-09-25 19:53:26.118295'),(357,'grades','0013_persistentsubsectiongradeoverride','2019-09-25 19:53:26.503839'),(358,'grades','0014_persistentsubsectiongradeoverridehistory','2019-09-25 19:53:27.364143'),(359,'grades','0015_historicalpersistentsubsectiongradeoverride','2019-09-25 19:53:28.161743'),(360,'grades','0016_auto_20190703_1446','2019-09-25 19:53:29.542160'),(361,'instructor_task','0002_gradereportsetting','2019-09-25 19:53:30.812630'),(362,'instructor_task','0003_alter_task_input_field','2019-09-25 19:53:31.379217'),(363,'sap_success_factors','0001_initial','2019-09-25 19:53:33.641511'),(364,'sap_success_factors','0002_auto_20170224_1545','2019-09-25 19:53:36.236002'),(365,'sap_success_factors','0003_auto_20170317_1402','2019-09-25 19:53:37.637298'),(366,'sap_success_factors','0004_catalogtransmissionaudit_audit_summary','2019-09-25 19:53:37.825422'),(367,'sap_success_factors','0005_historicalsapsuccessfactorsenterprisecustomerconfiguration_history_change_reason','2019-09-25 19:53:38.402793'),(368,'sap_success_factors','0006_sapsuccessfactors_use_enterprise_enrollment_page_waffle_flag','2019-09-25 19:53:39.281195'),(369,'sap_success_factors','0007_remove_historicalsapsuccessfactorsenterprisecustomerconfiguration_history_change_reason','2019-09-25 19:53:39.882452'),(370,'sap_success_factors','0008_historicalsapsuccessfactorsenterprisecustomerconfiguration_history_change_reason','2019-09-25 19:53:40.397088'),(371,'sap_success_factors','0009_sapsuccessfactors_remove_enterprise_enrollment_page_waffle_flag','2019-09-25 19:53:41.095941'),(372,'sap_success_factors','0010_move_audit_tables_to_base_integrated_channel','2019-09-25 19:53:42.539511'),(373,'integrated_channel','0001_initial','2019-09-25 19:53:42.796689'),(374,'integrated_channel','0002_delete_enterpriseintegratedchannel','2019-09-25 19:53:42.882169'),(375,'integrated_channel','0003_catalogtransmissionaudit_learnerdatatransmissionaudit','2019-09-25 19:53:43.062855'),(376,'integrated_channel','0004_catalogtransmissionaudit_channel','2019-09-25 19:53:43.318236'),(377,'integrated_channel','0005_auto_20180306_1251','2019-09-25 19:53:44.119443'),(378,'integrated_channel','0006_delete_catalogtransmissionaudit','2019-09-25 19:53:44.216359'),(379,'integrated_channel','0007_auto_20190925_0730','2019-09-25 19:53:44.348854'),(380,'lms_xblock','0001_initial','2019-09-25 19:53:45.052278'),(381,'milestones','0001_initial','2019-09-25 19:53:47.659390'),(382,'milestones','0002_data__seed_relationship_types','2019-09-25 19:53:48.938443'),(383,'milestones','0003_coursecontentmilestone_requirements','2019-09-25 19:53:49.167061'),(384,'milestones','0004_auto_20151221_1445','2019-09-25 19:53:49.701526'),(385,'mobile_api','0001_initial','2019-09-25 19:53:50.378393'),(386,'mobile_api','0002_auto_20160406_0904','2019-09-25 19:53:50.642215'),(387,'mobile_api','0003_ignore_mobile_available_flag','2019-09-25 19:53:51.736564'),(388,'notes','0001_initial','2019-09-25 19:53:52.591674'),(389,'oauth2','0002_auto_20160404_0813','2019-09-25 19:53:55.123532'),(390,'oauth2','0003_client_logout_uri','2019-09-25 19:53:55.577135'),(391,'oauth2','0004_add_index_on_grant_expires','2019-09-25 19:53:56.012642'),(392,'oauth2','0005_grant_nonce','2019-09-25 19:53:56.475145'),(393,'oauth2_provider','0001_initial','2019-09-25 19:53:59.821622'),(394,'oauth_dispatch','0001_initial','2019-09-25 19:54:01.164297'),(395,'oauth_dispatch','0002_scopedapplication_scopedapplicationorganization','2019-09-25 19:54:02.631657'),(396,'oauth_dispatch','0003_application_data','2019-09-25 19:54:03.358910'),(397,'oauth_dispatch','0004_auto_20180626_1349','2019-09-25 19:54:06.928243'),(398,'oauth_dispatch','0005_applicationaccess_type','2019-09-25 19:54:07.171030'),(399,'oauth_dispatch','0006_drop_application_id_constraints','2019-09-25 19:54:07.607498'),(400,'oauth2_provider','0002_08_updates','2019-09-25 19:54:08.502626'),(401,'oauth2_provider','0003_auto_20160316_1503','2019-09-25 19:54:08.916552'),(402,'oauth2_provider','0004_auto_20160525_1623','2019-09-25 19:54:09.468802'),(403,'oauth2_provider','0005_auto_20170514_1141','2019-09-25 19:54:15.152411'),(404,'oauth2_provider','0006_auto_20171214_2232','2019-09-25 19:54:16.960522'),(405,'oauth_dispatch','0007_restore_application_id_constraints','2019-09-25 19:54:17.650003'),(406,'oauth_provider','0001_initial','2019-09-25 19:54:18.789978'),(407,'problem_builder','0001_initial','2019-09-25 19:54:19.162026'),(408,'problem_builder','0002_auto_20160121_1525','2019-09-25 19:54:19.838485'),(409,'problem_builder','0003_auto_20161124_0755','2019-09-25 19:54:20.186761'),(410,'problem_builder','0004_copy_course_ids','2019-09-25 19:54:20.836639'),(411,'problem_builder','0005_auto_20170112_1021','2019-09-25 19:54:21.306483'),(412,'problem_builder','0006_remove_deprecated_course_id','2019-09-25 19:54:21.646409'),(413,'program_enrollments','0001_initial','2019-09-25 19:54:22.757381'),(414,'program_enrollments','0002_historicalprogramcourseenrollment_programcourseenrollment','2019-09-25 19:54:25.289962'),(415,'program_enrollments','0003_auto_20190424_1622','2019-09-25 19:54:25.757039'),(416,'program_enrollments','0004_add_programcourseenrollment_relatedname','2019-09-25 19:54:26.422948'),(417,'program_enrollments','0005_canceled_not_withdrawn','2019-09-25 19:54:27.171010'),(418,'program_enrollments','0006_add_the_correct_constraints','2019-09-25 19:54:27.763847'),(419,'program_enrollments','0007_waiting_programcourseenrollment_constraint','2019-09-25 19:54:27.961040'),(420,'programs','0001_initial','2019-09-25 19:54:28.434747'),(421,'programs','0002_programsapiconfig_cache_ttl','2019-09-25 19:54:28.777836'),(422,'programs','0003_auto_20151120_1613','2019-09-25 19:54:30.920770'),(423,'programs','0004_programsapiconfig_enable_certification','2019-09-25 19:54:31.228085'),(424,'programs','0005_programsapiconfig_max_retries','2019-09-25 19:54:31.550803'),(425,'programs','0006_programsapiconfig_xseries_ad_enabled','2019-09-25 19:54:31.896794'),(426,'programs','0007_programsapiconfig_program_listing_enabled','2019-09-25 19:54:32.229167'),(427,'programs','0008_programsapiconfig_program_details_enabled','2019-09-25 19:54:32.566407'),(428,'programs','0009_programsapiconfig_marketing_path','2019-09-25 19:54:32.904379'),(429,'programs','0010_auto_20170204_2332','2019-09-25 19:54:33.272100'),(430,'programs','0011_auto_20170301_1844','2019-09-25 19:54:36.946871'),(431,'programs','0012_auto_20170419_0018','2019-09-25 19:54:37.131398'),(432,'redirects','0001_initial','2019-09-25 19:54:38.576655'),(433,'rss_proxy','0001_initial','2019-09-25 19:54:38.739162'),(434,'sap_success_factors','0011_auto_20180104_0103','2019-09-25 19:54:41.400255'),(435,'sap_success_factors','0012_auto_20180109_0712','2019-09-25 19:54:41.783041'),(436,'sap_success_factors','0013_auto_20180306_1251','2019-09-25 19:54:42.404138'),(437,'sap_success_factors','0014_drop_historical_table','2019-09-25 19:54:43.993597'),(438,'sap_success_factors','0015_auto_20180510_1259','2019-09-25 19:54:44.798130'),(439,'sap_success_factors','0016_sapsuccessfactorsenterprisecustomerconfiguration_additional_locales','2019-09-25 19:54:45.062606'),(440,'sap_success_factors','0017_sapsuccessfactorsglobalconfiguration_search_student_api_path','2019-09-25 19:54:45.394132'),(441,'sap_success_factors','0018_sapsuccessfactorsenterprisecustomerconfiguration_show_course_price','2019-09-25 19:54:45.656844'),(442,'sap_success_factors','0019_auto_20190925_0730','2019-09-25 19:54:46.122204'),(443,'schedules','0001_initial','2019-09-25 19:54:46.636705'),(444,'schedules','0002_auto_20170816_1532','2019-09-25 19:54:46.981766'),(445,'schedules','0003_scheduleconfig','2019-09-25 19:54:47.640907'),(446,'schedules','0004_auto_20170922_1428','2019-09-25 19:54:48.411555'),(447,'schedules','0005_auto_20171010_1722','2019-09-25 19:54:49.237869'),(448,'schedules','0006_scheduleexperience','2019-09-25 19:54:49.785273'),(449,'schedules','0007_scheduleconfig_hold_back_ratio','2019-09-25 19:54:50.159805'),(450,'self_paced','0001_initial','2019-09-25 19:54:50.701002'),(451,'sessions','0001_initial','2019-09-25 19:54:50.921044'),(452,'shoppingcart','0001_initial','2019-09-25 19:55:06.389198'),(453,'shoppingcart','0002_auto_20151208_1034','2019-09-25 19:55:06.782479'),(454,'shoppingcart','0003_auto_20151217_0958','2019-09-25 19:55:07.055730'),(455,'shoppingcart','0004_change_meta_options','2019-09-25 19:55:07.307450'),(456,'site_configuration','0001_initial','2019-09-25 19:55:08.408017'),(457,'site_configuration','0002_auto_20160720_0231','2019-09-25 19:55:09.072966'),(458,'default','0001_initial','2019-09-25 19:55:10.661660'),(459,'social_auth','0001_initial','2019-09-25 19:55:10.683395'),(460,'default','0002_add_related_name','2019-09-25 19:55:11.224110'),(461,'social_auth','0002_add_related_name','2019-09-25 19:55:11.276104'),(462,'default','0003_alter_email_max_length','2019-09-25 19:55:11.644913'),(463,'social_auth','0003_alter_email_max_length','2019-09-25 19:55:11.664785'),(464,'default','0004_auto_20160423_0400','2019-09-25 19:55:11.873573'),(465,'social_auth','0004_auto_20160423_0400','2019-09-25 19:55:11.901376'),(466,'social_auth','0005_auto_20160727_2333','2019-09-25 19:55:12.082042'),(467,'social_django','0006_partial','2019-09-25 19:55:12.288211'),(468,'social_django','0007_code_timestamp','2019-09-25 19:55:12.567475'),(469,'social_django','0008_partial_timestamp','2019-09-25 19:55:12.839760'),(470,'splash','0001_initial','2019-09-25 19:55:13.390592'),(471,'static_replace','0001_initial','2019-09-25 19:55:13.904111'),(472,'static_replace','0002_assetexcludedextensionsconfig','2019-09-25 19:55:15.364555'),(473,'status','0001_initial','2019-09-25 19:55:16.605482'),(474,'status','0002_update_help_text','2019-09-25 19:55:16.819489'),(475,'student','0022_indexing_in_courseenrollment','2019-09-25 19:55:17.113267'),(476,'submissions','0001_initial','2019-09-25 19:55:19.794191'),(477,'submissions','0002_auto_20151119_0913','2019-09-25 19:55:20.349944'),(478,'submissions','0003_submission_status','2019-09-25 19:55:20.620145'),(479,'submissions','0004_remove_django_extensions','2019-09-25 19:55:20.760932'),(480,'super_csv','0001_initial','2019-09-25 19:55:21.055185'),(481,'super_csv','0002_csvoperation_user','2019-09-25 19:55:21.680633'),(482,'super_csv','0003_csvoperation_original_filename','2019-09-25 19:55:22.056708'),(483,'survey','0001_initial','2019-09-25 19:55:23.457052'),(484,'system_wide_roles','0001_SystemWideRole_SystemWideRoleAssignment','2019-09-25 19:55:24.342528'),(485,'system_wide_roles','0002_add_system_wide_student_support_role','2019-09-25 19:55:26.040825'),(486,'teams','0001_initial','2019-09-25 19:55:27.803117'),(487,'theming','0001_initial','2019-09-25 19:55:28.387193'),(488,'third_party_auth','0001_initial','2019-09-25 19:55:32.539917'),(489,'third_party_auth','0002_schema__provider_icon_image','2019-09-25 19:55:36.618854'),(490,'third_party_auth','0003_samlproviderconfig_debug_mode','2019-09-25 19:55:37.191450'),(491,'third_party_auth','0004_add_visible_field','2019-09-25 19:55:41.401980'),(492,'third_party_auth','0005_add_site_field','2019-09-25 19:55:46.393584'),(493,'third_party_auth','0006_samlproviderconfig_automatic_refresh_enabled','2019-09-25 19:55:47.074906'),(494,'third_party_auth','0007_auto_20170406_0912','2019-09-25 19:55:49.195089'),(495,'third_party_auth','0008_auto_20170413_1455','2019-09-25 19:55:51.102387'),(496,'third_party_auth','0009_auto_20170415_1144','2019-09-25 19:55:53.007853'),(497,'third_party_auth','0010_add_skip_hinted_login_dialog_field','2019-09-25 19:55:56.347274'),(498,'third_party_auth','0011_auto_20170616_0112','2019-09-25 19:55:56.874922'),(499,'third_party_auth','0012_auto_20170626_1135','2019-09-25 19:55:58.785301'),(500,'third_party_auth','0013_sync_learner_profile_data','2019-09-25 19:56:00.634095'),(501,'third_party_auth','0014_auto_20171222_1233','2019-09-25 19:56:03.609556'),(502,'third_party_auth','0015_samlproviderconfig_archived','2019-09-25 19:56:04.196119'),(503,'third_party_auth','0016_auto_20180130_0938','2019-09-25 19:56:05.679502'),(504,'third_party_auth','0017_remove_icon_class_image_secondary_fields','2019-09-25 19:56:07.537497'),(505,'third_party_auth','0018_auto_20180327_1631','2019-09-25 19:56:10.677035'),(506,'third_party_auth','0019_consolidate_slug','2019-09-25 19:56:13.933124'),(507,'third_party_auth','0020_cleanup_slug_fields','2019-09-25 19:56:15.410197'),(508,'third_party_auth','0021_sso_id_verification','2019-09-25 19:56:17.895411'),(509,'third_party_auth','0022_auto_20181012_0307','2019-09-25 19:56:22.231307'),(510,'third_party_auth','0023_auto_20190418_2033','2019-09-25 19:56:25.040165'),(511,'third_party_auth','0024_fix_edit_disallowed','2019-09-25 19:56:28.857030'),(512,'track','0001_initial','2019-09-25 19:56:29.032591'),(513,'user_api','0001_initial','2019-09-25 19:56:32.885906'),(514,'user_api','0002_retirementstate_userretirementstatus','2019-09-25 19:56:34.563304'),(515,'user_api','0003_userretirementrequest','2019-09-25 19:56:35.398464'),(516,'user_api','0004_userretirementpartnerreportingstatus','2019-09-25 19:56:37.409884'),(517,'user_authn','0001_data__add_login_service','2019-09-25 19:56:38.207450'),(518,'util','0001_initial','2019-09-25 19:56:38.935879'),(519,'util','0002_data__default_rate_limit_config','2019-09-25 19:56:39.743564'),(520,'verified_track_content','0001_initial','2019-09-25 19:56:39.944090'),(521,'verified_track_content','0002_verifiedtrackcohortedcourse_verified_cohort_name','2019-09-25 19:56:40.213873'),(522,'verified_track_content','0003_migrateverifiedtrackcohortssetting','2019-09-25 19:56:41.020501'),(523,'verify_student','0001_initial','2019-09-25 19:56:50.137543'),(524,'verify_student','0002_auto_20151124_1024','2019-09-25 19:56:50.728027'),(525,'verify_student','0003_auto_20151113_1443','2019-09-25 19:56:51.068555'),(526,'verify_student','0004_delete_historical_records','2019-09-25 19:56:51.474492'),(527,'verify_student','0005_remove_deprecated_models','2019-09-25 19:56:57.071138'),(528,'verify_student','0006_ssoverification','2019-09-25 19:56:57.684344'),(529,'verify_student','0007_idverificationaggregate','2019-09-25 19:56:58.405904'),(530,'verify_student','0008_populate_idverificationaggregate','2019-09-25 19:56:59.262844'),(531,'verify_student','0009_remove_id_verification_aggregate','2019-09-25 19:56:59.945547'),(532,'verify_student','0010_manualverification','2019-09-25 19:57:00.445571'),(533,'verify_student','0011_add_fields_to_sspv','2019-09-25 19:57:01.201537'),(534,'video_config','0001_initial','2019-09-25 19:57:03.164822'),(535,'video_config','0002_coursevideotranscriptenabledflag_videotranscriptenabledflag','2019-09-25 19:57:03.953514'),(536,'video_config','0003_transcriptmigrationsetting','2019-09-25 19:57:04.368670'),(537,'video_config','0004_transcriptmigrationsetting_command_run','2019-09-25 19:57:04.639810'),(538,'video_config','0005_auto_20180719_0752','2019-09-25 19:57:05.076317'),(539,'video_config','0006_videothumbnailetting_updatedcoursevideos','2019-09-25 19:57:05.818108'),(540,'video_config','0007_videothumbnailsetting_offset','2019-09-25 19:57:06.109751'),(541,'video_config','0008_courseyoutubeblockedflag','2019-09-25 19:57:06.567722'),(542,'video_pipeline','0001_initial','2019-09-25 19:57:06.990179'),(543,'video_pipeline','0002_auto_20171114_0704','2019-09-25 19:57:07.480280'),(544,'video_pipeline','0003_coursevideouploadsenabledbydefault_videouploadsenabledbydefault','2019-09-25 19:57:08.323880'),(545,'waffle','0002_auto_20161201_0958','2019-09-25 19:57:08.428488'),(546,'waffle_utils','0001_initial','2019-09-25 19:57:08.962245'),(547,'wiki','0001_initial','2019-09-25 19:57:30.290457'),(548,'wiki','0002_remove_article_subscription','2019-09-25 19:57:30.403399'),(549,'wiki','0003_ip_address_conv','2019-09-25 19:57:33.633331'),(550,'wiki','0004_increase_slug_size','2019-09-25 19:57:34.068367'),(551,'wiki','0005_remove_attachments_and_images','2019-09-25 19:57:38.516791'),(552,'workflow','0001_initial','2019-09-25 19:57:39.596191'),(553,'workflow','0002_remove_django_extensions','2019-09-25 19:57:39.728902'),(554,'xapi','0001_initial','2019-09-25 19:57:41.767183'),(555,'xapi','0002_auto_20180726_0142','2019-09-25 19:57:42.197643'),(556,'xapi','0003_auto_20190807_1006','2019-09-25 19:57:43.636026'),(557,'xapi','0004_auto_20190830_0710','2019-09-25 19:57:44.261507'),(558,'xblock_django','0001_initial','2019-09-25 19:57:45.101298'),(559,'xblock_django','0002_auto_20160204_0809','2019-09-25 19:57:45.798087'),(560,'xblock_django','0003_add_new_config_models','2019-09-25 19:57:49.501567'),(561,'xblock_django','0004_delete_xblock_disable_config','2019-09-25 19:57:50.321361'),(562,'social_django','0002_add_related_name','2019-09-25 19:57:50.365951'),(563,'social_django','0003_alter_email_max_length','2019-09-25 19:57:50.400617'),(564,'social_django','0004_auto_20160423_0400','2019-09-25 19:57:50.426057'),(565,'social_django','0001_initial','2019-09-25 19:57:50.451081'),(566,'social_django','0005_auto_20160727_2333','2019-09-25 19:57:50.499046'),(567,'contentstore','0001_initial','2019-09-25 20:02:59.621976'),(568,'contentstore','0002_add_assets_page_flag','2019-09-25 20:03:01.265538'),(569,'contentstore','0003_remove_assets_page_flag','2019-09-25 20:03:03.159938'),(570,'contentstore','0004_remove_push_notification_configmodel_table','2019-09-25 20:03:03.882221'),(571,'course_creators','0001_initial','2019-09-25 20:03:04.635287'),(572,'tagging','0001_initial','2019-09-25 20:03:05.272758'),(573,'tagging','0002_auto_20170116_1541','2019-09-25 20:03:05.810211'),(574,'user_tasks','0001_initial','2019-09-25 20:03:07.724536'),(575,'user_tasks','0002_artifact_file_storage','2019-09-25 20:03:07.816831'),(576,'user_tasks','0003_url_max_length','2019-09-25 20:03:08.099803'),(577,'user_tasks','0004_url_textfield','2019-09-25 20:03:08.405757'),(578,'xblock_config','0001_initial','2019-09-25 20:03:08.916579'),(579,'xblock_config','0002_courseeditltifieldsenabledflag','2019-09-25 20:03:09.495498');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2016-12-17 01:36:06.599911'),(2,'auth','0001_initial','2016-12-17 01:36:09.155420'),(3,'admin','0001_initial','2016-12-17 01:36:09.689101'),(4,'sites','0001_initial','2016-12-17 01:36:09.777106'),(5,'contenttypes','0002_remove_content_type_name','2016-12-17 01:36:10.113280'),(6,'api_admin','0001_initial','2016-12-17 01:36:10.826004'),(7,'api_admin','0002_auto_20160325_1604','2016-12-17 01:36:10.870018'),(8,'api_admin','0003_auto_20160404_1618','2016-12-17 01:36:12.173622'),(9,'api_admin','0004_auto_20160412_1506','2016-12-17 01:36:13.225912'),(10,'api_admin','0005_auto_20160414_1232','2016-12-17 01:36:13.492670'),(11,'api_admin','0006_catalog','2016-12-17 01:36:13.516312'),(12,'assessment','0001_initial','2016-12-17 01:36:25.565632'),(13,'assessment','0002_staffworkflow','2016-12-17 01:36:26.143411'),(14,'auth','0002_alter_permission_name_max_length','2016-12-17 01:36:26.373907'),(15,'auth','0003_alter_user_email_max_length','2016-12-17 01:36:26.629350'),(16,'auth','0004_alter_user_username_opts','2016-12-17 01:36:26.699767'),(17,'auth','0005_alter_user_last_login_null','2016-12-17 01:36:26.894658'),(18,'auth','0006_require_contenttypes_0002','2016-12-17 01:36:26.907706'),(19,'instructor_task','0001_initial','2016-12-17 01:36:27.514373'),(20,'certificates','0001_initial','2016-12-17 01:36:30.718895'),(21,'certificates','0002_data__certificatehtmlviewconfiguration_data','2016-12-17 01:36:30.760294'),(22,'certificates','0003_data__default_modes','2016-12-17 01:36:30.859714'),(23,'certificates','0004_certificategenerationhistory','2016-12-17 01:36:31.363536'),(24,'certificates','0005_auto_20151208_0801','2016-12-17 01:36:31.517857'),(25,'certificates','0006_certificatetemplateasset_asset_slug','2016-12-17 01:36:31.679085'),(26,'certificates','0007_certificateinvalidation','2016-12-17 01:36:32.242909'),(27,'badges','0001_initial','2016-12-17 01:36:33.602314'),(28,'badges','0002_data__migrate_assertions','2016-12-17 01:36:33.647621'),(29,'badges','0003_schema__add_event_configuration','2016-12-17 01:36:34.126910'),(30,'bookmarks','0001_initial','2016-12-17 01:36:35.456888'),(31,'branding','0001_initial','2016-12-17 01:36:36.153792'),(32,'course_groups','0001_initial','2016-12-17 01:36:39.237579'),(33,'bulk_email','0001_initial','2016-12-17 01:36:40.641357'),(34,'bulk_email','0002_data__load_course_email_template','2016-12-17 01:36:40.797656'),(35,'bulk_email','0003_config_model_feature_flag','2016-12-17 01:36:41.197060'),(36,'bulk_email','0004_add_email_targets','2016-12-17 01:36:42.585897'),(37,'bulk_email','0005_move_target_data','2016-12-17 01:36:42.617283'),(38,'catalog','0001_initial','2016-12-17 01:36:43.054060'),(39,'certificates','0008_schema__remove_badges','2016-12-17 01:36:43.651994'),(40,'commerce','0001_data__add_ecommerce_service_user','2016-12-17 01:36:43.696482'),(41,'commerce','0002_commerceconfiguration','2016-12-17 01:36:44.140663'),(42,'commerce','0003_auto_20160329_0709','2016-12-17 01:36:44.313419'),(43,'commerce','0004_auto_20160531_0950','2016-12-17 01:36:44.931167'),(44,'contentserver','0001_initial','2016-12-17 01:36:45.338371'),(45,'contentserver','0002_cdnuseragentsconfig','2016-12-17 01:36:45.766142'),(46,'cors_csrf','0001_initial','2016-12-17 01:36:46.295651'),(47,'course_action_state','0001_initial','2016-12-17 01:36:50.214331'),(48,'course_modes','0001_initial','2016-12-17 01:36:50.829229'),(49,'course_modes','0002_coursemode_expiration_datetime_is_explicit','2016-12-17 01:36:50.997245'),(50,'course_modes','0003_auto_20151113_1443','2016-12-17 01:36:51.067479'),(51,'course_modes','0004_auto_20151113_1457','2016-12-17 01:36:51.483744'),(52,'course_modes','0005_auto_20151217_0958','2016-12-17 01:36:51.523950'),(53,'course_modes','0006_auto_20160208_1407','2016-12-17 01:36:51.681200'),(54,'course_modes','0007_coursemode_bulk_sku','2016-12-17 01:36:51.851762'),(55,'course_overviews','0001_initial','2016-12-17 01:36:52.253410'),(56,'course_overviews','0002_add_course_catalog_fields','2016-12-17 01:36:52.937745'),(57,'course_overviews','0003_courseoverviewgeneratedhistory','2016-12-17 01:36:53.042014'),(58,'course_overviews','0004_courseoverview_org','2016-12-17 01:36:53.199918'),(59,'course_overviews','0005_delete_courseoverviewgeneratedhistory','2016-12-17 01:36:53.271407'),(60,'course_overviews','0006_courseoverviewimageset','2016-12-17 01:36:53.659175'),(61,'course_overviews','0007_courseoverviewimageconfig','2016-12-17 01:36:54.025056'),(62,'course_overviews','0008_remove_courseoverview_facebook_url','2016-12-17 01:36:54.040854'),(63,'course_overviews','0009_readd_facebook_url','2016-12-17 01:36:54.055373'),(64,'course_overviews','0010_auto_20160329_2317','2016-12-17 01:36:54.366767'),(65,'course_structures','0001_initial','2016-12-17 01:36:54.477885'),(66,'coursetalk','0001_initial','2016-12-17 01:36:54.896706'),(67,'coursetalk','0002_auto_20160325_0631','2016-12-17 01:36:55.058698'),(68,'courseware','0001_initial','2016-12-17 01:37:00.640124'),(69,'coursewarehistoryextended','0001_initial','2016-12-17 01:37:00.903534'),(70,'coursewarehistoryextended','0002_force_studentmodule_index','2016-12-17 01:37:01.130788'),(71,'credentials','0001_initial','2016-12-17 01:37:01.618453'),(72,'credentials','0002_auto_20160325_0631','2016-12-17 01:37:01.853090'),(73,'credit','0001_initial','2016-12-17 01:37:06.301021'),(74,'credit','0002_creditconfig','2016-12-17 01:37:06.824183'),(75,'credit','0003_auto_20160511_2227','2016-12-17 01:37:07.103029'),(76,'dark_lang','0001_initial','2016-12-17 01:37:07.645056'),(77,'dark_lang','0002_data__enable_on_install','2016-12-17 01:37:07.691466'),(78,'django_comment_common','0001_initial','2016-12-17 01:37:09.349106'),(79,'django_comment_common','0002_forumsconfig','2016-12-17 01:37:09.907256'),(80,'django_comment_common','0003_enable_forums','2016-12-17 01:37:09.959809'),(81,'django_comment_common','0004_auto_20161117_1209','2016-12-17 01:37:10.284701'),(82,'django_notify','0001_initial','2016-12-17 01:37:13.028205'),(83,'django_openid_auth','0001_initial','2016-12-17 01:37:13.819524'),(84,'oauth2','0001_initial','2016-12-17 01:37:17.857484'),(85,'edx_oauth2_provider','0001_initial','2016-12-17 01:37:18.525068'),(86,'edx_proctoring','0001_initial','2016-12-17 01:37:31.827214'),(87,'edx_proctoring','0002_proctoredexamstudentattempt_is_status_acknowledged','2016-12-17 01:37:32.696124'),(88,'edx_proctoring','0003_auto_20160101_0525','2016-12-17 01:37:34.166324'),(89,'edx_proctoring','0004_auto_20160201_0523','2016-12-17 01:37:34.919334'),(90,'edx_proctoring','0005_proctoredexam_hide_after_due','2016-12-17 01:37:38.316319'),(91,'edxval','0001_initial','2016-12-17 01:37:40.727619'),(92,'edxval','0002_data__default_profiles','2016-12-17 01:37:40.801289'),(93,'edxval','0003_coursevideo_is_hidden','2016-12-17 01:37:41.000113'),(94,'email_marketing','0001_initial','2016-12-17 01:37:41.590373'),(95,'email_marketing','0002_auto_20160623_1656','2016-12-17 01:37:45.731159'),(96,'email_marketing','0003_auto_20160715_1145','2016-12-17 01:37:47.905611'),(97,'embargo','0001_initial','2016-12-17 01:37:50.816752'),(98,'embargo','0002_data__add_countries','2016-12-17 01:37:51.428897'),(99,'enterprise','0001_initial','2016-12-17 01:37:52.676832'),(100,'enterprise','0002_enterprisecustomerbrandingconfiguration','2016-12-17 01:37:52.991185'),(101,'enterprise','0003_auto_20161104_0937','2016-12-17 01:37:55.325661'),(102,'enterprise','0004_auto_20161114_0434','2016-12-17 01:37:57.048358'),(103,'enterprise','0005_pendingenterprisecustomeruser','2016-12-17 01:37:58.015592'),(104,'enterprise','0006_auto_20161121_0241','2016-12-17 01:37:58.815567'),(105,'enterprise','0007_auto_20161109_1511','2016-12-17 01:38:00.585867'),(106,'enterprise','0008_auto_20161124_2355','2016-12-17 01:38:03.518493'),(107,'enterprise','0009_auto_20161130_1651','2016-12-17 01:38:09.315609'),(108,'external_auth','0001_initial','2016-12-17 01:38:11.538009'),(109,'grades','0001_initial','2016-12-17 01:38:12.299969'),(110,'grades','0002_rename_last_edited_field','2016-12-17 01:38:12.389072'),(111,'grades','0003_coursepersistentgradesflag_persistentgradesenabledflag','2016-12-17 01:38:14.587694'),(112,'grades','0004_visibleblocks_course_id','2016-12-17 01:38:14.852239'),(113,'grades','0005_multiple_course_flags','2016-12-17 01:38:17.991203'),(114,'grades','0006_persistent_course_grades','2016-12-17 01:38:18.286869'),(115,'grades','0007_add_passed_timestamp_column','2016-12-17 01:38:18.569279'),(116,'grades','0008_persistentsubsectiongrade_first_attempted','2016-12-17 01:38:18.761806'),(117,'lms_xblock','0001_initial','2016-12-17 01:38:19.425467'),(118,'microsite_configuration','0001_initial','2016-12-17 01:38:25.662192'),(119,'microsite_configuration','0002_auto_20160202_0228','2016-12-17 01:38:27.129548'),(120,'milestones','0001_initial','2016-12-17 01:38:31.163648'),(121,'milestones','0002_data__seed_relationship_types','2016-12-17 01:38:31.236648'),(122,'milestones','0003_coursecontentmilestone_requirements','2016-12-17 01:38:31.480397'),(123,'milestones','0004_auto_20151221_1445','2016-12-17 01:38:32.009316'),(124,'mobile_api','0001_initial','2016-12-17 01:38:32.928271'),(125,'mobile_api','0002_auto_20160406_0904','2016-12-17 01:38:33.142806'),(126,'notes','0001_initial','2016-12-17 01:38:34.508850'),(127,'oauth2','0002_auto_20160404_0813','2016-12-17 01:38:37.690514'),(128,'oauth2','0003_client_logout_uri','2016-12-17 01:38:38.699174'),(129,'oauth2','0004_add_index_on_grant_expires','2016-12-17 01:38:39.640959'),(130,'oauth2_provider','0001_initial','2016-12-17 01:38:45.116729'),(131,'oauth2_provider','0002_08_updates','2016-12-17 01:38:49.786552'),(132,'oauth_dispatch','0001_initial','2016-12-17 01:38:51.121396'),(133,'oauth_provider','0001_initial','2016-12-17 01:38:54.733164'),(134,'organizations','0001_initial','2016-12-17 01:38:55.562660'),(135,'problem_builder','0001_initial','2016-12-17 01:38:56.040050'),(136,'problem_builder','0002_auto_20160121_1525','2016-12-17 01:38:59.389089'),(137,'problem_builder','0003_auto_20161124_0755','2016-12-17 01:38:59.809157'),(138,'programs','0001_initial','2016-12-17 01:39:01.624132'),(139,'programs','0002_programsapiconfig_cache_ttl','2016-12-17 01:39:05.775532'),(140,'programs','0003_auto_20151120_1613','2016-12-17 01:39:09.312390'),(141,'programs','0004_programsapiconfig_enable_certification','2016-12-17 01:39:10.238624'),(142,'programs','0005_programsapiconfig_max_retries','2016-12-17 01:39:11.212038'),(143,'programs','0006_programsapiconfig_xseries_ad_enabled','2016-12-17 01:39:12.253625'),(144,'programs','0007_programsapiconfig_program_listing_enabled','2016-12-17 01:39:13.503624'),(145,'programs','0008_programsapiconfig_program_details_enabled','2016-12-17 01:39:14.849992'),(146,'programs','0009_programsapiconfig_marketing_path','2016-12-17 01:39:16.273841'),(147,'redirects','0001_initial','2016-12-17 01:39:17.985115'),(148,'rss_proxy','0001_initial','2016-12-17 01:39:18.161442'),(149,'self_paced','0001_initial','2016-12-17 01:39:19.778329'),(150,'sessions','0001_initial','2016-12-17 01:39:20.015206'),(151,'student','0001_initial','2016-12-17 01:40:00.987487'),(152,'shoppingcart','0001_initial','2016-12-17 01:40:27.040292'),(153,'shoppingcart','0002_auto_20151208_1034','2016-12-17 01:40:29.848974'),(154,'shoppingcart','0003_auto_20151217_0958','2016-12-17 01:40:32.642524'),(155,'site_configuration','0001_initial','2016-12-17 01:40:35.979557'),(156,'site_configuration','0002_auto_20160720_0231','2016-12-17 01:40:39.343270'),(157,'default','0001_initial','2016-12-17 01:40:44.990397'),(158,'default','0002_add_related_name','2016-12-17 01:40:46.032495'),(159,'default','0003_alter_email_max_length','2016-12-17 01:40:46.317830'),(160,'default','0004_auto_20160423_0400','2016-12-17 01:40:46.964896'),(161,'social_auth','0005_auto_20160727_2333','2016-12-17 01:40:47.095986'),(162,'splash','0001_initial','2016-12-17 01:40:47.961326'),(163,'static_replace','0001_initial','2016-12-17 01:40:48.859594'),(164,'static_replace','0002_assetexcludedextensionsconfig','2016-12-17 01:40:49.757400'),(165,'status','0001_initial','2016-12-17 01:40:51.931130'),(166,'student','0002_auto_20151208_1034','2016-12-17 01:40:53.439054'),(167,'student','0003_auto_20160516_0938','2016-12-17 01:40:55.641900'),(168,'student','0004_auto_20160531_1422','2016-12-17 01:40:56.898809'),(169,'student','0005_auto_20160531_1653','2016-12-17 01:40:58.213621'),(170,'student','0006_logoutviewconfiguration','2016-12-17 01:40:59.783439'),(171,'student','0007_registrationcookieconfiguration','2016-12-17 01:41:01.350652'),(172,'student','0008_auto_20161117_1209','2016-12-17 01:41:02.711010'),(173,'submissions','0001_initial','2016-12-17 01:41:05.593297'),(174,'submissions','0002_auto_20151119_0913','2016-12-17 01:41:06.129881'),(175,'submissions','0003_submission_status','2016-12-17 01:41:06.395818'),(176,'survey','0001_initial','2016-12-17 01:41:08.882086'),(177,'teams','0001_initial','2016-12-17 01:41:14.538311'),(178,'theming','0001_initial','2016-12-17 01:41:16.331941'),(179,'third_party_auth','0001_initial','2016-12-17 01:41:26.011127'),(180,'third_party_auth','0002_schema__provider_icon_image','2016-12-17 01:41:33.750573'),(181,'third_party_auth','0003_samlproviderconfig_debug_mode','2016-12-17 01:41:35.196831'),(182,'third_party_auth','0004_add_visible_field','2016-12-17 01:41:43.861295'),(183,'third_party_auth','0005_add_site_field','2016-12-17 01:41:53.375038'),(184,'track','0001_initial','2016-12-17 01:41:53.542227'),(185,'user_api','0001_initial','2016-12-17 01:42:05.863461'),(186,'util','0001_initial','2016-12-17 01:42:09.703202'),(187,'util','0002_data__default_rate_limit_config','2016-12-17 01:42:09.796661'),(188,'verified_track_content','0001_initial','2016-12-17 01:42:09.998990'),(189,'verified_track_content','0002_verifiedtrackcohortedcourse_verified_cohort_name','2016-12-17 01:42:10.235800'),(190,'verify_student','0001_initial','2016-12-17 01:42:24.000396'),(191,'verify_student','0002_auto_20151124_1024','2016-12-17 01:42:25.762475'),(192,'verify_student','0003_auto_20151113_1443','2016-12-17 01:42:27.335813'),(193,'wiki','0001_initial','2016-12-17 01:43:15.421067'),(194,'wiki','0002_remove_article_subscription','2016-12-17 01:43:15.523293'),(195,'wiki','0003_ip_address_conv','2016-12-17 01:43:21.325409'),(196,'wiki','0004_increase_slug_size','2016-12-17 01:43:23.407350'),(197,'workflow','0001_initial','2016-12-17 01:43:24.380325'),(198,'xblock_django','0001_initial','2016-12-17 01:43:26.679803'),(199,'xblock_django','0002_auto_20160204_0809','2016-12-17 01:43:28.994528'),(200,'xblock_django','0003_add_new_config_models','2016-12-17 01:43:36.524582'),(201,'xblock_django','0004_delete_xblock_disable_config','2016-12-17 01:43:40.319712'),(202,'social_auth','0001_initial','2016-12-17 01:43:40.353184'),(203,'social_auth','0003_alter_email_max_length','2016-12-17 01:43:40.373388'),(204,'social_auth','0002_add_related_name','2016-12-17 01:43:40.393151'),(205,'social_auth','0004_auto_20160423_0400','2016-12-17 01:43:40.412988'),(206,'contentstore','0001_initial','2016-12-17 01:52:51.013580'),(207,'course_creators','0001_initial','2016-12-17 01:52:51.311061'),(208,'tagging','0001_initial','2016-12-17 01:52:51.891243'),(209,'user_tasks','0001_initial','2016-12-17 01:52:53.613189'),(210,'user_tasks','0002_artifact_file_storage','2016-12-17 01:52:53.898169'),(211,'xblock_config','0001_initial','2016-12-17 01:52:54.444481'),(212,'bulk_email','0006_course_mode_targets','2017-02-24 14:36:23.719337'),(213,'catalog','0002_catalogintegration_username','2017-02-24 14:36:24.490286'),(214,'celery_utils','0001_initial','2017-02-24 14:36:24.825828'),(215,'commerce','0005_commerceconfiguration_enable_automatic_refund_approval','2017-02-24 14:36:25.166899'),(216,'crawlers','0001_initial','2017-02-24 14:36:25.613555'),(217,'database_fixups','0001_initial','2017-02-24 14:36:25.733481'),(218,'email_marketing','0004_emailmarketingconfiguration_welcome_email_send_delay','2017-02-24 14:36:26.207683'),(219,'enterprise','0010_auto_20161222_1212','2017-02-24 14:36:27.350496'),(220,'enterprise','0011_enterprisecustomerentitlement_historicalenterprisecustomerentitlement','2017-02-24 14:36:28.964161'),(221,'enterprise','0012_auto_20170125_1033','2017-02-24 14:36:29.758403'),(222,'enterprise','0013_auto_20170125_1157','2017-02-24 14:36:32.344638'),(223,'enterprise','0014_enrollmentnotificationemailtemplate_historicalenrollmentnotificationemailtemplate','2017-02-24 14:36:33.913008'),(224,'enterprise','0015_auto_20170130_0003','2017-02-24 14:36:35.225065'),(225,'grades','0009_auto_20170111_1507','2017-02-24 14:36:35.519391'),(226,'grades','0010_auto_20170112_1156','2017-02-24 14:36:35.645242'),(227,'grades','0011_null_edited_time','2017-02-24 14:36:36.143239'),(228,'mobile_api','0003_ignore_mobile_available_flag','2017-02-24 14:36:37.535629'),(229,'organizations','0002_auto_20170117_1434','2017-02-24 14:36:37.595301'),(230,'programs','0010_auto_20170204_2332','2017-02-24 14:36:38.906037'),(231,'student','0009_auto_20170111_0422','2017-02-24 14:36:40.086964'),(232,'student','0010_auto_20170207_0458','2017-02-24 14:36:40.108819'),(233,'waffle','0001_initial','2017-02-24 14:36:42.930396'),(234,'tagging','0002_auto_20170116_1541','2017-02-24 14:40:24.563494'),(235,'block_structure','0001_config','2017-06-07 00:37:30.343993'),(236,'block_structure','0002_blockstructuremodel','2017-06-07 00:37:30.391358'),(237,'block_structure','0003_blockstructuremodel_storage','2017-06-07 00:37:30.419870'),(238,'block_structure','0004_blockstructuremodel_usagekeywithrun','2017-06-07 00:37:30.448817'),(239,'catalog','0003_catalogintegration_page_size','2017-06-07 00:37:30.602706'),(240,'commerce','0006_auto_20170424_1734','2017-06-07 00:37:30.740048'),(241,'course_groups','0002_change_inline_default_cohort_value','2017-06-07 00:37:30.778006'),(242,'course_overviews','0011_courseoverview_marketing_url','2017-06-07 00:37:30.845672'),(243,'course_overviews','0012_courseoverview_eligible_for_financial_aid','2017-06-07 00:37:30.899639'),(244,'crawlers','0002_auto_20170419_0018','2017-06-07 00:37:31.070971'),(245,'credentials','0003_auto_20170525_1109','2017-06-07 00:37:31.401834'),(246,'edxval','0004_data__add_hls_profile','2017-06-07 00:37:31.444213'),(247,'enterprise','0016_auto_20170405_0647','2017-06-07 00:37:37.503430'),(248,'enterprise','0017_auto_20170508_1341','2017-06-07 00:37:39.032610'),(249,'enterprise','0018_auto_20170511_1357','2017-06-07 00:37:40.093513'),(250,'grades','0012_computegradessetting','2017-06-07 00:37:40.674807'),(251,'instructor_task','0002_gradereportsetting','2017-06-07 00:37:41.262790'),(252,'integrated_channel','0001_initial','2017-06-07 00:37:42.180309'),(253,'organizations','0003_auto_20170221_1138','2017-06-07 00:37:42.310695'),(254,'organizations','0004_auto_20170413_2315','2017-06-07 00:37:42.434738'),(255,'programs','0011_auto_20170301_1844','2017-06-07 00:37:51.550330'),(256,'programs','0012_auto_20170419_0018','2017-06-07 00:37:52.112932'),(257,'sap_success_factors','0001_initial','2017-06-07 00:37:53.983983'),(258,'sap_success_factors','0002_auto_20170224_1545','2017-06-07 00:37:58.463119'),(259,'sap_success_factors','0003_auto_20170317_1402','2017-06-07 00:37:59.852698'),(260,'sap_success_factors','0004_catalogtransmissionaudit_audit_summary','2017-06-07 00:37:59.921348'),(261,'third_party_auth','0006_samlproviderconfig_automatic_refresh_enabled','2017-06-07 00:38:00.871273'),(262,'third_party_auth','0007_auto_20170406_0912','2017-06-07 00:38:03.066662'),(263,'third_party_auth','0008_auto_20170413_1455','2017-06-07 00:38:07.526124'),(264,'third_party_auth','0009_auto_20170415_1144','2017-06-07 00:38:11.039117'),(265,'third_party_auth','0010_add_skip_hinted_login_dialog_field','2017-06-07 00:38:15.035132'),(266,'video_config','0001_initial','2017-06-07 00:38:18.650519'),(267,'waffle_utils','0001_initial','2017-06-07 00:38:19.757784'),(268,'xblock_config','0002_courseeditltifieldsenabledflag','2017-06-07 00:42:52.632305'),(269,'assessment','0003_expand_course_id','2017-06-21 15:56:49.626427'),(270,'course_overviews','0013_courseoverview_language','2017-06-21 15:56:49.686469'),(271,'django_comment_common','0005_coursediscussionsettings','2017-06-21 15:56:49.737238'),(272,'enterprise','0019_auto_20170606_1853','2017-06-21 15:56:50.595767'),(273,'experiments','0001_initial','2017-06-21 15:56:51.802549'),(274,'third_party_auth','0011_auto_20170616_0112','2017-06-21 15:56:52.421575'),(275,'catalog','0004_auto_20170616_0618','2017-06-21 16:21:00.587994'),(276,'djcelery','0001_initial','2017-06-21 16:21:00.978433'),(277,'celery_utils','0002_chordable_django_backend','2017-06-21 16:21:01.100695'),(278,'course_groups','0003_auto_20170609_1455','2017-06-21 16:21:01.800797'),(279,'social_django','0006_partial','2017-06-21 16:21:01.891205'),(280,'social_django','0002_add_related_name','2017-06-21 16:21:01.924189'),(281,'social_django','0003_alter_email_max_length','2017-06-21 16:21:01.953674'),(282,'social_django','0001_initial','2017-06-21 16:21:01.969848'),(283,'social_django','0004_auto_20160423_0400','2017-06-21 16:21:01.981097'),(284,'social_django','0005_auto_20160727_2333','2017-06-21 16:21:01.993158'),(285,'api_admin','0007_delete_historical_api_records','2018-01-31 21:01:44.604042'),(286,'catalog','0005_catalogintegration_long_term_cache_ttl','2018-01-31 21:01:44.742139'),(287,'certificates','0009_certificategenerationcoursesetting_language_self_generation','2018-01-31 21:01:44.837709'),(288,'certificates','0010_certificatetemplate_language','2018-01-31 21:01:44.879450'),(289,'certificates','0011_certificatetemplate_alter_unique','2018-01-31 21:01:44.929486'),(290,'certificates','0012_certificategenerationcoursesetting_include_hours_of_effort','2018-01-31 21:01:44.967558'),(291,'certificates','0013_remove_certificategenerationcoursesetting_enabled','2018-01-31 21:01:45.003982'),(292,'completion','0001_initial','2018-01-31 21:01:45.417693'),(293,'enterprise','0020_auto_20170624_2316','2018-01-31 21:01:46.385829'),(294,'enterprise','0021_auto_20170711_0712','2018-01-31 21:01:47.333992'),(295,'enterprise','0022_auto_20170720_1543','2018-01-31 21:01:47.726621'),(296,'enterprise','0023_audit_data_reporting_flag','2018-01-31 21:01:48.145327'),(297,'enterprise','0024_enterprisecustomercatalog_historicalenterprisecustomercatalog','2018-01-31 21:01:48.610337'),(298,'consent','0001_initial','2018-01-31 21:01:49.321638'),(299,'consent','0002_migrate_to_new_data_sharing_consent','2018-01-31 21:01:49.351643'),(300,'consent','0003_historicaldatasharingconsent_history_change_reason','2018-01-31 21:01:49.589455'),(301,'course_goals','0001_initial','2018-01-31 21:01:50.084210'),(302,'course_goals','0002_auto_20171010_1129','2018-01-31 21:01:50.330423'),(303,'course_modes','0008_course_key_field_to_foreign_key','2018-01-31 21:01:53.209890'),(304,'course_modes','0009_suggested_prices_to_charfield','2018-01-31 21:01:53.414164'),(305,'course_modes','0010_archived_suggested_prices_to_charfield','2018-01-31 21:01:53.449534'),(306,'course_overviews','0014_courseoverview_certificate_available_date','2018-01-31 21:01:53.672627'),(307,'courseware','0002_coursedynamicupgradedeadlineconfiguration_dynamicupgradedeadlineconfiguration','2018-01-31 21:01:54.153350'),(308,'courseware','0003_auto_20170825_0935','2018-01-31 21:01:54.383133'),(309,'courseware','0004_auto_20171010_1639','2018-01-31 21:01:54.616064'),(310,'courseware','0005_orgdynamicupgradedeadlineconfiguration','2018-01-31 21:01:55.097014'),(311,'credit','0004_delete_historical_credit_records','2018-01-31 21:01:56.309356'),(312,'enterprise','0025_auto_20170828_1412','2018-01-31 21:01:57.886273'),(313,'enterprise','0026_make_require_account_level_consent_nullable','2018-01-31 21:01:58.439892'),(314,'enterprise','0027_remove_account_level_consent','2018-01-31 21:02:00.565936'),(315,'enterprise','0028_link_enterprise_to_enrollment_template','2018-01-31 21:02:01.607377'),(316,'enterprise','0029_auto_20170925_1909','2018-01-31 21:02:01.959689'),(317,'enterprise','0030_auto_20171005_1600','2018-01-31 21:02:02.664205'),(318,'enterprise','0031_auto_20171012_1249','2018-01-31 21:02:03.456703'),(319,'enterprise','0032_reporting_model','2018-01-31 21:02:03.898842'),(320,'enterprise','0033_add_history_change_reason_field','2018-01-31 21:02:06.085068'),(321,'enterprise','0034_auto_20171023_0727','2018-01-31 21:02:08.772191'),(322,'degreed','0001_initial','2018-01-31 21:02:09.672452'),(323,'degreed','0002_auto_20180104_0103','2018-01-31 21:02:10.546526'),(324,'degreed','0003_auto_20180109_0712','2018-01-31 21:02:11.120021'),(325,'edxval','0005_videoimage','2018-01-31 21:02:11.201849'),(326,'edxval','0006_auto_20171009_0725','2018-01-31 21:02:11.332744'),(327,'edxval','0007_transcript_credentials_state','2018-01-31 21:02:11.419269'),(328,'edxval','0008_remove_subtitles','2018-01-31 21:02:11.520396'),(329,'edxval','0009_auto_20171127_0406','2018-01-31 21:02:11.562866'),(330,'edxval','0010_add_video_as_foreign_key','2018-01-31 21:02:11.797949'),(331,'email_marketing','0005_emailmarketingconfiguration_user_registration_cookie_timeout_delay','2018-01-31 21:02:12.217904'),(332,'email_marketing','0006_auto_20170711_0615','2018-01-31 21:02:12.624095'),(333,'email_marketing','0007_auto_20170809_0653','2018-01-31 21:02:13.882545'),(334,'email_marketing','0008_auto_20170809_0539','2018-01-31 21:02:13.915894'),(335,'email_marketing','0009_remove_emailmarketingconfiguration_sailthru_activation_template','2018-01-31 21:02:14.348814'),(336,'enterprise','0035_auto_20171212_1129','2018-01-31 21:02:15.284155'),(337,'enterprise','0036_sftp_reporting_support','2018-01-31 21:02:19.660671'),(338,'enterprise','0037_auto_20180110_0450','2018-01-31 21:02:21.034910'),(339,'enterprise','0038_auto_20180122_1427','2018-01-31 21:02:22.394776'),(340,'enterprise','0039_auto_20180129_1034','2018-01-31 21:02:23.811475'),(341,'enterprise','0040_auto_20180129_1428','2018-01-31 21:02:27.383393'),(342,'student','0011_course_key_field_to_foreign_key','2018-01-31 21:02:32.705958'),(343,'student','0012_sociallink','2018-01-31 21:02:33.539909'),(344,'student','0013_delete_historical_enrollment_records','2018-01-31 21:02:36.241468'),(345,'entitlements','0001_initial','2018-01-31 21:02:37.138219'),(346,'entitlements','0002_auto_20171102_0719','2018-01-31 21:02:40.613256'),(347,'entitlements','0003_auto_20171205_1431','2018-01-31 21:02:44.308427'),(348,'entitlements','0004_auto_20171206_1729','2018-01-31 21:02:45.212260'),(349,'experiments','0002_auto_20170627_1402','2018-01-31 21:02:45.318873'),(350,'experiments','0003_auto_20170713_1148','2018-01-31 21:02:45.367106'),(351,'grades','0013_persistentsubsectiongradeoverride','2018-01-31 21:02:45.461553'),(352,'sap_success_factors','0005_historicalsapsuccessfactorsenterprisecustomerconfiguration_history_change_reason','2018-01-31 21:02:46.467904'),(353,'sap_success_factors','0006_sapsuccessfactors_use_enterprise_enrollment_page_waffle_flag','2018-01-31 21:02:46.517413'),(354,'sap_success_factors','0007_remove_historicalsapsuccessfactorsenterprisecustomerconfiguration_history_change_reason','2018-01-31 21:02:47.583412'),(355,'sap_success_factors','0008_historicalsapsuccessfactorsenterprisecustomerconfiguration_history_change_reason','2018-01-31 21:02:50.664627'),(356,'sap_success_factors','0009_sapsuccessfactors_remove_enterprise_enrollment_page_waffle_flag','2018-01-31 21:02:50.728412'),(357,'sap_success_factors','0010_move_audit_tables_to_base_integrated_channel','2018-01-31 21:02:50.862314'),(358,'integrated_channel','0002_delete_enterpriseintegratedchannel','2018-01-31 21:02:50.913236'),(359,'integrated_channel','0003_catalogtransmissionaudit_learnerdatatransmissionaudit','2018-01-31 21:02:51.016140'),(360,'integrated_channel','0004_catalogtransmissionaudit_channel','2018-01-31 21:02:51.078082'),(361,'microsite_configuration','0003_delete_historical_records','2018-01-31 21:02:53.863822'),(362,'oauth2','0005_grant_nonce','2018-01-31 21:02:54.740173'),(363,'oauth2_provider','0003_auto_20160316_1503','2018-01-31 21:02:55.737270'),(364,'oauth2_provider','0004_auto_20160525_1623','2018-01-31 21:02:58.647377'),(365,'organizations','0005_auto_20171116_0640','2018-01-31 21:02:58.712488'),(366,'organizations','0006_auto_20171207_0259','2018-01-31 21:02:58.776094'),(367,'problem_builder','0004_copy_course_ids','2018-01-31 21:02:58.827699'),(368,'problem_builder','0005_auto_20170112_1021','2018-01-31 21:02:58.966863'),(369,'problem_builder','0006_remove_deprecated_course_id','2018-01-31 21:02:59.088639'),(370,'sap_success_factors','0011_auto_20180104_0103','2018-01-31 21:03:16.358552'),(371,'sap_success_factors','0012_auto_20180109_0712','2018-01-31 21:03:18.483528'),(372,'schedules','0001_initial','2018-01-31 21:03:19.621088'),(373,'schedules','0002_auto_20170816_1532','2018-01-31 21:03:21.963312'),(374,'schedules','0003_scheduleconfig','2018-01-31 21:03:23.157828'),(375,'schedules','0004_auto_20170922_1428','2018-01-31 21:03:25.544388'),(376,'schedules','0005_auto_20171010_1722','2018-01-31 21:03:27.981349'),(377,'schedules','0006_scheduleexperience','2018-01-31 21:03:29.227661'),(378,'schedules','0007_scheduleconfig_hold_back_ratio','2018-01-31 21:03:30.503809'),(379,'submissions','0004_remove_django_extensions','2018-01-31 21:03:30.602382'),(380,'third_party_auth','0012_auto_20170626_1135','2018-01-31 21:03:35.495425'),(381,'third_party_auth','0013_sync_learner_profile_data','2018-01-31 21:03:41.799865'),(382,'third_party_auth','0014_auto_20171222_1233','2018-01-31 21:03:44.368171'),(383,'third_party_auth','0015_samlproviderconfig_archived','2018-01-31 21:03:45.374766'),(384,'third_party_auth','0016_auto_20180130_0938','2018-01-31 21:03:47.924768'),(385,'verified_track_content','0003_migrateverifiedtrackcohortssetting','2018-01-31 21:03:49.225425'),(386,'verify_student','0004_delete_historical_records','2018-01-31 21:03:50.646174'),(387,'video_config','0002_coursevideotranscriptenabledflag_videotranscriptenabledflag','2018-01-31 21:03:53.578941'),(388,'video_pipeline','0001_initial','2018-01-31 21:03:55.059304'),(389,'video_pipeline','0002_auto_20171114_0704','2018-01-31 21:03:58.255057'),(390,'video_pipeline','0003_coursevideouploadsenabledbydefault_videouploadsenabledbydefault','2018-01-31 21:04:01.607944'),(391,'waffle','0002_auto_20161201_0958','2018-01-31 21:04:01.674629'),(392,'wiki','0005_remove_attachments_and_images','2018-01-31 21:04:10.782730'),(393,'workflow','0002_remove_django_extensions','2018-01-31 21:04:10.874302'),(394,'contentstore','0002_add_assets_page_flag','2018-01-31 21:12:40.535952');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_openid_auth_association`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_openid_auth_association` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `server_url` longtext NOT NULL,
+  `handle` varchar(255) NOT NULL,
+  `secret` longtext NOT NULL,
+  `issued` int(11) NOT NULL,
+  `lifetime` int(11) NOT NULL,
+  `assoc_type` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_openid_auth_association`
+--
+
+LOCK TABLES `django_openid_auth_association` WRITE;
+/*!40000 ALTER TABLE `django_openid_auth_association` DISABLE KEYS */;
+/*!40000 ALTER TABLE `django_openid_auth_association` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_openid_auth_nonce`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_openid_auth_nonce` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `server_url` varchar(2047) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `salt` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_openid_auth_nonce`
+--
+
+LOCK TABLES `django_openid_auth_nonce` WRITE;
+/*!40000 ALTER TABLE `django_openid_auth_nonce` DISABLE KEYS */;
+/*!40000 ALTER TABLE `django_openid_auth_nonce` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_openid_auth_useropenid`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_openid_auth_useropenid` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `claimed_id` longtext NOT NULL,
+  `display_id` longtext NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `django_openid_auth_user_user_id_136119e72782e2cf_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `django_openid_auth_user_user_id_136119e72782e2cf_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_openid_auth_useropenid`
+--
+
+LOCK TABLES `django_openid_auth_useropenid` WRITE;
+/*!40000 ALTER TABLE `django_openid_auth_useropenid` DISABLE KEYS */;
+/*!40000 ALTER TABLE `django_openid_auth_useropenid` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -4248,9 +4030,9 @@ CREATE TABLE `django_redirect` (
   `old_path` varchar(200) NOT NULL,
   `new_path` varchar(200) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `django_redirect_site_id_old_path_ac5dd16b_uniq` (`site_id`,`old_path`),
-  KEY `django_redirect_old_path_c6cc94d3` (`old_path`),
-  CONSTRAINT `django_redirect_site_id_c3e37341_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  UNIQUE KEY `site_id` (`site_id`,`old_path`),
+  KEY `django_redirect_91a0b591` (`old_path`),
+  CONSTRAINT `django_redirect_site_id_121a4403f653e524_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4274,7 +4056,7 @@ CREATE TABLE `django_session` (
   `session_data` longtext NOT NULL,
   `expire_date` datetime(6) NOT NULL,
   PRIMARY KEY (`session_key`),
-  KEY `django_session_expire_date_a5c62663` (`expire_date`)
+  KEY `django_session_de54fa62` (`expire_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4297,8 +4079,7 @@ CREATE TABLE `django_site` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `domain` varchar(100) NOT NULL,
   `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `django_site_domain_a2e37b91_uniq` (`domain`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4386,10 +4167,10 @@ CREATE TABLE `djcelery_periodictask` (
   `interval_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `djcelery_periodictas_crontab_id_75609bab_fk_djcelery_` (`crontab_id`),
-  KEY `djcelery_periodictas_interval_id_b426ab02_fk_djcelery_` (`interval_id`),
-  CONSTRAINT `djcelery_periodictas_crontab_id_75609bab_fk_djcelery_` FOREIGN KEY (`crontab_id`) REFERENCES `djcelery_crontabschedule` (`id`),
-  CONSTRAINT `djcelery_periodictas_interval_id_b426ab02_fk_djcelery_` FOREIGN KEY (`interval_id`) REFERENCES `djcelery_intervalschedule` (`id`)
+  KEY `djcel_crontab_id_1d8228f5b44b680a_fk_djcelery_crontabschedule_id` (`crontab_id`),
+  KEY `djc_interval_id_20cfc1cad060dfad_fk_djcelery_intervalschedule_id` (`interval_id`),
+  CONSTRAINT `djc_interval_id_20cfc1cad060dfad_fk_djcelery_intervalschedule_id` FOREIGN KEY (`interval_id`) REFERENCES `djcelery_intervalschedule` (`id`),
+  CONSTRAINT `djcel_crontab_id_1d8228f5b44b680a_fk_djcelery_crontabschedule_id` FOREIGN KEY (`crontab_id`) REFERENCES `djcelery_crontabschedule` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4448,12 +4229,12 @@ CREATE TABLE `djcelery_taskstate` (
   `worker_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `task_id` (`task_id`),
-  KEY `djcelery_taskstate_state_53543be4` (`state`),
-  KEY `djcelery_taskstate_name_8af9eded` (`name`),
-  KEY `djcelery_taskstate_tstamp_4c3f93a1` (`tstamp`),
-  KEY `djcelery_taskstate_hidden_c3905e57` (`hidden`),
-  KEY `djcelery_taskstate_worker_id_f7f57a05_fk_djcelery_workerstate_id` (`worker_id`),
-  CONSTRAINT `djcelery_taskstate_worker_id_f7f57a05_fk_djcelery_workerstate_id` FOREIGN KEY (`worker_id`) REFERENCES `djcelery_workerstate` (`id`)
+  KEY `djcelery_taskstate_9ed39e2e` (`state`),
+  KEY `djcelery_taskstate_b068931c` (`name`),
+  KEY `djcelery_taskstate_863bb2ee` (`tstamp`),
+  KEY `djcelery_taskstate_662f707d` (`hidden`),
+  KEY `djcelery_taskstate_ce77e6ef` (`worker_id`),
+  CONSTRAINT `djcelery_t_worker_id_30050731b1c3d3d9_fk_djcelery_workerstate_id` FOREIGN KEY (`worker_id`) REFERENCES `djcelery_workerstate` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4478,7 +4259,7 @@ CREATE TABLE `djcelery_workerstate` (
   `last_heartbeat` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `hostname` (`hostname`),
-  KEY `djcelery_workerstate_last_heartbeat_4539b544` (`last_heartbeat`)
+  KEY `djcelery_workerstate_f129901a` (`last_heartbeat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4489,159 +4270,6 @@ CREATE TABLE `djcelery_workerstate` (
 LOCK TABLES `djcelery_workerstate` WRITE;
 /*!40000 ALTER TABLE `djcelery_workerstate` DISABLE KEYS */;
 /*!40000 ALTER TABLE `djcelery_workerstate` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `edx_when_contentdate`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `edx_when_contentdate` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `course_id` varchar(255) NOT NULL,
-  `location` varchar(255) DEFAULT NULL,
-  `policy_id` int(11) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `field` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `edx_when_contentdate_policy_id_location_field_a26790ec_uniq` (`policy_id`,`location`,`field`),
-  KEY `edx_when_contentdate_course_id_e6c39fdc` (`course_id`),
-  KEY `edx_when_contentdate_location_485206ea` (`location`),
-  KEY `edx_when_contentdate_policy_id_af2bcaf4` (`policy_id`),
-  KEY `edx_when_contentdate_active_d091ba6d` (`active`),
-  CONSTRAINT `edx_when_contentdate_policy_id_af2bcaf4_fk_edx_when_` FOREIGN KEY (`policy_id`) REFERENCES `edx_when_datepolicy` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `edx_when_contentdate`
---
-
-LOCK TABLES `edx_when_contentdate` WRITE;
-/*!40000 ALTER TABLE `edx_when_contentdate` DISABLE KEYS */;
-INSERT INTO `edx_when_contentdate` VALUES (1,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@edx_introduction',1,1,'start'),(2,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@html_07d547513285',2,1,'start'),(3,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@700x_editmolB',2,1,'start'),(4,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@simulations',1,1,'start'),(5,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@logic_gate_problem',2,1,'start'),(6,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@python_grader',2,1,'start'),(7,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@Sample_Algebraic_Problem',2,1,'start'),(8,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@course+block@course',3,1,'start'),(9,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@workflow',2,1,'start'),(10,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@graded_simulations',2,1,'start'),(11,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@html+block@700x_pathways',2,1,'start'),(12,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@basic_questions',2,1,'start'),(13,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@sequential+block@48ecb924d7fe4b66a230137626bfa93e',4,1,'start'),(14,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@700x_proteinmake',2,1,'start'),(15,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@1414ffd5143b4b508f739b563ab468b7',1,1,'start'),(16,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@chapter+block@9fca584977d04885bc911ea76a9ef29e',5,1,'start'),(17,'course-v1:edX+DemoX+Demo_Course','block-v1:edX+DemoX+Demo_Course+type@problem+block@free_form_simulation',2,1,'start'),(18,'course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@course+block@course',6,1,'start'),(19,'course-v1:edX+E2E-101+course','block-v1:edX+E2E-101+course+type@course+block@course',7,1,'end');
-/*!40000 ALTER TABLE `edx_when_contentdate` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `edx_when_datepolicy`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `edx_when_datepolicy` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `abs_date` datetime(6) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `edx_when_datepolicy_abs_date_1a510cd3` (`abs_date`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `edx_when_datepolicy`
---
-
-LOCK TABLES `edx_when_datepolicy` WRITE;
-/*!40000 ALTER TABLE `edx_when_datepolicy` DISABLE KEYS */;
-INSERT INTO `edx_when_datepolicy` VALUES (1,'2019-09-25 20:05:28.764024','2019-09-25 20:05:28.764335','1970-01-01 05:00:00.000000'),(2,'2019-09-25 20:05:28.788947','2019-09-25 20:05:28.789298','2013-02-05 00:00:00.000000'),(3,'2019-09-25 20:05:28.933273','2019-09-25 20:05:28.933880','2013-02-05 05:00:00.000000'),(4,'2019-09-25 20:05:29.045506','2019-09-25 20:05:29.046213','1978-02-05 00:00:00.000000'),(5,'2019-09-25 20:05:29.114527','2019-09-25 20:05:29.115317','2970-01-01 05:00:00.000000'),(6,'2019-09-25 20:27:45.488304','2019-09-25 20:27:45.488717','2016-01-01 00:00:00.000000'),(7,'2019-09-25 20:27:45.514600','2019-09-25 20:27:45.514900','2018-12-31 00:00:00.000000');
-/*!40000 ALTER TABLE `edx_when_datepolicy` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `edx_when_userdate`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `edx_when_userdate` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `abs_date` datetime(6) DEFAULT NULL,
-  `rel_date` int(11) DEFAULT NULL,
-  `reason` longtext NOT NULL,
-  `actor_id` int(11) DEFAULT NULL,
-  `user_id` int(11) NOT NULL,
-  `content_date_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `edx_when_userdate_user_id_46e8cc36_fk_auth_user_id` (`user_id`),
-  KEY `edx_when_userdate_content_date_id_35c5e2e2_fk_edx_when_` (`content_date_id`),
-  KEY `edx_when_userdate_actor_id_cbef1cdc_fk_auth_user_id` (`actor_id`),
-  CONSTRAINT `edx_when_userdate_actor_id_cbef1cdc_fk_auth_user_id` FOREIGN KEY (`actor_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `edx_when_userdate_content_date_id_35c5e2e2_fk_edx_when_` FOREIGN KEY (`content_date_id`) REFERENCES `edx_when_contentdate` (`id`),
-  CONSTRAINT `edx_when_userdate_user_id_46e8cc36_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `edx_when_userdate`
---
-
-LOCK TABLES `edx_when_userdate` WRITE;
-/*!40000 ALTER TABLE `edx_when_userdate` DISABLE KEYS */;
-/*!40000 ALTER TABLE `edx_when_userdate` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `edx_zoom_launchlog`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `edx_zoom_launchlog` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `course_id` varchar(255) NOT NULL,
-  `location` varchar(255) NOT NULL,
-  `managed` tinyint(1) NOT NULL,
-  `first_access` datetime(6) NOT NULL,
-  `last_access` datetime(6) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `edx_zoom_launchlog_user_id_location_1a925a87_uniq` (`user_id`,`location`),
-  KEY `edx_zoom_launchlog_course_id_df466312` (`course_id`),
-  KEY `edx_zoom_launchlog_managed_426683ea` (`managed`),
-  KEY `edx_zoom_launchlog_first_access_f45fc5ee` (`first_access`),
-  KEY `edx_zoom_launchlog_last_access_5c5d612f` (`last_access`),
-  CONSTRAINT `edx_zoom_launchlog_user_id_fad15956_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `edx_zoom_launchlog`
---
-
-LOCK TABLES `edx_zoom_launchlog` WRITE;
-/*!40000 ALTER TABLE `edx_zoom_launchlog` DISABLE KEYS */;
-/*!40000 ALTER TABLE `edx_zoom_launchlog` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `edx_zoom_lticredential`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `edx_zoom_lticredential` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `course_id` varchar(255) NOT NULL,
-  `key` varchar(255) NOT NULL,
-  `secret` varchar(255) NOT NULL,
-  `launch_url` varchar(1024) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `course_id` (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `edx_zoom_lticredential`
---
-
-LOCK TABLES `edx_zoom_lticredential` WRITE;
-/*!40000 ALTER TABLE `edx_zoom_lticredential` DISABLE KEYS */;
-/*!40000 ALTER TABLE `edx_zoom_lticredential` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -4656,9 +4284,9 @@ CREATE TABLE `edxval_coursevideo` (
   `video_id` int(11) NOT NULL,
   `is_hidden` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `edxval_coursevideo_course_id_video_id_ebd82f35_uniq` (`course_id`,`video_id`),
-  KEY `edxval_coursevideo_video_id_85dfcf76_fk_edxval_video_id` (`video_id`),
-  CONSTRAINT `edxval_coursevideo_video_id_85dfcf76_fk_edxval_video_id` FOREIGN KEY (`video_id`) REFERENCES `edxval_video` (`id`)
+  UNIQUE KEY `edxval_coursevideo_course_id_42cecee05cff2d8c_uniq` (`course_id`,`video_id`),
+  KEY `edxval_coursevideo_b58b747e` (`video_id`),
+  CONSTRAINT `edxval_coursevideo_video_id_68b2969f352edd03_fk_edxval_video_id` FOREIGN KEY (`video_id`) REFERENCES `edxval_video` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4687,10 +4315,10 @@ CREATE TABLE `edxval_encodedvideo` (
   `profile_id` int(11) NOT NULL,
   `video_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `edxval_encodedvideo_profile_id_d9f3e086_fk_edxval_profile_id` (`profile_id`),
-  KEY `edxval_encodedvideo_video_id_d8857acb_fk_edxval_video_id` (`video_id`),
-  CONSTRAINT `edxval_encodedvideo_profile_id_d9f3e086_fk_edxval_profile_id` FOREIGN KEY (`profile_id`) REFERENCES `edxval_profile` (`id`),
-  CONSTRAINT `edxval_encodedvideo_video_id_d8857acb_fk_edxval_video_id` FOREIGN KEY (`video_id`) REFERENCES `edxval_video` (`id`)
+  KEY `edxval_encodedvideo_83a0eb3f` (`profile_id`),
+  KEY `edxval_encodedvideo_b58b747e` (`video_id`),
+  CONSTRAINT `edxval_encodedv_profile_id_484a111092acafb3_fk_edxval_profile_id` FOREIGN KEY (`profile_id`) REFERENCES `edxval_profile` (`id`),
+  CONSTRAINT `edxval_encodedvideo_video_id_56934bca09fc3b13_fk_edxval_video_id` FOREIGN KEY (`video_id`) REFERENCES `edxval_video` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4714,7 +4342,7 @@ CREATE TABLE `edxval_profile` (
   `profile_name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `profile_name` (`profile_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4723,7 +4351,7 @@ CREATE TABLE `edxval_profile` (
 
 LOCK TABLES `edxval_profile` WRITE;
 /*!40000 ALTER TABLE `edxval_profile` DISABLE KEYS */;
-INSERT INTO `edxval_profile` VALUES (7,'audio_mp3'),(1,'desktop_mp4'),(2,'desktop_webm'),(6,'hls'),(3,'mobile_high'),(4,'mobile_low'),(5,'youtube');
+INSERT INTO `edxval_profile` VALUES (1,'desktop_mp4'),(2,'desktop_webm'),(6,'hls'),(3,'mobile_high'),(4,'mobile_low'),(5,'youtube');
 /*!40000 ALTER TABLE `edxval_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4741,7 +4369,7 @@ CREATE TABLE `edxval_thirdpartytranscriptcredentialsstate` (
   `provider` varchar(20) NOT NULL,
   `exists` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `edxval_thirdpartytranscr_org_provider_188f7ddf_uniq` (`org`,`provider`)
+  UNIQUE KEY `edxval_thirdpartytranscriptcredentials_org_56deb259e3beb1a8_uniq` (`org`,`provider`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4800,9 +4428,9 @@ CREATE TABLE `edxval_video` (
   `status` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `edx_video_id` (`edx_video_id`),
-  KEY `edxval_video_client_video_id_2b668312` (`client_video_id`),
-  KEY `edxval_video_status_5f33a104` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  KEY `edxval_video_8d63c4f7` (`client_video_id`),
+  KEY `edxval_video_9acb4454` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4811,7 +4439,6 @@ CREATE TABLE `edxval_video` (
 
 LOCK TABLES `edxval_video` WRITE;
 /*!40000 ALTER TABLE `edxval_video` DISABLE KEYS */;
-INSERT INTO `edxval_video` VALUES (1,'2019-09-25 20:05:16.680246','8c011e86-a5cc-4ad0-8f37-ca0169cbda11','External Video',0,'external'),(2,'2019-09-25 20:05:16.797039','ec7b0187-a011-4121-ba63-d2c259782a67','External Video',0,'external'),(3,'2019-09-25 20:05:16.919055','8829b061-f120-42a1-9028-092a7ec075d5','External Video',0,'external'),(4,'2019-09-25 20:05:17.001909','f5804603-4e0c-4194-9883-615b95fd1939','External Video',0,'external'),(5,'2019-09-25 20:05:17.083886','270d33c7-f433-4cfe-9176-11acf9546a52','External Video',0,'external'),(6,'2019-09-25 20:05:31.674916','13537446-badd-4231-894e-8e338084507a','External Video',0,'external'),(7,'2019-09-25 20:05:31.744946','113451f6-3ad8-44b1-86f3-4cb277198813','External Video',0,'external'),(8,'2019-09-25 20:05:32.002000','ea1d2161-ce94-453b-82c4-e9d64d56e902','External Video',0,'external'),(9,'2019-09-25 20:05:32.122709','f49415d8-aa3c-403f-a076-835ab1d22919','External Video',0,'external');
 /*!40000 ALTER TABLE `edxval_video` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4830,7 +4457,7 @@ CREATE TABLE `edxval_videoimage` (
   `course_video_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `course_video_id` (`course_video_id`),
-  CONSTRAINT `edxval_videoimage_course_video_id_06855d34_fk_edxval_co` FOREIGN KEY (`course_video_id`) REFERENCES `edxval_coursevideo` (`id`)
+  CONSTRAINT `edxval_course_video_id_595461bc0ff739b3_fk_edxval_coursevideo_id` FOREIGN KEY (`course_video_id`) REFERENCES `edxval_coursevideo` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4857,13 +4484,14 @@ CREATE TABLE `edxval_videotranscript` (
   `language_code` varchar(50) NOT NULL,
   `provider` varchar(30) NOT NULL,
   `file_format` varchar(20) NOT NULL,
-  `video_id` int(11) DEFAULT NULL,
+  `video_id` int(11),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `edxval_videotranscript_video_id_language_code_37532906_uniq` (`video_id`,`language_code`),
-  KEY `edxval_videotranscript_language_code_d78ce3d1` (`language_code`),
-  KEY `edxval_videotranscript_file_format_3adddaf7` (`file_format`),
-  CONSTRAINT `edxval_videotranscript_video_id_6ffdfb56_fk_edxval_video_id` FOREIGN KEY (`video_id`) REFERENCES `edxval_video` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `edxval_videotranscript_video_id_729fab369c0f7028_uniq` (`video_id`,`language_code`),
+  KEY `edxval_videotranscript_60716c2f` (`language_code`),
+  KEY `edxval_videotranscript_e1be1ad3` (`file_format`),
+  KEY `edxval_videotranscript_b58b747e` (`video_id`),
+  CONSTRAINT `edxval_videotranscr_video_id_2578e231c810d058_fk_edxval_video_id` FOREIGN KEY (`video_id`) REFERENCES `edxval_video` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4872,7 +4500,6 @@ CREATE TABLE `edxval_videotranscript` (
 
 LOCK TABLES `edxval_videotranscript` WRITE;
 /*!40000 ALTER TABLE `edxval_videotranscript` DISABLE KEYS */;
-INSERT INTO `edxval_videotranscript` VALUES (1,'2019-09-25 20:05:16.702642','2019-09-25 20:05:16.713784','video-transcripts/56d1e8477c1f4982a92aa6af89b0225f.sjson','en','Custom','sjson',1),(2,'2019-09-25 20:05:16.828409','2019-09-25 20:05:16.844801','video-transcripts/fdea54eb45d340b0b99522ced7c652e8.sjson','en','Custom','sjson',2),(3,'2019-09-25 20:05:16.935769','2019-09-25 20:05:16.944967','video-transcripts/7a46f5299c13477098b7910d48f7f3cd.sjson','en','Custom','sjson',3),(4,'2019-09-25 20:05:17.018001','2019-09-25 20:05:17.029142','video-transcripts/2f79a468cd7945ab89092c0b125afdd1.sjson','en','Custom','sjson',4),(5,'2019-09-25 20:05:17.099505','2019-09-25 20:05:17.109486','video-transcripts/86dc0853ce2a4effbb2d699feb9eee8a.sjson','en','Custom','sjson',5),(6,'2019-09-25 20:05:31.692902','2019-09-25 20:05:31.701512','video-transcripts/3c5bc3cfa80942869b97ce9b91a64e74.sjson','en','Custom','sjson',6),(7,'2019-09-25 20:05:32.017791','2019-09-25 20:05:32.027708','video-transcripts/77240a508e2542eb90fa1c08783fe9fe.sjson','en','Custom','sjson',8),(8,'2019-09-25 20:05:32.151046','2019-09-25 20:05:32.160048','video-transcripts/1a59329c01b54760bdee8182790b0d64.sjson','en','Custom','sjson',9);
 /*!40000 ALTER TABLE `edxval_videotranscript` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4904,11 +4531,9 @@ CREATE TABLE `email_marketing_emailmarketingconfiguration` (
   `welcome_email_send_delay` int(11) NOT NULL,
   `user_registration_cookie_timeout_delay` double NOT NULL,
   `sailthru_welcome_template` varchar(20) NOT NULL,
-  `sailthru_verification_failed_template` varchar(20) NOT NULL,
-  `sailthru_verification_passed_template` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `email_marketing_emai_changed_by_id_15ce753b_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `email_marketing_emai_changed_by_id_15ce753b_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `email_marketing_e_changed_by_id_1c6968b921f23b0b_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `email_marketing_e_changed_by_id_1c6968b921f23b0b_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4957,10 +4582,11 @@ CREATE TABLE `embargo_countryaccessrule` (
   `country_id` int(11) NOT NULL,
   `restricted_course_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `embargo_countryaccessrul_restricted_course_id_cou_477b6bb1_uniq` (`restricted_course_id`,`country_id`),
-  KEY `embargo_countryacces_country_id_6af33e89_fk_embargo_c` (`country_id`),
-  CONSTRAINT `embargo_countryacces_country_id_6af33e89_fk_embargo_c` FOREIGN KEY (`country_id`) REFERENCES `embargo_country` (`id`),
-  CONSTRAINT `embargo_countryacces_restricted_course_id_eedb3d21_fk_embargo_r` FOREIGN KEY (`restricted_course_id`) REFERENCES `embargo_restrictedcourse` (`id`)
+  UNIQUE KEY `embargo_countryaccess_restricted_course_id_6f340c36c633cb0a_uniq` (`restricted_course_id`,`country_id`),
+  KEY `embargo_countr_country_id_6244ff9d9c405c6e_fk_embargo_country_id` (`country_id`),
+  KEY `embargo_countryaccessrule_77607676` (`restricted_course_id`),
+  CONSTRAINT `d140f72cce132ba9230b3ff66d8761ad` FOREIGN KEY (`restricted_course_id`) REFERENCES `embargo_restrictedcourse` (`id`),
+  CONSTRAINT `embargo_countr_country_id_6244ff9d9c405c6e_fk_embargo_country_id` FOREIGN KEY (`country_id`) REFERENCES `embargo_country` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4985,8 +4611,8 @@ CREATE TABLE `embargo_courseaccessrulehistory` (
   `course_key` varchar(255) NOT NULL,
   `snapshot` longtext,
   PRIMARY KEY (`id`),
-  KEY `embargo_courseaccessrulehistory_timestamp_0267f0e6` (`timestamp`),
-  KEY `embargo_courseaccessrulehistory_course_key_6f7a7a06` (`course_key`)
+  KEY `embargo_courseaccessrulehistory_d7e6d55b` (`timestamp`),
+  KEY `embargo_courseaccessrulehistory_c8235886` (`course_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5036,8 +4662,8 @@ CREATE TABLE `embargo_embargoedstate` (
   `embargoed_countries` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `embargo_embargoedstate_changed_by_id_f7763260_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `embargo_embargoedstate_changed_by_id_f7763260_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `embargo_embargoeds_changed_by_id_7e30811d0e5008b_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `embargo_embargoeds_changed_by_id_7e30811d0e5008b_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5064,8 +4690,8 @@ CREATE TABLE `embargo_ipfilter` (
   `blacklist` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `embargo_ipfilter_changed_by_id_39e4eed2_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `embargo_ipfilter_changed_by_id_39e4eed2_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `embargo_ipfilter_changed_by_id_5c820bfac889ea81_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `embargo_ipfilter_changed_by_id_5c820bfac889ea81_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5120,7 +4746,7 @@ CREATE TABLE `enterprise_enrollmentnotificationemailtemplate` (
   `enterprise_customer_id` char(32) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `enterprise_customer_id` (`enterprise_customer_id`),
-  CONSTRAINT `enterprise_enrollmen_enterprise_customer__df17d9ff_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  CONSTRAINT `D00946bb46f9643cebba6a818adbfd61` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5131,31 +4757,6 @@ CREATE TABLE `enterprise_enrollmentnotificationemailtemplate` (
 LOCK TABLES `enterprise_enrollmentnotificationemailtemplate` WRITE;
 /*!40000 ALTER TABLE `enterprise_enrollmentnotificationemailtemplate` DISABLE KEYS */;
 /*!40000 ALTER TABLE `enterprise_enrollmentnotificationemailtemplate` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `enterprise_enterprisecatalogquery`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enterprise_enterprisecatalogquery` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `content_filter` longtext,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `enterprise_enterprisecatalogquery`
---
-
-LOCK TABLES `enterprise_enterprisecatalogquery` WRITE;
-/*!40000 ALTER TABLE `enterprise_enterprisecatalogquery` DISABLE KEYS */;
-/*!40000 ALTER TABLE `enterprise_enterprisecatalogquery` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -5170,10 +4771,9 @@ CREATE TABLE `enterprise_enterprisecourseenrollment` (
   `modified` datetime(6) NOT NULL,
   `course_id` varchar(255) NOT NULL,
   `enterprise_customer_user_id` int(11) NOT NULL,
-  `marked_done` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `enterprise_enterprisecou_enterprise_customer_user_71fe301a_uniq` (`enterprise_customer_user_id`,`course_id`),
-  CONSTRAINT `enterprise_enterpris_enterprise_customer__cf423e59_fk_enterpris` FOREIGN KEY (`enterprise_customer_user_id`) REFERENCES `enterprise_enterprisecustomeruser` (`id`)
+  UNIQUE KEY `enterprise_ente_enterprise_customer_user_id_18f302e179a5aca_uniq` (`enterprise_customer_user_id`,`course_id`),
+  CONSTRAINT `D69dbba1e57159194d7bba595f75cb24` FOREIGN KEY (`enterprise_customer_user_id`) REFERENCES `enterprise_enterprisecustomeruser` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5199,26 +4799,14 @@ CREATE TABLE `enterprise_enterprisecustomer` (
   `name` varchar(255) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `site_id` int(11) NOT NULL,
+  `catalog` int(10) unsigned DEFAULT NULL,
   `enable_data_sharing_consent` tinyint(1) NOT NULL,
   `enforce_data_sharing_consent` varchar(25) NOT NULL,
   `enable_audit_enrollment` tinyint(1) NOT NULL,
   `enable_audit_data_reporting` tinyint(1) NOT NULL,
-  `replace_sensitive_sso_username` tinyint(1) NOT NULL,
-  `hide_course_original_price` tinyint(1) NOT NULL,
-  `slug` varchar(30) NOT NULL,
-  `country` varchar(2) DEFAULT NULL,
-  `enable_autocohorting` tinyint(1) NOT NULL,
-  `customer_type_id` int(11) NOT NULL,
-  `enable_portal_code_management_screen` tinyint(1) NOT NULL,
-  `enable_learner_portal` tinyint(1) NOT NULL,
-  `learner_portal_hostname` varchar(255) NOT NULL,
-  `enable_portal_reporting_config_screen` tinyint(1) NOT NULL,
   PRIMARY KEY (`uuid`),
-  UNIQUE KEY `enterprise_enterprisecustomer_slug_80411f46_uniq` (`slug`),
-  KEY `enterprise_enterprisecustomer_site_id_947ed084_fk_django_site_id` (`site_id`),
-  KEY `enterprise_enterpris_customer_type_id_4b1ee315_fk_enterpris` (`customer_type_id`),
-  CONSTRAINT `enterprise_enterpris_customer_type_id_4b1ee315_fk_enterpris` FOREIGN KEY (`customer_type_id`) REFERENCES `enterprise_enterprisecustomertype` (`id`),
-  CONSTRAINT `enterprise_enterprisecustomer_site_id_947ed084_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  KEY `enterprise_enterprisecustomer_9365d6e7` (`site_id`),
+  CONSTRAINT `enterprise_enterprise_site_id_41ce54c2601930cd_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5245,7 +4833,7 @@ CREATE TABLE `enterprise_enterprisecustomerbrandingconfiguration` (
   `enterprise_customer_id` char(32) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `enterprise_customer_id` (`enterprise_customer_id`),
-  CONSTRAINT `enterprise_enterpris_enterprise_customer__09c1ee14_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  CONSTRAINT `D1fbd8b8ab06c9a5efdee961a7a75e55` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5270,15 +4858,12 @@ CREATE TABLE `enterprise_enterprisecustomercatalog` (
   `uuid` char(32) NOT NULL,
   `enterprise_customer_id` char(32) NOT NULL,
   `content_filter` longtext,
-  `title` varchar(255) NOT NULL,
+  `title` varchar(20) NOT NULL,
   `enabled_course_modes` longtext NOT NULL,
   `publish_audit_enrollment_urls` tinyint(1) NOT NULL,
-  `enterprise_catalog_query_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`uuid`),
-  KEY `enterprise_enterpris_enterprise_customer__3b4660ad_fk_enterpris` (`enterprise_customer_id`),
-  KEY `enterprise_enterpris_enterprise_catalog_q_aa53eb7d_fk_enterpris` (`enterprise_catalog_query_id`),
-  CONSTRAINT `enterprise_enterpris_enterprise_catalog_q_aa53eb7d_fk_enterpris` FOREIGN KEY (`enterprise_catalog_query_id`) REFERENCES `enterprise_enterprisecatalogquery` (`id`),
-  CONSTRAINT `enterprise_enterpris_enterprise_customer__3b4660ad_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  KEY `D6b10b4c766f4d007227cae59564ac44` (`enterprise_customer_id`),
+  CONSTRAINT `D6b10b4c766f4d007227cae59564ac44` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5305,8 +4890,8 @@ CREATE TABLE `enterprise_enterprisecustomerentitlement` (
   `enterprise_customer_id` char(32) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `entitlement_id` (`entitlement_id`),
-  KEY `enterprise_enterpris_enterprise_customer__92784a82_fk_enterpris` (`enterprise_customer_id`),
-  CONSTRAINT `enterprise_enterpris_enterprise_customer__92784a82_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  KEY `D294d8114811ae99c12786fb8669866d` (`enterprise_customer_id`),
+  CONSTRAINT `D294d8114811ae99c12786fb8669866d` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5334,7 +4919,7 @@ CREATE TABLE `enterprise_enterprisecustomeridentityprovider` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `provider_id` (`provider_id`),
   UNIQUE KEY `enterprise_customer_id` (`enterprise_customer_id`),
-  CONSTRAINT `enterprise_enterpris_enterprise_customer__40b39097_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  CONSTRAINT `D76e394d5748d37ad29b7fd9ad04ea75` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5359,26 +4944,21 @@ CREATE TABLE `enterprise_enterprisecustomerreportingconfiguration` (
   `modified` datetime(6) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `delivery_method` varchar(20) NOT NULL,
-  `email` longtext NOT NULL,
+  `email` varchar(254) NOT NULL,
   `frequency` varchar(20) NOT NULL,
   `day_of_month` smallint(6) DEFAULT NULL,
   `day_of_week` smallint(6) DEFAULT NULL,
   `hour_of_day` smallint(6) NOT NULL,
   `enterprise_customer_id` char(32) NOT NULL,
-  `sftp_file_path` varchar(256) DEFAULT NULL,
-  `sftp_hostname` varchar(256) DEFAULT NULL,
+  `sftp_file_path` varchar(256),
+  `sftp_hostname` varchar(256),
   `sftp_port` int(10) unsigned,
-  `sftp_username` varchar(256) DEFAULT NULL,
+  `sftp_username` varchar(256),
   `decrypted_password` longblob,
   `decrypted_sftp_password` longblob,
-  `data_type` varchar(20) NOT NULL,
-  `report_type` varchar(20) NOT NULL,
-  `pgp_encryption_key` longtext,
-  `uuid` char(32) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `enterprise_enterprisecus_uuid_9df3c307_uniq` (`uuid`),
-  KEY `enterprise_enterprisecustom_enterprise_customer_id_d5b55543` (`enterprise_customer_id`),
-  CONSTRAINT `enterprise_enterpris_enterprise_customer__d5b55543_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  UNIQUE KEY `enterprise_customer_id` (`enterprise_customer_id`),
+  CONSTRAINT `D8a814303f0ffb6d38fe62b75eb3f96b` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5389,58 +4969,6 @@ CREATE TABLE `enterprise_enterprisecustomerreportingconfiguration` (
 LOCK TABLES `enterprise_enterprisecustomerreportingconfiguration` WRITE;
 /*!40000 ALTER TABLE `enterprise_enterprisecustomerreportingconfiguration` DISABLE KEYS */;
 /*!40000 ALTER TABLE `enterprise_enterprisecustomerreportingconfiguration` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `enterprise_enterprisecustomerreportingconfiguration_enterpricf00`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enterprise_enterprisecustomerreportingconfiguration_enterpricf00` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `enterprisecustomerreportingconfiguration_id` int(11) NOT NULL,
-  `enterprisecustomercatalog_id` char(32) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `enterprise_enterprisecus_enterprisecustomerreport_cc87ab4c_uniq` (`enterprisecustomerreportingconfiguration_id`,`enterprisecustomercatalog_id`),
-  KEY `enterprise_enterpris_enterprisecustomerca_ebdae525_fk_enterpris` (`enterprisecustomercatalog_id`),
-  CONSTRAINT `enterprise_enterpris_enterprisecustomerca_ebdae525_fk_enterpris` FOREIGN KEY (`enterprisecustomercatalog_id`) REFERENCES `enterprise_enterprisecustomercatalog` (`uuid`),
-  CONSTRAINT `enterprise_enterpris_enterprisecustomerre_66147101_fk_enterpris` FOREIGN KEY (`enterprisecustomerreportingconfiguration_id`) REFERENCES `enterprise_enterprisecustomerreportingconfiguration` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `enterprise_enterprisecustomerreportingconfiguration_enterpricf00`
---
-
-LOCK TABLES `enterprise_enterprisecustomerreportingconfiguration_enterpricf00` WRITE;
-/*!40000 ALTER TABLE `enterprise_enterprisecustomerreportingconfiguration_enterpricf00` DISABLE KEYS */;
-/*!40000 ALTER TABLE `enterprise_enterprisecustomerreportingconfiguration_enterpricf00` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `enterprise_enterprisecustomertype`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enterprise_enterprisecustomertype` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `name` varchar(25) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `enterprise_enterprisecustomertype`
---
-
-LOCK TABLES `enterprise_enterprisecustomertype` WRITE;
-/*!40000 ALTER TABLE `enterprise_enterprisecustomertype` DISABLE KEYS */;
-INSERT INTO `enterprise_enterprisecustomertype` VALUES (1,'2019-09-25 19:50:53.016171','2019-09-25 19:50:53.016575','Enterprise');
-/*!40000 ALTER TABLE `enterprise_enterprisecustomertype` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -5455,10 +4983,9 @@ CREATE TABLE `enterprise_enterprisecustomeruser` (
   `modified` datetime(6) NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `enterprise_customer_id` char(32) NOT NULL,
-  `active` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `enterprise_enterprisecus_enterprise_customer_id_u_ffddc29f_uniq` (`enterprise_customer_id`,`user_id`),
-  CONSTRAINT `enterprise_enterpris_enterprise_customer__f0fea924_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  UNIQUE KEY `enterprise_enterpri_enterprise_customer_id_257cf08ca29bc48b_uniq` (`enterprise_customer_id`,`user_id`),
+  CONSTRAINT `D38bb8d455e64dd8470b7606517efded` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5469,62 +4996,6 @@ CREATE TABLE `enterprise_enterprisecustomeruser` (
 LOCK TABLES `enterprise_enterprisecustomeruser` WRITE;
 /*!40000 ALTER TABLE `enterprise_enterprisecustomeruser` DISABLE KEYS */;
 /*!40000 ALTER TABLE `enterprise_enterprisecustomeruser` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `enterprise_enterprisefeaturerole`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enterprise_enterprisefeaturerole` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` longtext,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `enterprise_enterprisefeaturerole`
---
-
-LOCK TABLES `enterprise_enterprisefeaturerole` WRITE;
-/*!40000 ALTER TABLE `enterprise_enterprisefeaturerole` DISABLE KEYS */;
-INSERT INTO `enterprise_enterprisefeaturerole` VALUES (1,'2019-09-25 19:50:57.323038','2019-09-25 19:50:57.323451','catalog_admin',NULL),(2,'2019-09-25 19:50:57.326662','2019-09-25 19:50:57.327079','dashboard_admin',NULL),(3,'2019-09-25 19:50:57.329705','2019-09-25 19:50:57.330078','enrollment_api_admin',NULL),(4,'2019-09-25 19:52:30.175605','2019-09-25 19:52:30.176229','reporting_config_admin',NULL);
-/*!40000 ALTER TABLE `enterprise_enterprisefeaturerole` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `enterprise_enterprisefeatureuserroleassignment`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enterprise_enterprisefeatureuserroleassignment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `role_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `enterprise_enterpris_role_id_5e8cff42_fk_enterpris` (`role_id`),
-  KEY `enterprise_enterpris_user_id_2d335bd4_fk_auth_user` (`user_id`),
-  CONSTRAINT `enterprise_enterpris_role_id_5e8cff42_fk_enterpris` FOREIGN KEY (`role_id`) REFERENCES `enterprise_enterprisefeaturerole` (`id`),
-  CONSTRAINT `enterprise_enterpris_user_id_2d335bd4_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `enterprise_enterprisefeatureuserroleassignment`
---
-
-LOCK TABLES `enterprise_enterprisefeatureuserroleassignment` WRITE;
-/*!40000 ALTER TABLE `enterprise_enterprisefeatureuserroleassignment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `enterprise_enterprisefeatureuserroleassignment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -5544,13 +5015,13 @@ CREATE TABLE `enterprise_historicalenrollmentnotificationemailtemplate` (
   `history_date` datetime(6) NOT NULL,
   `history_type` varchar(1) NOT NULL,
   `history_user_id` int(11) DEFAULT NULL,
-  `enterprise_customer_id` char(32) DEFAULT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
+  `enterprise_customer_id` char(32),
+  `history_change_reason` varchar(100),
   PRIMARY KEY (`history_id`),
-  KEY `enterprise_historica_history_user_id_f2a6d605_fk_auth_user` (`history_user_id`),
-  KEY `enterprise_historicalenroll_id_d4b3fed2` (`id`),
-  KEY `enterprise_historicalenroll_enterprise_customer_id_bc826535` (`enterprise_customer_id`),
-  CONSTRAINT `enterprise_historica_history_user_id_f2a6d605_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
+  KEY `enterprise_hist_history_user_id_1f039ddadc60ca21_fk_auth_user_id` (`history_user_id`),
+  KEY `enterprise_historicalenrollmentnotificationemailtemplate_b80063a` (`id`),
+  KEY `enterprise_historicalenrollmentnotificationemailtemplate_8efece6` (`enterprise_customer_id`),
+  CONSTRAINT `enterprise_hist_history_user_id_1f039ddadc60ca21_fk_auth_user_id` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5579,13 +5050,11 @@ CREATE TABLE `enterprise_historicalenterprisecourseenrollment` (
   `history_type` varchar(1) NOT NULL,
   `enterprise_customer_user_id` int(11) DEFAULT NULL,
   `history_user_id` int(11) DEFAULT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `marked_done` tinyint(1) NOT NULL,
+  `history_change_reason` varchar(100),
   PRIMARY KEY (`history_id`),
-  KEY `enterprise_historica_history_user_id_a7d84786_fk_auth_user` (`history_user_id`),
-  KEY `enterprise_historicalenterprisecourseenrollment_id_452a4b04` (`id`),
-  KEY `enterprise_historicalenterp_enterprise_customer_user_id_380ecc4e` (`enterprise_customer_user_id`),
-  CONSTRAINT `enterprise_historica_history_user_id_a7d84786_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
+  KEY `enterprise_hist_history_user_id_7f3d211f9d742591_fk_auth_user_id` (`history_user_id`),
+  KEY `enterprise_historicalenterprisecourseenrollment_b80bb774` (`id`),
+  CONSTRAINT `enterprise_hist_history_user_id_7f3d211f9d742591_fk_auth_user_id` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5615,28 +5084,17 @@ CREATE TABLE `enterprise_historicalenterprisecustomer` (
   `history_type` varchar(1) NOT NULL,
   `history_user_id` int(11) DEFAULT NULL,
   `site_id` int(11) DEFAULT NULL,
+  `catalog` int(10) unsigned DEFAULT NULL,
   `enable_data_sharing_consent` tinyint(1) NOT NULL,
   `enforce_data_sharing_consent` varchar(25) NOT NULL,
   `enable_audit_enrollment` tinyint(1) NOT NULL,
   `enable_audit_data_reporting` tinyint(1) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `replace_sensitive_sso_username` tinyint(1) NOT NULL,
-  `hide_course_original_price` tinyint(1) NOT NULL,
-  `slug` varchar(30) NOT NULL,
-  `country` varchar(2) DEFAULT NULL,
-  `enable_autocohorting` tinyint(1) NOT NULL,
-  `customer_type_id` int(11),
-  `enable_portal_code_management_screen` tinyint(1) NOT NULL,
-  `enable_learner_portal` tinyint(1) NOT NULL,
-  `learner_portal_hostname` varchar(255) NOT NULL,
-  `enable_portal_reporting_config_screen` tinyint(1) NOT NULL,
+  `history_change_reason` varchar(100),
   PRIMARY KEY (`history_id`),
-  KEY `enterprise_historica_history_user_id_bbd9b0d6_fk_auth_user` (`history_user_id`),
-  KEY `enterprise_historicalenterprisecustomer_uuid_75c3528e` (`uuid`),
-  KEY `enterprise_historicalenterprisecustomer_site_id_2463b5d7` (`site_id`),
-  KEY `enterprise_historicalenterprisecustomer_slug_04622dd4` (`slug`),
-  KEY `enterprise_historicalenterp_customer_type_id_8fbc8526` (`customer_type_id`),
-  CONSTRAINT `enterprise_historica_history_user_id_bbd9b0d6_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
+  KEY `enterprise_hist_history_user_id_2938dabbace21ece_fk_auth_user_id` (`history_user_id`),
+  KEY `enterprise_historicalenterprisecustomer_ef7c876f` (`uuid`),
+  KEY `enterprise_historicalenterprisecustomer_9365d6e7` (`site_id`),
+  CONSTRAINT `enterprise_hist_history_user_id_2938dabbace21ece_fk_auth_user_id` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5665,17 +5123,14 @@ CREATE TABLE `enterprise_historicalenterprisecustomercatalog` (
   `enterprise_customer_id` char(32) DEFAULT NULL,
   `history_user_id` int(11) DEFAULT NULL,
   `content_filter` longtext,
-  `title` varchar(255) NOT NULL,
+  `title` varchar(20) NOT NULL,
   `enabled_course_modes` longtext NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
+  `history_change_reason` varchar(100),
   `publish_audit_enrollment_urls` tinyint(1) NOT NULL,
-  `enterprise_catalog_query_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`history_id`),
-  KEY `enterprise_historica_history_user_id_31eab231_fk_auth_user` (`history_user_id`),
-  KEY `enterprise_historicalenterprisecustomercatalog_uuid_42403101` (`uuid`),
-  KEY `enterprise_historicalenterp_enterprise_customer_id_664f4480` (`enterprise_customer_id`),
-  KEY `enterprise_historicalenterp_enterprise_catalog_query_id_bf435a3a` (`enterprise_catalog_query_id`),
-  CONSTRAINT `enterprise_historica_history_user_id_31eab231_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
+  KEY `enterprise_hist_history_user_id_1f0d4124b2b4b2d8_fk_auth_user_id` (`history_user_id`),
+  KEY `enterprise_historicalenterprisecustomercatalog_ef7c876f` (`uuid`),
+  CONSTRAINT `enterprise_hist_history_user_id_1f0d4124b2b4b2d8_fk_auth_user_id` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5704,13 +5159,12 @@ CREATE TABLE `enterprise_historicalenterprisecustomerentitlement` (
   `history_type` varchar(1) NOT NULL,
   `enterprise_customer_id` char(32) DEFAULT NULL,
   `history_user_id` int(11) DEFAULT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
+  `history_change_reason` varchar(100),
   PRIMARY KEY (`history_id`),
-  KEY `enterprise_historica_history_user_id_f50bc660_fk_auth_user` (`history_user_id`),
-  KEY `enterprise_historicalenterprisecustomerentitlement_id_742c345f` (`id`),
-  KEY `enterprise_historicalenterp_entitlement_id_fd18cd7b` (`entitlement_id`),
-  KEY `enterprise_historicalenterp_enterprise_customer_id_a598c2f4` (`enterprise_customer_id`),
-  CONSTRAINT `enterprise_historica_history_user_id_f50bc660_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
+  KEY `enterprise_hist_history_user_id_41b275d5667e3790_fk_auth_user_id` (`history_user_id`),
+  KEY `enterprise_historicalenterprisecustomerentitlement_b80bb774` (`id`),
+  KEY `enterprise_historicalenterprisecustomerentitlement_9a57d8e5` (`entitlement_id`),
+  CONSTRAINT `enterprise_hist_history_user_id_41b275d5667e3790_fk_auth_user_id` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5721,77 +5175,6 @@ CREATE TABLE `enterprise_historicalenterprisecustomerentitlement` (
 LOCK TABLES `enterprise_historicalenterprisecustomerentitlement` WRITE;
 /*!40000 ALTER TABLE `enterprise_historicalenterprisecustomerentitlement` DISABLE KEYS */;
 /*!40000 ALTER TABLE `enterprise_historicalenterprisecustomerentitlement` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `enterprise_historicalpendingenrollment`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enterprise_historicalpendingenrollment` (
-  `id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `course_id` varchar(255) NOT NULL,
-  `course_mode` varchar(25) NOT NULL,
-  `cohort_name` varchar(255) DEFAULT NULL,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `enterprise_historica_history_user_id_894ad7d0_fk_auth_user` (`history_user_id`),
-  KEY `enterprise_historicalpendingenrollment_id_27077b0b` (`id`),
-  KEY `enterprise_historicalpendingenrollment_user_id_97ded265` (`user_id`),
-  CONSTRAINT `enterprise_historica_history_user_id_894ad7d0_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `enterprise_historicalpendingenrollment`
---
-
-LOCK TABLES `enterprise_historicalpendingenrollment` WRITE;
-/*!40000 ALTER TABLE `enterprise_historicalpendingenrollment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `enterprise_historicalpendingenrollment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `enterprise_historicalpendingenterprisecustomeruser`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enterprise_historicalpendingenterprisecustomeruser` (
-  `id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `user_email` varchar(254) NOT NULL,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `enterprise_customer_id` char(32) DEFAULT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `enterprise_historica_history_user_id_c491461b_fk_auth_user` (`history_user_id`),
-  KEY `enterprise_historicalpendingenterprisecustomeruser_id_3cf88198` (`id`),
-  KEY `enterprise_historicalpendin_user_email_88c478b4` (`user_email`),
-  KEY `enterprise_historicalpendin_enterprise_customer_id_6c02ed95` (`enterprise_customer_id`),
-  CONSTRAINT `enterprise_historica_history_user_id_c491461b_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `enterprise_historicalpendingenterprisecustomeruser`
---
-
-LOCK TABLES `enterprise_historicalpendingenterprisecustomeruser` WRITE;
-/*!40000 ALTER TABLE `enterprise_historicalpendingenterprisecustomeruser` DISABLE KEYS */;
-/*!40000 ALTER TABLE `enterprise_historicalpendingenterprisecustomeruser` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -5807,10 +5190,9 @@ CREATE TABLE `enterprise_pendingenrollment` (
   `course_id` varchar(255) NOT NULL,
   `course_mode` varchar(25) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `cohort_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `enterprise_pendingenrollment_user_id_course_id_6d4141c7_uniq` (`user_id`,`course_id`),
-  CONSTRAINT `enterprise_pendingen_user_id_12d21b1a_fk_enterpris` FOREIGN KEY (`user_id`) REFERENCES `enterprise_pendingenterprisecustomeruser` (`id`)
+  UNIQUE KEY `enterprise_pendingenrollment_user_id_111d29e0f8aebec5_uniq` (`user_id`,`course_id`),
+  CONSTRAINT `a9ce3c7057d5f3b27dc64261037ad37d` FOREIGN KEY (`user_id`) REFERENCES `enterprise_pendingenterprisecustomeruser` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5836,9 +5218,9 @@ CREATE TABLE `enterprise_pendingenterprisecustomeruser` (
   `user_email` varchar(254) NOT NULL,
   `enterprise_customer_id` char(32) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `enterprise_pendingenterp_user_email_5440d1d3_uniq` (`user_email`),
-  KEY `enterprise_pendingen_enterprise_customer__a858ce2d_fk_enterpris` (`enterprise_customer_id`),
-  CONSTRAINT `enterprise_pendingen_enterprise_customer__a858ce2d_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  UNIQUE KEY `enterprise_pendingenterprisecus_user_email_1838ab42a578cf3c_uniq` (`user_email`),
+  KEY `D0f27fd26a677554e54740cfe1555271` (`enterprise_customer_id`),
+  CONSTRAINT `D0f27fd26a677554e54740cfe1555271` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5849,62 +5231,6 @@ CREATE TABLE `enterprise_pendingenterprisecustomeruser` (
 LOCK TABLES `enterprise_pendingenterprisecustomeruser` WRITE;
 /*!40000 ALTER TABLE `enterprise_pendingenterprisecustomeruser` DISABLE KEYS */;
 /*!40000 ALTER TABLE `enterprise_pendingenterprisecustomeruser` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `enterprise_systemwideenterpriserole`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enterprise_systemwideenterpriserole` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` longtext,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `enterprise_systemwideenterpriserole`
---
-
-LOCK TABLES `enterprise_systemwideenterpriserole` WRITE;
-/*!40000 ALTER TABLE `enterprise_systemwideenterpriserole` DISABLE KEYS */;
-INSERT INTO `enterprise_systemwideenterpriserole` VALUES (1,'2019-09-25 19:50:56.121982','2019-09-25 19:50:56.122367','enterprise_admin',NULL),(2,'2019-09-25 19:50:56.124446','2019-09-25 19:50:56.124687','enterprise_learner',NULL),(3,'2019-09-25 19:50:57.681427','2019-09-25 19:50:57.681824','enterprise_openedx_operator',NULL);
-/*!40000 ALTER TABLE `enterprise_systemwideenterpriserole` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `enterprise_systemwideenterpriseuserroleassignment`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `enterprise_systemwideenterpriseuserroleassignment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `role_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `enterprise_systemwid_role_id_bc7092f0_fk_enterpris` (`role_id`),
-  KEY `enterprise_systemwid_user_id_e890aef2_fk_auth_user` (`user_id`),
-  CONSTRAINT `enterprise_systemwid_role_id_bc7092f0_fk_enterpris` FOREIGN KEY (`role_id`) REFERENCES `enterprise_systemwideenterpriserole` (`id`),
-  CONSTRAINT `enterprise_systemwid_user_id_e890aef2_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `enterprise_systemwideenterpriseuserroleassignment`
---
-
-LOCK TABLES `enterprise_systemwideenterpriseuserroleassignment` WRITE;
-/*!40000 ALTER TABLE `enterprise_systemwideenterpriseuserroleassignment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `enterprise_systemwideenterpriseuserroleassignment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -5924,16 +5250,15 @@ CREATE TABLE `entitlements_courseentitlement` (
   `order_number` varchar(128) DEFAULT NULL,
   `enrollment_course_run_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
-  `_policy_id` int(11) DEFAULT NULL,
-  `refund_locked` tinyint(1) NOT NULL,
+  `_policy_id` int(11),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `entitlements_courseentitlement_uuid_2228ffad_uniq` (`uuid`),
-  KEY `entitlements_courseentitlement_user_id_a518a225_fk_auth_user_id` (`user_id`),
-  KEY `entitlements_coursee_enrollment_course_ru_3fc796af_fk_student_c` (`enrollment_course_run_id`),
-  KEY `entitlements_coursee__policy_id_37bd7c13_fk_entitleme` (`_policy_id`),
-  CONSTRAINT `entitlements_coursee__policy_id_37bd7c13_fk_entitleme` FOREIGN KEY (`_policy_id`) REFERENCES `entitlements_courseentitlementpolicy` (`id`),
-  CONSTRAINT `entitlements_coursee_enrollment_course_ru_3fc796af_fk_student_c` FOREIGN KEY (`enrollment_course_run_id`) REFERENCES `student_courseenrollment` (`id`),
-  CONSTRAINT `entitlements_courseentitlement_user_id_a518a225_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `entitlements_courseentitlement_uuid_a690dd005d0695b_uniq` (`uuid`),
+  KEY `entitlements_courseentit_user_id_a8df050144d72f8_fk_auth_user_id` (`user_id`),
+  KEY `fda6bce9129c5afc395658f36b9d444e` (`enrollment_course_run_id`),
+  KEY `entitlements_courseentitlement_36cddc86` (`_policy_id`),
+  CONSTRAINT `D2cebc0610e28b9b3a821c839e2fe01c` FOREIGN KEY (`_policy_id`) REFERENCES `entitlements_courseentitlementpolicy` (`id`),
+  CONSTRAINT `entitlements_courseentit_user_id_a8df050144d72f8_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `fda6bce9129c5afc395658f36b9d444e` FOREIGN KEY (`enrollment_course_run_id`) REFERENCES `student_courseenrollment` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5957,11 +5282,10 @@ CREATE TABLE `entitlements_courseentitlementpolicy` (
   `expiration_period` bigint(20) NOT NULL,
   `refund_period` bigint(20) NOT NULL,
   `regain_period` bigint(20) NOT NULL,
-  `site_id` int(11) DEFAULT NULL,
-  `mode` varchar(32) DEFAULT NULL,
+  `site_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `entitlements_coursee_site_id_c7a9e107_fk_django_si` (`site_id`),
-  CONSTRAINT `entitlements_coursee_site_id_c7a9e107_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  KEY `entitlements_courseen_site_id_5256b0e7f6e039cc_fk_django_site_id` (`site_id`),
+  CONSTRAINT `entitlements_courseen_site_id_5256b0e7f6e039cc_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5972,84 +5296,6 @@ CREATE TABLE `entitlements_courseentitlementpolicy` (
 LOCK TABLES `entitlements_courseentitlementpolicy` WRITE;
 /*!40000 ALTER TABLE `entitlements_courseentitlementpolicy` DISABLE KEYS */;
 /*!40000 ALTER TABLE `entitlements_courseentitlementpolicy` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `entitlements_courseentitlementsupportdetail`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `entitlements_courseentitlementsupportdetail` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `reason` varchar(15) NOT NULL,
-  `comments` longtext,
-  `entitlement_id` int(11) NOT NULL,
-  `support_user_id` int(11) NOT NULL,
-  `unenrolled_run_id` varchar(255) DEFAULT NULL,
-  `action` varchar(15) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `entitlements_coursee_entitlement_id_93b9020b_fk_entitleme` (`entitlement_id`),
-  KEY `entitlements_coursee_support_user_id_97d3095e_fk_auth_user` (`support_user_id`),
-  KEY `entitlements_courseentitlem_unenrolled_run_id_d72860e3` (`unenrolled_run_id`),
-  CONSTRAINT `entitlements_coursee_entitlement_id_93b9020b_fk_entitleme` FOREIGN KEY (`entitlement_id`) REFERENCES `entitlements_courseentitlement` (`id`),
-  CONSTRAINT `entitlements_coursee_support_user_id_97d3095e_fk_auth_user` FOREIGN KEY (`support_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `entitlements_courseentitlementsupportdetail`
---
-
-LOCK TABLES `entitlements_courseentitlementsupportdetail` WRITE;
-/*!40000 ALTER TABLE `entitlements_courseentitlementsupportdetail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `entitlements_courseentitlementsupportdetail` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `entitlements_historicalcourseentitlement`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `entitlements_historicalcourseentitlement` (
-  `id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `uuid` char(32) NOT NULL,
-  `course_uuid` char(32) NOT NULL,
-  `expired_at` datetime(6) DEFAULT NULL,
-  `mode` varchar(100) NOT NULL,
-  `order_number` varchar(128) DEFAULT NULL,
-  `refund_locked` tinyint(1) NOT NULL,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `_policy_id` int(11) DEFAULT NULL,
-  `enrollment_course_run_id` int(11) DEFAULT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `entitlements_histori_history_user_id_a3bc1823_fk_auth_user` (`history_user_id`),
-  KEY `entitlements_historicalcourseentitlement_id_e3740062` (`id`),
-  KEY `entitlements_historicalcourseentitlement_uuid_54fd331f` (`uuid`),
-  KEY `entitlements_historicalcourseentitlement__policy_id_71c21d43` (`_policy_id`),
-  KEY `entitlements_historicalcour_enrollment_course_run_id_1b92719b` (`enrollment_course_run_id`),
-  KEY `entitlements_historicalcourseentitlement_user_id_c770997b` (`user_id`),
-  CONSTRAINT `entitlements_histori_history_user_id_a3bc1823_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `entitlements_historicalcourseentitlement`
---
-
-LOCK TABLES `entitlements_historicalcourseentitlement` WRITE;
-/*!40000 ALTER TABLE `entitlements_historicalcourseentitlement` DISABLE KEYS */;
-/*!40000 ALTER TABLE `entitlements_historicalcourseentitlement` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -6067,10 +5313,10 @@ CREATE TABLE `experiments_experimentdata` (
   `value` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `experiments_experimentda_user_id_experiment_id_ke_0ff27a32_uniq` (`user_id`,`experiment_id`,`key`),
-  KEY `experiments_experimentdata_user_id_experiment_id_15bd1b30_idx` (`user_id`,`experiment_id`),
-  KEY `experiments_experimentdata_experiment_id_e816cee5` (`experiment_id`),
-  CONSTRAINT `experiments_experimentdata_user_id_bd6f4720_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `experiments_experimentdata_user_id_766ad715d1cc0535_uniq` (`user_id`,`experiment_id`,`key`),
+  KEY `experiments_experimentdata_user_id_17db4fa696359194_idx` (`user_id`,`experiment_id`),
+  KEY `experiments_experimentdata_abd1812d` (`experiment_id`),
+  CONSTRAINT `experiments_experimentd_user_id_438ab1d21d4ecc3d_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6097,8 +5343,8 @@ CREATE TABLE `experiments_experimentkeyvalue` (
   `key` varchar(255) NOT NULL,
   `value` longtext NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `experiments_experimentkeyvalue_experiment_id_key_15347f43_uniq` (`experiment_id`,`key`),
-  KEY `experiments_experimentkeyvalue_experiment_id_741d1a4b` (`experiment_id`)
+  UNIQUE KEY `experiments_experimentkeyval_experiment_id_7e8b0ae772b01da6_uniq` (`experiment_id`,`key`),
+  KEY `experiments_experimentkeyvalue_abd1812d` (`experiment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6109,6 +5355,43 @@ CREATE TABLE `experiments_experimentkeyvalue` (
 LOCK TABLES `experiments_experimentkeyvalue` WRITE;
 /*!40000 ALTER TABLE `experiments_experimentkeyvalue` DISABLE KEYS */;
 /*!40000 ALTER TABLE `experiments_experimentkeyvalue` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `external_auth_externalauthmap`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `external_auth_externalauthmap` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `external_id` varchar(255) NOT NULL,
+  `external_domain` varchar(255) NOT NULL,
+  `external_credentials` longtext NOT NULL,
+  `external_email` varchar(255) NOT NULL,
+  `external_name` varchar(255) NOT NULL,
+  `internal_password` varchar(31) NOT NULL,
+  `dtcreated` datetime(6) NOT NULL,
+  `dtsignup` datetime(6) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `external_auth_externalauthmap_external_id_7f035ef8bc4d313e_uniq` (`external_id`,`external_domain`),
+  UNIQUE KEY `user_id` (`user_id`),
+  KEY `external_auth_externalauthmap_0e684294` (`external_id`),
+  KEY `external_auth_externalauthmap_630a0308` (`external_domain`),
+  KEY `external_auth_externalauthmap_e9425fc5` (`external_email`),
+  KEY `external_auth_externalauthmap_c9555995` (`external_name`),
+  CONSTRAINT `external_auth_externala_user_id_644e7779f2d52b9a_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `external_auth_externalauthmap`
+--
+
+LOCK TABLES `external_auth_externalauthmap` WRITE;
+/*!40000 ALTER TABLE `external_auth_externalauthmap` DISABLE KEYS */;
+/*!40000 ALTER TABLE `external_auth_externalauthmap` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -6125,8 +5408,8 @@ CREATE TABLE `grades_computegradessetting` (
   `course_ids` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `grades_computegrades_changed_by_id_f2bf3678_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `grades_computegrades_changed_by_id_f2bf3678_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `grades_computegra_changed_by_id_6599c94d3a43e583_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `grades_computegra_changed_by_id_6599c94d3a43e583_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6152,9 +5435,8 @@ CREATE TABLE `grades_coursepersistentgradesflag` (
   `course_id` varchar(255) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `grades_coursepersist_changed_by_id_c8c392d6_fk_auth_user` (`changed_by_id`),
-  KEY `grades_coursepersistentgradesflag_course_id_b494f1e7` (`course_id`),
-  CONSTRAINT `grades_coursepersist_changed_by_id_c8c392d6_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `grades_coursepers_changed_by_id_38bec876127ebacc_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `grades_coursepers_changed_by_id_38bec876127ebacc_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6165,47 +5447,6 @@ CREATE TABLE `grades_coursepersistentgradesflag` (
 LOCK TABLES `grades_coursepersistentgradesflag` WRITE;
 /*!40000 ALTER TABLE `grades_coursepersistentgradesflag` DISABLE KEYS */;
 /*!40000 ALTER TABLE `grades_coursepersistentgradesflag` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `grades_historicalpersistentsubsectiongradeoverride`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `grades_historicalpersistentsubsectiongradeoverride` (
-  `id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `earned_all_override` double DEFAULT NULL,
-  `possible_all_override` double DEFAULT NULL,
-  `earned_graded_override` double DEFAULT NULL,
-  `possible_graded_override` double DEFAULT NULL,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `grade_id` bigint(20) unsigned DEFAULT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  `override_reason` varchar(300) DEFAULT NULL,
-  `system` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `grades_historicalper_history_user_id_05000562_fk_auth_user` (`history_user_id`),
-  KEY `grades_historicalpersistentsubsectiongradeoverride_id_e30d8953` (`id`),
-  KEY `grades_historicalpersistent_created_e5fb4d96` (`created`),
-  KEY `grades_historicalpersistent_modified_7355e846` (`modified`),
-  KEY `grades_historicalpersistent_grade_id_ecfb45cc` (`grade_id`),
-  CONSTRAINT `grades_historicalper_history_user_id_05000562_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `grades_historicalpersistentsubsectiongradeoverride`
---
-
-LOCK TABLES `grades_historicalpersistentsubsectiongradeoverride` WRITE;
-/*!40000 ALTER TABLE `grades_historicalpersistentsubsectiongradeoverride` DISABLE KEYS */;
-/*!40000 ALTER TABLE `grades_historicalpersistentsubsectiongradeoverride` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -6227,10 +5468,10 @@ CREATE TABLE `grades_persistentcoursegrade` (
   `letter_grade` varchar(255) NOT NULL,
   `passed_timestamp` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `grades_persistentcoursegrade_course_id_user_id_d7b585c9_uniq` (`course_id`,`user_id`),
-  KEY `grades_persistentcoursegrade_user_id_b2296589` (`user_id`),
-  KEY `grades_persistentcoursegr_passed_timestamp_course_i_27d4396e_idx` (`passed_timestamp`,`course_id`),
-  KEY `grades_persistentcoursegrade_modified_course_id_0e2ef09a_idx` (`modified`,`course_id`)
+  UNIQUE KEY `grades_persistentcoursegrade_course_id_6c83398a6a9c0872_uniq` (`course_id`,`user_id`),
+  KEY `grades_persistentcoursegrade_e8701ad4` (`user_id`),
+  KEY `grades_persistentcoursegra_passed_timestamp_38d17e3e3bc3cb7f_idx` (`passed_timestamp`,`course_id`),
+  KEY `grades_persistentcoursegrade_modified_33ed872ee90d4a03_idx` (`modified`,`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6256,8 +5497,8 @@ CREATE TABLE `grades_persistentgradesenabledflag` (
   `enabled_for_all_courses` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `grades_persistentgra_changed_by_id_f80cdad1_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `grades_persistentgra_changed_by_id_f80cdad1_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `grades_persistent_changed_by_id_2350d66400243149_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `grades_persistent_changed_by_id_2350d66400243149_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6292,11 +5533,11 @@ CREATE TABLE `grades_persistentsubsectiongrade` (
   `visible_blocks_hash` varchar(100) NOT NULL,
   `first_attempted` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `grades_persistentsubsect_course_id_user_id_usage__42820224_uniq` (`course_id`,`user_id`,`usage_key`),
-  KEY `grades_persistentsub_visible_blocks_hash_20836274_fk_grades_vi` (`visible_blocks_hash`),
-  KEY `grades_persistentsubsecti_modified_course_id_usage__80ab6572_idx` (`modified`,`course_id`,`usage_key`),
-  KEY `grades_persistentsubsecti_first_attempted_course_id_f59f063c_idx` (`first_attempted`,`course_id`,`user_id`),
-  CONSTRAINT `grades_persistentsub_visible_blocks_hash_20836274_fk_grades_vi` FOREIGN KEY (`visible_blocks_hash`) REFERENCES `grades_visibleblocks` (`hashed`)
+  UNIQUE KEY `grades_persistentsubsectiongrade_course_id_5e423f1e9b6c031_uniq` (`course_id`,`user_id`,`usage_key`),
+  KEY `grades_persistentsubsectiongrade_2ddf9ac4` (`visible_blocks_hash`),
+  KEY `grades_persistentsubsectiongrade_modified_63b103f5651501c8_idx` (`modified`,`course_id`,`usage_key`),
+  KEY `grades_persistentsubsectiong_first_attempted_96c2c1175370fed_idx` (`first_attempted`,`course_id`,`user_id`),
+  CONSTRAINT `a6bafd85579f2eb43880453893b251a3` FOREIGN KEY (`visible_blocks_hash`) REFERENCES `grades_visibleblocks` (`hashed`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6324,13 +5565,11 @@ CREATE TABLE `grades_persistentsubsectiongradeoverride` (
   `earned_graded_override` double DEFAULT NULL,
   `possible_graded_override` double DEFAULT NULL,
   `grade_id` bigint(20) unsigned NOT NULL,
-  `override_reason` varchar(300) DEFAULT NULL,
-  `system` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `grade_id` (`grade_id`),
-  KEY `grades_persistentsubsectiongradeoverride_created_f80819d0` (`created`),
-  KEY `grades_persistentsubsectiongradeoverride_modified_21efde2a` (`modified`),
-  CONSTRAINT `grades_persistentsub_grade_id_74123016_fk_grades_pe` FOREIGN KEY (`grade_id`) REFERENCES `grades_persistentsubsectiongrade` (`id`)
+  KEY `grades_persistentsubsectiongradeoverride_e2fa5388` (`created`),
+  KEY `grades_persistentsubsectiongradeoverride_9ae73c65` (`modified`),
+  CONSTRAINT `D843af3bd266b7666e4f166216719659` FOREIGN KEY (`grade_id`) REFERENCES `grades_persistentsubsectiongrade` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6341,37 +5580,6 @@ CREATE TABLE `grades_persistentsubsectiongradeoverride` (
 LOCK TABLES `grades_persistentsubsectiongradeoverride` WRITE;
 /*!40000 ALTER TABLE `grades_persistentsubsectiongradeoverride` DISABLE KEYS */;
 /*!40000 ALTER TABLE `grades_persistentsubsectiongradeoverride` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `grades_persistentsubsectiongradeoverridehistory`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `grades_persistentsubsectiongradeoverridehistory` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `override_id` int(11) NOT NULL,
-  `feature` varchar(32) NOT NULL,
-  `action` varchar(32) NOT NULL,
-  `comments` varchar(300) DEFAULT NULL,
-  `created` datetime(6) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `grades_persistentsub_user_id_2d8efcca_fk_auth_user` (`user_id`),
-  KEY `grades_persistentsubsection_override_id_f41bf7c1` (`override_id`),
-  KEY `grades_persistentsubsectiongradeoverridehistory_created_d903656e` (`created`),
-  CONSTRAINT `grades_persistentsub_user_id_2d8efcca_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `grades_persistentsubsectiongradeoverridehistory`
---
-
-LOCK TABLES `grades_persistentsubsectiongradeoverridehistory` WRITE;
-/*!40000 ALTER TABLE `grades_persistentsubsectiongradeoverridehistory` DISABLE KEYS */;
-/*!40000 ALTER TABLE `grades_persistentsubsectiongradeoverridehistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -6387,7 +5595,7 @@ CREATE TABLE `grades_visibleblocks` (
   `course_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `hashed` (`hashed`),
-  KEY `grades_visibleblocks_course_id_d5f8e206` (`course_id`)
+  KEY `grades_visibleblocks_ea134da7` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6413,8 +5621,8 @@ CREATE TABLE `instructor_task_gradereportsetting` (
   `batch_size` int(11) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `instructor_task_grad_changed_by_id_dae9a995_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `instructor_task_grad_changed_by_id_dae9a995_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `instructor_task_g_changed_by_id_6a84d49e85aede81_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `instructor_task_g_changed_by_id_6a84d49e85aede81_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6438,7 +5646,7 @@ CREATE TABLE `instructor_task_instructortask` (
   `task_type` varchar(50) NOT NULL,
   `course_id` varchar(255) NOT NULL,
   `task_key` varchar(255) NOT NULL,
-  `task_input` longtext NOT NULL,
+  `task_input` varchar(255) NOT NULL,
   `task_id` varchar(255) NOT NULL,
   `task_state` varchar(50) DEFAULT NULL,
   `task_output` varchar(1024) DEFAULT NULL,
@@ -6447,13 +5655,13 @@ CREATE TABLE `instructor_task_instructortask` (
   `subtasks` longtext NOT NULL,
   `requester_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `instructor_task_inst_requester_id_307f955d_fk_auth_user` (`requester_id`),
-  KEY `instructor_task_instructortask_task_type_cefe183d` (`task_type`),
-  KEY `instructor_task_instructortask_course_id_b160f709` (`course_id`),
-  KEY `instructor_task_instructortask_task_key_c1af3961` (`task_key`),
-  KEY `instructor_task_instructortask_task_id_4aa92d04` (`task_id`),
-  KEY `instructor_task_instructortask_task_state_3ee4e9cb` (`task_state`),
-  CONSTRAINT `instructor_task_inst_requester_id_307f955d_fk_auth_user` FOREIGN KEY (`requester_id`) REFERENCES `auth_user` (`id`)
+  KEY `instructor_task_in_requester_id_3383acfe2fe42391_fk_auth_user_id` (`requester_id`),
+  KEY `instructor_task_instructortask_5361aa34` (`task_type`),
+  KEY `instructor_task_instructortask_ea134da7` (`course_id`),
+  KEY `instructor_task_instructortask_a2903537` (`task_key`),
+  KEY `instructor_task_instructortask_57746cc8` (`task_id`),
+  KEY `instructor_task_instructortask_76980a94` (`task_state`),
+  CONSTRAINT `instructor_task_in_requester_id_3383acfe2fe42391_fk_auth_user_id` FOREIGN KEY (`requester_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6467,32 +5675,32 @@ LOCK TABLES `instructor_task_instructortask` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `integrated_channel_contentmetadataitemtransmission`
+-- Table structure for table `integrated_channel_catalogtransmissionaudit`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `integrated_channel_contentmetadataitemtransmission` (
+CREATE TABLE `integrated_channel_catalogtransmissionaudit` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `enterprise_customer_uuid` char(32) NOT NULL,
+  `total_courses` int(10) unsigned NOT NULL,
+  `status` varchar(100) NOT NULL,
+  `error_message` longtext NOT NULL,
   `created` datetime(6) NOT NULL,
   `modified` datetime(6) NOT NULL,
-  `integrated_channel_code` varchar(30) NOT NULL,
-  `content_id` varchar(255) NOT NULL,
-  `channel_metadata` longtext NOT NULL,
-  `enterprise_customer_id` char(32) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `integrated_channel_conte_enterprise_customer_id_i_44ca3772_uniq` (`enterprise_customer_id`,`integrated_channel_code`,`content_id`),
-  CONSTRAINT `integrated_channel_c_enterprise_customer__f6439bfb_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  `audit_summary` longtext NOT NULL,
+  `channel` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `integrated_channel_contentmetadataitemtransmission`
+-- Dumping data for table `integrated_channel_catalogtransmissionaudit`
 --
 
-LOCK TABLES `integrated_channel_contentmetadataitemtransmission` WRITE;
-/*!40000 ALTER TABLE `integrated_channel_contentmetadataitemtransmission` DISABLE KEYS */;
-/*!40000 ALTER TABLE `integrated_channel_contentmetadataitemtransmission` ENABLE KEYS */;
+LOCK TABLES `integrated_channel_catalogtransmissionaudit` WRITE;
+/*!40000 ALTER TABLE `integrated_channel_catalogtransmissionaudit` DISABLE KEYS */;
+/*!40000 ALTER TABLE `integrated_channel_catalogtransmissionaudit` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -6512,8 +5720,7 @@ CREATE TABLE `integrated_channel_learnerdatatransmissionaudit` (
   `status` varchar(100) NOT NULL,
   `error_message` longtext NOT NULL,
   `created` datetime(6) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `integrated_channel_learnerd_enterprise_course_enrollmen_c2e6c2e0` (`enterprise_course_enrollment_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6539,8 +5746,8 @@ CREATE TABLE `lms_xblock_xblockasidesconfig` (
   `disabled_blocks` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `lms_xblock_xblockasi_changed_by_id_71928be3_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `lms_xblock_xblockasi_changed_by_id_71928be3_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `lms_xblock_xblocka_changed_by_id_eabf5ef3e34dfb8_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `lms_xblock_xblocka_changed_by_id_eabf5ef3e34dfb8_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6551,6 +5758,145 @@ CREATE TABLE `lms_xblock_xblockasidesconfig` (
 LOCK TABLES `lms_xblock_xblockasidesconfig` WRITE;
 /*!40000 ALTER TABLE `lms_xblock_xblockasidesconfig` DISABLE KEYS */;
 /*!40000 ALTER TABLE `lms_xblock_xblockasidesconfig` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mentoring_answer`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mentoring_answer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `student_id` varchar(32) NOT NULL,
+  `course_id` varchar(50) NOT NULL,
+  `student_input` longtext NOT NULL,
+  `created_on` datetime(6) NOT NULL,
+  `modified_on` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `student_id` (`student_id`,`course_id`,`name`),
+  KEY `mentoring_answer_b068931c` (`name`),
+  KEY `mentoring_answer_30a811f6` (`student_id`),
+  KEY `mentoring_answer_ea134da7` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mentoring_answer`
+--
+
+LOCK TABLES `mentoring_answer` WRITE;
+/*!40000 ALTER TABLE `mentoring_answer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mentoring_answer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `microsite_configuration_microsite`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `microsite_configuration_microsite` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `key` varchar(63) NOT NULL,
+  `values` longtext NOT NULL,
+  `site_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `key` (`key`),
+  UNIQUE KEY `site_id` (`site_id`),
+  CONSTRAINT `microsite_configuratio_site_id_3ebe20a76de5aa4_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `microsite_configuration_microsite`
+--
+
+LOCK TABLES `microsite_configuration_microsite` WRITE;
+/*!40000 ALTER TABLE `microsite_configuration_microsite` DISABLE KEYS */;
+/*!40000 ALTER TABLE `microsite_configuration_microsite` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `microsite_configuration_micrositehistory`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `microsite_configuration_micrositehistory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+  `key` varchar(63) NOT NULL,
+  `values` longtext NOT NULL,
+  `site_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `microsite_configurati_site_id_6977a04d3625a533_fk_django_site_id` (`site_id`),
+  CONSTRAINT `microsite_configurati_site_id_6977a04d3625a533_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `microsite_configuration_micrositehistory`
+--
+
+LOCK TABLES `microsite_configuration_micrositehistory` WRITE;
+/*!40000 ALTER TABLE `microsite_configuration_micrositehistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `microsite_configuration_micrositehistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `microsite_configuration_micrositeorganizationmapping`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `microsite_configuration_micrositeorganizationmapping` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `organization` varchar(63) NOT NULL,
+  `microsite_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `organization` (`organization`),
+  KEY `D1c5d7dbbb2cde12ce18b38d46f71ee0` (`microsite_id`),
+  CONSTRAINT `D1c5d7dbbb2cde12ce18b38d46f71ee0` FOREIGN KEY (`microsite_id`) REFERENCES `microsite_configuration_microsite` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `microsite_configuration_micrositeorganizationmapping`
+--
+
+LOCK TABLES `microsite_configuration_micrositeorganizationmapping` WRITE;
+/*!40000 ALTER TABLE `microsite_configuration_micrositeorganizationmapping` DISABLE KEYS */;
+/*!40000 ALTER TABLE `microsite_configuration_micrositeorganizationmapping` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `microsite_configuration_micrositetemplate`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `microsite_configuration_micrositetemplate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `template_uri` varchar(255) NOT NULL,
+  `template` longtext NOT NULL,
+  `microsite_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `microsite_configuration_micros_microsite_id_80b3f3616d2e317_uniq` (`microsite_id`,`template_uri`),
+  KEY `microsite_configuration_micrositetemplate_a8b249ec` (`template_uri`),
+  CONSTRAINT `D4919cbc5f1414d3de93aa9ec9aa48f3` FOREIGN KEY (`microsite_id`) REFERENCES `microsite_configuration_microsite` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `microsite_configuration_micrositetemplate`
+--
+
+LOCK TABLES `microsite_configuration_micrositetemplate` WRITE;
+/*!40000 ALTER TABLE `microsite_configuration_micrositetemplate` DISABLE KEYS */;
+/*!40000 ALTER TABLE `microsite_configuration_micrositetemplate` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -6570,14 +5916,14 @@ CREATE TABLE `milestones_coursecontentmilestone` (
   `milestone_relationship_type_id` int(11) NOT NULL,
   `requirements` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `milestones_coursecontent_course_id_content_id_mil_7caa5ba5_uniq` (`course_id`,`content_id`,`milestone_id`),
-  KEY `milestones_coursecontentmilestone_course_id_6fd3fad0` (`course_id`),
-  KEY `milestones_coursecontentmilestone_content_id_21f4c95f` (`content_id`),
-  KEY `milestones_coursecon_milestone_id_bd7a608b_fk_milestone` (`milestone_id`),
-  KEY `milestones_coursecon_milestone_relationsh_31556ebf_fk_milestone` (`milestone_relationship_type_id`),
-  KEY `milestones_coursecontentmilestone_active_b7ab709d` (`active`),
-  CONSTRAINT `milestones_coursecon_milestone_id_bd7a608b_fk_milestone` FOREIGN KEY (`milestone_id`) REFERENCES `milestones_milestone` (`id`),
-  CONSTRAINT `milestones_coursecon_milestone_relationsh_31556ebf_fk_milestone` FOREIGN KEY (`milestone_relationship_type_id`) REFERENCES `milestones_milestonerelationshiptype` (`id`)
+  UNIQUE KEY `milestones_coursecontentmileston_course_id_68d1457cd52d6dff_uniq` (`course_id`,`content_id`,`milestone_id`),
+  KEY `milestones_coursecontentmilestone_ea134da7` (`course_id`),
+  KEY `milestones_coursecontentmilestone_e14f02ad` (`content_id`),
+  KEY `milestones_coursecontentmilestone_dbb5cd1e` (`milestone_id`),
+  KEY `milestones_coursecontentmilestone_db6866e3` (`milestone_relationship_type_id`),
+  KEY `milestones_coursecontentmilestone_active_39b5c645fa33bfee_uniq` (`active`),
+  CONSTRAINT `D84e404851bc6d6b9fe0d60955e8729c` FOREIGN KEY (`milestone_relationship_type_id`) REFERENCES `milestones_milestonerelationshiptype` (`id`),
+  CONSTRAINT `milesto_milestone_id_73b6eddde5b205a8_fk_milestones_milestone_id` FOREIGN KEY (`milestone_id`) REFERENCES `milestones_milestone` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6605,13 +5951,13 @@ CREATE TABLE `milestones_coursemilestone` (
   `milestone_id` int(11) NOT NULL,
   `milestone_relationship_type_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `milestones_coursemilestone_course_id_milestone_id_36b21ae8_uniq` (`course_id`,`milestone_id`),
-  KEY `milestones_coursemilestone_course_id_ce46a0fc` (`course_id`),
-  KEY `milestones_coursemil_milestone_id_03d9ef01_fk_milestone` (`milestone_id`),
-  KEY `milestones_coursemil_milestone_relationsh_6c64b782_fk_milestone` (`milestone_relationship_type_id`),
-  KEY `milestones_coursemilestone_active_c590442e` (`active`),
-  CONSTRAINT `milestones_coursemil_milestone_id_03d9ef01_fk_milestone` FOREIGN KEY (`milestone_id`) REFERENCES `milestones_milestone` (`id`),
-  CONSTRAINT `milestones_coursemil_milestone_relationsh_6c64b782_fk_milestone` FOREIGN KEY (`milestone_relationship_type_id`) REFERENCES `milestones_milestonerelationshiptype` (`id`)
+  UNIQUE KEY `milestones_coursemilestone_course_id_5a06e10579eab3b7_uniq` (`course_id`,`milestone_id`),
+  KEY `milestones_coursemilestone_ea134da7` (`course_id`),
+  KEY `milestones_coursemilestone_dbb5cd1e` (`milestone_id`),
+  KEY `milestones_coursemilestone_db6866e3` (`milestone_relationship_type_id`),
+  KEY `milestones_coursemilestone_active_5c3a925f8cc4bde2_uniq` (`active`),
+  CONSTRAINT `D69536d0d313008147c5daf5341090e1` FOREIGN KEY (`milestone_relationship_type_id`) REFERENCES `milestones_milestonerelationshiptype` (`id`),
+  CONSTRAINT `milesto_milestone_id_284153799c54d7d8_fk_milestones_milestone_id` FOREIGN KEY (`milestone_id`) REFERENCES `milestones_milestone` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6640,10 +5986,10 @@ CREATE TABLE `milestones_milestone` (
   `description` longtext NOT NULL,
   `active` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `milestones_milestone_namespace_name_0b80f867_uniq` (`namespace`,`name`),
-  KEY `milestones_milestone_namespace_a8e8807c` (`namespace`),
-  KEY `milestones_milestone_name_23fb0698` (`name`),
-  KEY `milestones_milestone_active_9a6c1703` (`active`)
+  UNIQUE KEY `milestones_milestone_namespace_460a2f6943016c0b_uniq` (`namespace`,`name`),
+  KEY `milestones_milestone_89801e9e` (`namespace`),
+  KEY `milestones_milestone_b068931c` (`name`),
+  KEY `milestones_milestone_active_1182ba3c09d42c35_uniq` (`active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6680,7 +6026,7 @@ CREATE TABLE `milestones_milestonerelationshiptype` (
 
 LOCK TABLES `milestones_milestonerelationshiptype` WRITE;
 /*!40000 ALTER TABLE `milestones_milestonerelationshiptype` DISABLE KEYS */;
-INSERT INTO `milestones_milestonerelationshiptype` VALUES (1,'2019-09-25 19:53:48.911123','2019-09-25 19:53:48.911511','fulfills','Autogenerated milestone relationship type \"fulfills\"',1),(2,'2019-09-25 19:53:48.913432','2019-09-25 19:53:48.913671','requires','Autogenerated milestone relationship type \"requires\"',1);
+INSERT INTO `milestones_milestonerelationshiptype` VALUES (1,'2016-12-17 01:38:31.206255','2016-12-17 01:38:31.207046','fulfills','Autogenerated milestone relationship type \"fulfills\"',1),(2,'2016-12-17 01:38:31.209155','2016-12-17 01:38:31.209526','requires','Autogenerated milestone relationship type \"requires\"',1);
 /*!40000 ALTER TABLE `milestones_milestonerelationshiptype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6700,11 +6046,11 @@ CREATE TABLE `milestones_usermilestone` (
   `active` tinyint(1) NOT NULL,
   `milestone_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `milestones_usermilestone_user_id_milestone_id_02197f01_uniq` (`user_id`,`milestone_id`),
-  KEY `milestones_usermiles_milestone_id_f90f9430_fk_milestone` (`milestone_id`),
-  KEY `milestones_usermilestone_user_id_b3e9aef4` (`user_id`),
-  KEY `milestones_usermilestone_active_93a18e7f` (`active`),
-  CONSTRAINT `milestones_usermiles_milestone_id_f90f9430_fk_milestone` FOREIGN KEY (`milestone_id`) REFERENCES `milestones_milestone` (`id`)
+  UNIQUE KEY `milestones_usermilestone_user_id_10206aa452468351_uniq` (`user_id`,`milestone_id`),
+  KEY `milesto_milestone_id_4fe38e3e9994f15c_fk_milestones_milestone_id` (`milestone_id`),
+  KEY `milestones_usermilestone_e8701ad4` (`user_id`),
+  KEY `milestones_usermilestone_active_1827f467fe87a8ea_uniq` (`active`),
+  CONSTRAINT `milesto_milestone_id_4fe38e3e9994f15c_fk_milestones_milestone_id` FOREIGN KEY (`milestone_id`) REFERENCES `milestones_milestone` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6735,7 +6081,7 @@ CREATE TABLE `mobile_api_appversionconfig` (
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `mobile_api_appversionconfig_platform_version_6b577430_uniq` (`platform`,`version`)
+  UNIQUE KEY `mobile_api_appversionconfig_platform_d34993f68d46008_uniq` (`platform`,`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6760,8 +6106,8 @@ CREATE TABLE `mobile_api_ignoremobileavailableflagconfig` (
   `enabled` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `mobile_api_ignoremob_changed_by_id_4ca9c0d6_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `mobile_api_ignoremob_changed_by_id_4ca9c0d6_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `mobile_api_ignore_changed_by_id_754382e31d5f9d51_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `mobile_api_ignore_changed_by_id_754382e31d5f9d51_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6787,8 +6133,8 @@ CREATE TABLE `mobile_api_mobileapiconfig` (
   `video_profiles` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `mobile_api_mobileapi_changed_by_id_8799981a_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `mobile_api_mobileapi_changed_by_id_8799981a_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `mobile_api_mobile_changed_by_id_439d2c27670d0fc4_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `mobile_api_mobile_changed_by_id_439d2c27670d0fc4_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6822,12 +6168,12 @@ CREATE TABLE `notes_note` (
   `updated` datetime(6) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `notes_note_user_id_be6c80b4_fk_auth_user_id` (`user_id`),
-  KEY `notes_note_course_id_ab1355f9` (`course_id`),
-  KEY `notes_note_uri_f9ed526c` (`uri`),
-  KEY `notes_note_created_50dd44ea` (`created`),
-  KEY `notes_note_updated_f2abc1a5` (`updated`),
-  CONSTRAINT `notes_note_user_id_be6c80b4_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `notes_note_user_id_2aa1ff88fd937cb3_fk_auth_user_id` (`user_id`),
+  KEY `notes_note_ea134da7` (`course_id`),
+  KEY `notes_note_9305b73d` (`uri`),
+  KEY `notes_note_e2fa5388` (`created`),
+  KEY `notes_note_0f81d52e` (`updated`),
+  CONSTRAINT `notes_note_user_id_2aa1ff88fd937cb3_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6855,8 +6201,8 @@ CREATE TABLE `notify_notification` (
   `created` datetime(6) NOT NULL,
   `subscription_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `notify_notification_subscription_id_0eae0084_fk_notify_su` (`subscription_id`),
-  CONSTRAINT `notify_notification_subscription_id_0eae0084_fk_notify_su` FOREIGN KEY (`subscription_id`) REFERENCES `notify_subscription` (`subscription_id`)
+  KEY `notify_notification_ef42673f` (`subscription_id`),
+  CONSTRAINT `D48032390695e0699e92b8d7ccdbff7e` FOREIGN KEY (`subscription_id`) REFERENCES `notify_subscription` (`subscription_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6880,8 +6226,8 @@ CREATE TABLE `notify_notificationtype` (
   `label` varchar(128) DEFAULT NULL,
   `content_type_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`key`),
-  KEY `notify_notificationt_content_type_id_f575bac5_fk_django_co` (`content_type_id`),
-  CONSTRAINT `notify_notificationt_content_type_id_f575bac5_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
+  KEY `notif_content_type_id_181f055892581fd8_fk_django_content_type_id` (`content_type_id`),
+  CONSTRAINT `notif_content_type_id_181f055892581fd8_fk_django_content_type_id` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6905,8 +6251,8 @@ CREATE TABLE `notify_settings` (
   `interval` smallint(6) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `notify_settings_user_id_088ebffc_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `notify_settings_user_id_088ebffc_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `notify_settings_user_id_14e062dc3d4345b3_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `notify_settings_user_id_14e062dc3d4345b3_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6932,10 +6278,10 @@ CREATE TABLE `notify_subscription` (
   `notification_type_id` varchar(128) NOT NULL,
   `settings_id` int(11) NOT NULL,
   PRIMARY KEY (`subscription_id`),
-  KEY `notify_subscription_notification_type_id_f73a8b13_fk_notify_no` (`notification_type_id`),
-  KEY `notify_subscription_settings_id_dbc3961d_fk_notify_settings_id` (`settings_id`),
-  CONSTRAINT `notify_subscription_notification_type_id_f73a8b13_fk_notify_no` FOREIGN KEY (`notification_type_id`) REFERENCES `notify_notificationtype` (`key`),
-  CONSTRAINT `notify_subscription_settings_id_dbc3961d_fk_notify_settings_id` FOREIGN KEY (`settings_id`) REFERENCES `notify_settings` (`id`)
+  KEY `a2462650bbefc26547210b80dec61069` (`notification_type_id`),
+  KEY `notify_subscr_settings_id_64d594d127e8ca95_fk_notify_settings_id` (`settings_id`),
+  CONSTRAINT `a2462650bbefc26547210b80dec61069` FOREIGN KEY (`notification_type_id`) REFERENCES `notify_notificationtype` (`key`),
+  CONSTRAINT `notify_subscr_settings_id_64d594d127e8ca95_fk_notify_settings_id` FOREIGN KEY (`settings_id`) REFERENCES `notify_settings` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6962,12 +6308,12 @@ CREATE TABLE `oauth2_accesstoken` (
   `client_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `oauth2_accesstoken_token_24468552` (`token`),
-  KEY `oauth2_accesstoken_client_id_e5c1beda_fk_oauth2_client_id` (`client_id`),
-  KEY `oauth2_accesstoken_user_id_bcf4c395_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `oauth2_accesstoken_client_id_e5c1beda_fk_oauth2_client_id` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`),
-  CONSTRAINT `oauth2_accesstoken_user_id_bcf4c395_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `oauth2_accesstoken_94a08da1` (`token`),
+  KEY `oauth2_accesstoken_2bfe9d72` (`client_id`),
+  KEY `oauth2_accesstoken_e8701ad4` (`user_id`),
+  CONSTRAINT `oauth2_accesstoke_client_id_20c73b03a7c139a2_fk_oauth2_client_id` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`),
+  CONSTRAINT `oauth2_accesstoken_user_id_7a865c7085722378_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6976,6 +6322,7 @@ CREATE TABLE `oauth2_accesstoken` (
 
 LOCK TABLES `oauth2_accesstoken` WRITE;
 /*!40000 ALTER TABLE `oauth2_accesstoken` DISABLE KEYS */;
+INSERT INTO `oauth2_accesstoken` VALUES (1,'4f18eb17733e5854dde769e1af9032a2e5975b0c','2018-06-07 00:48:11.256868',39,2,4),(2,'69e1bcdf78dbc96086005e1d6c9f695a6712f0ea','2018-06-21 16:09:02.563269',39,2,4),(3,'1d66ef834f77cc45b8b290645f365248627053b4','2019-01-31 21:22:46.293242',39,3,1),(4,'bda601532c7a6e9503fc8e1807fce19254634740','2019-01-31 21:24:46.650858',39,2,4);
 /*!40000 ALTER TABLE `oauth2_accesstoken` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6996,9 +6343,9 @@ CREATE TABLE `oauth2_client` (
   `user_id` int(11) DEFAULT NULL,
   `logout_uri` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `oauth2_client_user_id_21c89c78_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `oauth2_client_user_id_21c89c78_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  KEY `oauth2_client_user_id_2b47284bbd512fe1_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `oauth2_client_user_id_2b47284bbd512fe1_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7007,7 +6354,7 @@ CREATE TABLE `oauth2_client` (
 
 LOCK TABLES `oauth2_client` WRITE;
 /*!40000 ALTER TABLE `oauth2_client` DISABLE KEYS */;
-INSERT INTO `oauth2_client` VALUES (1,'ecommerce','http://localhost:18130','http://localhost:18130/complete/edx-oidc/','ecommerce-key','ecommerce-secret',0,1,'http://localhost:18130/logout/'),(2,'discovery','http://localhost:18381','http://localhost:18381/complete/edx-oidc/','discovery-key','discovery-secret',0,10,'http://localhost:18381/logout/'),(3,'credentials','http://localhost:18150','http://localhost:18150/complete/edx-oidc/','credentials-key','credentials-secret',0,11,'http://localhost:18150/logout/'),(4,'edx-notes','http://localhost:18120','http://localhost:18120/complete/edx-oidc/','edx_notes_api-key','edx_notes_api-secret',0,12,'http://localhost:18120/logout/'),(5,'registrar','http://localhost:18734','http://localhost:18734/complete/edx-oidc/','registrar-key','registrar-secret',0,13,'http://localhost:18734/logout/');
+INSERT INTO `oauth2_client` VALUES (1,'credentials','http://localhost:18150','http://localhost:18150/complete/edx-oidc/','credentials-key','credentials-secret',0,3,'http://localhost:18150/logout/'),(2,'discovery','http://localhost:18381','http://localhost:18381/complete/edx-oidc/','discovery-key','discovery-secret',0,4,'http://localhost:18381/logout/'),(3,'ecommerce','http://localhost:18130','http://localhost:18130/complete/edx-oidc/','ecommerce-key','ecommerce-secret',0,1,'http://localhost:18130/logout/'),(4,'programs','http://localhost:18140','http://localhost:18140/complete/edx-oidc/','programs-key','programs-secret',0,5,'http://localhost:18140/logout/');
 /*!40000 ALTER TABLE `oauth2_client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7027,11 +6374,11 @@ CREATE TABLE `oauth2_grant` (
   `user_id` int(11) NOT NULL,
   `nonce` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `oauth2_grant_user_id_d8248ea3_fk_auth_user_id` (`user_id`),
-  KEY `oauth2_grant_client_id_code_expires_d1606e16_idx` (`client_id`,`code`,`expires`),
-  CONSTRAINT `oauth2_grant_client_id_430bbcf7_fk_oauth2_client_id` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`),
-  CONSTRAINT `oauth2_grant_user_id_d8248ea3_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `oauth2_grant_user_id_3de96a461bb76819_fk_auth_user_id` (`user_id`),
+  KEY `oauth2_grant_client_id_7f83b952b3c51985_idx` (`client_id`,`code`,`expires`),
+  CONSTRAINT `oauth2_grant_client_id_fbfc174fbc856af_fk_oauth2_client_id` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`),
+  CONSTRAINT `oauth2_grant_user_id_3de96a461bb76819_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7040,6 +6387,7 @@ CREATE TABLE `oauth2_grant` (
 
 LOCK TABLES `oauth2_grant` WRITE;
 /*!40000 ALTER TABLE `oauth2_grant` DISABLE KEYS */;
+INSERT INTO `oauth2_grant` VALUES (1,'e478ebb176d4b84fbddc2c3b2e6b17bf8a608414','2016-12-17 06:29:58.431878','http://localhost:18381/complete/edx-oidc/',39,2,2,''),(2,'94e3dd2bd8d776bcde855025ece04c02537d17be','2016-12-18 05:21:32.161245','http://localhost:18381/complete/edx-oidc/',39,2,2,'');
 /*!40000 ALTER TABLE `oauth2_grant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7050,24 +6398,19 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `oauth2_provider_accesstoken` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `token` varchar(255) NOT NULL,
   `expires` datetime(6) NOT NULL,
   `scope` longtext NOT NULL,
-  `application_id` bigint(20) DEFAULT NULL,
+  `application_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `created` datetime(6) NOT NULL,
-  `updated` datetime(6) NOT NULL,
-  `source_refresh_token_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `oauth2_provider_accesstoken_token_8af090f8_uniq` (`token`),
-  UNIQUE KEY `source_refresh_token_id` (`source_refresh_token_id`),
-  KEY `oauth2_provider_accesstoken_user_id_6e4c9a65_fk_auth_user_id` (`user_id`),
-  KEY `oauth2_provider_accesstoken_application_id_b22886e1_fk` (`application_id`),
-  CONSTRAINT `oauth2_provider_acce_source_refresh_token_e66fbc72_fk_oauth2_pr` FOREIGN KEY (`source_refresh_token_id`) REFERENCES `oauth2_provider_refreshtoken` (`id`),
-  CONSTRAINT `oauth2_provider_accesstoken_application_id_b22886e1_fk` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`),
-  CONSTRAINT `oauth2_provider_accesstoken_user_id_6e4c9a65_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `oauth2_provider_accesstoken_token_3f77f86fb4ecbe0f_uniq` (`token`),
+  KEY `D5ac3019ee1c474fd85718b015e3d3a1` (`application_id`),
+  KEY `oauth2_provider_accesst_user_id_5e2f004fdebea22d_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `D5ac3019ee1c474fd85718b015e3d3a1` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`),
+  CONSTRAINT `oauth2_provider_accesst_user_id_5e2f004fdebea22d_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7076,7 +6419,6 @@ CREATE TABLE `oauth2_provider_accesstoken` (
 
 LOCK TABLES `oauth2_provider_accesstoken` WRITE;
 /*!40000 ALTER TABLE `oauth2_provider_accesstoken` DISABLE KEYS */;
-INSERT INTO `oauth2_provider_accesstoken` VALUES (1,'ulIzlv6nOYBZ7kDV5dTVzUdsNNFVnQ','2019-09-25 21:18:44.401868','read write profile email',4,1,'2019-09-25 20:18:44.398488','2019-09-25 20:18:44.404624',NULL),(2,'DSrQkqXURg2YwYZcMJOvnx5nCgAtjE','2019-09-25 21:24:09.902384','read write profile email',6,10,'2019-09-25 20:24:09.897172','2019-09-25 20:24:09.905685',NULL),(3,'UvrZxDP6ExoZL0hGIRJizvLrWZ80CT','2019-09-25 21:24:09.995236','read write profile email',6,10,'2019-09-25 20:24:09.990100','2019-09-25 20:24:09.999006',NULL),(4,'c2PbdHtzv7tYpzT9cKkePBe2rGYj0F','2019-09-25 21:24:10.074011','read write profile email',6,10,'2019-09-25 20:24:10.069036','2019-09-25 20:24:10.077993',NULL),(5,'aMTFKCZ8crpngE8Qf8QkwIGSicTdZY','2019-09-25 21:24:10.155192','read write profile email',6,10,'2019-09-25 20:24:10.150582','2019-09-25 20:24:10.159577',NULL),(6,'oKLJqDSBCxfVEHxL5p5nFvPbMcygx8','2019-09-25 21:24:10.313026','read write profile email',6,10,'2019-09-25 20:24:10.308800','2019-09-25 20:24:10.316068',NULL),(7,'RBUShz1eCuZdxvwi6nb4j9apycgrDd','2019-09-25 21:24:11.564601','read write profile email',6,10,'2019-09-25 20:24:11.555660','2019-09-25 20:24:11.570306',NULL),(8,'6m7V615ojYwPwrg2nxzT1PDONbbKGt','2019-09-25 21:24:14.114753','read write profile email',6,10,'2019-09-25 20:24:14.112179','2019-09-25 20:24:14.117038',NULL),(9,'Nn9Sb5SXFmtB0VgymX9E8qUsGaxZ0m','2019-09-25 21:24:14.188960','read write profile email',6,10,'2019-09-25 20:24:14.185289','2019-09-25 20:24:14.191686',NULL);
 /*!40000 ALTER TABLE `oauth2_provider_accesstoken` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7087,7 +6429,7 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `oauth2_provider_application` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `client_id` varchar(100) NOT NULL,
   `redirect_uris` longtext NOT NULL,
   `client_type` varchar(32) NOT NULL,
@@ -7096,14 +6438,12 @@ CREATE TABLE `oauth2_provider_application` (
   `name` varchar(255) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `skip_authorization` tinyint(1) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `updated` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `client_id` (`client_id`),
-  KEY `oauth2_provider_application_client_secret_53133678` (`client_secret`),
-  KEY `oauth2_provider_application_user_id_79829054_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `oauth2_provider_application_user_id_79829054_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  KEY `oauth2_provider_application_9d667c2b` (`client_secret`),
+  KEY `oauth2_provider_applica_user_id_7fa13387c260b798_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `oauth2_provider_applica_user_id_7fa13387c260b798_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7112,7 +6452,6 @@ CREATE TABLE `oauth2_provider_application` (
 
 LOCK TABLES `oauth2_provider_application` WRITE;
 /*!40000 ALTER TABLE `oauth2_provider_application` DISABLE KEYS */;
-INSERT INTO `oauth2_provider_application` VALUES (1,'login-service-client-id','','public','password','iblSTKjTL3g0FhD32q3CnCwxk1eF4jWHHytabE5gPxQkJJs9khI1bs3K28IeJ979i4tpu6rcBCsz3EilljKJ6oySxVzW7rOmlg0zRortCjyLPTyly1kd0LeUqi8xUjL8','Login Service for JWT Cookies',2,0,'2019-09-25 19:56:38.180651','2019-09-25 19:56:38.180686'),(2,'Q9isUQNjl1CsUCocYLLWhfhYSJWKt5zyQyNXXlbz','','confidential','client-credentials','RqPv5zxFD4ZyXxsCXWzUxEDx8UXuGNh1glEMSqxzGMguBTiMxwC0eZ2udo8sSwQnRk6vkOxjZqY9K9JaOU7OCieRYRO0WvcpcxPtTPJNM0njJpxbycxCe0JdpQx9yIW7','retirement',9,0,'2019-09-25 20:15:33.951565','2019-09-25 20:15:33.951612'),(3,'ecommerce-sso-key','http://localhost:18130/complete/edx-oauth2/','confidential','authorization-code','ecommerce-sso-secret','ecommerce-sso',1,1,'2019-09-25 20:17:49.938280','2019-09-25 20:17:49.938327'),(4,'ecommerce-backend-service-key','','confidential','client-credentials','ecommerce-backend-service-secret','ecommerce-backend-service',1,0,'2019-09-25 20:18:00.508597','2019-09-25 20:18:00.508647'),(5,'discovery-sso-key','http://localhost:18381/complete/edx-oauth2/','confidential','authorization-code','discovery-sso-secret','discovery-sso',10,1,'2019-09-25 20:23:28.139908','2019-09-25 20:23:28.139958'),(6,'discovery-backend-service-key','','confidential','client-credentials','discovery-backend-service-secret','discovery-backend-service',10,0,'2019-09-25 20:23:39.299328','2019-09-25 20:23:39.299391'),(7,'credentials-sso-key','http://localhost:18150/complete/edx-oauth2/','confidential','authorization-code','credentials-sso-secret','credentials-sso',11,1,'2019-09-25 20:27:22.611406','2019-09-25 20:27:22.611457'),(8,'credentials-backend-service-key','','confidential','client-credentials','credentials-backend-service-secret','credentials-backend-service',11,0,'2019-09-25 20:27:32.799011','2019-09-25 20:27:32.799064'),(9,'edx_notes_api-sso-key','http://localhost:18120/complete/edx-oauth2/','confidential','authorization-code','edx_notes_api-sso-secret','edx_notes_api-sso',12,1,'2019-09-25 20:28:31.084609','2019-09-25 20:28:31.084722'),(10,'edx_notes_api-backend-service-key','','confidential','client-credentials','edx_notes_api-backend-service-secret','edx_notes_api-backend-service',12,0,'2019-09-25 20:28:42.185519','2019-09-25 20:28:42.185572'),(11,'registrar-sso-key','http://localhost:18734/complete/edx-oauth2/','confidential','authorization-code','registrar-sso-secret','registrar-sso',13,1,'2019-09-25 20:29:48.951496','2019-09-25 20:29:48.951544'),(12,'registrar-backend-service-key','','confidential','client-credentials','registrar-backend-service-secret','registrar-backend-service',13,0,'2019-09-25 20:29:58.564505','2019-09-25 20:29:58.564554');
 /*!40000 ALTER TABLE `oauth2_provider_application` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7123,21 +6462,19 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `oauth2_provider_grant` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(255) NOT NULL,
   `expires` datetime(6) NOT NULL,
   `redirect_uri` varchar(255) NOT NULL,
   `scope` longtext NOT NULL,
-  `application_id` bigint(20) NOT NULL,
+  `application_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `updated` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `oauth2_provider_grant_code_49ab4ddf_uniq` (`code`),
-  KEY `oauth2_provider_grant_application_id_81923564_fk` (`application_id`),
-  KEY `oauth2_provider_grant_user_id_e8f62af8_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `oauth2_provider_grant_application_id_81923564_fk` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`),
-  CONSTRAINT `oauth2_provider_grant_user_id_e8f62af8_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `oauth2_provider_grant_code_a5c88732687483b_uniq` (`code`),
+  KEY `D6b2a4f1402d4f338b690c38b795830a` (`application_id`),
+  KEY `oauth2_provider_grant_user_id_3111344894d452da_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `D6b2a4f1402d4f338b690c38b795830a` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`),
+  CONSTRAINT `oauth2_provider_grant_user_id_3111344894d452da_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7157,22 +6494,19 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `oauth2_provider_refreshtoken` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `token` varchar(255) NOT NULL,
-  `access_token_id` bigint(20) DEFAULT NULL,
-  `application_id` bigint(20) NOT NULL,
+  `access_token_id` int(11) NOT NULL,
+  `application_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `updated` datetime(6) NOT NULL,
-  `revoked` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `access_token_id` (`access_token_id`),
-  UNIQUE KEY `oauth2_provider_refreshtoken_token_revoked_af8a5134_uniq` (`token`,`revoked`),
-  KEY `oauth2_provider_refreshtoken_application_id_2d1c311b_fk` (`application_id`),
-  KEY `oauth2_provider_refreshtoken_user_id_da837fce_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `oauth2_provider_refr_access_token_id_775e84e8_fk_oauth2_pr` FOREIGN KEY (`access_token_id`) REFERENCES `oauth2_provider_accesstoken` (`id`),
-  CONSTRAINT `oauth2_provider_refreshtoken_application_id_2d1c311b_fk` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`),
-  CONSTRAINT `oauth2_provider_refreshtoken_user_id_da837fce_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `oauth2_provider_refreshtoken_token_1e4e9388e6a22527_uniq` (`token`),
+  KEY `d3e264ceec355cabed6ff9976fc42a06` (`application_id`),
+  KEY `oauth2_provider_refresh_user_id_3f695b639cfbc9a3_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `b58d9cb3b93afb36b11b7741bf1bcc1a` FOREIGN KEY (`access_token_id`) REFERENCES `oauth2_provider_accesstoken` (`id`),
+  CONSTRAINT `d3e264ceec355cabed6ff9976fc42a06` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`),
+  CONSTRAINT `oauth2_provider_refresh_user_id_3f695b639cfbc9a3_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7195,9 +6529,9 @@ CREATE TABLE `oauth2_provider_trustedclient` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `client_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `oauth2_provider_trus_client_id_01d81d1c_fk_oauth2_cl` (`client_id`),
-  CONSTRAINT `oauth2_provider_trus_client_id_01d81d1c_fk_oauth2_cl` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  KEY `oauth2_provider_tr_client_id_bb96ea0be42c00a_fk_oauth2_client_id` (`client_id`),
+  CONSTRAINT `oauth2_provider_tr_client_id_bb96ea0be42c00a_fk_oauth2_client_id` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7206,7 +6540,7 @@ CREATE TABLE `oauth2_provider_trustedclient` (
 
 LOCK TABLES `oauth2_provider_trustedclient` WRITE;
 /*!40000 ALTER TABLE `oauth2_provider_trustedclient` DISABLE KEYS */;
-INSERT INTO `oauth2_provider_trustedclient` VALUES (1,1),(2,2),(3,3),(4,4),(5,5);
+INSERT INTO `oauth2_provider_trustedclient` VALUES (1,1),(2,2),(3,3),(4,4);
 /*!40000 ALTER TABLE `oauth2_provider_trustedclient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7225,11 +6559,11 @@ CREATE TABLE `oauth2_refreshtoken` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `access_token_id` (`access_token_id`),
-  KEY `oauth2_refreshtoken_client_id_22c52347_fk_oauth2_client_id` (`client_id`),
-  KEY `oauth2_refreshtoken_user_id_3d206436_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `oauth2_refreshtoken_access_token_id_4302e339_fk_oauth2_ac` FOREIGN KEY (`access_token_id`) REFERENCES `oauth2_accesstoken` (`id`),
-  CONSTRAINT `oauth2_refreshtoken_client_id_22c52347_fk_oauth2_client_id` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`),
-  CONSTRAINT `oauth2_refreshtoken_user_id_3d206436_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `oauth2_refreshtok_client_id_2f55036ac9aa614e_fk_oauth2_client_id` (`client_id`),
+  KEY `oauth2_refreshtoken_user_id_acecf94460b787c_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `oauth2__access_token_id_f99377d503a000b_fk_oauth2_accesstoken_id` FOREIGN KEY (`access_token_id`) REFERENCES `oauth2_accesstoken` (`id`),
+  CONSTRAINT `oauth2_refreshtok_client_id_2f55036ac9aa614e_fk_oauth2_client_id` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`),
+  CONSTRAINT `oauth2_refreshtoken_user_id_acecf94460b787c_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7243,60 +6577,6 @@ LOCK TABLES `oauth2_refreshtoken` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `oauth_dispatch_applicationaccess`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `oauth_dispatch_applicationaccess` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `scopes` varchar(825) NOT NULL,
-  `application_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `application_id` (`application_id`),
-  CONSTRAINT `oauth_dispatch_appli_application_id_dcddee6e_fk_oauth2_pr` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `oauth_dispatch_applicationaccess`
---
-
-LOCK TABLES `oauth_dispatch_applicationaccess` WRITE;
-/*!40000 ALTER TABLE `oauth_dispatch_applicationaccess` DISABLE KEYS */;
-INSERT INTO `oauth_dispatch_applicationaccess` VALUES (1,'user_id',3),(2,'user_id',5),(3,'user_id',7),(4,'user_id',9),(5,'user_id',11);
-/*!40000 ALTER TABLE `oauth_dispatch_applicationaccess` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `oauth_dispatch_applicationorganization`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `oauth_dispatch_applicationorganization` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `relation_type` varchar(32) NOT NULL,
-  `application_id` bigint(20) NOT NULL,
-  `organization_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `oauth_dispatch_applicati_application_id_relation__1b4017f2_uniq` (`application_id`,`relation_type`,`organization_id`),
-  KEY `oauth_dispatch_appli_organization_id_fe63a7f2_fk_organizat` (`organization_id`),
-  CONSTRAINT `oauth_dispatch_appli_application_id_dea619c6_fk_oauth2_pr` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`),
-  CONSTRAINT `oauth_dispatch_appli_organization_id_fe63a7f2_fk_organizat` FOREIGN KEY (`organization_id`) REFERENCES `organizations_organization` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `oauth_dispatch_applicationorganization`
---
-
-LOCK TABLES `oauth_dispatch_applicationorganization` WRITE;
-/*!40000 ALTER TABLE `oauth_dispatch_applicationorganization` DISABLE KEYS */;
-/*!40000 ALTER TABLE `oauth_dispatch_applicationorganization` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `oauth_dispatch_restrictedapplication`
 --
 
@@ -7304,10 +6584,10 @@ UNLOCK TABLES;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `oauth_dispatch_restrictedapplication` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `application_id` bigint(20) NOT NULL,
+  `application_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `oauth_dispatch_restr_application_id_6b8d0930_fk_oauth2_pr` (`application_id`),
-  CONSTRAINT `oauth_dispatch_restr_application_id_6b8d0930_fk_oauth2_pr` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`)
+  KEY `d0faf25b802e0044a322123f797a61c7` (`application_id`),
+  CONSTRAINT `d0faf25b802e0044a322123f797a61c7` FOREIGN KEY (`application_id`) REFERENCES `oauth2_provider_application` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7336,8 +6616,8 @@ CREATE TABLE `oauth_provider_consumer` (
   `xauth_allowed` tinyint(1) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `oauth_provider_consumer_user_id_90ce7b49_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `oauth_provider_consumer_user_id_90ce7b49_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `oauth_provider_consumer_user_id_4f22b60d2b258006_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `oauth_provider_consumer_user_id_4f22b60d2b258006_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7363,7 +6643,7 @@ CREATE TABLE `oauth_provider_nonce` (
   `key` varchar(255) NOT NULL,
   `timestamp` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `oauth_provider_nonce_timestamp_b8e8504f` (`timestamp`)
+  KEY `oauth_provider_nonce_d7e6d55b` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7420,12 +6700,12 @@ CREATE TABLE `oauth_provider_token` (
   `scope_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `oauth_provider_token_consumer_id_419f9c5c_fk_oauth_pro` (`consumer_id`),
-  KEY `oauth_provider_token_scope_id_20fc31eb_fk_oauth_pro` (`scope_id`),
-  KEY `oauth_provider_token_user_id_6e750fab_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `oauth_provider_token_consumer_id_419f9c5c_fk_oauth_pro` FOREIGN KEY (`consumer_id`) REFERENCES `oauth_provider_consumer` (`id`),
-  CONSTRAINT `oauth_provider_token_scope_id_20fc31eb_fk_oauth_pro` FOREIGN KEY (`scope_id`) REFERENCES `oauth_provider_scope` (`id`),
-  CONSTRAINT `oauth_provider_token_user_id_6e750fab_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `oauth_consumer_id_1b9915b5bcf1ee5b_fk_oauth_provider_consumer_id` (`consumer_id`),
+  KEY `oauth_provi_scope_id_459821b6fecbc02a_fk_oauth_provider_scope_id` (`scope_id`),
+  KEY `oauth_provider_token_user_id_588adbcffc892186_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `oauth_consumer_id_1b9915b5bcf1ee5b_fk_oauth_provider_consumer_id` FOREIGN KEY (`consumer_id`) REFERENCES `oauth_provider_consumer` (`id`),
+  CONSTRAINT `oauth_provi_scope_id_459821b6fecbc02a_fk_oauth_provider_scope_id` FOREIGN KEY (`scope_id`) REFERENCES `oauth_provider_scope` (`id`),
+  CONSTRAINT `oauth_provider_token_user_id_588adbcffc892186_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7436,44 +6716,6 @@ CREATE TABLE `oauth_provider_token` (
 LOCK TABLES `oauth_provider_token` WRITE;
 /*!40000 ALTER TABLE `oauth_provider_token` DISABLE KEYS */;
 /*!40000 ALTER TABLE `oauth_provider_token` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `organizations_historicalorganization`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `organizations_historicalorganization` (
-  `id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `short_name` varchar(255) NOT NULL,
-  `description` longtext,
-  `logo` longtext,
-  `active` tinyint(1) NOT NULL,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `organizations_histor_history_user_id_bb516493_fk_auth_user` (`history_user_id`),
-  KEY `organizations_historicalorganization_id_4327d8f9` (`id`),
-  KEY `organizations_historicalorganization_name_5f4e354b` (`name`),
-  KEY `organizations_historicalorganization_short_name_07087b46` (`short_name`),
-  CONSTRAINT `organizations_histor_history_user_id_bb516493_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `organizations_historicalorganization`
---
-
-LOCK TABLES `organizations_historicalorganization` WRITE;
-/*!40000 ALTER TABLE `organizations_historicalorganization` DISABLE KEYS */;
-/*!40000 ALTER TABLE `organizations_historicalorganization` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -7492,8 +6734,8 @@ CREATE TABLE `organizations_organization` (
   `logo` varchar(255) DEFAULT NULL,
   `active` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `organizations_organization_name_71edc74b` (`name`),
-  KEY `organizations_organization_short_name_ef338963` (`short_name`)
+  KEY `organizations_organization_b068931c` (`name`),
+  KEY `organizations_organization_4698bac7` (`short_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7520,10 +6762,10 @@ CREATE TABLE `organizations_organizationcourse` (
   `active` tinyint(1) NOT NULL,
   `organization_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `organizations_organizati_course_id_organization_i_06b1db31_uniq` (`course_id`,`organization_id`),
-  KEY `organizations_organi_organization_id_99e77fe0_fk_organizat` (`organization_id`),
-  KEY `organizations_organizationcourse_course_id_227b73bc` (`course_id`),
-  CONSTRAINT `organizations_organi_organization_id_99e77fe0_fk_organizat` FOREIGN KEY (`organization_id`) REFERENCES `organizations_organization` (`id`)
+  UNIQUE KEY `organizations_organizationcourse_course_id_3f0149776c0495ff_uniq` (`course_id`,`organization_id`),
+  KEY `a7b04b16eba98e518fbe21d390bd8e3e` (`organization_id`),
+  KEY `organizations_organizationcourse_ea134da7` (`course_id`),
+  CONSTRAINT `a7b04b16eba98e518fbe21d390bd8e3e` FOREIGN KEY (`organization_id`) REFERENCES `organizations_organization` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7551,10 +6793,10 @@ CREATE TABLE `problem_builder_answer` (
   `modified_on` datetime(6) NOT NULL,
   `course_key` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `problem_builder_answer_student_id_course_key_name_eaac343f_uniq` (`student_id`,`course_key`,`name`),
-  KEY `problem_builder_answer_name_af0a2a0d` (`name`),
-  KEY `problem_builder_answer_student_id_8b0fa669` (`student_id`),
-  KEY `problem_builder_answer_course_key_41ccad30` (`course_key`)
+  UNIQUE KEY `problem_builder_answer_student_id_2ce682a818c95cbc_uniq` (`student_id`,`course_key`,`name`),
+  KEY `problem_builder_answer_b068931c` (`name`),
+  KEY `problem_builder_answer_30a811f6` (`student_id`),
+  KEY `problem_builder_answer_c8235886` (`course_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7581,12 +6823,12 @@ CREATE TABLE `problem_builder_share` (
   `shared_by_id` int(11) NOT NULL,
   `shared_with_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `problem_builder_share_shared_by_id_shared_with_812f19a2_uniq` (`shared_by_id`,`shared_with_id`,`block_id`),
-  KEY `problem_builder_share_shared_with_id_acab4570_fk_auth_user_id` (`shared_with_id`),
-  KEY `problem_builder_share_block_id_6f0dc5f7` (`block_id`),
-  KEY `problem_builder_share_notified_ad79eba9` (`notified`),
-  CONSTRAINT `problem_builder_share_shared_by_id_0b75382c_fk_auth_user_id` FOREIGN KEY (`shared_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `problem_builder_share_shared_with_id_acab4570_fk_auth_user_id` FOREIGN KEY (`shared_with_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `problem_builder_share_shared_by_id_4e845ea266d66e1_uniq` (`shared_by_id`,`shared_with_id`,`block_id`),
+  KEY `problem_builder__shared_with_id_573844d7dca07647_fk_auth_user_id` (`shared_with_id`),
+  KEY `problem_builder_share_7e53bca2` (`block_id`),
+  KEY `problem_builder_share_e559ad34` (`notified`),
+  CONSTRAINT `problem_builder__shared_with_id_573844d7dca07647_fk_auth_user_id` FOREIGN KEY (`shared_with_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `problem_builder_sh_shared_by_id_35201b15adc664ce_fk_auth_user_id` FOREIGN KEY (`shared_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7619,12 +6861,11 @@ CREATE TABLE `proctoring_proctoredexam` (
   `is_practice_exam` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `hide_after_due` tinyint(1) NOT NULL,
-  `backend` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `proctoring_proctoredexam_course_id_content_id_1d8358cc_uniq` (`course_id`,`content_id`),
-  KEY `proctoring_proctoredexam_course_id_8787b34f` (`course_id`),
-  KEY `proctoring_proctoredexam_content_id_13d3bec4` (`content_id`),
-  KEY `proctoring_proctoredexam_external_id_0181c110` (`external_id`)
+  UNIQUE KEY `proctoring_proctoredexam_course_id_7d8ab189323890c0_uniq` (`course_id`,`content_id`),
+  KEY `proctoring_proctoredexam_ea134da7` (`course_id`),
+  KEY `proctoring_proctoredexam_e14f02ad` (`content_id`),
+  KEY `proctoring_proctoredexam_0e684294` (`external_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7651,10 +6892,10 @@ CREATE TABLE `proctoring_proctoredexamreviewpolicy` (
   `proctored_exam_id` int(11) NOT NULL,
   `set_by_user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `proctoring_proctored_proctored_exam_id_57f9ce30_fk_proctorin` (`proctored_exam_id`),
-  KEY `proctoring_proctored_set_by_user_id_7c101300_fk_auth_user` (`set_by_user_id`),
-  CONSTRAINT `proctoring_proctored_proctored_exam_id_57f9ce30_fk_proctorin` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
-  CONSTRAINT `proctoring_proctored_set_by_user_id_7c101300_fk_auth_user` FOREIGN KEY (`set_by_user_id`) REFERENCES `auth_user` (`id`)
+  KEY `D32bab97500954b362d3f768dd89b6da` (`proctored_exam_id`),
+  KEY `proctoring_proct_set_by_user_id_75a66580aa44cd84_fk_auth_user_id` (`set_by_user_id`),
+  CONSTRAINT `D32bab97500954b362d3f768dd89b6da` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
+  CONSTRAINT `proctoring_proct_set_by_user_id_75a66580aa44cd84_fk_auth_user_id` FOREIGN KEY (`set_by_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7682,11 +6923,11 @@ CREATE TABLE `proctoring_proctoredexamreviewpolicyhistory` (
   `proctored_exam_id` int(11) NOT NULL,
   `set_by_user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `proctoring_proctored_proctored_exam_id_8126b616_fk_proctorin` (`proctored_exam_id`),
-  KEY `proctoring_proctored_set_by_user_id_42ce126e_fk_auth_user` (`set_by_user_id`),
-  KEY `proctoring_proctoredexamreviewpolicyhistory_original_id_ca04913d` (`original_id`),
-  CONSTRAINT `proctoring_proctored_proctored_exam_id_8126b616_fk_proctorin` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
-  CONSTRAINT `proctoring_proctored_set_by_user_id_42ce126e_fk_auth_user` FOREIGN KEY (`set_by_user_id`) REFERENCES `auth_user` (`id`)
+  KEY `d9965d8af87bebd0587414ca1ba4826f` (`proctored_exam_id`),
+  KEY `proctoring_procto_set_by_user_id_31fae610848d90f_fk_auth_user_id` (`set_by_user_id`),
+  KEY `proctoring_proctoredexamreviewpolicyhistory_524b09d0` (`original_id`),
+  CONSTRAINT `d9965d8af87bebd0587414ca1ba4826f` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
+  CONSTRAINT `proctoring_procto_set_by_user_id_31fae610848d90f_fk_auth_user_id` FOREIGN KEY (`set_by_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7717,13 +6958,14 @@ CREATE TABLE `proctoring_proctoredexamsoftwaresecurereview` (
   `reviewed_by_id` int(11) DEFAULT NULL,
   `student_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `proctoring_proctoredexam_attempt_code_706d3717_uniq` (`attempt_code`),
-  KEY `proctoring_proctored_exam_id_ea6095a3_fk_proctorin` (`exam_id`),
-  KEY `proctoring_proctored_reviewed_by_id_546b4204_fk_auth_user` (`reviewed_by_id`),
-  KEY `proctoring_proctored_student_id_7e197288_fk_auth_user` (`student_id`),
-  CONSTRAINT `proctoring_proctored_exam_id_ea6095a3_fk_proctorin` FOREIGN KEY (`exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
-  CONSTRAINT `proctoring_proctored_reviewed_by_id_546b4204_fk_auth_user` FOREIGN KEY (`reviewed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `proctoring_proctored_student_id_7e197288_fk_auth_user` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `proctoring_proctoredexamsoftw_attempt_code_69b9866a54964afb_uniq` (`attempt_code`),
+  KEY `proctori_exam_id_635059f5fe2cc392_fk_proctoring_proctoredexam_id` (`exam_id`),
+  KEY `proctoring_proct_reviewed_by_id_4cff67b7de094f65_fk_auth_user_id` (`reviewed_by_id`),
+  KEY `proctoring_proctored_student_id_14c182517b0cbb5b_fk_auth_user_id` (`student_id`),
+  KEY `proctoring_proctoredexamsoftwaresecurereview_b38e5b0e` (`attempt_code`),
+  CONSTRAINT `proctori_exam_id_635059f5fe2cc392_fk_proctoring_proctoredexam_id` FOREIGN KEY (`exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
+  CONSTRAINT `proctoring_proct_reviewed_by_id_4cff67b7de094f65_fk_auth_user_id` FOREIGN KEY (`reviewed_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `proctoring_proctored_student_id_14c182517b0cbb5b_fk_auth_user_id` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7754,13 +6996,13 @@ CREATE TABLE `proctoring_proctoredexamsoftwaresecurereviewhistory` (
   `reviewed_by_id` int(11) DEFAULT NULL,
   `student_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `proctoring_proctored_exam_id_380d8588_fk_proctorin` (`exam_id`),
-  KEY `proctoring_proctored_reviewed_by_id_bb993b3a_fk_auth_user` (`reviewed_by_id`),
-  KEY `proctoring_proctored_student_id_97a63653_fk_auth_user` (`student_id`),
-  KEY `proctoring_proctoredexamsof_attempt_code_695faa63` (`attempt_code`),
-  CONSTRAINT `proctoring_proctored_exam_id_380d8588_fk_proctorin` FOREIGN KEY (`exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
-  CONSTRAINT `proctoring_proctored_reviewed_by_id_bb993b3a_fk_auth_user` FOREIGN KEY (`reviewed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `proctoring_proctored_student_id_97a63653_fk_auth_user` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
+  KEY `proctori_exam_id_73969ae423813477_fk_proctoring_proctoredexam_id` (`exam_id`),
+  KEY `proctoring_proct_reviewed_by_id_139568d0bf423998_fk_auth_user_id` (`reviewed_by_id`),
+  KEY `proctoring_proctored_student_id_6922ba3b791462d8_fk_auth_user_id` (`student_id`),
+  KEY `proctoring_proctoredexamsoftwaresecurereviewhistory_b38e5b0e` (`attempt_code`),
+  CONSTRAINT `proctori_exam_id_73969ae423813477_fk_proctoring_proctoredexam_id` FOREIGN KEY (`exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
+  CONSTRAINT `proctoring_proct_reviewed_by_id_139568d0bf423998_fk_auth_user_id` FOREIGN KEY (`reviewed_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `proctoring_proctored_student_id_6922ba3b791462d8_fk_auth_user_id` FOREIGN KEY (`student_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7788,10 +7030,10 @@ CREATE TABLE `proctoring_proctoredexamstudentallowance` (
   `proctored_exam_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `proctoring_proctoredexam_user_id_proctored_exam_i_56de5b8f_uniq` (`user_id`,`proctored_exam_id`,`key`),
-  KEY `proctoring_proctored_proctored_exam_id_9baf5a64_fk_proctorin` (`proctored_exam_id`),
-  CONSTRAINT `proctoring_proctored_proctored_exam_id_9baf5a64_fk_proctorin` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
-  CONSTRAINT `proctoring_proctored_user_id_f21ce9b6_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `proctoring_proctoredexamstudentall_user_id_665ed945152c2f60_uniq` (`user_id`,`proctored_exam_id`,`key`),
+  KEY `db55b83a7875e70b3a0ebd1f81a898d8` (`proctored_exam_id`),
+  CONSTRAINT `db55b83a7875e70b3a0ebd1f81a898d8` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
+  CONSTRAINT `proctoring_proctoredexam_user_id_a0a0681d4a01661_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7820,10 +7062,10 @@ CREATE TABLE `proctoring_proctoredexamstudentallowancehistory` (
   `proctored_exam_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `proctoring_proctored_proctored_exam_id_a4c8237c_fk_proctorin` (`proctored_exam_id`),
-  KEY `proctoring_proctored_user_id_29b863c1_fk_auth_user` (`user_id`),
-  CONSTRAINT `proctoring_proctored_proctored_exam_id_a4c8237c_fk_proctorin` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
-  CONSTRAINT `proctoring_proctored_user_id_29b863c1_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `D169ec97a7fca1dbf6b0bb2929d41ccc` (`proctored_exam_id`),
+  KEY `proctoring_proctoredexa_user_id_68e25e3abb187580_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `D169ec97a7fca1dbf6b0bb2929d41ccc` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
+  CONSTRAINT `proctoring_proctoredexa_user_id_68e25e3abb187580_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7852,7 +7094,7 @@ CREATE TABLE `proctoring_proctoredexamstudentattempt` (
   `last_poll_ipaddr` varchar(32) DEFAULT NULL,
   `attempt_code` varchar(255) DEFAULT NULL,
   `external_id` varchar(255) DEFAULT NULL,
-  `allowed_time_limit_mins` int(11) DEFAULT NULL,
+  `allowed_time_limit_mins` int(11) NOT NULL,
   `status` varchar(64) NOT NULL,
   `taking_as_proctored` tinyint(1) NOT NULL,
   `is_sample_attempt` tinyint(1) NOT NULL,
@@ -7862,12 +7104,12 @@ CREATE TABLE `proctoring_proctoredexamstudentattempt` (
   `user_id` int(11) NOT NULL,
   `is_status_acknowledged` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `proctoring_proctoredexam_user_id_proctored_exam_i_1464b206_uniq` (`user_id`,`proctored_exam_id`),
-  KEY `proctoring_proctored_proctored_exam_id_0732c688_fk_proctorin` (`proctored_exam_id`),
-  KEY `proctoring_proctoredexamstudentattempt_attempt_code_b10ad854` (`attempt_code`),
-  KEY `proctoring_proctoredexamstudentattempt_external_id_9c302af3` (`external_id`),
-  CONSTRAINT `proctoring_proctored_proctored_exam_id_0732c688_fk_proctorin` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
-  CONSTRAINT `proctoring_proctored_user_id_2b58b7ed_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `proctoring_proctoredexamstudentatt_user_id_15d13fa8dac316a0_uniq` (`user_id`,`proctored_exam_id`),
+  KEY `D5e0a120c32f715bfe04a0a57f399ec0` (`proctored_exam_id`),
+  KEY `proctoring_proctoredexamstudentattempt_b38e5b0e` (`attempt_code`),
+  KEY `proctoring_proctoredexamstudentattempt_0e684294` (`external_id`),
+  CONSTRAINT `D5e0a120c32f715bfe04a0a57f399ec0` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
+  CONSTRAINT `proctoring_proctoredexa_user_id_633fd8f4f65a0cac_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7897,8 +7139,8 @@ CREATE TABLE `proctoring_proctoredexamstudentattemptcomment` (
   `status` varchar(255) NOT NULL,
   `review_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `proctoring_proctored_review_id_7f4eec67_fk_proctorin` (`review_id`),
-  CONSTRAINT `proctoring_proctored_review_id_7f4eec67_fk_proctorin` FOREIGN KEY (`review_id`) REFERENCES `proctoring_proctoredexamsoftwaresecurereview` (`id`)
+  KEY `proctoring_proctoredexamstudentattemptcomment_5bd2a989` (`review_id`),
+  CONSTRAINT `D596dd9c7d948d9256c2e29e6194b5e7` FOREIGN KEY (`review_id`) REFERENCES `proctoring_proctoredexamsoftwaresecurereview` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7926,7 +7168,7 @@ CREATE TABLE `proctoring_proctoredexamstudentattempthistory` (
   `completed_at` datetime(6) DEFAULT NULL,
   `attempt_code` varchar(255) DEFAULT NULL,
   `external_id` varchar(255) DEFAULT NULL,
-  `allowed_time_limit_mins` int(11) DEFAULT NULL,
+  `allowed_time_limit_mins` int(11) NOT NULL,
   `status` varchar(64) NOT NULL,
   `taking_as_proctored` tinyint(1) NOT NULL,
   `is_sample_attempt` tinyint(1) NOT NULL,
@@ -7937,12 +7179,12 @@ CREATE TABLE `proctoring_proctoredexamstudentattempthistory` (
   `proctored_exam_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `proctoring_proctored_proctored_exam_id_72c6f4ab_fk_proctorin` (`proctored_exam_id`),
-  KEY `proctoring_proctored_user_id_52fb8674_fk_auth_user` (`user_id`),
-  KEY `proctoring_proctoredexamstu_attempt_code_8db28074` (`attempt_code`),
-  KEY `proctoring_proctoredexamstu_external_id_65de5faf` (`external_id`),
-  CONSTRAINT `proctoring_proctored_proctored_exam_id_72c6f4ab_fk_proctorin` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
-  CONSTRAINT `proctoring_proctored_user_id_52fb8674_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `cbccbfd5c4c427541fdce96e77e6bf6c` (`proctored_exam_id`),
+  KEY `proctoring_proctoredexa_user_id_59ce75db7c4fc769_fk_auth_user_id` (`user_id`),
+  KEY `proctoring_proctoredexamstudentattempthistory_b38e5b0e` (`attempt_code`),
+  KEY `proctoring_proctoredexamstudentattempthistory_0e684294` (`external_id`),
+  CONSTRAINT `cbccbfd5c4c427541fdce96e77e6bf6c` FOREIGN KEY (`proctored_exam_id`) REFERENCES `proctoring_proctoredexam` (`id`),
+  CONSTRAINT `proctoring_proctoredexa_user_id_59ce75db7c4fc769_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7953,149 +7195,6 @@ CREATE TABLE `proctoring_proctoredexamstudentattempthistory` (
 LOCK TABLES `proctoring_proctoredexamstudentattempthistory` WRITE;
 /*!40000 ALTER TABLE `proctoring_proctoredexamstudentattempthistory` DISABLE KEYS */;
 /*!40000 ALTER TABLE `proctoring_proctoredexamstudentattempthistory` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `program_enrollments_historicalprogramcourseenrollment`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `program_enrollments_historicalprogramcourseenrollment` (
-  `id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `course_key` varchar(255) NOT NULL,
-  `status` varchar(9) NOT NULL,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `course_enrollment_id` int(11) DEFAULT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  `program_enrollment_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `program_enrollments__history_user_id_428d002e_fk_auth_user` (`history_user_id`),
-  KEY `program_enrollments_histori_id_fe3a72a7` (`id`),
-  KEY `program_enrollments_histori_course_enrollment_id_4014ff73` (`course_enrollment_id`),
-  KEY `program_enrollments_histori_program_enrollment_id_ebb94d42` (`program_enrollment_id`),
-  CONSTRAINT `program_enrollments__history_user_id_428d002e_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `program_enrollments_historicalprogramcourseenrollment`
---
-
-LOCK TABLES `program_enrollments_historicalprogramcourseenrollment` WRITE;
-/*!40000 ALTER TABLE `program_enrollments_historicalprogramcourseenrollment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `program_enrollments_historicalprogramcourseenrollment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `program_enrollments_historicalprogramenrollment`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `program_enrollments_historicalprogramenrollment` (
-  `id` int(11) NOT NULL,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `external_user_key` varchar(255) DEFAULT NULL,
-  `program_uuid` char(32) NOT NULL,
-  `curriculum_uuid` char(32) NOT NULL,
-  `status` varchar(9) NOT NULL,
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `program_enrollments__history_user_id_abf2d584_fk_auth_user` (`history_user_id`),
-  KEY `program_enrollments_historicalprogramenrollment_id_947c385f` (`id`),
-  KEY `program_enrollments_histori_external_user_key_5cd8d804` (`external_user_key`),
-  KEY `program_enrollments_histori_program_uuid_4c520e40` (`program_uuid`),
-  KEY `program_enrollments_histori_curriculum_uuid_a8325208` (`curriculum_uuid`),
-  KEY `program_enrollments_historicalprogramenrollment_user_id_e205ccdf` (`user_id`),
-  CONSTRAINT `program_enrollments__history_user_id_abf2d584_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `program_enrollments_historicalprogramenrollment`
---
-
-LOCK TABLES `program_enrollments_historicalprogramenrollment` WRITE;
-/*!40000 ALTER TABLE `program_enrollments_historicalprogramenrollment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `program_enrollments_historicalprogramenrollment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `program_enrollments_programcourseenrollment`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `program_enrollments_programcourseenrollment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `course_key` varchar(255) NOT NULL,
-  `status` varchar(9) NOT NULL,
-  `course_enrollment_id` int(11) DEFAULT NULL,
-  `program_enrollment_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `program_enrollments_prog_program_enrollment_id_co_7d2701fb_uniq` (`program_enrollment_id`,`course_key`),
-  UNIQUE KEY `course_enrollment_id` (`course_enrollment_id`),
-  CONSTRAINT `program_enrollments__course_enrollment_id_d7890690_fk_student_c` FOREIGN KEY (`course_enrollment_id`) REFERENCES `student_courseenrollment` (`id`),
-  CONSTRAINT `program_enrollments__program_enrollment_i_02ce2c32_fk_program_e` FOREIGN KEY (`program_enrollment_id`) REFERENCES `program_enrollments_programenrollment` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `program_enrollments_programcourseenrollment`
---
-
-LOCK TABLES `program_enrollments_programcourseenrollment` WRITE;
-/*!40000 ALTER TABLE `program_enrollments_programcourseenrollment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `program_enrollments_programcourseenrollment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `program_enrollments_programenrollment`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `program_enrollments_programenrollment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `external_user_key` varchar(255) DEFAULT NULL,
-  `program_uuid` char(32) NOT NULL,
-  `curriculum_uuid` char(32) NOT NULL,
-  `status` varchar(9) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `program_enrollments_prog_user_id_program_uuid_cur_ecf769fd_uniq` (`user_id`,`program_uuid`,`curriculum_uuid`),
-  UNIQUE KEY `program_enrollments_prog_external_user_key_progra_ec52a567_uniq` (`external_user_key`,`program_uuid`,`curriculum_uuid`),
-  KEY `program_enrollments_programenrollment_external_user_key_c27b83c5` (`external_user_key`),
-  KEY `program_enrollments_programenrollment_program_uuid_131378e0` (`program_uuid`),
-  KEY `program_enrollments_programenrollment_curriculum_uuid_da64e123` (`curriculum_uuid`),
-  KEY `program_enrollments_programenrollment_user_id_dcfde442` (`user_id`),
-  CONSTRAINT `program_enrollments__user_id_dcfde442_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `program_enrollments_programenrollment`
---
-
-LOCK TABLES `program_enrollments_programenrollment` WRITE;
-/*!40000 ALTER TABLE `program_enrollments_programenrollment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `program_enrollments_programenrollment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -8111,9 +7210,9 @@ CREATE TABLE `programs_programsapiconfig` (
   `changed_by_id` int(11) DEFAULT NULL,
   `marketing_path` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `programs_programsapi_changed_by_id_93e09d74_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `programs_programsapi_changed_by_id_93e09d74_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  KEY `programs_programsa_changed_by_id_b7c3b49d5c0dcd3_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `programs_programsa_changed_by_id_b7c3b49d5c0dcd3_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8122,7 +7221,6 @@ CREATE TABLE `programs_programsapiconfig` (
 
 LOCK TABLES `programs_programsapiconfig` WRITE;
 /*!40000 ALTER TABLE `programs_programsapiconfig` DISABLE KEYS */;
-INSERT INTO `programs_programsapiconfig` VALUES (1,'2019-09-25 20:15:41.948242',1,NULL,'');
 /*!40000 ALTER TABLE `programs_programsapiconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -8152,6 +7250,45 @@ LOCK TABLES `rss_proxy_whitelistedrssurl` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sap_success_factors_historicalsapsuccessfactorsenterprisecus80ad`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sap_success_factors_historicalsapsuccessfactorsenterprisecus80ad` (
+  `id` int(11) NOT NULL,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `sapsf_base_url` varchar(255) NOT NULL,
+  `key` varchar(255) NOT NULL,
+  `secret` varchar(255) NOT NULL,
+  `history_id` int(11) NOT NULL AUTO_INCREMENT,
+  `history_date` datetime(6) NOT NULL,
+  `history_type` varchar(1) NOT NULL,
+  `enterprise_customer_id` char(32) DEFAULT NULL,
+  `history_user_id` int(11) DEFAULT NULL,
+  `sapsf_company_id` varchar(255) NOT NULL,
+  `sapsf_user_id` varchar(255) NOT NULL,
+  `user_type` varchar(20) NOT NULL,
+  `history_change_reason` varchar(100),
+  PRIMARY KEY (`history_id`),
+  KEY `sap_success_fac_history_user_id_2cd9fa0a2a669e26_fk_auth_user_id` (`history_user_id`),
+  KEY `sap_success_factors_historicalsapsuccessfactorsenterprisecus4cf7` (`id`),
+  CONSTRAINT `sap_success_fac_history_user_id_2cd9fa0a2a669e26_fk_auth_user_id` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sap_success_factors_historicalsapsuccessfactorsenterprisecus80ad`
+--
+
+LOCK TABLES `sap_success_factors_historicalsapsuccessfactorsenterprisecus80ad` WRITE;
+/*!40000 ALTER TABLE `sap_success_factors_historicalsapsuccessfactorsenterprisecus80ad` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sap_success_factors_historicalsapsuccessfactorsenterprisecus80ad` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sap_success_factors_sapsuccessfactorsenterprisecustomerconfidb8a`
 --
 
@@ -8169,13 +7306,9 @@ CREATE TABLE `sap_success_factors_sapsuccessfactorsenterprisecustomerconfidb8a` 
   `sapsf_company_id` varchar(255) NOT NULL,
   `sapsf_user_id` varchar(255) NOT NULL,
   `user_type` varchar(20) NOT NULL,
-  `transmission_chunk_size` int(11) NOT NULL,
-  `additional_locales` longtext NOT NULL,
-  `show_course_price` tinyint(1) NOT NULL,
-  `channel_worker_username` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `enterprise_customer_id` (`enterprise_customer_id`),
-  CONSTRAINT `sap_success_factors__enterprise_customer__4819a28c_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
+  CONSTRAINT `ce017234bb371f21da2524ecc3c0dbc4` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8203,10 +7336,9 @@ CREATE TABLE `sap_success_factors_sapsuccessfactorsglobalconfiguration` (
   `oauth_api_path` varchar(255) NOT NULL,
   `provider_id` varchar(100) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
-  `search_student_api_path` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `sap_success_factors__changed_by_id_e3241cc9_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `sap_success_factors__changed_by_id_e3241cc9_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `sap_success_facto_changed_by_id_1afac95cc5c52140_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `sap_success_facto_changed_by_id_1afac95cc5c52140_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8237,8 +7369,7 @@ CREATE TABLE `sap_success_factors_sapsuccessfactorslearnerdatatransmission3ce5` 
   `status` varchar(100) NOT NULL,
   `error_message` longtext NOT NULL,
   `created` datetime(6) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `sap_success_factors_sapsucc_enterprise_course_enrollmen_99be77d5` (`enterprise_course_enrollment_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8267,9 +7398,9 @@ CREATE TABLE `schedules_schedule` (
   `enrollment_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `enrollment_id` (`enrollment_id`),
-  KEY `schedules_schedule_start_8685ed8e` (`start`),
-  KEY `schedules_schedule_upgrade_deadline_0079081d` (`upgrade_deadline`),
-  CONSTRAINT `schedules_schedule_enrollment_id_91bf8152_fk_student_c` FOREIGN KEY (`enrollment_id`) REFERENCES `student_courseenrollment` (`id`)
+  KEY `schedules_schedule_start_796b08534b0ea8a8_uniq` (`start`),
+  KEY `schedules_schedule_upgrade_deadline_29b3e0a021034e_uniq` (`upgrade_deadline`),
+  CONSTRAINT `sc_enrollment_id_73757e1116f677ec_fk_student_courseenrollment_id` FOREIGN KEY (`enrollment_id`) REFERENCES `student_courseenrollment` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8303,10 +7434,10 @@ CREATE TABLE `schedules_scheduleconfig` (
   `enqueue_course_update` tinyint(1) NOT NULL,
   `hold_back_ratio` double NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `schedules_scheduleconfig_changed_by_id_38ef599b_fk_auth_user_id` (`changed_by_id`),
-  KEY `schedules_scheduleconfig_site_id_44296ee1_fk_django_site_id` (`site_id`),
-  CONSTRAINT `schedules_scheduleconfig_changed_by_id_38ef599b_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `schedules_scheduleconfig_site_id_44296ee1_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  KEY `schedules_schedul_changed_by_id_5f7d8004127c3aac_fk_auth_user_id` (`changed_by_id`),
+  KEY `schedules_schedulecon_site_id_5c0875f7e76f2d1f_fk_django_site_id` (`site_id`),
+  CONSTRAINT `schedules_schedul_changed_by_id_5f7d8004127c3aac_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `schedules_schedulecon_site_id_5c0875f7e76f2d1f_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8331,7 +7462,7 @@ CREATE TABLE `schedules_scheduleexperience` (
   `schedule_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `schedule_id` (`schedule_id`),
-  CONSTRAINT `schedules_scheduleex_schedule_id_ed95c8e7_fk_schedules` FOREIGN KEY (`schedule_id`) REFERENCES `schedules_schedule` (`id`)
+  CONSTRAINT `schedules__schedule_id_5ca03607383f8535_fk_schedules_schedule_id` FOREIGN KEY (`schedule_id`) REFERENCES `schedules_schedule` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8357,8 +7488,8 @@ CREATE TABLE `self_paced_selfpacedconfiguration` (
   `enable_course_home_improvements` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `self_paced_selfpaced_changed_by_id_02789a26_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `self_paced_selfpaced_changed_by_id_02789a26_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `self_paced_selfpa_changed_by_id_62c0bd4c6725fd15_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `self_paced_selfpa_changed_by_id_62c0bd4c6725fd15_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8383,11 +7514,11 @@ CREATE TABLE `shoppingcart_certificateitem` (
   `mode` varchar(50) NOT NULL,
   `course_enrollment_id` int(11) NOT NULL,
   PRIMARY KEY (`orderitem_ptr_id`),
-  KEY `shoppingcart_certifi_course_enrollment_id_f2966a98_fk_student_c` (`course_enrollment_id`),
-  KEY `shoppingcart_certificateitem_course_id_a2a7b56c` (`course_id`),
-  KEY `shoppingcart_certificateitem_mode_0b5e8a8c` (`mode`),
-  CONSTRAINT `shoppingcart_certifi_course_enrollment_id_f2966a98_fk_student_c` FOREIGN KEY (`course_enrollment_id`) REFERENCES `student_courseenrollment` (`id`),
-  CONSTRAINT `shoppingcart_certifi_orderitem_ptr_id_7fee9beb_fk_shoppingc` FOREIGN KEY (`orderitem_ptr_id`) REFERENCES `shoppingcart_orderitem` (`id`)
+  KEY `D231cb871868cb92e6ed1ee8e53a1bee` (`course_enrollment_id`),
+  KEY `shoppingcart_certificateitem_ea134da7` (`course_id`),
+  KEY `shoppingcart_certificateitem_15d61712` (`mode`),
+  CONSTRAINT `D231cb871868cb92e6ed1ee8e53a1bee` FOREIGN KEY (`course_enrollment_id`) REFERENCES `student_courseenrollment` (`id`),
+  CONSTRAINT `s_orderitem_ptr_id_5127313bc5a09762_fk_shoppingcart_orderitem_id` FOREIGN KEY (`orderitem_ptr_id`) REFERENCES `shoppingcart_orderitem` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8417,9 +7548,9 @@ CREATE TABLE `shoppingcart_coupon` (
   `expiration_date` datetime(6) DEFAULT NULL,
   `created_by_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_coupon_created_by_id_1d622c7e_fk_auth_user_id` (`created_by_id`),
-  KEY `shoppingcart_coupon_code_67dfa4a3` (`code`),
-  CONSTRAINT `shoppingcart_coupon_created_by_id_1d622c7e_fk_auth_user_id` FOREIGN KEY (`created_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `shoppingcart_coup_created_by_id_625ade1b541f5324_fk_auth_user_id` (`created_by_id`),
+  KEY `shoppingcart_coupon_c1336794` (`code`),
+  CONSTRAINT `shoppingcart_coup_created_by_id_625ade1b541f5324_fk_auth_user_id` FOREIGN KEY (`created_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8444,12 +7575,12 @@ CREATE TABLE `shoppingcart_couponredemption` (
   `order_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_couponr_coupon_id_d2906e5b_fk_shoppingc` (`coupon_id`),
-  KEY `shoppingcart_couponr_order_id_ef555f0f_fk_shoppingc` (`order_id`),
-  KEY `shoppingcart_couponredemption_user_id_bbac8149_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `shoppingcart_couponr_coupon_id_d2906e5b_fk_shoppingc` FOREIGN KEY (`coupon_id`) REFERENCES `shoppingcart_coupon` (`id`),
-  CONSTRAINT `shoppingcart_couponr_order_id_ef555f0f_fk_shoppingc` FOREIGN KEY (`order_id`) REFERENCES `shoppingcart_order` (`id`),
-  CONSTRAINT `shoppingcart_couponredemption_user_id_bbac8149_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `shoppingcar_coupon_id_1afa016627ac44bb_fk_shoppingcart_coupon_id` (`coupon_id`),
+  KEY `shoppingcart_couponredemption_69dfcb07` (`order_id`),
+  KEY `shoppingcart_couponredemption_e8701ad4` (`user_id`),
+  CONSTRAINT `shoppingcar_coupon_id_1afa016627ac44bb_fk_shoppingcart_coupon_id` FOREIGN KEY (`coupon_id`) REFERENCES `shoppingcart_coupon` (`id`),
+  CONSTRAINT `shoppingcart__order_id_5ba031c3bfaf643a_fk_shoppingcart_order_id` FOREIGN KEY (`order_id`) REFERENCES `shoppingcart_order` (`id`),
+  CONSTRAINT `shoppingcart_couponredemp_user_id_f5b814b7d92666_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8473,9 +7604,9 @@ CREATE TABLE `shoppingcart_courseregcodeitem` (
   `course_id` varchar(128) NOT NULL,
   `mode` varchar(50) NOT NULL,
   PRIMARY KEY (`orderitem_ptr_id`),
-  KEY `shoppingcart_courseregcodeitem_course_id_7c18f431` (`course_id`),
-  KEY `shoppingcart_courseregcodeitem_mode_279aa3a8` (`mode`),
-  CONSTRAINT `shoppingcart_courser_orderitem_ptr_id_e35a50e9_fk_shoppingc` FOREIGN KEY (`orderitem_ptr_id`) REFERENCES `shoppingcart_orderitem` (`id`)
+  KEY `shoppingcart_courseregcodeitem_ea134da7` (`course_id`),
+  KEY `shoppingcart_courseregcodeitem_15d61712` (`mode`),
+  CONSTRAINT `s_orderitem_ptr_id_7ca6c1b9c7df7905_fk_shoppingcart_orderitem_id` FOREIGN KEY (`orderitem_ptr_id`) REFERENCES `shoppingcart_orderitem` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8531,15 +7662,15 @@ CREATE TABLE `shoppingcart_courseregistrationcode` (
   `invoice_item_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`),
-  KEY `shoppingcart_courser_created_by_id_4a0a3481_fk_auth_user` (`created_by_id`),
-  KEY `shoppingcart_courseregistrationcode_course_id_ebec7eb9` (`course_id`),
-  KEY `shoppingcart_courser_invoice_id_3f58e05e_fk_shoppingc` (`invoice_id`),
-  KEY `shoppingcart_courser_order_id_18d73357_fk_shoppingc` (`order_id`),
-  KEY `shoppingcart_courser_invoice_item_id_2bd62f44_fk_shoppingc` (`invoice_item_id`),
-  CONSTRAINT `shoppingcart_courser_created_by_id_4a0a3481_fk_auth_user` FOREIGN KEY (`created_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `shoppingcart_courser_invoice_id_3f58e05e_fk_shoppingc` FOREIGN KEY (`invoice_id`) REFERENCES `shoppingcart_invoice` (`id`),
-  CONSTRAINT `shoppingcart_courser_invoice_item_id_2bd62f44_fk_shoppingc` FOREIGN KEY (`invoice_item_id`) REFERENCES `shoppingcart_courseregistrationcodeinvoiceitem` (`invoiceitem_ptr_id`),
-  CONSTRAINT `shoppingcart_courser_order_id_18d73357_fk_shoppingc` FOREIGN KEY (`order_id`) REFERENCES `shoppingcart_order` (`id`)
+  KEY `shoppingcart_cour_created_by_id_11125a9667aa01c9_fk_auth_user_id` (`created_by_id`),
+  KEY `shoppingcart_courseregistrationcode_ea134da7` (`course_id`),
+  KEY `shoppingcart_courseregistrationcode_f1f5d967` (`invoice_id`),
+  KEY `shoppingcart_courseregistrationcode_69dfcb07` (`order_id`),
+  KEY `shoppingcart_courseregistrationcode_7a471658` (`invoice_item_id`),
+  CONSTRAINT `f040030b6361304bd87eb40c09a82094` FOREIGN KEY (`invoice_item_id`) REFERENCES `shoppingcart_courseregistrationcodeinvoiceitem` (`invoiceitem_ptr_id`),
+  CONSTRAINT `shoppingc_invoice_id_422f26bdc7c5cb99_fk_shoppingcart_invoice_id` FOREIGN KEY (`invoice_id`) REFERENCES `shoppingcart_invoice` (`id`),
+  CONSTRAINT `shoppingcart__order_id_279d7e2df3fe6b6a_fk_shoppingcart_order_id` FOREIGN KEY (`order_id`) REFERENCES `shoppingcart_order` (`id`),
+  CONSTRAINT `shoppingcart_cour_created_by_id_11125a9667aa01c9_fk_auth_user_id` FOREIGN KEY (`created_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8562,8 +7693,8 @@ CREATE TABLE `shoppingcart_courseregistrationcodeinvoiceitem` (
   `invoiceitem_ptr_id` int(11) NOT NULL,
   `course_id` varchar(128) NOT NULL,
   PRIMARY KEY (`invoiceitem_ptr_id`),
-  KEY `shoppingcart_courseregistra_course_id_e8c94aec` (`course_id`),
-  CONSTRAINT `shoppingcart_courser_invoiceitem_ptr_id_59b1f26d_fk_shoppingc` FOREIGN KEY (`invoiceitem_ptr_id`) REFERENCES `shoppingcart_invoiceitem` (`id`)
+  KEY `shoppingcart_courseregistrationcodeinvoiceitem_ea134da7` (`course_id`),
+  CONSTRAINT `D75797188300cb2dc6a7b16353295aaf` FOREIGN KEY (`invoiceitem_ptr_id`) REFERENCES `shoppingcart_invoiceitem` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8587,8 +7718,8 @@ CREATE TABLE `shoppingcart_donation` (
   `donation_type` varchar(32) NOT NULL,
   `course_id` varchar(255) NOT NULL,
   PRIMARY KEY (`orderitem_ptr_id`),
-  KEY `shoppingcart_donation_course_id_e0c7203c` (`course_id`),
-  CONSTRAINT `shoppingcart_donatio_orderitem_ptr_id_edf717c8_fk_shoppingc` FOREIGN KEY (`orderitem_ptr_id`) REFERENCES `shoppingcart_orderitem` (`id`)
+  KEY `shoppingcart_donation_ea134da7` (`course_id`),
+  CONSTRAINT `s_orderitem_ptr_id_18caefe119e0bd2f_fk_shoppingcart_orderitem_id` FOREIGN KEY (`orderitem_ptr_id`) REFERENCES `shoppingcart_orderitem` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8613,8 +7744,8 @@ CREATE TABLE `shoppingcart_donationconfiguration` (
   `enabled` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_donatio_changed_by_id_154b1cbe_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `shoppingcart_donatio_changed_by_id_154b1cbe_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `shoppingcart_dona_changed_by_id_10ac60a96e315545_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `shoppingcart_dona_changed_by_id_10ac60a96e315545_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8655,8 +7786,8 @@ CREATE TABLE `shoppingcart_invoice` (
   `customer_reference_number` varchar(63) DEFAULT NULL,
   `is_valid` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_invoice_company_name_4d19b1d3` (`company_name`),
-  KEY `shoppingcart_invoice_course_id_eaefd2e0` (`course_id`)
+  KEY `shoppingcart_invoice_c1007e8a` (`company_name`),
+  KEY `shoppingcart_invoice_ea134da7` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8681,9 +7812,9 @@ CREATE TABLE `shoppingcart_invoicehistory` (
   `snapshot` longtext NOT NULL,
   `invoice_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_invoice_invoice_id_d53805cc_fk_shoppingc` (`invoice_id`),
-  KEY `shoppingcart_invoicehistory_timestamp_61c10fc3` (`timestamp`),
-  CONSTRAINT `shoppingcart_invoice_invoice_id_d53805cc_fk_shoppingc` FOREIGN KEY (`invoice_id`) REFERENCES `shoppingcart_invoice` (`id`)
+  KEY `shoppingca_invoice_id_e314dc5a906704d_fk_shoppingcart_invoice_id` (`invoice_id`),
+  KEY `shoppingcart_invoicehistory_d7e6d55b` (`timestamp`),
+  CONSTRAINT `shoppingca_invoice_id_e314dc5a906704d_fk_shoppingcart_invoice_id` FOREIGN KEY (`invoice_id`) REFERENCES `shoppingcart_invoice` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8711,8 +7842,8 @@ CREATE TABLE `shoppingcart_invoiceitem` (
   `currency` varchar(8) NOT NULL,
   `invoice_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_invoice_invoice_id_0c1d1f5f_fk_shoppingc` (`invoice_id`),
-  CONSTRAINT `shoppingcart_invoice_invoice_id_0c1d1f5f_fk_shoppingc` FOREIGN KEY (`invoice_id`) REFERENCES `shoppingcart_invoice` (`id`)
+  KEY `shoppingcart_invoiceitem_f1f5d967` (`invoice_id`),
+  CONSTRAINT `shoppingc_invoice_id_35828791c8405d01_fk_shoppingcart_invoice_id` FOREIGN KEY (`invoice_id`) REFERENCES `shoppingcart_invoice` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8743,12 +7874,12 @@ CREATE TABLE `shoppingcart_invoicetransaction` (
   `invoice_id` int(11) NOT NULL,
   `last_modified_by_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_invoice_created_by_id_89f3faae_fk_auth_user` (`created_by_id`),
-  KEY `shoppingcart_invoice_invoice_id_37da939f_fk_shoppingc` (`invoice_id`),
-  KEY `shoppingcart_invoice_last_modified_by_id_6957893b_fk_auth_user` (`last_modified_by_id`),
-  CONSTRAINT `shoppingcart_invoice_created_by_id_89f3faae_fk_auth_user` FOREIGN KEY (`created_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `shoppingcart_invoice_invoice_id_37da939f_fk_shoppingc` FOREIGN KEY (`invoice_id`) REFERENCES `shoppingcart_invoice` (`id`),
-  CONSTRAINT `shoppingcart_invoice_last_modified_by_id_6957893b_fk_auth_user` FOREIGN KEY (`last_modified_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `shoppingcart_invoi_created_by_id_f5f3d90ce55a145_fk_auth_user_id` (`created_by_id`),
+  KEY `shoppingc_invoice_id_66bdbfa6f029288b_fk_shoppingcart_invoice_id` (`invoice_id`),
+  KEY `shoppingcar_last_modified_by_id_5e10e433f9576d91_fk_auth_user_id` (`last_modified_by_id`),
+  CONSTRAINT `shoppingc_invoice_id_66bdbfa6f029288b_fk_shoppingcart_invoice_id` FOREIGN KEY (`invoice_id`) REFERENCES `shoppingcart_invoice` (`id`),
+  CONSTRAINT `shoppingcar_last_modified_by_id_5e10e433f9576d91_fk_auth_user_id` FOREIGN KEY (`last_modified_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `shoppingcart_invoi_created_by_id_f5f3d90ce55a145_fk_auth_user_id` FOREIGN KEY (`created_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8793,8 +7924,8 @@ CREATE TABLE `shoppingcart_order` (
   `order_type` varchar(32) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_order_user_id_ca2398bc_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `shoppingcart_order_user_id_ca2398bc_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `shoppingcart_order_user_id_4e1f3e3b06ee22a6_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `shoppingcart_order_user_id_4e1f3e3b06ee22a6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8830,13 +7961,13 @@ CREATE TABLE `shoppingcart_orderitem` (
   `order_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_orderitem_status_f6dfbdae` (`status`),
-  KEY `shoppingcart_orderitem_fulfilled_time_336eded2` (`fulfilled_time`),
-  KEY `shoppingcart_orderitem_refund_requested_time_36e52146` (`refund_requested_time`),
-  KEY `shoppingcart_orderit_order_id_063915e1_fk_shoppingc` (`order_id`),
-  KEY `shoppingcart_orderitem_user_id_93073a67_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `shoppingcart_orderit_order_id_063915e1_fk_shoppingc` FOREIGN KEY (`order_id`) REFERENCES `shoppingcart_order` (`id`),
-  CONSTRAINT `shoppingcart_orderitem_user_id_93073a67_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `shoppingcart_orderitem_9acb4454` (`status`),
+  KEY `shoppingcart_orderitem_3b927c91` (`fulfilled_time`),
+  KEY `shoppingcart_orderitem_76ed2946` (`refund_requested_time`),
+  KEY `shoppingcart_orderitem_69dfcb07` (`order_id`),
+  KEY `shoppingcart_orderitem_e8701ad4` (`user_id`),
+  CONSTRAINT `shoppingcart__order_id_325e5347f18743e3_fk_shoppingcart_order_id` FOREIGN KEY (`order_id`) REFERENCES `shoppingcart_order` (`id`),
+  CONSTRAINT `shoppingcart_orderitem_user_id_5708ec7aabe24a31_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8861,11 +7992,11 @@ CREATE TABLE `shoppingcart_paidcourseregistration` (
   `mode` varchar(50) NOT NULL,
   `course_enrollment_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`orderitem_ptr_id`),
-  KEY `shoppingcart_paidcou_course_enrollment_id_853e3ed0_fk_student_c` (`course_enrollment_id`),
-  KEY `shoppingcart_paidcourseregistration_course_id_33b51281` (`course_id`),
-  KEY `shoppingcart_paidcourseregistration_mode_8be64323` (`mode`),
-  CONSTRAINT `shoppingcart_paidcou_course_enrollment_id_853e3ed0_fk_student_c` FOREIGN KEY (`course_enrollment_id`) REFERENCES `student_courseenrollment` (`id`),
-  CONSTRAINT `shoppingcart_paidcou_orderitem_ptr_id_00c1dc3c_fk_shoppingc` FOREIGN KEY (`orderitem_ptr_id`) REFERENCES `shoppingcart_orderitem` (`id`)
+  KEY `D8d681d7e59c2dcf2ea55e7e5e06553d` (`course_enrollment_id`),
+  KEY `shoppingcart_paidcourseregistration_ea134da7` (`course_id`),
+  KEY `shoppingcart_paidcourseregistration_15d61712` (`mode`),
+  CONSTRAINT `D8d681d7e59c2dcf2ea55e7e5e06553d` FOREIGN KEY (`course_enrollment_id`) REFERENCES `student_courseenrollment` (`id`),
+  CONSTRAINT `s_orderitem_ptr_id_3c991acc5d644f13_fk_shoppingcart_orderitem_id` FOREIGN KEY (`orderitem_ptr_id`) REFERENCES `shoppingcart_orderitem` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8916,14 +8047,14 @@ CREATE TABLE `shoppingcart_registrationcoderedemption` (
   `redeemed_by_id` int(11) NOT NULL,
   `registration_code_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shoppingcart_registr_course_enrollment_id_d6f78911_fk_student_c` (`course_enrollment_id`),
-  KEY `shoppingcart_registr_order_id_240ef603_fk_shoppingc` (`order_id`),
-  KEY `shoppingcart_registr_redeemed_by_id_95c54187_fk_auth_user` (`redeemed_by_id`),
-  KEY `shoppingcart_registr_registration_code_id_e5681508_fk_shoppingc` (`registration_code_id`),
-  CONSTRAINT `shoppingcart_registr_course_enrollment_id_d6f78911_fk_student_c` FOREIGN KEY (`course_enrollment_id`) REFERENCES `student_courseenrollment` (`id`),
-  CONSTRAINT `shoppingcart_registr_order_id_240ef603_fk_shoppingc` FOREIGN KEY (`order_id`) REFERENCES `shoppingcart_order` (`id`),
-  CONSTRAINT `shoppingcart_registr_redeemed_by_id_95c54187_fk_auth_user` FOREIGN KEY (`redeemed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `shoppingcart_registr_registration_code_id_e5681508_fk_shoppingc` FOREIGN KEY (`registration_code_id`) REFERENCES `shoppingcart_courseregistrationcode` (`id`)
+  KEY `D6654a8efe686d45804b6116dfc6bee1` (`course_enrollment_id`),
+  KEY `shoppingcart_r_order_id_752ddc3003afe96_fk_shoppingcart_order_id` (`order_id`),
+  KEY `shoppingcart_reg_redeemed_by_id_455df2dd74004fff_fk_auth_user_id` (`redeemed_by_id`),
+  KEY `D1ed44c4be114e424571929bce972f54` (`registration_code_id`),
+  CONSTRAINT `D1ed44c4be114e424571929bce972f54` FOREIGN KEY (`registration_code_id`) REFERENCES `shoppingcart_courseregistrationcode` (`id`),
+  CONSTRAINT `D6654a8efe686d45804b6116dfc6bee1` FOREIGN KEY (`course_enrollment_id`) REFERENCES `student_courseenrollment` (`id`),
+  CONSTRAINT `shoppingcart_r_order_id_752ddc3003afe96_fk_shoppingcart_order_id` FOREIGN KEY (`order_id`) REFERENCES `shoppingcart_order` (`id`),
+  CONSTRAINT `shoppingcart_reg_redeemed_by_id_455df2dd74004fff_fk_auth_user_id` FOREIGN KEY (`redeemed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8949,8 +8080,8 @@ CREATE TABLE `site_configuration_siteconfiguration` (
   `enabled` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `site_id` (`site_id`),
-  CONSTRAINT `site_configuration_s_site_id_84302d1f_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  CONSTRAINT `site_configuration_si_site_id_51c4aa24ab9238cb_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8959,7 +8090,6 @@ CREATE TABLE `site_configuration_siteconfiguration` (
 
 LOCK TABLES `site_configuration_siteconfiguration` WRITE;
 /*!40000 ALTER TABLE `site_configuration_siteconfiguration` DISABLE KEYS */;
-INSERT INTO `site_configuration_siteconfiguration` VALUES (1,'{\"COURSE_CATALOG_API_URL\":\"http://edx.devstack.discovery:18381/api/v1/\"}',1,1);
 /*!40000 ALTER TABLE `site_configuration_siteconfiguration` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -8977,9 +8107,9 @@ CREATE TABLE `site_configuration_siteconfigurationhistory` (
   `site_id` int(11) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `site_configuration_s_site_id_272f5c1a_fk_django_si` (`site_id`),
-  CONSTRAINT `site_configuration_s_site_id_272f5c1a_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  KEY `site_configuration_si_site_id_20c9c1a5f8c3358e_fk_django_site_id` (`site_id`),
+  CONSTRAINT `site_configuration_si_site_id_20c9c1a5f8c3358e_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8988,7 +8118,6 @@ CREATE TABLE `site_configuration_siteconfigurationhistory` (
 
 LOCK TABLES `site_configuration_siteconfigurationhistory` WRITE;
 /*!40000 ALTER TABLE `site_configuration_siteconfigurationhistory` DISABLE KEYS */;
-INSERT INTO `site_configuration_siteconfigurationhistory` VALUES (1,'2019-09-25 20:15:41.972758','2019-09-25 20:15:41.973132','{\"COURSE_CATALOG_API_URL\":\"http://edx.devstack.discovery:18381/api/v1/\"}',1,1);
 /*!40000 ALTER TABLE `site_configuration_siteconfigurationhistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -9007,7 +8136,7 @@ CREATE TABLE `social_auth_association` (
   `lifetime` int(11) NOT NULL,
   `assoc_type` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `social_auth_association_server_url_handle_078befa2_uniq` (`server_url`,`handle`)
+  UNIQUE KEY `social_auth_association_server_url_17bf7e87f2968244_uniq` (`server_url`,`handle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9031,11 +8160,9 @@ CREATE TABLE `social_auth_code` (
   `email` varchar(254) NOT NULL,
   `code` varchar(32) NOT NULL,
   `verified` tinyint(1) NOT NULL,
-  `timestamp` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `social_auth_code_email_code_801b2d02_uniq` (`email`,`code`),
-  KEY `social_auth_code_code_a2393167` (`code`),
-  KEY `social_auth_code_timestamp_176b341f` (`timestamp`)
+  UNIQUE KEY `social_auth_code_email_75f27066d057e3b6_uniq` (`email`,`code`),
+  KEY `social_auth_code_c1336794` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9060,7 +8187,7 @@ CREATE TABLE `social_auth_nonce` (
   `timestamp` int(11) NOT NULL,
   `salt` varchar(65) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `social_auth_nonce_server_url_timestamp_salt_f6284463_uniq` (`server_url`,`timestamp`,`salt`)
+  UNIQUE KEY `social_auth_nonce_server_url_36601f978463b4_uniq` (`server_url`,`timestamp`,`salt`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9085,10 +8212,8 @@ CREATE TABLE `social_auth_partial` (
   `next_step` smallint(5) unsigned NOT NULL,
   `backend` varchar(32) NOT NULL,
   `data` longtext NOT NULL,
-  `timestamp` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `social_auth_partial_token_3017fea3` (`token`),
-  KEY `social_auth_partial_timestamp_50f2119f` (`timestamp`)
+  KEY `social_auth_partial_94a08da1` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9114,9 +8239,9 @@ CREATE TABLE `social_auth_usersocialauth` (
   `extra_data` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `social_auth_usersocialauth_provider_uid_e6b5e668_uniq` (`provider`,`uid`),
-  KEY `social_auth_usersocialauth_user_id_17d28448_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `social_auth_usersocialauth_user_id_17d28448_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `social_auth_usersocialauth_provider_2f763109e2c4a1fb_uniq` (`provider`,`uid`),
+  KEY `social_auth_usersociala_user_id_193b2d80880502b2_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `social_auth_usersociala_user_id_193b2d80880502b2_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9146,8 +8271,8 @@ CREATE TABLE `splash_splashconfig` (
   `redirect_url` varchar(200) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `splash_splashconfig_changed_by_id_883b17ba_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `splash_splashconfig_changed_by_id_883b17ba_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `splash_splashconf_changed_by_id_735b38ad8ed19270_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `splash_splashconf_changed_by_id_735b38ad8ed19270_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9173,8 +8298,8 @@ CREATE TABLE `static_replace_assetbaseurlconfig` (
   `base_url` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `static_replace_asset_changed_by_id_f592e050_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `static_replace_asset_changed_by_id_f592e050_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `static_replace_as_changed_by_id_796c2e5b1bee7027_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `static_replace_as_changed_by_id_796c2e5b1bee7027_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9200,8 +8325,8 @@ CREATE TABLE `static_replace_assetexcludedextensionsconfig` (
   `excluded_extensions` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `static_replace_asset_changed_by_id_e58299b3_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `static_replace_asset_changed_by_id_e58299b3_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `static_replace_as_changed_by_id_5885827de4f271dc_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `static_replace_as_changed_by_id_5885827de4f271dc_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9226,9 +8351,9 @@ CREATE TABLE `status_coursemessage` (
   `message` longtext,
   `global_message_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `status_coursemessage_course_key_90c77a2e` (`course_key`),
-  KEY `status_coursemessage_global_message_id_01bbfbe6_fk_status_gl` (`global_message_id`),
-  CONSTRAINT `status_coursemessage_global_message_id_01bbfbe6_fk_status_gl` FOREIGN KEY (`global_message_id`) REFERENCES `status_globalstatusmessage` (`id`)
+  KEY `status_coursemessage_c8235886` (`course_key`),
+  KEY `status_coursemessage_ba4cddbf` (`global_message_id`),
+  CONSTRAINT `be73d6672c3000f87521c37bc8ad4139` FOREIGN KEY (`global_message_id`) REFERENCES `status_globalstatusmessage` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9254,8 +8379,8 @@ CREATE TABLE `status_globalstatusmessage` (
   `message` longtext,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `status_globalstatusm_changed_by_id_3c627848_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `status_globalstatusm_changed_by_id_3c627848_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `status_globalstat_changed_by_id_76ab1cf17be5644d_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `status_globalstat_changed_by_id_76ab1cf17be5644d_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9281,9 +8406,9 @@ CREATE TABLE `student_anonymoususerid` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `anonymous_user_id` (`anonymous_user_id`),
-  KEY `student_anonymoususerid_user_id_0fb2ad5c_fk_auth_user_id` (`user_id`),
-  KEY `student_anonymoususerid_course_id_99cc6a18` (`course_id`),
-  CONSTRAINT `student_anonymoususerid_user_id_0fb2ad5c_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_anonymoususerid_user_id_1a18af72cf6b95f7_fk_auth_user_id` (`user_id`),
+  KEY `student_anonymoususerid_ea134da7` (`course_id`),
+  CONSTRAINT `student_anonymoususerid_user_id_1a18af72cf6b95f7_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9293,7 +8418,7 @@ CREATE TABLE `student_anonymoususerid` (
 
 LOCK TABLES `student_anonymoususerid` WRITE;
 /*!40000 ALTER TABLE `student_anonymoususerid` DISABLE KEYS */;
-INSERT INTO `student_anonymoususerid` VALUES (1,'5afe5d9bb03796557ee2614f5c9611fb','',1),(2,'005a6aae4ee94adca7e79af6ddc38317','',10);
+INSERT INTO `student_anonymoususerid` VALUES (1,'184991cfb69ca3afd578cc3c2b9d5f37','',4),(2,'5afe5d9bb03796557ee2614f5c9611fb','',1);
 /*!40000 ALTER TABLE `student_anonymoususerid` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -9310,11 +8435,11 @@ CREATE TABLE `student_courseaccessrole` (
   `role` varchar(64) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `student_courseaccessrole_user_id_org_course_id_ro_bbf71126_uniq` (`user_id`,`org`,`course_id`,`role`),
-  KEY `student_courseaccessrole_org_6d2dbb7a` (`org`),
-  KEY `student_courseaccessrole_course_id_60fb355e` (`course_id`),
-  KEY `student_courseaccessrole_role_1ac888ea` (`role`),
-  CONSTRAINT `student_courseaccessrole_user_id_90cf21fe_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `student_courseaccessrole_user_id_3203176c4f474414_uniq` (`user_id`,`org`,`course_id`,`role`),
+  KEY `student_courseaccessrole_5a445d71` (`org`),
+  KEY `student_courseaccessrole_ea134da7` (`course_id`),
+  KEY `student_courseaccessrole_29a7e964` (`role`),
+  CONSTRAINT `student_courseaccessrol_user_id_5e0f68b978ad0792_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9341,11 +8466,10 @@ CREATE TABLE `student_courseenrollment` (
   `mode` varchar(100) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `student_courseenrollment_user_id_course_id_5d34a47f_uniq` (`user_id`,`course_id`),
-  KEY `student_courseenrollment_course_id_a6f93be8` (`course_id`),
-  KEY `student_courseenrollment_created_79829893` (`created`),
-  KEY `student_cou_user_id_b19dcd_idx` (`user_id`,`created`),
-  CONSTRAINT `student_courseenrollment_user_id_4263a8e2_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `student_courseenrollment_user_id_2d2a572f07dd8e37_uniq` (`user_id`,`course_id`),
+  KEY `student_courseenrollment_ea134da7` (`course_id`),
+  KEY `student_courseenrollment_e2fa5388` (`created`),
+  CONSTRAINT `student_courseenrollmen_user_id_15beaaebc8333ce4_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9355,46 +8479,8 @@ CREATE TABLE `student_courseenrollment` (
 
 LOCK TABLES `student_courseenrollment` WRITE;
 /*!40000 ALTER TABLE `student_courseenrollment` DISABLE KEYS */;
-INSERT INTO `student_courseenrollment` VALUES (1,'course-v1:edX+DemoX+Demo_Course','2019-09-25 20:06:27.528220',1,'audit',5),(2,'course-v1:edX+DemoX+Demo_Course','2019-09-25 20:06:37.547129',1,'audit',6),(3,'course-v1:edX+DemoX+Demo_Course','2019-09-25 20:06:47.581346',1,'audit',7),(4,'course-v1:edX+DemoX+Demo_Course','2019-09-25 20:06:57.566430',1,'audit',8);
+INSERT INTO `student_courseenrollment` VALUES (1,'course-v1:edX+DemoX+Demo_Course','2017-06-07 00:44:28.308850',1,'audit',6),(2,'course-v1:edX+DemoX+Demo_Course','2017-06-07 00:44:32.887985',1,'audit',7),(3,'course-v1:edX+DemoX+Demo_Course','2017-06-07 00:44:37.447686',1,'audit',8),(4,'course-v1:edX+DemoX+Demo_Course','2017-06-07 00:44:41.997373',1,'audit',9);
 /*!40000 ALTER TABLE `student_courseenrollment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `student_courseenrollment_history`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `student_courseenrollment_history` (
-  `id` int(11) NOT NULL,
-  `created` datetime(6) DEFAULT NULL,
-  `is_active` tinyint(1) NOT NULL,
-  `mode` varchar(100) NOT NULL,
-  `history_id` char(32) NOT NULL,
-  `history_date` datetime(6) NOT NULL,
-  `history_change_reason` varchar(100) DEFAULT NULL,
-  `history_type` varchar(1) NOT NULL,
-  `course_id` varchar(255) DEFAULT NULL,
-  `history_user_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`history_id`),
-  KEY `student_courseenroll_history_user_id_7065c772_fk_auth_user` (`history_user_id`),
-  KEY `student_courseenrollment_history_id_2d80b9b3` (`id`),
-  KEY `student_courseenrollment_history_created_6b3154af` (`created`),
-  KEY `student_courseenrollment_history_course_id_98f13917` (`course_id`),
-  KEY `student_courseenrollment_history_user_id_5f94c628` (`user_id`),
-  CONSTRAINT `student_courseenroll_history_user_id_7065c772_fk_auth_user` FOREIGN KEY (`history_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `student_courseenrollment_history`
---
-
-LOCK TABLES `student_courseenrollment_history` WRITE;
-/*!40000 ALTER TABLE `student_courseenrollment_history` DISABLE KEYS */;
-INSERT INTO `student_courseenrollment_history` VALUES (2,'2019-09-25 20:06:37.547129',0,'audit','11d09d5f5994426ea67e01943df1c765','2019-09-25 20:06:37.547645',NULL,'+','course-v1:edX+DemoX+Demo_Course',NULL,6),(3,'2019-09-25 20:06:47.581346',1,'audit','2d4a0e2685ec438c9c08e1b6296168fd','2019-09-25 20:06:47.619854',NULL,'~','course-v1:edX+DemoX+Demo_Course',NULL,7),(4,'2019-09-25 20:06:57.566430',1,'audit','409d37e909494bf2ad3246823d72e2af','2019-09-25 20:06:57.599276',NULL,'~','course-v1:edX+DemoX+Demo_Course',NULL,8),(4,'2019-09-25 20:06:57.566430',1,'audit','49ef86bdd02a431bb5ab4072e3dc9bb4','2019-09-25 20:06:57.645064',NULL,'~','course-v1:edX+DemoX+Demo_Course',NULL,8),(2,'2019-09-25 20:06:37.547129',1,'audit','5f48e76020b54e359e2f828866fefcfc','2019-09-25 20:06:37.602272',NULL,'~','course-v1:edX+DemoX+Demo_Course',NULL,6),(3,'2019-09-25 20:06:47.581346',1,'audit','830ad03016fd44a5bad54cf26e16975a','2019-09-25 20:06:47.664691',NULL,'~','course-v1:edX+DemoX+Demo_Course',NULL,7),(1,'2019-09-25 20:06:27.528220',0,'audit','83381d16b7d146579b5a8d1caa82e565','2019-09-25 20:06:27.528797',NULL,'+','course-v1:edX+DemoX+Demo_Course',NULL,5),(1,'2019-09-25 20:06:27.528220',1,'audit','921fd0e330414b1893082868866af78f','2019-09-25 20:06:27.619900',NULL,'~','course-v1:edX+DemoX+Demo_Course',NULL,5),(2,'2019-09-25 20:06:37.547129',1,'audit','a5d0f5bf0f4b442bb571817b456fb7a3','2019-09-25 20:06:37.645418',NULL,'~','course-v1:edX+DemoX+Demo_Course',NULL,6),(1,'2019-09-25 20:06:27.528220',1,'audit','d4c509d43be04331b3999b9a5d7b7c5f','2019-09-25 20:06:27.565648',NULL,'~','course-v1:edX+DemoX+Demo_Course',NULL,5),(3,'2019-09-25 20:06:47.581346',0,'audit','e4433d1512cf47cdba6a6d3a710603d9','2019-09-25 20:06:47.581867',NULL,'+','course-v1:edX+DemoX+Demo_Course',NULL,7),(4,'2019-09-25 20:06:57.566430',0,'audit','f14eaa3f728f43bd9f02f6404cc7215a','2019-09-25 20:06:57.567097',NULL,'+','course-v1:edX+DemoX+Demo_Course',NULL,8);
-/*!40000 ALTER TABLE `student_courseenrollment_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -9409,14 +8495,11 @@ CREATE TABLE `student_courseenrollmentallowed` (
   `course_id` varchar(255) NOT NULL,
   `auto_enroll` tinyint(1) NOT NULL,
   `created` datetime(6) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `student_courseenrollmentallowed_email_course_id_1e23ed5e_uniq` (`email`,`course_id`),
-  KEY `student_courseenrollmentallowed_email_969706a0` (`email`),
-  KEY `student_courseenrollmentallowed_course_id_67eff667` (`course_id`),
-  KEY `student_courseenrollmentallowed_created_b2066658` (`created`),
-  KEY `student_courseenrollmentallowed_user_id_5875cce6_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `student_courseenrollmentallowed_user_id_5875cce6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `student_courseenrollmentallowed_email_6f3eafd4a6c58591_uniq` (`email`,`course_id`),
+  KEY `student_courseenrollmentallowed_0c83f57c` (`email`),
+  KEY `student_courseenrollmentallowed_ea134da7` (`course_id`),
+  KEY `student_courseenrollmentallowed_e2fa5388` (`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9442,8 +8525,8 @@ CREATE TABLE `student_courseenrollmentattribute` (
   `value` varchar(255) NOT NULL,
   `enrollment_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_courseenroll_enrollment_id_b2173db0_fk_student_c` (`enrollment_id`),
-  CONSTRAINT `student_courseenroll_enrollment_id_b2173db0_fk_student_c` FOREIGN KEY (`enrollment_id`) REFERENCES `student_courseenrollment` (`id`)
+  KEY `stu_enrollment_id_674188e6fcb084c_fk_student_courseenrollment_id` (`enrollment_id`),
+  CONSTRAINT `stu_enrollment_id_674188e6fcb084c_fk_student_courseenrollment_id` FOREIGN KEY (`enrollment_id`) REFERENCES `student_courseenrollment` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9469,8 +8552,8 @@ CREATE TABLE `student_dashboardconfiguration` (
   `recent_enrollment_time_delta` int(10) unsigned NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_dashboardcon_changed_by_id_1960484b_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `student_dashboardcon_changed_by_id_1960484b_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_dashboard_changed_by_id_4db1e1194c4ae32c_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `student_dashboard_changed_by_id_4db1e1194c4ae32c_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9496,8 +8579,8 @@ CREATE TABLE `student_enrollmentrefundconfiguration` (
   `refund_window_microseconds` bigint(20) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_enrollmentre_changed_by_id_082b4f6f_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `student_enrollmentre_changed_by_id_082b4f6f_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_enrollmen_changed_by_id_59c187ac05e64a11_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `student_enrollmen_changed_by_id_59c187ac05e64a11_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9524,11 +8607,11 @@ CREATE TABLE `student_entranceexamconfiguration` (
   `skip_entrance_exam` tinyint(1) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `student_entranceexamconf_user_id_course_id_23bbcf9b_uniq` (`user_id`,`course_id`),
-  KEY `student_entranceexamconfiguration_course_id_eca5c3d4` (`course_id`),
-  KEY `student_entranceexamconfiguration_created_27e80637` (`created`),
-  KEY `student_entranceexamconfiguration_updated_d560d552` (`updated`),
-  CONSTRAINT `student_entranceexam_user_id_387a35d6_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `student_entranceexamconfiguration_user_id_714c2ef6a88504f0_uniq` (`user_id`,`course_id`),
+  KEY `student_entranceexamconfiguration_ea134da7` (`course_id`),
+  KEY `student_entranceexamconfiguration_e2fa5388` (`created`),
+  KEY `student_entranceexamconfiguration_0f81d52e` (`updated`),
+  CONSTRAINT `student_entranceexamcon_user_id_530195af5babe0dd_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9552,9 +8635,9 @@ CREATE TABLE `student_languageproficiency` (
   `code` varchar(16) NOT NULL,
   `user_profile_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `student_languageproficiency_code_user_profile_id_9aa4e2f5_uniq` (`code`,`user_profile_id`),
-  KEY `student_languageprof_user_profile_id_768cd3eb_fk_auth_user` (`user_profile_id`),
-  CONSTRAINT `student_languageprof_user_profile_id_768cd3eb_fk_auth_user` FOREIGN KEY (`user_profile_id`) REFERENCES `auth_userprofile` (`id`)
+  UNIQUE KEY `student_languageproficiency_code_68e76171684c62e5_uniq` (`code`,`user_profile_id`),
+  KEY `student_languageproficiency_06037614` (`user_profile_id`),
+  CONSTRAINT `student__user_profile_id_283edb437b102619_fk_auth_userprofile_id` FOREIGN KEY (`user_profile_id`) REFERENCES `auth_userprofile` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9582,8 +8665,8 @@ CREATE TABLE `student_linkedinaddtoprofileconfiguration` (
   `trk_partner_name` varchar(10) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_linkedinaddt_changed_by_id_dc1c453f_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `student_linkedinaddt_changed_by_id_dc1c453f_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_linkedina_changed_by_id_226a4de3af0f3296_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `student_linkedina_changed_by_id_226a4de3af0f3296_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9608,8 +8691,8 @@ CREATE TABLE `student_loginfailures` (
   `lockout_until` datetime(6) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_loginfailures_user_id_50d85202_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `student_loginfailures_user_id_50d85202_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_loginfailures_user_id_3daac39f3118bac4_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `student_loginfailures_user_id_3daac39f3118bac4_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9634,8 +8717,8 @@ CREATE TABLE `student_logoutviewconfiguration` (
   `enabled` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_logoutviewco_changed_by_id_a787d3e7_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `student_logoutviewco_changed_by_id_a787d3e7_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_logoutvie_changed_by_id_71e69e1e508e4fce_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `student_logoutvie_changed_by_id_71e69e1e508e4fce_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9662,13 +8745,12 @@ CREATE TABLE `student_manualenrollmentaudit` (
   `reason` longtext,
   `enrolled_by_id` int(11) DEFAULT NULL,
   `enrollment_id` int(11) DEFAULT NULL,
-  `role` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_manualenroll_enrolled_by_id_1217a0dc_fk_auth_user` (`enrolled_by_id`),
-  KEY `student_manualenroll_enrollment_id_decc94fe_fk_student_c` (`enrollment_id`),
-  KEY `student_manualenrollmentaudit_enrolled_email_47ce6524` (`enrolled_email`),
-  CONSTRAINT `student_manualenroll_enrolled_by_id_1217a0dc_fk_auth_user` FOREIGN KEY (`enrolled_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `student_manualenroll_enrollment_id_decc94fe_fk_student_c` FOREIGN KEY (`enrollment_id`) REFERENCES `student_courseenrollment` (`id`)
+  KEY `student_manualenr_enrolled_by_id_729cecdc9f746e2_fk_auth_user_id` (`enrolled_by_id`),
+  KEY `st_enrollment_id_60349e74284df0d6_fk_student_courseenrollment_id` (`enrollment_id`),
+  KEY `student_manualenrollmentaudit_ce9e7289` (`enrolled_email`),
+  CONSTRAINT `st_enrollment_id_60349e74284df0d6_fk_student_courseenrollment_id` FOREIGN KEY (`enrollment_id`) REFERENCES `student_courseenrollment` (`id`),
+  CONSTRAINT `student_manualenr_enrolled_by_id_729cecdc9f746e2_fk_auth_user_id` FOREIGN KEY (`enrolled_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9679,6 +8761,32 @@ CREATE TABLE `student_manualenrollmentaudit` (
 LOCK TABLES `student_manualenrollmentaudit` WRITE;
 /*!40000 ALTER TABLE `student_manualenrollmentaudit` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_manualenrollmentaudit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `student_passwordhistory`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `student_passwordhistory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `password` varchar(128) NOT NULL,
+  `time_set` datetime(6) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `student_passwordhistory_user_id_21328c8c512d6c0d_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `student_passwordhistory_user_id_21328c8c512d6c0d_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `student_passwordhistory`
+--
+
+LOCK TABLES `student_passwordhistory` WRITE;
+/*!40000 ALTER TABLE `student_passwordhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_passwordhistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -9695,8 +8803,8 @@ CREATE TABLE `student_pendingemailchange` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `activation_key` (`activation_key`),
   UNIQUE KEY `user_id` (`user_id`),
-  KEY `student_pendingemailchange_new_email_6887bdea` (`new_email`),
-  CONSTRAINT `student_pendingemailchange_user_id_8f2778c5_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_pendingemailchange_a4a65cd1` (`new_email`),
+  CONSTRAINT `student_pendingemailcha_user_id_566caccc3f3c3966_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9722,7 +8830,7 @@ CREATE TABLE `student_pendingnamechange` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `student_pendingnamechange_user_id_e2cd8b70_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `student_pendingnamechan_user_id_6c3c9d77fc5898a6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9733,34 +8841,6 @@ CREATE TABLE `student_pendingnamechange` (
 LOCK TABLES `student_pendingnamechange` WRITE;
 /*!40000 ALTER TABLE `student_pendingnamechange` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_pendingnamechange` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `student_pendingsecondaryemailchange`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `student_pendingsecondaryemailchange` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `new_secondary_email` varchar(255) NOT NULL,
-  `activation_key` varchar(32) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `activation_key` (`activation_key`),
-  UNIQUE KEY `user_id` (`user_id`),
-  KEY `student_pendingsecondaryemailchange_new_secondary_email_5e79db59` (`new_secondary_email`),
-  CONSTRAINT `student_pendingsecon_user_id_deacc54f_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `student_pendingsecondaryemailchange`
---
-
-LOCK TABLES `student_pendingsecondaryemailchange` WRITE;
-/*!40000 ALTER TABLE `student_pendingsecondaryemailchange` DISABLE KEYS */;
-/*!40000 ALTER TABLE `student_pendingsecondaryemailchange` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -9777,8 +8857,8 @@ CREATE TABLE `student_registrationcookieconfiguration` (
   `affiliate_cookie_name` varchar(255) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_registration_changed_by_id_52ac88b0_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `student_registration_changed_by_id_52ac88b0_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_registrati_changed_by_id_7c813444cd41f76_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `student_registrati_changed_by_id_7c813444cd41f76_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9803,8 +8883,8 @@ CREATE TABLE `student_sociallink` (
   `social_link` varchar(100) NOT NULL,
   `user_profile_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_sociallink_user_profile_id_19f54475_fk_auth_user` (`user_profile_id`),
-  CONSTRAINT `student_sociallink_user_profile_id_19f54475_fk_auth_user` FOREIGN KEY (`user_profile_id`) REFERENCES `auth_userprofile` (`id`)
+  KEY `student_s_user_profile_id_7c5a1bfd4e58b3a_fk_auth_userprofile_id` (`user_profile_id`),
+  CONSTRAINT `student_s_user_profile_id_7c5a1bfd4e58b3a_fk_auth_userprofile_id` FOREIGN KEY (`user_profile_id`) REFERENCES `auth_userprofile` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9831,9 +8911,9 @@ CREATE TABLE `student_userattribute` (
   `value` varchar(255) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `student_userattribute_user_id_name_70e18f46_uniq` (`user_id`,`name`),
-  KEY `student_userattribute_name_a55155e3` (`name`),
-  CONSTRAINT `student_userattribute_user_id_19c01f5e_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `student_userattribute_user_id_395f02bcb61d19c1_uniq` (`user_id`,`name`),
+  KEY `student_userattribute_name_5fd741d8c66ce242_uniq` (`name`),
+  CONSTRAINT `student_userattribute_user_id_1d4fc3ed612e93e5_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9857,9 +8937,9 @@ CREATE TABLE `student_usersignupsource` (
   `site` varchar(255) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_usersignupsource_user_id_4979dd6e_fk_auth_user_id` (`user_id`),
-  KEY `student_usersignupsource_site_beb4d383` (`site`),
-  CONSTRAINT `student_usersignupsource_user_id_4979dd6e_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_usersignupsourc_user_id_4db69fdecf32119f_fk_auth_user_id` (`user_id`),
+  KEY `student_usersignupsource_98defd6e` (`site`),
+  CONSTRAINT `student_usersignupsourc_user_id_4db69fdecf32119f_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9886,9 +8966,9 @@ CREATE TABLE `student_userstanding` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
-  KEY `student_userstanding_changed_by_id_469252b4_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `student_userstanding_changed_by_id_469252b4_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `student_userstanding_user_id_00b147e5_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `student_userstand_changed_by_id_23784b83f2849aff_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `student_userstand_changed_by_id_23784b83f2849aff_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `student_userstanding_user_id_6bb90abaaa05d42e_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9912,7 +8992,7 @@ CREATE TABLE `student_usertestgroup` (
   `name` varchar(32) NOT NULL,
   `description` longtext NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_usertestgroup_name_94f48ddb` (`name`)
+  KEY `student_usertestgroup_b068931c` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9936,10 +9016,10 @@ CREATE TABLE `student_usertestgroup_users` (
   `usertestgroup_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `student_usertestgroup_us_usertestgroup_id_user_id_2bbf095a_uniq` (`usertestgroup_id`,`user_id`),
-  KEY `student_usertestgroup_users_user_id_81b93062_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `student_usertestgrou_usertestgroup_id_a9097958_fk_student_u` FOREIGN KEY (`usertestgroup_id`) REFERENCES `student_usertestgroup` (`id`),
-  CONSTRAINT `student_usertestgroup_users_user_id_81b93062_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `usertestgroup_id` (`usertestgroup_id`,`user_id`),
+  KEY `student_usertestgroup_u_user_id_26c886de60cceacb_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `st_usertestgroup_id_3d634741f1dd4e4f_fk_student_usertestgroup_id` FOREIGN KEY (`usertestgroup_id`) REFERENCES `student_usertestgroup` (`id`),
+  CONSTRAINT `student_usertestgroup_u_user_id_26c886de60cceacb_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9967,11 +9047,11 @@ CREATE TABLE `submissions_score` (
   `student_item_id` int(11) NOT NULL,
   `submission_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `submissions_score_created_at_b65f0390` (`created_at`),
-  KEY `submissions_score_student_item_id_de4f5954_fk_submissio` (`student_item_id`),
-  KEY `submissions_score_submission_id_ba095829_fk_submissio` (`submission_id`),
-  CONSTRAINT `submissions_score_student_item_id_de4f5954_fk_submissio` FOREIGN KEY (`student_item_id`) REFERENCES `submissions_studentitem` (`id`),
-  CONSTRAINT `submissions_score_submission_id_ba095829_fk_submissio` FOREIGN KEY (`submission_id`) REFERENCES `submissions_submission` (`id`)
+  KEY `submissions_score_fde81f11` (`created_at`),
+  KEY `submissions_score_02d5e83e` (`student_item_id`),
+  KEY `submissions_score_1dd9cfcc` (`submission_id`),
+  CONSTRAINT `s_student_item_id_7d4d4bb6a7dd0642_fk_submissions_studentitem_id` FOREIGN KEY (`student_item_id`) REFERENCES `submissions_studentitem` (`id`),
+  CONSTRAINT `subm_submission_id_3fc975fe88442ff7_fk_submissions_submission_id` FOREIGN KEY (`submission_id`) REFERENCES `submissions_submission` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9997,10 +9077,10 @@ CREATE TABLE `submissions_scoreannotation` (
   `reason` longtext NOT NULL,
   `score_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `submissions_scoreann_score_id_2dda6e02_fk_submissio` (`score_id`),
-  KEY `submissions_scoreannotation_annotation_type_117a2607` (`annotation_type`),
-  KEY `submissions_scoreannotation_creator_5cc126cc` (`creator`),
-  CONSTRAINT `submissions_scoreann_score_id_2dda6e02_fk_submissio` FOREIGN KEY (`score_id`) REFERENCES `submissions_score` (`id`)
+  KEY `submissions_sc_score_id_7b5ef248552cb857_fk_submissions_score_id` (`score_id`),
+  KEY `submissions_scoreannotation_fd685234` (`annotation_type`),
+  KEY `submissions_scoreannotation_ee243325` (`creator`),
+  CONSTRAINT `submissions_sc_score_id_7b5ef248552cb857_fk_submissions_score_id` FOREIGN KEY (`score_id`) REFERENCES `submissions_score` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10026,11 +9106,11 @@ CREATE TABLE `submissions_scoresummary` (
   `student_item_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_item_id` (`student_item_id`),
-  KEY `submissions_scoresum_highest_id_3efe897d_fk_submissio` (`highest_id`),
-  KEY `submissions_scoresum_latest_id_dd8a17bb_fk_submissio` (`latest_id`),
-  CONSTRAINT `submissions_scoresum_highest_id_3efe897d_fk_submissio` FOREIGN KEY (`highest_id`) REFERENCES `submissions_score` (`id`),
-  CONSTRAINT `submissions_scoresum_latest_id_dd8a17bb_fk_submissio` FOREIGN KEY (`latest_id`) REFERENCES `submissions_score` (`id`),
-  CONSTRAINT `submissions_scoresum_student_item_id_35f8ef06_fk_submissio` FOREIGN KEY (`student_item_id`) REFERENCES `submissions_studentitem` (`id`)
+  KEY `submissions__highest_id_7fd91b8eb312c175_fk_submissions_score_id` (`highest_id`),
+  KEY `submissions_s_latest_id_2b352506a35fd569_fk_submissions_score_id` (`latest_id`),
+  CONSTRAINT `s_student_item_id_32fa0a425a149b1b_fk_submissions_studentitem_id` FOREIGN KEY (`student_item_id`) REFERENCES `submissions_studentitem` (`id`),
+  CONSTRAINT `submissions__highest_id_7fd91b8eb312c175_fk_submissions_score_id` FOREIGN KEY (`highest_id`) REFERENCES `submissions_score` (`id`),
+  CONSTRAINT `submissions_s_latest_id_2b352506a35fd569_fk_submissions_score_id` FOREIGN KEY (`latest_id`) REFERENCES `submissions_score` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10056,10 +9136,10 @@ CREATE TABLE `submissions_studentitem` (
   `item_id` varchar(255) NOT NULL,
   `item_type` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `submissions_studentitem_course_id_student_id_ite_5b02ecf8_uniq` (`course_id`,`student_id`,`item_id`),
-  KEY `submissions_studentitem_student_id_8e72bcd9` (`student_id`),
-  KEY `submissions_studentitem_course_id_05ee1efe` (`course_id`),
-  KEY `submissions_studentitem_item_id_6c409784` (`item_id`)
+  UNIQUE KEY `submissions_studentitem_course_id_6a6eccbdec6ffd0b_uniq` (`course_id`,`student_id`,`item_id`),
+  KEY `submissions_studentitem_30a811f6` (`student_id`),
+  KEY `submissions_studentitem_ea134da7` (`course_id`),
+  KEY `submissions_studentitem_82bfda79` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10080,7 +9160,7 @@ UNLOCK TABLES;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `submissions_submission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uuid` char(32) NOT NULL,
+  `uuid` varchar(36) NOT NULL,
   `attempt_number` int(10) unsigned NOT NULL,
   `submitted_at` datetime(6) NOT NULL,
   `created_at` datetime(6) NOT NULL,
@@ -10088,11 +9168,11 @@ CREATE TABLE `submissions_submission` (
   `student_item_id` int(11) NOT NULL,
   `status` varchar(1) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `submissions_submissi_student_item_id_9d087470_fk_submissio` (`student_item_id`),
-  KEY `submissions_submission_uuid_210428ab` (`uuid`),
-  KEY `submissions_submission_submitted_at_9653124d` (`submitted_at`),
-  KEY `submissions_submission_created_at_01c4bf22` (`created_at`),
-  CONSTRAINT `submissions_submissi_student_item_id_9d087470_fk_submissio` FOREIGN KEY (`student_item_id`) REFERENCES `submissions_studentitem` (`id`)
+  KEY `su_student_item_id_d3801ff833d05b1_fk_submissions_studentitem_id` (`student_item_id`),
+  KEY `submissions_submission_ef7c876f` (`uuid`),
+  KEY `submissions_submission_22bb6ff9` (`submitted_at`),
+  KEY `submissions_submission_fde81f11` (`created_at`),
+  CONSTRAINT `su_student_item_id_d3801ff833d05b1_fk_submissions_studentitem_id` FOREIGN KEY (`student_item_id`) REFERENCES `submissions_studentitem` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10103,39 +9183,6 @@ CREATE TABLE `submissions_submission` (
 LOCK TABLES `submissions_submission` WRITE;
 /*!40000 ALTER TABLE `submissions_submission` DISABLE KEYS */;
 /*!40000 ALTER TABLE `submissions_submission` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `super_csv_csvoperation`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `super_csv_csvoperation` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `class_name` varchar(255) NOT NULL,
-  `unique_id` varchar(255) NOT NULL,
-  `operation` varchar(255) NOT NULL,
-  `data` varchar(255) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `original_filename` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `super_csv_csvoperation_class_name_c8b5b4e2` (`class_name`),
-  KEY `super_csv_csvoperation_unique_id_08aa974e` (`unique_id`),
-  KEY `super_csv_csvoperation_user_id_f87de59a_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `super_csv_csvoperation_user_id_f87de59a_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `super_csv_csvoperation`
---
-
-LOCK TABLES `super_csv_csvoperation` WRITE;
-/*!40000 ALTER TABLE `super_csv_csvoperation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `super_csv_csvoperation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -10154,12 +9201,12 @@ CREATE TABLE `survey_surveyanswer` (
   `form_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `survey_surveyanswer_field_name_7123dc3d` (`field_name`),
-  KEY `survey_surveyanswer_course_key_497ade68` (`course_key`),
-  KEY `survey_surveyanswer_form_id_7f0df59f_fk_survey_surveyform_id` (`form_id`),
-  KEY `survey_surveyanswer_user_id_4c028d25_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `survey_surveyanswer_form_id_7f0df59f_fk_survey_surveyform_id` FOREIGN KEY (`form_id`) REFERENCES `survey_surveyform` (`id`),
-  CONSTRAINT `survey_surveyanswer_user_id_4c028d25_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `survey_surveyanswer_73f329f1` (`field_name`),
+  KEY `survey_surveyanswer_c8235886` (`course_key`),
+  KEY `survey_surveyanswer_d6cba1ad` (`form_id`),
+  KEY `survey_surveyanswer_e8701ad4` (`user_id`),
+  CONSTRAINT `survey_surveyan_form_id_1c835afe12a54912_fk_survey_surveyform_id` FOREIGN KEY (`form_id`) REFERENCES `survey_surveyform` (`id`),
+  CONSTRAINT `survey_surveyanswer_user_id_4e77d83a82fd0b2b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10199,62 +9246,6 @@ LOCK TABLES `survey_surveyform` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `system_wide_roles_systemwiderole`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `system_wide_roles_systemwiderole` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` longtext,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `system_wide_roles_systemwiderole`
---
-
-LOCK TABLES `system_wide_roles_systemwiderole` WRITE;
-/*!40000 ALTER TABLE `system_wide_roles_systemwiderole` DISABLE KEYS */;
-INSERT INTO `system_wide_roles_systemwiderole` VALUES (1,'2019-09-25 19:55:26.014253','2019-09-25 19:55:26.014635','student_support_admin',NULL);
-/*!40000 ALTER TABLE `system_wide_roles_systemwiderole` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `system_wide_roles_systemwideroleassignment`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `system_wide_roles_systemwideroleassignment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `role_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `system_wide_roles_sy_role_id_b553068b_fk_system_wi` (`role_id`),
-  KEY `system_wide_roles_sy_user_id_8ec7ad0d_fk_auth_user` (`user_id`),
-  CONSTRAINT `system_wide_roles_sy_role_id_b553068b_fk_system_wi` FOREIGN KEY (`role_id`) REFERENCES `system_wide_roles_systemwiderole` (`id`),
-  CONSTRAINT `system_wide_roles_sy_user_id_8ec7ad0d_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `system_wide_roles_systemwideroleassignment`
---
-
-LOCK TABLES `system_wide_roles_systemwideroleassignment` WRITE;
-/*!40000 ALTER TABLE `system_wide_roles_systemwideroleassignment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `system_wide_roles_systemwideroleassignment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tagging_tagavailablevalues`
 --
 
@@ -10265,8 +9256,8 @@ CREATE TABLE `tagging_tagavailablevalues` (
   `value` varchar(255) NOT NULL,
   `category_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `tagging_tagavailable_category_id_9cc60a44_fk_tagging_t` (`category_id`),
-  CONSTRAINT `tagging_tagavailable_category_id_9cc60a44_fk_tagging_t` FOREIGN KEY (`category_id`) REFERENCES `tagging_tagcategories` (`id`)
+  KEY `tagging_tagavailablevalues_b583a629` (`category_id`),
+  CONSTRAINT `tagging_category_id_40780d45c76e4f97_fk_tagging_tagcategories_id` FOREIGN KEY (`category_id`) REFERENCES `tagging_tagcategories` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10325,11 +9316,11 @@ CREATE TABLE `teams_courseteam` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `team_id` (`team_id`),
   UNIQUE KEY `discussion_topic_id` (`discussion_topic_id`),
-  KEY `teams_courseteam_name_3bef5f8c` (`name`),
-  KEY `teams_courseteam_course_id_1e7dbede` (`course_id`),
-  KEY `teams_courseteam_topic_id_4d4f5d0d` (`topic_id`),
-  KEY `teams_courseteam_last_activity_at_376db5d3` (`last_activity_at`),
-  KEY `teams_courseteam_team_size_d264574e` (`team_size`)
+  KEY `teams_courseteam_b068931c` (`name`),
+  KEY `teams_courseteam_ea134da7` (`course_id`),
+  KEY `teams_courseteam_19b4d727` (`topic_id`),
+  KEY `teams_courseteam_5ea53fcc` (`last_activity_at`),
+  KEY `teams_courseteam_181d83a1` (`team_size`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10355,10 +9346,10 @@ CREATE TABLE `teams_courseteammembership` (
   `team_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `teams_courseteammembership_user_id_team_id_aa45a20c_uniq` (`user_id`,`team_id`),
-  KEY `teams_courseteammemb_team_id_b021eccd_fk_teams_cou` (`team_id`),
-  CONSTRAINT `teams_courseteammemb_team_id_b021eccd_fk_teams_cou` FOREIGN KEY (`team_id`) REFERENCES `teams_courseteam` (`id`),
-  CONSTRAINT `teams_courseteammembership_user_id_18f9ff5d_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `teams_courseteammembership_user_id_48efa8e8971947c3_uniq` (`user_id`,`team_id`),
+  KEY `teams_courseteam_team_id_594700d19b04f922_fk_teams_courseteam_id` (`team_id`),
+  CONSTRAINT `teams_courseteam_team_id_594700d19b04f922_fk_teams_courseteam_id` FOREIGN KEY (`team_id`) REFERENCES `teams_courseteam` (`id`),
+  CONSTRAINT `teams_courseteammembers_user_id_2d93b28be22c3c40_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10382,8 +9373,8 @@ CREATE TABLE `theming_sitetheme` (
   `theme_dir_name` varchar(255) NOT NULL,
   `site_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `theming_sitetheme_site_id_fe93d039_fk_django_site_id` (`site_id`),
-  CONSTRAINT `theming_sitetheme_site_id_fe93d039_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  KEY `theming_sitetheme_site_id_4fccdacaebfeb01f_fk_django_site_id` (`site_id`),
+  CONSTRAINT `theming_sitetheme_site_id_4fccdacaebfeb01f_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10406,7 +9397,9 @@ CREATE TABLE `third_party_auth_ltiproviderconfig` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `change_date` datetime(6) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
+  `icon_class` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
+  `secondary` tinyint(1) NOT NULL,
   `skip_registration_form` tinyint(1) NOT NULL,
   `skip_email_verification` tinyint(1) NOT NULL,
   `lti_consumer_key` varchar(255) NOT NULL,
@@ -10414,25 +9407,19 @@ CREATE TABLE `third_party_auth_ltiproviderconfig` (
   `lti_consumer_secret` varchar(255) NOT NULL,
   `lti_max_timestamp_age` int(11) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
+  `icon_image` varchar(100) NOT NULL,
   `visible` tinyint(1) NOT NULL,
   `site_id` int(11) NOT NULL,
   `max_session_length` int(10) unsigned DEFAULT NULL,
   `skip_hinted_login_dialog` tinyint(1) NOT NULL,
   `send_to_registration_first` tinyint(1) NOT NULL,
   `sync_learner_profile_data` tinyint(1) NOT NULL,
-  `send_welcome_email` tinyint(1) NOT NULL,
-  `slug` varchar(30) NOT NULL,
-  `enable_sso_id_verification` tinyint(1) NOT NULL,
-  `organization_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `third_party_auth_lti_changed_by_id_7b39c829_fk_auth_user` (`changed_by_id`),
-  KEY `third_party_auth_ltiproviderconfig_lti_hostname_540ce676` (`lti_hostname`),
-  KEY `third_party_auth_lti_site_id_c8442a80_fk_django_si` (`site_id`),
-  KEY `third_party_auth_ltiproviderconfig_slug_9cd23a79` (`slug`),
-  KEY `third_party_auth_ltiproviderconfig_organization_id_7494c417` (`organization_id`),
-  CONSTRAINT `third_party_auth_lti_changed_by_id_7b39c829_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `third_party_auth_lti_organization_id_7494c417_fk_organizat` FOREIGN KEY (`organization_id`) REFERENCES `organizations_organization` (`id`),
-  CONSTRAINT `third_party_auth_lti_site_id_c8442a80_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  KEY `third_party_auth__changed_by_id_7749e09fd5f71ab0_fk_auth_user_id` (`changed_by_id`),
+  KEY `third_party_auth_ltiproviderconfig_fe8da584` (`lti_hostname`),
+  KEY `third_party_auth_ltiproviderconfig_9365d6e7` (`site_id`),
+  CONSTRAINT `third_party_auth__changed_by_id_7749e09fd5f71ab0_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `third_party_auth_ltip_site_id_30e45357dbe462db_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10467,24 +9454,19 @@ CREATE TABLE `third_party_auth_oauth2providerconfig` (
   `changed_by_id` int(11) DEFAULT NULL,
   `icon_image` varchar(100) NOT NULL,
   `visible` tinyint(1) NOT NULL,
+  `provider_slug` varchar(30) NOT NULL,
   `site_id` int(11) NOT NULL,
   `max_session_length` int(10) unsigned DEFAULT NULL,
   `skip_hinted_login_dialog` tinyint(1) NOT NULL,
   `send_to_registration_first` tinyint(1) NOT NULL,
   `sync_learner_profile_data` tinyint(1) NOT NULL,
-  `send_welcome_email` tinyint(1) NOT NULL,
-  `slug` varchar(30) NOT NULL,
-  `enable_sso_id_verification` tinyint(1) NOT NULL,
-  `organization_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `third_party_auth_oau_changed_by_id_55219296_fk_auth_user` (`changed_by_id`),
-  KEY `third_party_auth_oauth2providerconfig_backend_name_0c14d294` (`backend_name`),
-  KEY `third_party_auth_oau_site_id_a4ae3e66_fk_django_si` (`site_id`),
-  KEY `third_party_auth_oauth2providerconfig_slug_226038d8` (`slug`),
-  KEY `third_party_auth_oauth2providerconfig_organization_id_cc8874ba` (`organization_id`),
-  CONSTRAINT `third_party_auth_oau_changed_by_id_55219296_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `third_party_auth_oau_organization_id_cc8874ba_fk_organizat` FOREIGN KEY (`organization_id`) REFERENCES `organizations_organization` (`id`),
-  CONSTRAINT `third_party_auth_oau_site_id_a4ae3e66_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  KEY `third_party_auth__changed_by_id_17044d1cd96e8d57_fk_auth_user_id` (`changed_by_id`),
+  KEY `third_party_auth_oauth2providerconfig_abcd61c0` (`backend_name`),
+  KEY `third_party_auth_oauth2providerconfig_24b8e178` (`provider_slug`),
+  KEY `third_party_auth_oauth2providerconfig_9365d6e7` (`site_id`),
+  CONSTRAINT `third_party_auth__changed_by_id_17044d1cd96e8d57_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `third_party_auth_oaut_site_id_3f77f0fe311b6f5c_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10508,8 +9490,8 @@ CREATE TABLE `third_party_auth_providerapipermissions` (
   `provider_id` varchar(255) NOT NULL,
   `client_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `third_party_auth_pro_client_id_c28afa10_fk_oauth2_cl` (`client_id`),
-  CONSTRAINT `third_party_auth_pro_client_id_c28afa10_fk_oauth2_cl` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`)
+  KEY `third_party_auth__client_id_648d3f6d6109693b_fk_oauth2_client_id` (`client_id`),
+  CONSTRAINT `third_party_auth__client_id_648d3f6d6109693b_fk_oauth2_client_id` FOREIGN KEY (`client_id`) REFERENCES `oauth2_client` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10541,11 +9523,11 @@ CREATE TABLE `third_party_auth_samlconfiguration` (
   `site_id` int(11) NOT NULL,
   `slug` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `third_party_auth_sam_changed_by_id_c9343fb9_fk_auth_user` (`changed_by_id`),
-  KEY `third_party_auth_sam_site_id_8fab01ee_fk_django_si` (`site_id`),
-  KEY `third_party_auth_samlconfiguration_slug_f9008e26` (`slug`),
-  CONSTRAINT `third_party_auth_sam_changed_by_id_c9343fb9_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `third_party_auth_sam_site_id_8fab01ee_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  KEY `third_party_auth__changed_by_id_67a92ed1a69a5d1f_fk_auth_user_id` (`changed_by_id`),
+  KEY `third_party_auth_samlconfiguration_9365d6e7` (`site_id`),
+  KEY `third_party_auth_samlconfiguration_2dbcba41` (`slug`),
+  CONSTRAINT `third_party_auth__changed_by_id_67a92ed1a69a5d1f_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `third_party_auth_saml_site_id_108365f249ed6aac_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10574,6 +9556,7 @@ CREATE TABLE `third_party_auth_samlproviderconfig` (
   `skip_registration_form` tinyint(1) NOT NULL,
   `skip_email_verification` tinyint(1) NOT NULL,
   `backend_name` varchar(50) NOT NULL,
+  `idp_slug` varchar(30) NOT NULL,
   `entity_id` varchar(255) NOT NULL,
   `metadata_source` varchar(255) NOT NULL,
   `attr_user_permanent_id` varchar(128) NOT NULL,
@@ -10595,26 +9578,15 @@ CREATE TABLE `third_party_auth_samlproviderconfig` (
   `send_to_registration_first` tinyint(1) NOT NULL,
   `sync_learner_profile_data` tinyint(1) NOT NULL,
   `archived` tinyint(1) NOT NULL,
-  `saml_configuration_id` int(11) DEFAULT NULL,
-  `send_welcome_email` tinyint(1) NOT NULL,
-  `slug` varchar(30) NOT NULL,
-  `enable_sso_id_verification` tinyint(1) NOT NULL,
-  `default_email` varchar(255) NOT NULL,
-  `default_first_name` varchar(255) NOT NULL,
-  `default_full_name` varchar(255) NOT NULL,
-  `default_last_name` varchar(255) NOT NULL,
-  `default_username` varchar(255) NOT NULL,
-  `organization_id` int(11) DEFAULT NULL,
+  `saml_configuration_id` int(11),
   PRIMARY KEY (`id`),
-  KEY `third_party_auth_sam_changed_by_id_4c8fa8c0_fk_auth_user` (`changed_by_id`),
-  KEY `third_party_auth_sam_site_id_b7e2af73_fk_django_si` (`site_id`),
-  KEY `third_party_auth_sam_saml_configuration_i_eeb9fe72_fk_third_par` (`saml_configuration_id`),
-  KEY `third_party_auth_samlproviderconfig_slug_95883dea` (`slug`),
-  KEY `third_party_auth_samlproviderconfig_organization_id_8a7f5596` (`organization_id`),
-  CONSTRAINT `third_party_auth_sam_changed_by_id_4c8fa8c0_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `third_party_auth_sam_organization_id_8a7f5596_fk_organizat` FOREIGN KEY (`organization_id`) REFERENCES `organizations_organization` (`id`),
-  CONSTRAINT `third_party_auth_sam_saml_configuration_i_eeb9fe72_fk_third_par` FOREIGN KEY (`saml_configuration_id`) REFERENCES `third_party_auth_samlconfiguration` (`id`),
-  CONSTRAINT `third_party_auth_sam_site_id_b7e2af73_fk_django_si` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  KEY `third_party_auth__changed_by_id_508190ecd0b0e845_fk_auth_user_id` (`changed_by_id`),
+  KEY `third_party_auth_samlproviderconfig_098674f1` (`idp_slug`),
+  KEY `third_party_auth_samlproviderconfig_9365d6e7` (`site_id`),
+  KEY `third_party_auth_samlproviderconfig_8b3b795c` (`saml_configuration_id`),
+  CONSTRAINT `D2557cd97215f74bd67f5ef02c1487e6` FOREIGN KEY (`saml_configuration_id`) REFERENCES `third_party_auth_samlconfiguration` (`id`),
+  CONSTRAINT `third_party_auth__changed_by_id_508190ecd0b0e845_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `third_party_auth_saml_site_id_625158ae0a405970_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10641,9 +9613,9 @@ CREATE TABLE `third_party_auth_samlproviderdata` (
   `sso_url` varchar(200) NOT NULL,
   `public_key` longtext NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `third_party_auth_samlproviderdata_fetched_at_2286ac32` (`fetched_at`),
-  KEY `third_party_auth_samlproviderdata_expires_at_eaf594c7` (`expires_at`),
-  KEY `third_party_auth_samlproviderdata_entity_id_b163c6fc` (`entity_id`)
+  KEY `third_party_auth_samlproviderdata_d674fcb7` (`fetched_at`),
+  KEY `third_party_auth_samlproviderdata_81aefa79` (`expires_at`),
+  KEY `third_party_auth_samlproviderdata_dffc4713` (`entity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10654,6 +9626,28 @@ CREATE TABLE `third_party_auth_samlproviderdata` (
 LOCK TABLES `third_party_auth_samlproviderdata` WRITE;
 /*!40000 ALTER TABLE `third_party_auth_samlproviderdata` DISABLE KEYS */;
 /*!40000 ALTER TABLE `third_party_auth_samlproviderdata` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `thumbnail_kvstore`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `thumbnail_kvstore` (
+  `key` varchar(200) NOT NULL,
+  `value` longtext NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `thumbnail_kvstore`
+--
+
+LOCK TABLES `thumbnail_kvstore` WRITE;
+/*!40000 ALTER TABLE `thumbnail_kvstore` DISABLE KEYS */;
+/*!40000 ALTER TABLE `thumbnail_kvstore` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -10688,34 +9682,6 @@ LOCK TABLES `track_trackinglog` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_api_retirementstate`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_api_retirementstate` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `state_name` varchar(30) NOT NULL,
-  `state_execution_order` smallint(6) NOT NULL,
-  `is_dead_end_state` tinyint(1) NOT NULL,
-  `required` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `state_name` (`state_name`),
-  UNIQUE KEY `state_execution_order` (`state_execution_order`),
-  KEY `user_api_retirementstate_is_dead_end_state_62eaf9b7` (`is_dead_end_state`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_api_retirementstate`
---
-
-LOCK TABLES `user_api_retirementstate` WRITE;
-/*!40000 ALTER TABLE `user_api_retirementstate` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_api_retirementstate` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user_api_usercoursetag`
 --
 
@@ -10728,10 +9694,10 @@ CREATE TABLE `user_api_usercoursetag` (
   `value` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_api_usercoursetag_user_id_course_id_key_d73150ab_uniq` (`user_id`,`course_id`,`key`),
-  KEY `user_api_usercoursetag_key_d6420575` (`key`),
-  KEY `user_api_usercoursetag_course_id_a336d583` (`course_id`),
-  CONSTRAINT `user_api_usercoursetag_user_id_106a4cbc_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `user_api_usercoursetag_user_id_64d9a32c9890f610_uniq` (`user_id`,`course_id`,`key`),
+  KEY `user_api_usercoursetag_3c6e0b8a` (`key`),
+  KEY `user_api_usercoursetag_ea134da7` (`course_id`),
+  CONSTRAINT `user_api_usercoursetag_user_id_2692245bbb861fc2_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10759,10 +9725,10 @@ CREATE TABLE `user_api_userorgtag` (
   `value` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_api_userorgtag_user_id_org_key_d4df9ac1_uniq` (`user_id`,`org`,`key`),
-  KEY `user_api_userorgtag_key_b1f2bafe` (`key`),
-  KEY `user_api_userorgtag_org_41caa15c` (`org`),
-  CONSTRAINT `user_api_userorgtag_user_id_cc0d415d_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `user_api_userorgtag_user_id_694f9e3322120c6f_uniq` (`user_id`,`org`,`key`),
+  KEY `user_api_userorgtag_3c6e0b8a` (`key`),
+  KEY `user_api_userorgtag_5a445d71` (`org`),
+  CONSTRAINT `user_api_userorgtag_user_id_16c7189496b4df00_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10787,9 +9753,9 @@ CREATE TABLE `user_api_userpreference` (
   `value` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_api_userpreference_user_id_key_17924c0d_uniq` (`user_id`,`key`),
-  KEY `user_api_userpreference_key_9c8a8f6b` (`key`),
-  CONSTRAINT `user_api_userpreference_user_id_68f8a34b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `user_api_userpreference_user_id_4e4942d73f760072_uniq` (`user_id`,`key`),
+  KEY `user_api_userpreference_3c6e0b8a` (`key`),
+  CONSTRAINT `user_api_userpreference_user_id_41f12e3954b69095_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10800,108 +9766,6 @@ CREATE TABLE `user_api_userpreference` (
 LOCK TABLES `user_api_userpreference` WRITE;
 /*!40000 ALTER TABLE `user_api_userpreference` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_api_userpreference` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user_api_userretirementpartnerreportingstatus`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_api_userretirementpartnerreportingstatus` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `original_username` varchar(150) NOT NULL,
-  `original_email` varchar(254) NOT NULL,
-  `original_name` varchar(255) NOT NULL,
-  `is_being_processed` tinyint(1) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
-  KEY `user_api_userretirementpart_original_username_6bf5d3d1` (`original_username`),
-  KEY `user_api_userretirementpart_original_email_aaab0bc9` (`original_email`),
-  KEY `user_api_userretirementpart_original_name_9aedd7f0` (`original_name`),
-  CONSTRAINT `user_api_userretirem_user_id_272c8f78_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_api_userretirementpartnerreportingstatus`
---
-
-LOCK TABLES `user_api_userretirementpartnerreportingstatus` WRITE;
-/*!40000 ALTER TABLE `user_api_userretirementpartnerreportingstatus` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_api_userretirementpartnerreportingstatus` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user_api_userretirementrequest`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_api_userretirementrequest` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `user_api_userretirementrequest_user_id_7f7ca22f_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_api_userretirementrequest`
---
-
-LOCK TABLES `user_api_userretirementrequest` WRITE;
-/*!40000 ALTER TABLE `user_api_userretirementrequest` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_api_userretirementrequest` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user_api_userretirementstatus`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_api_userretirementstatus` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `original_username` varchar(150) NOT NULL,
-  `original_email` varchar(254) NOT NULL,
-  `original_name` varchar(255) NOT NULL,
-  `retired_username` varchar(150) NOT NULL,
-  `retired_email` varchar(254) NOT NULL,
-  `responses` longtext NOT NULL,
-  `current_state_id` int(11) NOT NULL,
-  `last_state_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
-  KEY `user_api_userretirem_current_state_id_e37bb094_fk_user_api_` (`current_state_id`),
-  KEY `user_api_userretirem_last_state_id_359e74cd_fk_user_api_` (`last_state_id`),
-  KEY `user_api_userretirementstatus_original_username_fa5d4a21` (`original_username`),
-  KEY `user_api_userretirementstatus_original_email_a7203bff` (`original_email`),
-  KEY `user_api_userretirementstatus_original_name_17c2846b` (`original_name`),
-  KEY `user_api_userretirementstatus_retired_username_52067a53` (`retired_username`),
-  KEY `user_api_userretirementstatus_retired_email_ee7c1579` (`retired_email`),
-  CONSTRAINT `user_api_userretirem_current_state_id_e37bb094_fk_user_api_` FOREIGN KEY (`current_state_id`) REFERENCES `user_api_retirementstate` (`id`),
-  CONSTRAINT `user_api_userretirem_last_state_id_359e74cd_fk_user_api_` FOREIGN KEY (`last_state_id`) REFERENCES `user_api_retirementstate` (`id`),
-  CONSTRAINT `user_api_userretirementstatus_user_id_aca4dc7b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_api_userretirementstatus`
---
-
-LOCK TABLES `user_api_userretirementstatus` WRITE;
-/*!40000 ALTER TABLE `user_api_userretirementstatus` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_api_userretirementstatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -10917,13 +9781,13 @@ CREATE TABLE `user_tasks_usertaskartifact` (
   `uuid` char(32) NOT NULL,
   `name` varchar(255) NOT NULL,
   `file` varchar(100) DEFAULT NULL,
-  `url` longtext NOT NULL,
+  `url` varchar(200) NOT NULL,
   `text` longtext NOT NULL,
   `status_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
-  KEY `user_tasks_usertaska_status_id_641f31be_fk_user_task` (`status_id`),
-  CONSTRAINT `user_tasks_usertaska_status_id_641f31be_fk_user_task` FOREIGN KEY (`status_id`) REFERENCES `user_tasks_usertaskstatus` (`id`)
+  KEY `user_tasks_usertaskartifact_dc91ed4b` (`status_id`),
+  CONSTRAINT `user__status_id_265997facac95070_fk_user_tasks_usertaskstatus_id` FOREIGN KEY (`status_id`) REFERENCES `user_tasks_usertaskstatus` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10960,10 +9824,10 @@ CREATE TABLE `user_tasks_usertaskstatus` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   UNIQUE KEY `task_id` (`task_id`),
-  KEY `user_tasks_usertasks_parent_id_5009f727_fk_user_task` (`parent_id`),
-  KEY `user_tasks_usertaskstatus_user_id_5bec3d4a_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `user_tasks_usertasks_parent_id_5009f727_fk_user_task` FOREIGN KEY (`parent_id`) REFERENCES `user_tasks_usertaskstatus` (`id`),
-  CONSTRAINT `user_tasks_usertaskstatus_user_id_5bec3d4a_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `user__parent_id_2a1a586c3c2ac2a4_fk_user_tasks_usertaskstatus_id` (`parent_id`),
+  KEY `user_tasks_usertaskstat_user_id_5ceae753d027017b_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `user__parent_id_2a1a586c3c2ac2a4_fk_user_tasks_usertaskstatus_id` FOREIGN KEY (`parent_id`) REFERENCES `user_tasks_usertaskstatus` (`id`),
+  CONSTRAINT `user_tasks_usertaskstat_user_id_5ceae753d027017b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10988,8 +9852,8 @@ CREATE TABLE `util_ratelimitconfiguration` (
   `enabled` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `util_ratelimitconfig_changed_by_id_794ac118_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `util_ratelimitconfig_changed_by_id_794ac118_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `util_ratelimitcon_changed_by_id_2c8891cb4854f3b5_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `util_ratelimitcon_changed_by_id_2c8891cb4854f3b5_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -10999,7 +9863,7 @@ CREATE TABLE `util_ratelimitconfiguration` (
 
 LOCK TABLES `util_ratelimitconfiguration` WRITE;
 /*!40000 ALTER TABLE `util_ratelimitconfiguration` DISABLE KEYS */;
-INSERT INTO `util_ratelimitconfiguration` VALUES (1,'2019-09-25 19:56:39.719523',1,NULL);
+INSERT INTO `util_ratelimitconfiguration` VALUES (1,'2016-12-17 01:42:09.774066',1,NULL);
 /*!40000 ALTER TABLE `util_ratelimitconfiguration` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -11018,8 +9882,8 @@ CREATE TABLE `verified_track_content_migrateverifiedtrackcohortssetting` (
   `audit_cohort_names` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `verified_track_conte_changed_by_id_29944bff_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `verified_track_conte_changed_by_id_29944bff_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `verified_track_co_changed_by_id_3aa020546322e9ee_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `verified_track_co_changed_by_id_3aa020546322e9ee_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11058,35 +9922,86 @@ LOCK TABLES `verified_track_content_verifiedtrackcohortedcourse` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `verify_student_manualverification`
+-- Table structure for table `verify_student_icrvstatusemailsconfiguration`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `verify_student_manualverification` (
+CREATE TABLE `verify_student_icrvstatusemailsconfiguration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` varchar(100) NOT NULL,
-  `status_changed` datetime(6) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `updated_at` datetime(6) NOT NULL,
-  `reason` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `change_date` datetime(6) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `verify_student_manua_user_id_f38b72b4_fk_auth_user` (`user_id`),
-  KEY `verify_student_manualverification_created_at_e4e3731a` (`created_at`),
-  KEY `verify_student_manualverification_updated_at_1a350690` (`updated_at`),
-  CONSTRAINT `verify_student_manua_user_id_f38b72b4_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `verify_student_icr_changed_by_id_52e319582f18ea3_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `verify_student_icr_changed_by_id_52e319582f18ea3_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `verify_student_manualverification`
+-- Dumping data for table `verify_student_icrvstatusemailsconfiguration`
 --
 
-LOCK TABLES `verify_student_manualverification` WRITE;
-/*!40000 ALTER TABLE `verify_student_manualverification` DISABLE KEYS */;
-/*!40000 ALTER TABLE `verify_student_manualverification` ENABLE KEYS */;
+LOCK TABLES `verify_student_icrvstatusemailsconfiguration` WRITE;
+/*!40000 ALTER TABLE `verify_student_icrvstatusemailsconfiguration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `verify_student_icrvstatusemailsconfiguration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `verify_student_incoursereverificationconfiguration`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `verify_student_incoursereverificationconfiguration` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `change_date` datetime(6) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  `changed_by_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `verify_student_in_changed_by_id_1f3e3fa462a6ded6_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `verify_student_in_changed_by_id_1f3e3fa462a6ded6_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `verify_student_incoursereverificationconfiguration`
+--
+
+LOCK TABLES `verify_student_incoursereverificationconfiguration` WRITE;
+/*!40000 ALTER TABLE `verify_student_incoursereverificationconfiguration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `verify_student_incoursereverificationconfiguration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `verify_student_skippedreverification`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `verify_student_skippedreverification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` varchar(255) NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `checkpoint_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `verify_student_skippedreverificati_user_id_1e8af5a5e735aa1a_uniq` (`user_id`,`course_id`),
+  KEY `verify_student_skippedreverification_ea134da7` (`course_id`),
+  KEY `verify_student_skippedreverification_bef2d98a` (`checkpoint_id`),
+  KEY `verify_student_skippedreverification_e8701ad4` (`user_id`),
+  CONSTRAINT `D759ffa5ca66ef1a2c8c200f7a21365b` FOREIGN KEY (`checkpoint_id`) REFERENCES `verify_student_verificationcheckpoint` (`id`),
+  CONSTRAINT `verify_student_skippedr_user_id_6752b392e3d3c501_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `verify_student_skippedreverification`
+--
+
+LOCK TABLES `verify_student_skippedreverification` WRITE;
+/*!40000 ALTER TABLE `verify_student_skippedreverification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `verify_student_skippedreverification` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -11114,22 +10029,18 @@ CREATE TABLE `verify_student_softwaresecurephotoverification` (
   `copy_id_photo_from_id` int(11) DEFAULT NULL,
   `reviewing_user_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
-  `expiry_date` datetime(6) DEFAULT NULL,
-  `expiry_email_date` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `verify_student_softw_copy_id_photo_from_i_059e40b6_fk_verify_st` (`copy_id_photo_from_id`),
-  KEY `verify_student_softw_reviewing_user_id_55fd003a_fk_auth_user` (`reviewing_user_id`),
-  KEY `verify_student_softw_user_id_66ca4f6d_fk_auth_user` (`user_id`),
-  KEY `verify_student_softwaresecu_receipt_id_2160ce88` (`receipt_id`),
-  KEY `verify_student_softwaresecu_created_at_566f779f` (`created_at`),
-  KEY `verify_student_softwaresecu_updated_at_8f5cf2d7` (`updated_at`),
-  KEY `verify_student_softwaresecurephotoverification_display_287287f8` (`display`),
-  KEY `verify_student_softwaresecu_submitted_at_f3d5cd03` (`submitted_at`),
-  KEY `verify_student_softwaresecu_expiry_date_5c297927` (`expiry_date`),
-  KEY `verify_student_softwaresecu_expiry_email_date_6ae6d6c9` (`expiry_email_date`),
-  CONSTRAINT `verify_student_softw_copy_id_photo_from_i_059e40b6_fk_verify_st` FOREIGN KEY (`copy_id_photo_from_id`) REFERENCES `verify_student_softwaresecurephotoverification` (`id`),
-  CONSTRAINT `verify_student_softw_reviewing_user_id_55fd003a_fk_auth_user` FOREIGN KEY (`reviewing_user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `verify_student_softw_user_id_66ca4f6d_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `D01dce17b91c9382bd80d4be23a3e0cf` (`copy_id_photo_from_id`),
+  KEY `verify_studen_reviewing_user_id_727fae1d0bcf8aaf_fk_auth_user_id` (`reviewing_user_id`),
+  KEY `verify_student_software_user_id_61ffab9c12020106_fk_auth_user_id` (`user_id`),
+  KEY `verify_student_softwaresecurephotoverification_f6fc3014` (`receipt_id`),
+  KEY `verify_student_softwaresecurephotoverification_fde81f11` (`created_at`),
+  KEY `verify_student_softwaresecurephotoverification_afd1a1a8` (`updated_at`),
+  KEY `verify_student_softwaresecurephotoverification_ebf78b51` (`display`),
+  KEY `verify_student_softwaresecurephotoverification_22bb6ff9` (`submitted_at`),
+  CONSTRAINT `D01dce17b91c9382bd80d4be23a3e0cf` FOREIGN KEY (`copy_id_photo_from_id`) REFERENCES `verify_student_softwaresecurephotoverification` (`id`),
+  CONSTRAINT `verify_studen_reviewing_user_id_727fae1d0bcf8aaf_fk_auth_user_id` FOREIGN KEY (`reviewing_user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `verify_student_software_user_id_61ffab9c12020106_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11143,37 +10054,55 @@ LOCK TABLES `verify_student_softwaresecurephotoverification` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `verify_student_ssoverification`
+-- Table structure for table `verify_student_verificationcheckpoint`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `verify_student_ssoverification` (
+CREATE TABLE `verify_student_verificationcheckpoint` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` varchar(100) NOT NULL,
-  `status_changed` datetime(6) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `updated_at` datetime(6) NOT NULL,
-  `identity_provider_type` varchar(100) NOT NULL,
-  `identity_provider_slug` varchar(30) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `course_id` varchar(255) NOT NULL,
+  `checkpoint_location` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `verify_student_ssoverification_user_id_5e6186eb_fk_auth_user_id` (`user_id`),
-  KEY `verify_student_ssoverification_created_at_6381e5a4` (`created_at`),
-  KEY `verify_student_ssoverification_updated_at_9d6cc952` (`updated_at`),
-  KEY `verify_student_ssoverification_identity_provider_slug_56c53eb6` (`identity_provider_slug`),
-  CONSTRAINT `verify_student_ssoverification_user_id_5e6186eb_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `verify_student_verificationcheck_course_id_2c6a1f5c22b4cc19_uniq` (`course_id`,`checkpoint_location`),
+  KEY `verify_student_verificationcheckpoint_ea134da7` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `verify_student_ssoverification`
+-- Dumping data for table `verify_student_verificationcheckpoint`
 --
 
-LOCK TABLES `verify_student_ssoverification` WRITE;
-/*!40000 ALTER TABLE `verify_student_ssoverification` DISABLE KEYS */;
-/*!40000 ALTER TABLE `verify_student_ssoverification` ENABLE KEYS */;
+LOCK TABLES `verify_student_verificationcheckpoint` WRITE;
+/*!40000 ALTER TABLE `verify_student_verificationcheckpoint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `verify_student_verificationcheckpoint` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `verify_student_verificationcheckpoint_photo_verification`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `verify_student_verificationcheckpoint_photo_verification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `verificationcheckpoint_id` int(11) NOT NULL,
+  `softwaresecurephotoverification_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `verificationcheckpoint_id` (`verificationcheckpoint_id`,`softwaresecurephotoverification_id`),
+  KEY `c7846aea49a044a1161a4b9b6d70e050` (`softwaresecurephotoverification_id`),
+  CONSTRAINT `c7846aea49a044a1161a4b9b6d70e050` FOREIGN KEY (`softwaresecurephotoverification_id`) REFERENCES `verify_student_softwaresecurephotoverification` (`id`),
+  CONSTRAINT `e4d180f9ca43c3b66693c416a36cfb9d` FOREIGN KEY (`verificationcheckpoint_id`) REFERENCES `verify_student_verificationcheckpoint` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `verify_student_verificationcheckpoint_photo_verification`
+--
+
+LOCK TABLES `verify_student_verificationcheckpoint_photo_verification` WRITE;
+/*!40000 ALTER TABLE `verify_student_verificationcheckpoint_photo_verification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `verify_student_verificationcheckpoint_photo_verification` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -11191,7 +10120,7 @@ CREATE TABLE `verify_student_verificationdeadline` (
   `deadline_is_explicit` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `course_key` (`course_key`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -11200,8 +10129,40 @@ CREATE TABLE `verify_student_verificationdeadline` (
 
 LOCK TABLES `verify_student_verificationdeadline` WRITE;
 /*!40000 ALTER TABLE `verify_student_verificationdeadline` DISABLE KEYS */;
-INSERT INTO `verify_student_verificationdeadline` VALUES (1,'2019-09-25 20:27:45.429937','2019-09-25 20:27:45.430321','course-v1:edX+E2E-101+course','2018-12-31 00:00:00.000000',0);
+INSERT INTO `verify_student_verificationdeadline` VALUES (1,'2018-01-31 21:22:46.592715','2018-01-31 21:22:46.593232','course-v1:edX+DemoX+Demo_Course','2020-01-31 21:22:40.820392',1),(2,'2018-01-31 21:27:06.199979','2018-01-31 21:27:06.200224','course-v1:edX+E2E-101+course','2018-12-31 00:00:00.000000',0);
 /*!40000 ALTER TABLE `verify_student_verificationdeadline` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `verify_student_verificationstatus`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `verify_student_verificationstatus` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` varchar(32) NOT NULL,
+  `timestamp` datetime(6) NOT NULL,
+  `response` longtext,
+  `error` longtext,
+  `checkpoint_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `D4cefb6d3d71c9b26af2a5ece4c37277` (`checkpoint_id`),
+  KEY `verify_student_verifica_user_id_5c19fcd6dc05f211_fk_auth_user_id` (`user_id`),
+  KEY `verify_student_verificationstatus_9acb4454` (`status`),
+  CONSTRAINT `D4cefb6d3d71c9b26af2a5ece4c37277` FOREIGN KEY (`checkpoint_id`) REFERENCES `verify_student_verificationcheckpoint` (`id`),
+  CONSTRAINT `verify_student_verifica_user_id_5c19fcd6dc05f211_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `verify_student_verificationstatus`
+--
+
+LOCK TABLES `verify_student_verificationstatus` WRITE;
+/*!40000 ALTER TABLE `verify_student_verificationstatus` DISABLE KEYS */;
+/*!40000 ALTER TABLE `verify_student_verificationstatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -11217,9 +10178,9 @@ CREATE TABLE `video_config_coursehlsplaybackenabledflag` (
   `course_id` varchar(255) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `video_config_courseh_changed_by_id_fa268d53_fk_auth_user` (`changed_by_id`),
-  KEY `video_config_coursehlsplaybackenabledflag_course_id_c0fcaead` (`course_id`),
-  CONSTRAINT `video_config_courseh_changed_by_id_fa268d53_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `video_config_cour_changed_by_id_28b01cb29cfcd9a2_fk_auth_user_id` (`changed_by_id`),
+  KEY `video_config_coursehlsplaybackenabledflag_ea134da7` (`course_id`),
+  CONSTRAINT `video_config_cour_changed_by_id_28b01cb29cfcd9a2_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11245,9 +10206,9 @@ CREATE TABLE `video_config_coursevideotranscriptenabledflag` (
   `course_id` varchar(255) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `video_config_coursev_changed_by_id_3bdcf2a6_fk_auth_user` (`changed_by_id`),
-  KEY `video_config_coursevideotranscriptenabledflag_course_id_fcfacf5b` (`course_id`),
-  CONSTRAINT `video_config_coursev_changed_by_id_3bdcf2a6_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `video_config_cour_changed_by_id_184a5ebdccef55f5_fk_auth_user_id` (`changed_by_id`),
+  KEY `video_config_coursevideotranscriptenabledflag_ea134da7` (`course_id`),
+  CONSTRAINT `video_config_cour_changed_by_id_184a5ebdccef55f5_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11258,34 +10219,6 @@ CREATE TABLE `video_config_coursevideotranscriptenabledflag` (
 LOCK TABLES `video_config_coursevideotranscriptenabledflag` WRITE;
 /*!40000 ALTER TABLE `video_config_coursevideotranscriptenabledflag` DISABLE KEYS */;
 /*!40000 ALTER TABLE `video_config_coursevideotranscriptenabledflag` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `video_config_courseyoutubeblockedflag`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `video_config_courseyoutubeblockedflag` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `change_date` datetime(6) NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
-  `course_id` varchar(255) NOT NULL,
-  `changed_by_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `video_config_coursey_changed_by_id_3496713f_fk_auth_user` (`changed_by_id`),
-  KEY `video_config_courseyoutubeblockedflag_course_id_4c9395c6` (`course_id`),
-  CONSTRAINT `video_config_coursey_changed_by_id_3496713f_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `video_config_courseyoutubeblockedflag`
---
-
-LOCK TABLES `video_config_courseyoutubeblockedflag` WRITE;
-/*!40000 ALTER TABLE `video_config_courseyoutubeblockedflag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `video_config_courseyoutubeblockedflag` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -11301,8 +10234,8 @@ CREATE TABLE `video_config_hlsplaybackenabledflag` (
   `enabled_for_all_courses` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `video_config_hlsplay_changed_by_id_d93f2234_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `video_config_hlsplay_changed_by_id_d93f2234_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `video_config_hlsp_changed_by_id_15b74d899e55b62b_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `video_config_hlsp_changed_by_id_15b74d899e55b62b_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11313,123 +10246,6 @@ CREATE TABLE `video_config_hlsplaybackenabledflag` (
 LOCK TABLES `video_config_hlsplaybackenabledflag` WRITE;
 /*!40000 ALTER TABLE `video_config_hlsplaybackenabledflag` DISABLE KEYS */;
 /*!40000 ALTER TABLE `video_config_hlsplaybackenabledflag` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `video_config_migrationenqueuedcourse`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `video_config_migrationenqueuedcourse` (
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `course_id` varchar(255) NOT NULL,
-  `command_run` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `video_config_migrationenqueuedcourse`
---
-
-LOCK TABLES `video_config_migrationenqueuedcourse` WRITE;
-/*!40000 ALTER TABLE `video_config_migrationenqueuedcourse` DISABLE KEYS */;
-/*!40000 ALTER TABLE `video_config_migrationenqueuedcourse` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `video_config_transcriptmigrationsetting`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `video_config_transcriptmigrationsetting` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `change_date` datetime(6) NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
-  `force_update` tinyint(1) NOT NULL,
-  `commit` tinyint(1) NOT NULL,
-  `all_courses` tinyint(1) NOT NULL,
-  `course_ids` longtext NOT NULL,
-  `changed_by_id` int(11) DEFAULT NULL,
-  `command_run` int(10) unsigned NOT NULL,
-  `batch_size` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `video_config_transcr_changed_by_id_4c7817bd_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `video_config_transcr_changed_by_id_4c7817bd_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `video_config_transcriptmigrationsetting`
---
-
-LOCK TABLES `video_config_transcriptmigrationsetting` WRITE;
-/*!40000 ALTER TABLE `video_config_transcriptmigrationsetting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `video_config_transcriptmigrationsetting` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `video_config_updatedcoursevideos`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `video_config_updatedcoursevideos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `course_id` varchar(255) NOT NULL,
-  `edx_video_id` varchar(100) NOT NULL,
-  `command_run` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `video_config_updatedcour_course_id_edx_video_id_455a73ff_uniq` (`course_id`,`edx_video_id`),
-  KEY `video_config_updatedcoursevideos_course_id_e72703a3` (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `video_config_updatedcoursevideos`
---
-
-LOCK TABLES `video_config_updatedcoursevideos` WRITE;
-/*!40000 ALTER TABLE `video_config_updatedcoursevideos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `video_config_updatedcoursevideos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `video_config_videothumbnailsetting`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `video_config_videothumbnailsetting` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `change_date` datetime(6) NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
-  `command_run` int(10) unsigned NOT NULL,
-  `batch_size` int(10) unsigned NOT NULL,
-  `videos_per_task` int(10) unsigned NOT NULL,
-  `commit` tinyint(1) NOT NULL,
-  `all_course_videos` tinyint(1) NOT NULL,
-  `course_ids` longtext NOT NULL,
-  `changed_by_id` int(11) DEFAULT NULL,
-  `offset` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `video_config_videoth_changed_by_id_9385a0b2_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `video_config_videoth_changed_by_id_9385a0b2_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `video_config_videothumbnailsetting`
---
-
-LOCK TABLES `video_config_videothumbnailsetting` WRITE;
-/*!40000 ALTER TABLE `video_config_videothumbnailsetting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `video_config_videothumbnailsetting` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -11445,8 +10261,8 @@ CREATE TABLE `video_config_videotranscriptenabledflag` (
   `enabled_for_all_courses` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `video_config_videotr_changed_by_id_9f0afd7f_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `video_config_videotr_changed_by_id_9f0afd7f_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `video_config_vide_changed_by_id_3a0857ce30241112_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `video_config_vide_changed_by_id_3a0857ce30241112_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11472,9 +10288,9 @@ CREATE TABLE `video_pipeline_coursevideouploadsenabledbydefault` (
   `course_id` varchar(255) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `video_pipeline_cours_changed_by_id_84ec1a58_fk_auth_user` (`changed_by_id`),
-  KEY `video_pipeline_coursevideou_course_id_9fd1b18b` (`course_id`),
-  CONSTRAINT `video_pipeline_cours_changed_by_id_84ec1a58_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `video_pipeline_co_changed_by_id_6fa6d53fe11c233b_fk_auth_user_id` (`changed_by_id`),
+  KEY `video_pipeline_coursevideouploadsenabledbydefault_ea134da7` (`course_id`),
+  CONSTRAINT `video_pipeline_co_changed_by_id_6fa6d53fe11c233b_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11502,8 +10318,8 @@ CREATE TABLE `video_pipeline_videopipelineintegration` (
   `changed_by_id` int(11) DEFAULT NULL,
   `client_name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `video_pipeline_video_changed_by_id_b169f329_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `video_pipeline_video_changed_by_id_b169f329_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `video_pipeline_vi_changed_by_id_384bb33af13db7a5_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `video_pipeline_vi_changed_by_id_384bb33af13db7a5_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11529,8 +10345,8 @@ CREATE TABLE `video_pipeline_videouploadsenabledbydefault` (
   `enabled_for_all_courses` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `video_pipeline_video_changed_by_id_3d066822_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `video_pipeline_video_changed_by_id_3d066822_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `video_pipeline_vi_changed_by_id_4fff17e91cce415c_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `video_pipeline_vi_changed_by_id_4fff17e91cce415c_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11565,7 +10381,7 @@ CREATE TABLE `waffle_flag` (
   `modified` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `waffle_flag_created_4a6e8cef` (`created`)
+  KEY `waffle_flag_e2fa5388` (`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11589,10 +10405,10 @@ CREATE TABLE `waffle_flag_groups` (
   `flag_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `waffle_flag_groups_flag_id_group_id_8ba0c71b_uniq` (`flag_id`,`group_id`),
-  KEY `waffle_flag_groups_group_id_a97c4f66_fk_auth_group_id` (`group_id`),
-  CONSTRAINT `waffle_flag_groups_flag_id_c11c0c05_fk_waffle_flag_id` FOREIGN KEY (`flag_id`) REFERENCES `waffle_flag` (`id`),
-  CONSTRAINT `waffle_flag_groups_group_id_a97c4f66_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
+  UNIQUE KEY `flag_id` (`flag_id`,`group_id`),
+  KEY `waffle_flag_groups_group_id_1d214ce64ae3698d_fk_auth_group_id` (`group_id`),
+  CONSTRAINT `waffle_flag_groups_flag_id_3d040eff1615da33_fk_waffle_flag_id` FOREIGN KEY (`flag_id`) REFERENCES `waffle_flag` (`id`),
+  CONSTRAINT `waffle_flag_groups_group_id_1d214ce64ae3698d_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11616,10 +10432,10 @@ CREATE TABLE `waffle_flag_users` (
   `flag_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `waffle_flag_users_flag_id_user_id_b46f76b0_uniq` (`flag_id`,`user_id`),
-  KEY `waffle_flag_users_user_id_8026df9b_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `waffle_flag_users_flag_id_833c37b0_fk_waffle_flag_id` FOREIGN KEY (`flag_id`) REFERENCES `waffle_flag` (`id`),
-  CONSTRAINT `waffle_flag_users_user_id_8026df9b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `flag_id` (`flag_id`,`user_id`),
+  KEY `waffle_flag_users_user_id_3c8ba20de859cb5_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `waffle_flag_users_flag_id_fe9e88f3072acde_fk_waffle_flag_id` FOREIGN KEY (`flag_id`) REFERENCES `waffle_flag` (`id`),
+  CONSTRAINT `waffle_flag_users_user_id_3c8ba20de859cb5_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11647,7 +10463,7 @@ CREATE TABLE `waffle_sample` (
   `modified` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `waffle_sample_created_76198bd5` (`created`)
+  KEY `waffle_sample_e2fa5388` (`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11675,7 +10491,7 @@ CREATE TABLE `waffle_switch` (
   `modified` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `waffle_switch_created_c004e77e` (`created`)
+  KEY `waffle_switch_e2fa5388` (`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11703,10 +10519,10 @@ CREATE TABLE `waffle_utils_waffleflagcourseoverridemodel` (
   `override_choice` varchar(3) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `waffle_utils_wafflef_changed_by_id_28429bf5_fk_auth_user` (`changed_by_id`),
-  KEY `waffle_utils_waffleflagcourseoverridemodel_waffle_flag_d261aad1` (`waffle_flag`),
-  KEY `waffle_utils_waffleflagcourseoverridemodel_course_id_e94a9fc3` (`course_id`),
-  CONSTRAINT `waffle_utils_wafflef_changed_by_id_28429bf5_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `waffle_utils_waff_changed_by_id_3b230839b4c20581_fk_auth_user_id` (`changed_by_id`),
+  KEY `waffle_utils_waffleflagcourseoverridemodel_6690e26e` (`waffle_flag`),
+  KEY `waffle_utils_waffleflagcourseoverridemodel_ea134da7` (`course_id`),
+  CONSTRAINT `waffle_utils_waff_changed_by_id_3b230839b4c20581_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11738,11 +10554,11 @@ CREATE TABLE `wiki_article` (
   `owner_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `current_revision_id` (`current_revision_id`),
-  KEY `wiki_article_group_id_bf035c83_fk_auth_group_id` (`group_id`),
-  KEY `wiki_article_owner_id_956bc94a_fk_auth_user_id` (`owner_id`),
-  CONSTRAINT `wiki_article_current_revision_id_fc83ea0a_fk_wiki_arti` FOREIGN KEY (`current_revision_id`) REFERENCES `wiki_articlerevision` (`id`),
-  CONSTRAINT `wiki_article_group_id_bf035c83_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
-  CONSTRAINT `wiki_article_owner_id_956bc94a_fk_auth_user_id` FOREIGN KEY (`owner_id`) REFERENCES `auth_user` (`id`)
+  KEY `wiki_article_0e939a4f` (`group_id`),
+  KEY `wiki_article_5e7b1936` (`owner_id`),
+  CONSTRAINT `current_revision_id_42a9dbec1e0dd15c_fk_wiki_articlerevision_id` FOREIGN KEY (`current_revision_id`) REFERENCES `wiki_articlerevision` (`id`),
+  CONSTRAINT `wiki_article_group_id_2b38601b6aa39f3d_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
+  CONSTRAINT `wiki_article_owner_id_b1c1e44609a378f_fk_auth_user_id` FOREIGN KEY (`owner_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11768,10 +10584,10 @@ CREATE TABLE `wiki_articleforobject` (
   `article_id` int(11) NOT NULL,
   `content_type_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `wiki_articleforobject_content_type_id_object_id_046be756_uniq` (`content_type_id`,`object_id`),
-  KEY `wiki_articleforobject_article_id_7d67d809_fk_wiki_article_id` (`article_id`),
-  CONSTRAINT `wiki_articleforobjec_content_type_id_ba569059_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
-  CONSTRAINT `wiki_articleforobject_article_id_7d67d809_fk_wiki_article_id` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`)
+  UNIQUE KEY `wiki_articleforobject_content_type_id_27c4cce189b3bcab_uniq` (`content_type_id`,`object_id`),
+  KEY `wiki_articleforobj_article_id_6effcfadf020e71_fk_wiki_article_id` (`article_id`),
+  CONSTRAINT `wiki__content_type_id_6a39c68b7a20c3c4_fk_django_content_type_id` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  CONSTRAINT `wiki_articleforobj_article_id_6effcfadf020e71_fk_wiki_article_id` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11796,8 +10612,8 @@ CREATE TABLE `wiki_articleplugin` (
   `created` datetime(6) NOT NULL,
   `article_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `wiki_articleplugin_article_id_9ab0e854_fk_wiki_article_id` (`article_id`),
-  CONSTRAINT `wiki_articleplugin_article_id_9ab0e854_fk_wiki_article_id` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`)
+  KEY `wiki_articleplugin_a00c1b00` (`article_id`),
+  CONSTRAINT `wiki_articleplugi_article_id_2d2c794af030d9dd_fk_wiki_article_id` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11832,12 +10648,12 @@ CREATE TABLE `wiki_articlerevision` (
   `previous_revision_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `wiki_articlerevision_article_id_revision_number_5bcd5334_uniq` (`article_id`,`revision_number`),
-  KEY `wiki_articlerevision_previous_revision_id_bcfaf4c9_fk_wiki_arti` (`previous_revision_id`),
-  KEY `wiki_articlerevision_user_id_c687e4de_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `wiki_articlerevision_article_id_e0fb2474_fk_wiki_article_id` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`),
-  CONSTRAINT `wiki_articlerevision_previous_revision_id_bcfaf4c9_fk_wiki_arti` FOREIGN KEY (`previous_revision_id`) REFERENCES `wiki_articlerevision` (`id`),
-  CONSTRAINT `wiki_articlerevision_user_id_c687e4de_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  UNIQUE KEY `wiki_articlerevision_article_id_4b4e7910c8e7b2d0_uniq` (`article_id`,`revision_number`),
+  KEY `fae2b1c6e892c699844d5dda69aeb89e` (`previous_revision_id`),
+  KEY `wiki_articlerevision_user_id_183520686b6ead55_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `fae2b1c6e892c699844d5dda69aeb89e` FOREIGN KEY (`previous_revision_id`) REFERENCES `wiki_articlerevision` (`id`),
+  CONSTRAINT `wiki_articlerevis_article_id_1f2c587981af1463_fk_wiki_article_id` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`),
+  CONSTRAINT `wiki_articlerevision_user_id_183520686b6ead55_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11859,7 +10675,7 @@ UNLOCK TABLES;
 CREATE TABLE `wiki_reusableplugin` (
   `articleplugin_ptr_id` int(11) NOT NULL,
   PRIMARY KEY (`articleplugin_ptr_id`),
-  CONSTRAINT `wiki_reusableplugin_articleplugin_ptr_id_c1737239_fk_wiki_arti` FOREIGN KEY (`articleplugin_ptr_id`) REFERENCES `wiki_articleplugin` (`id`)
+  CONSTRAINT `w_articleplugin_ptr_id_657a603b3f46a3e3_fk_wiki_articleplugin_id` FOREIGN KEY (`articleplugin_ptr_id`) REFERENCES `wiki_articleplugin` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11883,10 +10699,10 @@ CREATE TABLE `wiki_reusableplugin_articles` (
   `reusableplugin_id` int(11) NOT NULL,
   `article_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `wiki_reusableplugin_arti_reusableplugin_id_articl_302a7a01_uniq` (`reusableplugin_id`,`article_id`),
-  KEY `wiki_reusableplugin__article_id_8a09d39e_fk_wiki_arti` (`article_id`),
-  CONSTRAINT `wiki_reusableplugin__article_id_8a09d39e_fk_wiki_arti` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`),
-  CONSTRAINT `wiki_reusableplugin__reusableplugin_id_52618a1c_fk_wiki_reus` FOREIGN KEY (`reusableplugin_id`) REFERENCES `wiki_reusableplugin` (`articleplugin_ptr_id`)
+  UNIQUE KEY `reusableplugin_id` (`reusableplugin_id`,`article_id`),
+  KEY `wiki_reusableplug_article_id_5e893d3b3fb4f7fa_fk_wiki_article_id` (`article_id`),
+  CONSTRAINT `a9f9f50fd4e8fdafe7ffc0c1a145fee3` FOREIGN KEY (`reusableplugin_id`) REFERENCES `wiki_reusableplugin` (`articleplugin_ptr_id`),
+  CONSTRAINT `wiki_reusableplug_article_id_5e893d3b3fb4f7fa_fk_wiki_article_id` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11910,8 +10726,8 @@ CREATE TABLE `wiki_revisionplugin` (
   `current_revision_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`articleplugin_ptr_id`),
   UNIQUE KEY `current_revision_id` (`current_revision_id`),
-  CONSTRAINT `wiki_revisionplugin_articleplugin_ptr_id_95c295f2_fk_wiki_arti` FOREIGN KEY (`articleplugin_ptr_id`) REFERENCES `wiki_articleplugin` (`id`),
-  CONSTRAINT `wiki_revisionplugin_current_revision_id_46514536_fk_wiki_revi` FOREIGN KEY (`current_revision_id`) REFERENCES `wiki_revisionpluginrevision` (`id`)
+  CONSTRAINT `D03d76148e98b4bc99e3137189894366` FOREIGN KEY (`current_revision_id`) REFERENCES `wiki_revisionpluginrevision` (`id`),
+  CONSTRAINT `w_articleplugin_ptr_id_35fa87d70e9722a1_fk_wiki_articleplugin_id` FOREIGN KEY (`articleplugin_ptr_id`) REFERENCES `wiki_articleplugin` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11944,12 +10760,12 @@ CREATE TABLE `wiki_revisionpluginrevision` (
   `previous_revision_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `wiki_revisionpluginr_plugin_id_c8f4475b_fk_wiki_revi` (`plugin_id`),
-  KEY `wiki_revisionpluginr_previous_revision_id_38c877c0_fk_wiki_revi` (`previous_revision_id`),
-  KEY `wiki_revisionpluginrevision_user_id_ee40f729_fk_auth_user_id` (`user_id`),
-  CONSTRAINT `wiki_revisionpluginr_plugin_id_c8f4475b_fk_wiki_revi` FOREIGN KEY (`plugin_id`) REFERENCES `wiki_revisionplugin` (`articleplugin_ptr_id`),
-  CONSTRAINT `wiki_revisionpluginr_previous_revision_id_38c877c0_fk_wiki_revi` FOREIGN KEY (`previous_revision_id`) REFERENCES `wiki_revisionpluginrevision` (`id`),
-  CONSTRAINT `wiki_revisionpluginrevision_user_id_ee40f729_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  KEY `wiki_revisionpluginrevision_b25eaab4` (`plugin_id`),
+  KEY `wiki_revisionpluginrevision_e8680b8a` (`previous_revision_id`),
+  KEY `wiki_revisionpluginrevision_e8701ad4` (`user_id`),
+  CONSTRAINT `D9574e2f57b828a85a24838761473871` FOREIGN KEY (`plugin_id`) REFERENCES `wiki_revisionplugin` (`articleplugin_ptr_id`),
+  CONSTRAINT `e524c4f887e857f93c39356f7cf7d4df` FOREIGN KEY (`previous_revision_id`) REFERENCES `wiki_revisionpluginrevision` (`id`),
+  CONSTRAINT `wiki_revisionpluginrevi_user_id_55a00bd0e2532762_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -11972,9 +10788,9 @@ CREATE TABLE `wiki_simpleplugin` (
   `articleplugin_ptr_id` int(11) NOT NULL,
   `article_revision_id` int(11) NOT NULL,
   PRIMARY KEY (`articleplugin_ptr_id`),
-  KEY `wiki_simpleplugin_article_revision_id_cff7df92_fk_wiki_arti` (`article_revision_id`),
-  CONSTRAINT `wiki_simpleplugin_article_revision_id_cff7df92_fk_wiki_arti` FOREIGN KEY (`article_revision_id`) REFERENCES `wiki_articlerevision` (`id`),
-  CONSTRAINT `wiki_simpleplugin_articleplugin_ptr_id_2b99b828_fk_wiki_arti` FOREIGN KEY (`articleplugin_ptr_id`) REFERENCES `wiki_articleplugin` (`id`)
+  KEY `w_article_revision_id_8be41c856aa0285_fk_wiki_articlerevision_id` (`article_revision_id`),
+  CONSTRAINT `w_article_revision_id_8be41c856aa0285_fk_wiki_articlerevision_id` FOREIGN KEY (`article_revision_id`) REFERENCES `wiki_articlerevision` (`id`),
+  CONSTRAINT `w_articleplugin_ptr_id_36e661324cc27ff2_fk_wiki_articleplugin_id` FOREIGN KEY (`articleplugin_ptr_id`) REFERENCES `wiki_articleplugin` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12004,17 +10820,17 @@ CREATE TABLE `wiki_urlpath` (
   `parent_id` int(11) DEFAULT NULL,
   `site_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `wiki_urlpath_site_id_parent_id_slug_e4942e5d_uniq` (`site_id`,`parent_id`,`slug`),
-  KEY `wiki_urlpath_article_id_9ef0c0fb_fk_wiki_article_id` (`article_id`),
-  KEY `wiki_urlpath_slug_39d212eb` (`slug`),
-  KEY `wiki_urlpath_lft_46bfd227` (`lft`),
-  KEY `wiki_urlpath_rght_186fc98e` (`rght`),
-  KEY `wiki_urlpath_tree_id_090b475d` (`tree_id`),
-  KEY `wiki_urlpath_level_57f17cfd` (`level`),
-  KEY `wiki_urlpath_parent_id_a6e675ac` (`parent_id`),
-  CONSTRAINT `wiki_urlpath_article_id_9ef0c0fb_fk_wiki_article_id` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`),
-  CONSTRAINT `wiki_urlpath_parent_id_a6e675ac_fk_wiki_urlpath_id` FOREIGN KEY (`parent_id`) REFERENCES `wiki_urlpath` (`id`),
-  CONSTRAINT `wiki_urlpath_site_id_319be912_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+  UNIQUE KEY `wiki_urlpath_site_id_124f6aa7b2cc9b82_uniq` (`site_id`,`parent_id`,`slug`),
+  KEY `wiki_urlpath_article_id_1d1c5eb9a64e1390_fk_wiki_article_id` (`article_id`),
+  KEY `wiki_urlpath_2dbcba41` (`slug`),
+  KEY `wiki_urlpath_caf7cc51` (`lft`),
+  KEY `wiki_urlpath_3cfbd988` (`rght`),
+  KEY `wiki_urlpath_656442a0` (`tree_id`),
+  KEY `wiki_urlpath_c9e9a848` (`level`),
+  KEY `wiki_urlpath_6be37982` (`parent_id`),
+  CONSTRAINT `wiki_urlpath_article_id_1d1c5eb9a64e1390_fk_wiki_article_id` FOREIGN KEY (`article_id`) REFERENCES `wiki_article` (`id`),
+  CONSTRAINT `wiki_urlpath_parent_id_24eab80cd168595f_fk_wiki_urlpath_id` FOREIGN KEY (`parent_id`) REFERENCES `wiki_urlpath` (`id`),
+  CONSTRAINT `wiki_urlpath_site_id_4f30e731b0464e80_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12040,14 +10856,14 @@ CREATE TABLE `workflow_assessmentworkflow` (
   `status` varchar(100) NOT NULL,
   `status_changed` datetime(6) NOT NULL,
   `submission_uuid` varchar(36) NOT NULL,
-  `uuid` char(32) NOT NULL,
+  `uuid` varchar(36) NOT NULL,
   `course_id` varchar(255) NOT NULL,
   `item_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `submission_uuid` (`submission_uuid`),
   UNIQUE KEY `uuid` (`uuid`),
-  KEY `workflow_assessmentworkflow_course_id_8c2d171b` (`course_id`),
-  KEY `workflow_assessmentworkflow_item_id_3ad0d291` (`item_id`)
+  KEY `workflow_assessmentworkflow_ea134da7` (`course_id`),
+  KEY `workflow_assessmentworkflow_82bfda79` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12073,10 +10889,10 @@ CREATE TABLE `workflow_assessmentworkflowcancellation` (
   `created_at` datetime(6) NOT NULL,
   `workflow_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `workflow_assessmentw_workflow_id_5e534711_fk_workflow_` (`workflow_id`),
-  KEY `workflow_assessmentworkflowcancellation_cancelled_by_id_8467736a` (`cancelled_by_id`),
-  KEY `workflow_assessmentworkflowcancellation_created_at_9da54d83` (`created_at`),
-  CONSTRAINT `workflow_assessmentw_workflow_id_5e534711_fk_workflow_` FOREIGN KEY (`workflow_id`) REFERENCES `workflow_assessmentworkflow` (`id`)
+  KEY `w_workflow_id_581d7b320743ff70_fk_workflow_assessmentworkflow_id` (`workflow_id`),
+  KEY `workflow_assessmentworkflowcancellation_195d4285` (`cancelled_by_id`),
+  KEY `workflow_assessmentworkflowcancellation_fde81f11` (`created_at`),
+  CONSTRAINT `w_workflow_id_581d7b320743ff70_fk_workflow_assessmentworkflow_id` FOREIGN KEY (`workflow_id`) REFERENCES `workflow_assessmentworkflow` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12103,8 +10919,8 @@ CREATE TABLE `workflow_assessmentworkflowstep` (
   `order_num` int(10) unsigned NOT NULL,
   `workflow_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `workflow_assessmentw_workflow_id_fe52b4aa_fk_workflow_` (`workflow_id`),
-  CONSTRAINT `workflow_assessmentw_workflow_id_fe52b4aa_fk_workflow_` FOREIGN KEY (`workflow_id`) REFERENCES `workflow_assessmentworkflow` (`id`)
+  KEY `w_workflow_id_4939c36cf6220ba3_fk_workflow_assessmentworkflow_id` (`workflow_id`),
+  CONSTRAINT `w_workflow_id_4939c36cf6220ba3_fk_workflow_assessmentworkflow_id` FOREIGN KEY (`workflow_id`) REFERENCES `workflow_assessmentworkflow` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12115,72 +10931,6 @@ CREATE TABLE `workflow_assessmentworkflowstep` (
 LOCK TABLES `workflow_assessmentworkflowstep` WRITE;
 /*!40000 ALTER TABLE `workflow_assessmentworkflowstep` DISABLE KEYS */;
 /*!40000 ALTER TABLE `workflow_assessmentworkflowstep` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `xapi_xapilearnerdatatransmissionaudit`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `xapi_xapilearnerdatatransmissionaudit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `enterprise_course_enrollment_id` int(10) unsigned DEFAULT NULL,
-  `course_id` varchar(255) NOT NULL,
-  `course_completed` tinyint(1) NOT NULL,
-  `completed_timestamp` datetime(6) DEFAULT NULL,
-  `grade` varchar(255) DEFAULT NULL,
-  `status` varchar(100) NOT NULL,
-  `error_message` longtext,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `xapi_xapilearnerdatatran_user_id_course_id_557488b4_uniq` (`user_id`,`course_id`),
-  KEY `xapi_xapilearnerdatatransmi_enterprise_course_enrollmen_0a180d75` (`enterprise_course_enrollment_id`),
-  KEY `xapi_xapilearnerdatatransmissionaudit_course_id_c18248d2` (`course_id`),
-  CONSTRAINT `xapi_xapilearnerdata_user_id_6a49eb25_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `xapi_xapilearnerdatatransmissionaudit`
---
-
-LOCK TABLES `xapi_xapilearnerdatatransmissionaudit` WRITE;
-/*!40000 ALTER TABLE `xapi_xapilearnerdatatransmissionaudit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `xapi_xapilearnerdatatransmissionaudit` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `xapi_xapilrsconfiguration`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `xapi_xapilrsconfiguration` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `version` varchar(16) NOT NULL,
-  `endpoint` varchar(200) NOT NULL,
-  `key` varchar(255) NOT NULL,
-  `secret` varchar(255) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `enterprise_customer_id` char(32) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `enterprise_customer_id` (`enterprise_customer_id`),
-  CONSTRAINT `xapi_xapilrsconfigur_enterprise_customer__90c03ad5_fk_enterpris` FOREIGN KEY (`enterprise_customer_id`) REFERENCES `enterprise_enterprisecustomer` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `xapi_xapilrsconfiguration`
---
-
-LOCK TABLES `xapi_xapilrsconfiguration` WRITE;
-/*!40000 ALTER TABLE `xapi_xapilrsconfiguration` DISABLE KEYS */;
-/*!40000 ALTER TABLE `xapi_xapilrsconfiguration` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -12196,9 +10946,9 @@ CREATE TABLE `xblock_config_courseeditltifieldsenabledflag` (
   `course_id` varchar(255) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `xblock_config_course_changed_by_id_09761e15_fk_auth_user` (`changed_by_id`),
-  KEY `xblock_config_courseeditltifieldsenabledflag_course_id_4f2393b4` (`course_id`),
-  CONSTRAINT `xblock_config_course_changed_by_id_09761e15_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `xblock_config_cou_changed_by_id_124d91bd160908dd_fk_auth_user_id` (`changed_by_id`),
+  KEY `xblock_config_courseeditltifieldsenabledflag_ea134da7` (`course_id`),
+  CONSTRAINT `xblock_config_cou_changed_by_id_124d91bd160908dd_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12224,8 +10974,8 @@ CREATE TABLE `xblock_config_studioconfig` (
   `disabled_blocks` longtext NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `xblock_config_studio_changed_by_id_8e87ad07_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `xblock_config_studio_changed_by_id_8e87ad07_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `xblock_config_stu_changed_by_id_58f0a899052499fd_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `xblock_config_stu_changed_by_id_58f0a899052499fd_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12252,9 +11002,9 @@ CREATE TABLE `xblock_django_xblockconfiguration` (
   `deprecated` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `xblock_django_xblock_changed_by_id_221b9d0e_fk_auth_user` (`changed_by_id`),
-  KEY `xblock_django_xblockconfiguration_name_9596c362` (`name`),
-  CONSTRAINT `xblock_django_xblock_changed_by_id_221b9d0e_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `xblock_django_xbl_changed_by_id_61068ae9f50d6490_fk_auth_user_id` (`changed_by_id`),
+  KEY `xblock_django_xblockconfiguration_b068931c` (`name`),
+  CONSTRAINT `xblock_django_xbl_changed_by_id_61068ae9f50d6490_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12282,9 +11032,9 @@ CREATE TABLE `xblock_django_xblockstudioconfiguration` (
   `support_level` varchar(2) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `xblock_django_xblock_changed_by_id_641b0905_fk_auth_user` (`changed_by_id`),
-  KEY `xblock_django_xblockstudioconfiguration_name_1450bfa3` (`name`),
-  CONSTRAINT `xblock_django_xblock_changed_by_id_641b0905_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `xblock_django_xblo_changed_by_id_353d5def0d11370_fk_auth_user_id` (`changed_by_id`),
+  KEY `xblock_django_xblockstudioconfiguration_b068931c` (`name`),
+  CONSTRAINT `xblock_django_xblo_changed_by_id_353d5def0d11370_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12309,8 +11059,8 @@ CREATE TABLE `xblock_django_xblockstudioconfigurationflag` (
   `enabled` tinyint(1) NOT NULL,
   `changed_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `xblock_django_xblock_changed_by_id_fdf047b8_fk_auth_user` (`changed_by_id`),
-  CONSTRAINT `xblock_django_xblock_changed_by_id_fdf047b8_fk_auth_user` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
+  KEY `xblock_django_xbl_changed_by_id_11457ce96bbbfbf6_fk_auth_user_id` (`changed_by_id`),
+  CONSTRAINT `xblock_django_xbl_changed_by_id_11457ce96bbbfbf6_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -12332,4 +11082,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-25 20:36:29
+-- Dump completed on 2018-01-31 21:36:25
