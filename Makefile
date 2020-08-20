@@ -182,20 +182,23 @@ studio-update-db: ## Run migrations for the Studio container
 lms-update-db: ## Run migrations LMS container
 	docker exec -t edx.devstack.lms bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform/ && paver update_db'
 
-update-db: | studio-update-db lms-update-db discovery-update-db ecommerce-update-db credentials-update-db ## Run the migrations for all services
+mcka_apros-update-db: ## Run migrations Apros container
+	docker exec -t apros.devstack.lms bash -c 'source /edx/app/apros/venvs/mcka_apros/bin/activate && python manage.py migrate'
+
+update-db: | studio-update-db lms-update-db mcka_apros-update-db ## Run the migrations for all services
 
 lms-shell: ## Run a shell on the LMS container
 	docker exec -it edx.devstack.lms env TERM=$(TERM) /edx/app/edxapp/devstack.sh open
 
 mcka_apros-shell: ## Run a shell on the APROS container
-    # TODO: apros env not activating. update .bashrc in container.
-	docker exec -it apros.devstack.lms /bin/bash #env TERM=$(TERM) /edx/app/edxapp/devstack.sh open
+    # TODO: apros virtualenv not active. Need to update .bashrc inside the container.
+	docker exec -it apros.devstack.lms /bin/bash
 
 lms-watcher-shell: ## Run a shell on the LMS watcher container
 	docker exec -it edx.devstack.lms_watcher env TERM=$(TERM) /edx/app/edxapp/devstack.sh open
 
 %-attach: ## Attach to the specified service container process to use the debugger & see logs.
-	docker attach edx.devstack.$*
+	@if [ $* == mcka_apros ]; then docker attach apros.devstack.lms; else docker attach edx.devstack.$*; fi
 
 lms-restart: ## Kill the LMS Django development server. The watcher process will restart it.
 	docker exec -t edx.devstack.lms bash -c 'kill $$(ps aux | grep "manage.py lms" | egrep -v "while|grep" | awk "{print \$$2}")'
@@ -230,7 +233,10 @@ lms-static: ## Rebuild static assets for the LMS container
 studio-static: ## Rebuild static assets for the Studio container
 	docker exec -t edx.devstack.studio bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform/ && paver update_assets studio'
 
-static: | credentials-static discovery-static ecommerce-static lms-static studio-static ## Rebuild static assets for all service containers
+mcka_apros-static: ## Rebuild static assets for the Apros container
+	docker exec -t apros.devstack.lms bash -c 'source /edx/app/apros/venvs/mcka_apros/bin/activate && python manage.py assets build && python manage.py collectstatic --noinput'
+
+static: | lms-static studio-static mcka_apros-static ## Rebuild static assets for all service containers
 
 healthchecks: ## Run a curl against all services' healthcheck endpoints to make sure they are up. This will eventually be parameterized
 	$(WINPTY) bash ./healthchecks.sh
