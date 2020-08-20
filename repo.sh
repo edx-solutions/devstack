@@ -20,7 +20,7 @@ fi
 if [ -n "${OPENEDX_RELEASE}" ]; then
     OPENEDX_GIT_BRANCH=open-release/${OPENEDX_RELEASE}
 else
-    OPENEDX_GIT_BRANCH=rebase-ironwood
+    OPENEDX_GIT_BRANCH=development
 fi
 
 repos=(
@@ -128,7 +128,7 @@ reset ()
         name="${BASH_REMATCH[1]}"
 
         if [ -d "$name" ]; then
-            cd $name;git reset --hard HEAD;git checkout master;git reset --hard origin/master;git pull;cd "$currDir"
+            cd $name;git reset --hard HEAD;git checkout development;git reset --hard origin/development;git pull;cd "$currDir"
         else
             printf "The [%s] repo is not cloned. Continuing.\n" $name
         fi
