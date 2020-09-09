@@ -2,7 +2,7 @@
 # for the appropriate syntax and definitions.
 #
 # Housekeeping Rules:
-# - Group third-party and edX services separately
+# - Group third-party services, edX services, and edX microfrontends separately
 # - Alphabetize services in the groups
 # - Alphabetize individual configuration options for each service
 # - Every service's container name should be prefixed with "edx.devstack." to avoid conflicts with other containers
@@ -11,22 +11,49 @@
 version: "2.1"
 
 services:
+
+  # ================================================
   # Third-party services
+  # ================================================
+
   chrome:
-    container_name: edx.devstack.chrome
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.chrome"
     hostname: chrome.devstack.edx
     image: edxops/chrome:${OPENEDX_RELEASE:-latest}
     shm_size: 2g
+    networks:
+      default:
+        aliases:
+          - edx.devstack.chrome
     ports:
       - "15900:5900"
     volumes:  # for file uploads
       - ../edx-e2e-tests/upload_files:/edx/app/e2e/edx-e2e-tests/upload_files
       - ../edx-platform/common/test/data:/edx/app/edxapp/edx-platform/common/test/data
 
+  devpi:
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.devpi"
+    hostname: devpi.devstack.edx
+    image: edxops/devpi:${OPENEDX_RELEASE:-latest}
+    networks:
+      default:
+        aliases:
+          - edx.devstack.devpi
+    ports:
+      - "3141:3141"
+    volumes:
+      - devpi_data:/data
+
   elasticsearch:
-    container_name: edx.devstack.elasticsearch
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.elasticsearch"
     hostname: elasticsearch.devstack.edx
-    image: edxyonkers/elasticsearch
+    # TODO: juniper-rebase - change to commented once latest image pushed.
+    #image: edxyonkers/elasticsearch
+    image: edxops/elasticsearch:devstack
+    networks:
+      default:
+        aliases:
+          - edx.devstack.elasticsearch
     # TODO: What to do about these forwarded ports? They'll conflict with ports forwarded by the Vagrant VM.
     # ports:
     #   - "9200:9200"
@@ -35,11 +62,25 @@ services:
       - elasticsearch_data:/usr/share/elasticsearch/data
       - elasticsearch_data:/usr/share/elasticsearch/logs
 
+  # This is meant to be used to test ES upgrades so that we do not have to upgrade all of our services to ES5 at once.
+  elasticsearch-5:
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.elasticsearch-5"
+    hostname: elasticsearch-5.devstack.edx
+    image: elasticsearch:5.6.16
+    networks:
+      default:
+        aliases:
+          - edx.devstack.elasticsearch-5
+
   firefox:
-    container_name: edx.devstack.firefox
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.firefox"
     hostname: firefox.devstack.edx
     image: edxops/firefox:${OPENEDX_RELEASE:-latest}
     shm_size: 2g
+    networks:
+      default:
+        aliases:
+          - edx.devstack.firefox
     ports:
       - "25900:5900"
     volumes:  # for file uploads
@@ -47,9 +88,13 @@ services:
       - ../edx-platform/common/test/data:/edx/app/edxapp/edx-platform/common/test/data
 
   memcached:
-    container_name: edx.devstack.memcached
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.memcached"
     hostname: memcached.devstack.edx
-    image: memcached:1.4.24
+    image: memcached:1.5.10-alpine
+    networks:
+      default:
+        aliases:
+          - edx.devstack.memcached
     # ports:
     #   - "11211:11211"
 
@@ -58,9 +103,13 @@ services:
     # to conserve disk space, and disable the journal for a minor performance gain.
     # See https://docs.mongodb.com/v3.0/reference/program/mongod/#options for complete details.
     command: mongod --smallfiles --nojournal --storageEngine wiredTiger
-    container_name: edx.devstack.mongo
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.mongo"
     hostname: mongo.devstack.edx
-    image: mongo:3.2.16
+    image: mongo:${MONGO_VERSION:-3.6.17}
+    networks:
+      default:
+        aliases:
+          - edx.devstack.mongo
     # ports:
     #  - "27017:27017"
     volumes:
@@ -68,22 +117,27 @@ services:
 
   mysql:
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
-    container_name: edx.devstack.mysql
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.mysql"
     hostname: mysql.devstack.edx
     environment:
       MYSQL_ROOT_PASSWORD: ""
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     image: mysql:5.6
+    networks:
+      default:
+        aliases:
+          - edx.devstack.mysql
     # ports:
-    #   - "3506:3306"
+    #    - "3506:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
   lms:
     command: bash -c 'source /edx/app/edxapp/edxapp_env && while true; do python /edx/app/edxapp/edx-platform/manage.py lms runserver 0.0.0.0:18000 --settings devstack_docker; sleep 2; done'
-    container_name: edx.devstack.lms
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.lms"
     hostname: lms.devstack.edx
     depends_on:
+      - devpi
       - mysql
       - memcached
       - mongo
@@ -99,7 +153,14 @@ services:
       BOK_CHOY_CMS_PORT: 18031
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
-    image: edxyonkers/edxapp:ironwood
+      DJANGO_WATCHMAN_TIMEOUT: 30
+    # TODO: juniper-rebase - change to commented once latest image pushed.
+    # image: edxyonkers/edxapp:ironwood
+    image: edxops/edxapp:${OPENEDX_RELEASE:-latest}
+    networks:
+      default:
+        aliases:
+          - edx.devstack.lms
     ports:
       - "18000:18000"
       - "19876:19876" # JS test debugging
@@ -110,14 +171,16 @@ services:
 
   studio:
     command: bash -c 'source /edx/app/edxapp/edxapp_env && while true; do python /edx/app/edxapp/edx-platform/manage.py cms runserver 0.0.0.0:18010 --settings devstack_docker; sleep 2; done'
-    container_name: edx.devstack.studio
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.studio"
     hostname: studio.devstack.edx
     depends_on:
+      - devpi
       - mysql
       - memcached
       - mongo
       - firefox
       - chrome
+      - lms
     # Allows attachment to the Studio service using 'docker attach <containerID>'.
     stdin_open: true
     tty: true
@@ -127,7 +190,14 @@ services:
       BOK_CHOY_CMS_PORT: 18131
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
-    image: edxyonkers/edxapp:ironwood
+      DJANGO_WATCHMAN_TIMEOUT: 30
+    # TODO: juniper-rebase - change to commented once latest image pushed.
+    # image: edxyonkers/edxapp:ironwood
+    image: edxops/edxapp:${OPENEDX_RELEASE:-latest}
+    networks:
+      default:
+        aliases:
+          - edx.devstack.studio
     ports:
       - "18010:18010"
       - "19877:19877" # JS test debugging
@@ -138,13 +208,19 @@ services:
 
   forum:
     command: bash -c 'source /edx/app/forum/devstack_forum_env && cd /edx/app/forum/cs_comments_service && bundle install && while true; do ruby app.rb -o 0.0.0.0 ; sleep 2; done'
-    container_name: edx.devstack.forum
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.forum"
     hostname: forum.devstack.edx
     depends_on:
       - mongo
       - memcached
       - elasticsearch
-    image: edxyonkers/forum:ironwood
+    # TODO: juniper-rebase - change to commented once latest image pushed.
+    # image: edxyonkers/forum:ironwood
+    image: edxops/forum:${OPENEDX_RELEASE:-latest}
+    networks:
+      default:
+        aliases:
+          - edx.devstack.forum
     ports:
       - "44567:4567"
 
@@ -156,6 +232,10 @@ services:
     container_name: apros.devstack.lms
     hostname: apros.devstack.edx
     command: bash -c "source /edx/app/apros/venvs/mcka_apros/bin/activate && while true; do python manage.py rundev 3000 ; sleep 2; done"
+    networks:
+      default:
+        aliases:
+          - apros.devstack.lms
     ports:
       - "3000:3000"
     depends_on:
@@ -170,6 +250,10 @@ services:
     image: edxyonkers/apros_nginx:ironwood
     container_name: edx.devstack.apros_nginx
     hostname: apros_nginx.devstack.edx
+    networks:
+      default:
+        aliases:
+          - edx.devstack.apros_nginx
     ports:
       - "80:80"
     depends_on:
@@ -183,4 +267,5 @@ volumes:
   elasticsearch_data:
   mongo_data:
   mysql_data:
+  devpi_data:
   mcka_apros_assets:
