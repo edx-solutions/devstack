@@ -250,14 +250,11 @@ Service List
 
 These are the edX services that Devstack can provision, pull, run, attach to, etc.
 Each service is accessible at ``localhost`` on a specific port.
-The table below provides links to the homepage, API root, or API docs of each service,
+The table below provides links to the homepage, API root, or Studio,
 as well as links to the repository where each service's code lives.
 
 The services marked as ``Default`` are provisioned/pulled/run whenever you run
 ``make dev.provision`` / ``make dev.pull`` / ``make dev.up``, respectively.
-
-The extra services are provisioned/pulled/run when specifically requested (e.g.,
-``make dev.provision.xqueue`` / ``make dev.pull.xqueue`` / ``make dev.up.xqueue``).
 
 +---------------------+-------------------------------------+
 | Service             | URL                                 |
@@ -283,21 +280,6 @@ The extra services are provisioned/pulled/run when specifically requested (e.g.,
 .. _analyticspipeline: https://github.com/edx/edx-analytics-pipeline
 .. _marketing: https://github.com/edx/edx-mktg
 .. _xqueue: https://github.com/edx/xqueue
-
-
-Microfrontend URLs
-------------
-
-Each microfrontend is accessible at ``localhost`` on a specific port. The table below
-provides links to each microfrontend.
-
-+---------------------+-------------------------------------+
-| Service             | URL                                 |
-+=====================+=====================================+
-| Gradebook           | http://localhost:1994/              |
-+---------------------+-------------------------------------+
-| Program Manager     | http://localhost:1976/              |
-+---------------------+-------------------------------------+
 
 Useful Commands
 ---------------
@@ -366,9 +348,9 @@ were already applied) in each database are consistent with the existing database
 disable the loading of these database dumps during provisioning by commenting out
 the calls to ``load-db.sh`` in the provision-*.sh scripts. This ensures a start with a
 completely fresh database and incorporates any changes that may have required some form
-of manual intervention for existing installations (e.g. drop/move tables).
+of manual intervention for existing installations (e.g. drop/move tables)
 3. Run the shell script which destroys any existing devstack, creates a new one
-and updates the relational database dumps:
+and updates the relational database dumps
 
 .. code:: sh
 
@@ -545,7 +527,7 @@ We recommend separating the named releases into different directories, for clari
 
 #. Example `.envrc` file used in project directory. Need to make sure that each release root has this unique file.
 
-    .. code:: sh
+.. code:: sh
 
    ./dump-db.sh edxapp
    ./dump-db.sh edxapp_csmh

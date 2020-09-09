@@ -88,7 +88,7 @@ else
 endif
 
 # Include specialized Make commands.
-include marketing.mk
+#include marketing.mk
 
 # Export Makefile variables to recipe shells.
 export
