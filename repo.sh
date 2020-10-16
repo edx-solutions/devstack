@@ -40,7 +40,7 @@ private_repos=(
 if [ -n "${OPENEDX_RELEASE}" ]; then
     OPENEDX_GIT_BRANCH=open-release/${OPENEDX_RELEASE}
 else
-    OPENEDX_GIT_BRANCH=juniper-rebase
+    OPENEDX_GIT_BRANCH=rebase-juniper
 fi
 
 name_pattern=".*/(.*).git"
