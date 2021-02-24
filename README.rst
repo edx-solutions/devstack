@@ -1,6 +1,9 @@
 Open edX Devstack |Build Status|
 ================================
 
+Notice: This repo will be archived in April 2021.
+#######
+
 Get up and running quickly with Open edX services.
 
 If you are seeking info on the Vagrant-based devstack, please see
