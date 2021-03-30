@@ -1,0 +1,17 @@
+version: "2.1"
+
+services:
+  lms:
+      volumes:
+      - themes-nfs:/edx/app/edxapp/themes/mcka-theme:cached
+  studio:
+      volumes:
+      - themes-nfs:/edx/app/edxapp/themes/mcka-theme:cached
+
+volumes:
+  themes-nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+      device: :${DEVSTACK_WORKSPACE}/mcka-theme

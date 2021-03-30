@@ -13,10 +13,10 @@ services:
         aliases:
           - edx.devstack.lms_watcher
     volumes:
-      - ${DEVSTACK_WORKSPACE}/edx-platform:/edx/app/edxapp/edx-platform:cached
+      - edx-nfs:/edx/app/edxapp/edx-platform
       - edxapp_lms_assets:/edx/var/edxapp/staticfiles/
       - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
-      - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
+      - src-nfs:/edx/src
       - ${DEVSTACK_WORKSPACE}/edx-themes:/edx/app/edx-themes:cached
 
   studio_watcher:
@@ -32,11 +32,10 @@ services:
           - edx.devstack.studio_watcher
     volumes:
       - edxapp_studio_assets:/edx/var/edxapp/staticfiles/
-      - ${DEVSTACK_WORKSPACE}/edx-platform:/edx/app/edxapp/edx-platform:cached
+      - edx-nfs:/edx/app/edxapp/edx-platform
       - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
-      - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
+      - src-nfs:/edx/src:cached
       - ${DEVSTACK_WORKSPACE}/edx-themes:/edx/app/edx-themes:cached
-
 volumes:
   edxapp_lms_assets:
   edxapp_studio_assets:
